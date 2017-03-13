@@ -16,9 +16,9 @@ var gulp = require('gulp'),
     scsslint = require('gulp-scss-lint'),
     del = require('del'),
     uglify = require('gulp-uglify'),
-    sass2 = require('gulp-ruby-sass'),
-    notify = require("gulp-notify")
-bower = require('gulp-bower');
+    notify = require("gulp-notify"),
+    minify = require('gulp-minify'),
+    bower = require('gulp-bower');
 
 var config = {
     sassPath: './app/Resources/assets/scss',
@@ -27,7 +27,7 @@ var config = {
 
 var paths = {
     npm: './node_modules',
-    sass: './app/Resources/assets/scss',
+    sass: ['./app/Resources/assets/scss/app.scss','./app/Resources/assets/js/font-awesome/scss/font-awesome.scss'],
     js: './app/Resources/assets/js',
     svg: './app/Resources/assets/svg',
     buildCss: './web/css',
@@ -35,9 +35,15 @@ var paths = {
     buildSvg: './web/svg'
 };
 
+otherJS = [
+    './app/Resources/assets/js/jquery/dist/jquery.js',
+    './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js',
+    './app/Resources/assets/js/app.js'
+];
 otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
-    './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css'
+    './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css',
+    './app/Resources/assets/'
 ];
 
 function onError(err) {
@@ -87,7 +93,7 @@ gulp.task('css:dev', function () {
 });
 
 gulp.task('sass:dev', ['clean','css:dev','scss-lint'], function () {
-    gulp.src(paths.sass + '/app.scss')
+    gulp.src(paths.sass)
         .pipe(plumber({
             errorHandler: onError
         }))
@@ -123,35 +129,24 @@ gulp.task('sass:prod', ['clean'], function () {
 
 // JS
 gulp.task('js:dev', function () {
-    return gulp.src([
-        './app/Resources/assets/js/jquery/dist/jquery.js',
-        './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js',
-        './app/Resources/assets/js/app.js'
-    ])
+    return gulp.src(otherJS)
         .pipe(gulp.dest('web/js/'));
 });
 
 gulp.task('js:prod', function () {
-    return gulp.src([
-        './app/Resources/assets/js/jquery/dist/jquery.js',
-        './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js'
-    ])
-        .pipe(concatJs('app.js'))
-        .pipe(minifyJs())
+    return gulp.src(otherJS)
+        .pipe(minify())
+        .pipe(concat('app.min.js'))
+
         .pipe(gulp.dest('web/js/'));
 });
 
 
 // Task guztiak batuz
-gulp.task('prod', function () {
-    var task1 = gulp.task('css:prod');
-    var task2 = gulp.task('sass:prod');
+gulp.task('prod', ['clean', 'icons', 'js:prod', 'sass:prod']);
 
-    return merge(task1, task2).pipe(concat('main.css'))
-    // Output file
-        .pipe(gulp.dest('web/css'));
-});
+gulp.task('dev', ['default']);
 
-gulp.task('default', ['sass', 'js:dev', 'watch']);
+gulp.task('default', ['clean','icons','js:dev', 'sass:dev', 'watch']);
 
 // gulp.task('prod', ['sass:prod', 'modernizr', 'js:prod']);
