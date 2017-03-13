@@ -1,0 +1,36 @@
+// This file is part of the Symfony Standard project.
+//
+// Copyright (c) 2016 LIN3S <info@lin3s.com>
+//
+// For the full copyright and license information, please view the LICENSE
+// file that was distributed with this source code.
+//
+// @author Jon Torrado <jontorrado@gmail.com>
+
+@import 'base/reset';
+@import 'base/colors';
+@import 'base/typography';
+
+// Imports for using Zurb Foundation
+@import '../../../../node_modules/foundation-sites/scss/util/util';
+@import '../../../../node_modules/foundation-sites/scss/global';
+@import '../../../../node_modules/foundation-sites/scss/grid/grid';
+@import '../../../../node_modules/foundation-sites/scss/components/flex';
+@include foundation-global-styles;
+@include foundation-flex-classes;
+@include foundation-flex-grid;
+
+@import '../../../../node_modules/bengor-cookies/src/scss/bengor-cookies';
+
+@import 'base/common';
+
+@import 'layout/header';
+@import 'layout/content';
+@import 'layout/footer';
+
+//@import 'components/button';
+@import 'components/deprecation-notice';
+
+//@import 'pages/default';
+//@import 'pages/home';
+//@import 'pages/404';

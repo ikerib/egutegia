@@ -1,13 +1,25 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+{% extends 'MopaBootstrapBundle::base.html.twig' %}
+{% block title %}Aupa Bilbao!{% endblock %}
+{% block head_style %}
+    {% if app.debug %}
+        <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet" />
+    {% else %}
+        <link href="{{ asset('css/app.min.css') }}" type="text/css" rel="stylesheet"\
+        />
+    {% endif %}
+{% endblock head_style %}
+{% block navbar %}
+    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true } %}
+        {% block brand %}
+            <a class="navbar-brand" href="#">Aupa</a>
+        {% endblock %}
+        {% block menu %}
+            {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+            {% endblock %}
+            {% endembed %}
+            {% endblock navbar %}
+
+{% block headline %}Aupa Bilbao!{% endblock headline %}
+{% block footer %}
+    <p>Footer sexy 2016</p>
+{% endblock footer %}

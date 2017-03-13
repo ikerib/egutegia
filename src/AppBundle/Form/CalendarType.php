@@ -33,6 +33,4 @@ class CalendarType extends AbstractType
     {
         return 'appbundle_calendar';
     }
-
-
 }
