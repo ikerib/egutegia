@@ -41,6 +41,7 @@
 /build/
 
 # Composer PHAR
+
 /composer.phar
 
 # Backup entities generated with doctrine:generate:entities command
@@ -55,5 +56,9 @@ var/sessions/dev/
 vendor/
 web/bundles/
 /node_modules/
+web/vendor/
 
-
+/web/js/
+/web/css/
+/web/fonts/
+/web/css/app.css

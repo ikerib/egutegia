@@ -3,61 +3,132 @@
  */
 
 var gulp = require('gulp'),
-    sass = require('gulp-sass'),
-    autoprefixer = require('gulp-autoprefixer'),
-    scsslint = require('gulp-scss-lint'),
+    concat = require('gulp-concat'),
+    cssnext = require('postcss-cssnext'),
+    cssnano = require('gulp-cssnano'),
+    livereload = require('gulp-livereload'),
+    modernizr = require('gulp-modernizr'),
+    plumber = require('gulp-plumber'),
+    postcss = require('gulp-postcss'),
     rename = require('gulp-rename'),
-    jscs = require('gulp-jscs'),
-    phpcs = require('gulp-phpcs'),
-    phpcbf = require('gulp-phpcbf'),
-    gutil = require('gulp-util'),
-    cssnano = require('gulp-minify-css');
-gulp.task('sass', function () {
-    return gulp.src('./app/Resources/assets/scss/app.scss')
-        .pipe(sass({sourceComments: 'map'}))
-        .pipe(autoprefixer())
-        .pipe(gulp.dest('./web/css/'))
+    sass = require('gulp-sass'),
+    scsslint = require('gulp-scss-lint'),
+    clean = require('gulp-clean'),
+    uglify = require('gulp-uglify'),
+    sass2 = require('gulp-ruby-sass')
+    notify = require("gulp-notify")
+    bower = require('gulp-bower');
+
+var config = {
+    sassPath: './app/Resources/assets/scss',
+    bowerDir: './app/Resources/assets/js'
+}
+
+var paths = {
+    npm: './node_modules',
+    sass: './app/Resources/assets/scss',
+    js: './app/Resources/assets/js',
+    svg: './app/Resources/assets/svg',
+    buildCss: './web/css',
+    buildJs: './web/js',
+    buildSvg: './web/svg'
+};
+
+function onError(err) {
+    console.log(err);
+    this.emit('end');
+}
+
+gulp.task('bower', function() {
+    return bower()
+        .pipe(gulp.dest(config.bowerDir))
+});
+
+gulp.task('clean', function () {
+    return gulp.src(['web/css/*', 'web/js/*', 'web/fonts/*'])
+        .pipe(clean());
+});
+
+gulp.task('icons', function() {
+    return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
+        .pipe(gulp.dest('./web/fonts'));
+
+});
+
+gulp.task('css', function () {
+    return gulp.src([
+        './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
+        './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css'
+    ])
+        .pipe(gulp.dest('web/css/'));
+});
+
+gulp.task('sass', ['scss-lint'], function () {
+    console.log(paths.sass + '/app.scss');
+    gulp.src(paths.sass + '/app.scss')
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(sass({
+            errLogToConsole: true
+        }))
+        .pipe(postcss([cssnext]))
+        .pipe(gulp.dest(paths.buildCss))
+        .pipe(livereload());
+});
+
+gulp.task('sass:prod', function () {
+    gulp.src(paths.sass + '/app.scss')
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(sass())
+        .pipe(postcss([cssnext]))
+        .pipe(cssnano({
+            keepSpecialComments: 1,
+            rebase: false
+        }))
         .pipe(rename({suffix: '.min'}))
-        .pipe(cssnano())
-        .pipe(gulp.dest('./web/css/'));
+        .pipe(gulp.dest(paths.buildCss));
+});
+
+gulp.task('scss-lint', function () {
+    gulp.src([
+        paths.sass + '/**/*.scss',
+        '!' + paths.sass + '/base/_reset.scss'
+    ])
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(scsslint());
+});
+
+
+gulp.task('js:dev', function() {
+    return gulp.src([
+        './app/Resources/assets/js/jquery/dist/jquery.js',
+        './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js',
+        './app/Resources/assets/js/app.js'
+    ])
+        .pipe(gulp.dest('web/js/'));
+});
+
+
+gulp.task('js:prod', function() {
+    return gulp.src([
+        './app/Resources/assets/js/jquery/dist/jquery.js',
+        './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js'
+    ])
+        .pipe(concatJs('app.js'))
+        .pipe(minifyJs())
+        .pipe(gulp.dest('web/js/'));
 });
 
 gulp.task('watch', function () {
     gulp.watch('./app/Resources/assets/scss/**/*.scss', ['sass']);
 });
 
-gulp.task('scsslint', function () {
-    return gulp.src('./app/Resources/assets/scss/**/*.scss')
-        .pipe(scsslint());
-});
 
-gulp.task('jscs', function () {
-    return gulp.src('./app/Resources/assets/js/**/*.js')
-        .pipe(jscs({
-            configPath: './vendor/sonata-project/core-bundle/Resources/public/vendor/bootstrap/js/.jscsrc'
-        }))
-        .pipe(jscs.reporter());
-});
+gulp.task('default', ['sass', 'js:dev', 'watch']);
 
-gulp.task('phpcs', function () {
-    return gulp.src(['./src/AppBundle/**/*.php'])
-        .pipe(phpcs({
-            bin: './vendor/bin/phpcs',
-            standard: 'PSR2',
-            warningSeverity: 0
-        }))
-        .pipe(phpcs.reporter('log'));
-});
-
-gulp.task('phpcbf', function () {
-    return gulp.src(['./src/AppBundle/**/*.php'])
-        .pipe(phpcbf({
-            bin: './vendor/bin/phpcbf',
-            standard: 'PSR2',
-            warningSeverity: 0
-        }))
-        .on('error', gutil.log)
-        .pipe(gulp.dest('src/AppBundle'));
-});
-
-gulp.task('default', ['sass', 'watch', 'scsslint']);
+gulp.task('prod', ['sass:prod', 'modernizr', 'js:prod']);

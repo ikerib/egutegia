@@ -27,7 +27,7 @@
         "friendsofsymfony/rest-bundle": "^2.1",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-menu-bundle": "dev-master",
-        "mopa/bootstrap-bundle": "dev-master",
+
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "sonata-project/admin-bundle": "^3.3",
@@ -38,9 +38,8 @@
         "symfony/monolog-bundle": "^3.0.2",
         "symfony/polyfill-apcu": "^1.0",
         "symfony/swiftmailer-bundle": "^2.3.10",
-        "symfony/symfony": "3.2.2",
-        "twbs/bootstrap-sass": "dev-master",
-        "twig/twig": "^1.0||^2.0"
+        "symfony/symfony": "3.2.2"
+
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
@@ -56,12 +55,10 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-install-cmd": [
-            "@symfony-scripts",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrapSass"
+            "@symfony-scripts"
         ],
         "post-update-cmd": [
-            "@symfony-scripts",
-            "Mopa\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::postInstallSymlinkTwitterBootstrapSass"
+            "@symfony-scripts"
         ]
     },
     "config": {
