@@ -1,4 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block content_content %}
     Homepage.<i class="fa fa-bath" aria-hidden="true"></i>
+
+    {% for user in users %}
+
+        {#{{ dump(user) }}#}
+        {{ user.username }}
+
+    {% endfor %}
+
+
 {% endblock %}

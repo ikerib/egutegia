@@ -88,3 +88,12 @@ sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+
+ldap_tools:
+    domains:
+        pasaia:
+            domain_name: %ldap_domain%
+            username: %ldap_username%
+            password: %ldap_password%
+            base_dn: %ldap_base_dn%
+            servers: %ldap_server%

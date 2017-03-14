@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
             new AppBundle\AppBundle(),
         ];
 
