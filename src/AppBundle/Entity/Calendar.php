@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Calendar
@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
  */
-class Calendar
-{
+class Calendar {
+
     /**
      * @var int
      *
@@ -30,9 +30,9 @@ class Calendar
     private $name;
 
     /**
-    * @Gedmo\Slug(fields={"name"})
-    * @ORM\Column(length=105, unique=true)
-    */
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=105, unique=true)
+     */
     private $slug;
 
     /**
@@ -53,17 +53,40 @@ class Calendar
      */
     private $nameChanged;
 
+    /*****************************************************************************************************************/
+    /*** ERLAZIOAK ***************************************************************************************************/
+    /*****************************************************************************************************************/
+
+    /**
+     * @var \AppBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $user;
+
+    /**
+     * @var \AppBundle\Entity\Type
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $type;
 
     public function __toString()
     {
         return $this->getSlug();
     }
 
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -92,6 +115,30 @@ class Calendar
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Calendar
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -167,26 +214,50 @@ class Calendar
     }
 
     /**
-     * Set slug
+     * Set user
      *
-     * @param string $slug
+     * @param \AppBundle\Entity\User $user
      *
      * @return Calendar
      */
-    public function setSlug($slug)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->slug = $slug;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get slug
+     * Get user
      *
-     * @return string
+     * @return \AppBundle\Entity\User
      */
-    public function getSlug()
+    public function getUser()
     {
-        return $this->slug;
+        return $this->user;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \AppBundle\Entity\Type $type
+     *
+     * @return Calendar
+     */
+    public function setType(\AppBundle\Entity\Type $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \AppBundle\Entity\Type
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }

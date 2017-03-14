@@ -50,8 +50,6 @@ doctrine:
         user: '%database_user%'
         password: '%database_password%'
         charset: UTF8
-        types:
-            json: Sonata\Doctrine\Types\JsonType
         default_table_options:
             charset: utf8mb4
             collate: utf8mb4_unicode_ci

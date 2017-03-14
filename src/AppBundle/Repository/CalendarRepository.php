@@ -10,4 +10,20 @@ namespace AppBundle\Repository;
  */
 class CalendarRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByUsername($username) {
+
+        $em = $this->getEntityManager();
+
+        $dql = "
+            SELECT c
+            FROM AppBundle:Calendar c
+            WHERE c.username = :username
+        ";
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('username', $username);
+
+        return $query->getResult();
+
+    }
 }

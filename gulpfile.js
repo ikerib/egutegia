@@ -27,7 +27,7 @@ var config = {
 
 var paths = {
     npm: './node_modules',
-    sass: ['./app/Resources/assets/scss/app.scss','./app/Resources/assets/js/font-awesome/scss/font-awesome.scss'],
+    sass: ['./app/Resources/assets/scss/app.scss', './app/Resources/assets/js/font-awesome/scss/font-awesome.scss'],
     js: './app/Resources/assets/js',
     svg: './app/Resources/assets/svg',
     buildCss: './web/css',
@@ -35,14 +35,27 @@ var paths = {
     buildSvg: './web/svg'
 };
 
+otherFonts = [
+    config.bowerDir + '/font-awesome/fonts/**.*',
+    config.bowerDir + '/bootstrap/fonts/**.*'
+];
+
 otherJS = [
+    './app/Resources/assets/js/libs/respond.min.js',
     './app/Resources/assets/js/jquery/dist/jquery.js',
     './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js',
+    './app/Resources/assets/js/bootstrap-year-calendar/js/bootstrap-year-calendar.min.js',
+    './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.eu.js',
+    './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.es.js',
+    './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
+    './app/Resources/assets/js/libs/bootstrap-popover.js',
+    './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js'
 ];
 otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css',
+    './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-year-calendar.min.css',
     './app/Resources/assets/'
 ];
 
@@ -54,6 +67,7 @@ function onError(err) {
 // UTILS
 gulp.task('watch', function () {
     gulp.watch('./app/Resources/assets/scss/**/*.scss', ['sass']);
+    gulp.watch('./app/Resources/assets/js/app.js', ['js:dev'])
 });
 
 gulp.task('bower', function () {
@@ -70,7 +84,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('icons', function () {
-    return gulp.src(config.bowerDir + '/font-awesome/fonts/**.*')
+    return gulp.src(otherFonts)
         .pipe(gulp.dest('./web/fonts'));
 
 });
@@ -92,7 +106,7 @@ gulp.task('css:dev', function () {
         .pipe(gulp.dest('web/css/'));
 });
 
-gulp.task('sass:dev', ['clean','css:dev','scss-lint'], function () {
+gulp.task('sass:dev', ['clean', 'css:dev', 'scss-lint'], function () {
     gulp.src(paths.sass)
         .pipe(plumber({
             errorHandler: onError
@@ -147,6 +161,6 @@ gulp.task('prod', ['clean', 'icons', 'js:prod', 'sass:prod']);
 
 gulp.task('dev', ['default']);
 
-gulp.task('default', ['clean','icons','js:dev', 'sass:dev', 'watch']);
+gulp.task('default', ['clean', 'icons', 'js:dev', 'sass:dev', 'watch']);
 
 // gulp.task('prod', ['sass:prod', 'modernizr', 'js:prod']);

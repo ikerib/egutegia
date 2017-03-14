@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Calendar
@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
  */
-class Calendar
-{
+class Calendar {
+
     /**
      * @var int
      *
@@ -30,9 +30,9 @@ class Calendar
     private $name;
 
     /**
-    * @Gedmo\Slug(fields={"name"})
-    * @ORM\Column(length=105, unique=true)
-    */
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=105, unique=true)
+     */
     private $slug;
 
     /**
@@ -53,109 +53,33 @@ class Calendar
      */
     private $nameChanged;
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    /*****************************************************************************************************************/
+    /*** ERLAZIOAK ***************************************************************************************************/
+    /*****************************************************************************************************************/
 
     /**
-     * Set name
+     * @var \AppBundle\Entity\User
      *
-     * @param string $name
-     *
-     * @return Calendar
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
+    private $user;
 
     /**
-     * Get name
+     * @var \AppBundle\Entity\Type
      *
-     * @return string
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    public function getName()
+    private $type;
+
+    public function __toString()
     {
-        return $this->name;
+        return $this->getSlug();
     }
 
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return Calendar
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
 
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated
-     *
-     * @param \DateTime $updated
-     *
-     * @return Calendar
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set nameChanged
-     *
-     * @param \DateTime $nameChanged
-     *
-     * @return Calendar
-     */
-    public function setNameChanged($nameChanged)
-    {
-        $this->nameChanged = $nameChanged;
-
-        return $this;
-    }
-
-    /**
-     * Get nameChanged
-     *
-     * @return \DateTime
-     */
-    public function getNameChanged()
-    {
-        return $this->nameChanged;
-    }
 }
