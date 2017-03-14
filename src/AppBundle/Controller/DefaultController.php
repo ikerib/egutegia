@@ -18,7 +18,7 @@ class DefaultController extends Controller
         $users = $ldap->buildLdapQuery()->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
 
         $users->count();
-        
+
         return $this->render('default/index.html.twig', array('users'=>$users));
     }
 }
