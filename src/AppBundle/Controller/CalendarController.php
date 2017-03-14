@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\CalendarType;
 
 /**
  * Calendar controller.
@@ -44,7 +45,8 @@ class CalendarController extends Controller
         $calendar = new Calendar();
         $year =  (new DateTime)->format("Y");
         $calendar->setName($username.' - '.$year);
-        $form = $this->createForm('AppBundle\Form\CalendarType', $calendar, array(
+        $form = $this->createForm(
+            CalendarType::class, $calendar, array(
             'action' => $this->generateUrl('admin_calendar_new'),
             'method' => 'POST',
         ));
@@ -55,7 +57,7 @@ class CalendarController extends Controller
             $em->persist($calendar);
             $em->flush($calendar);
 
-            return $this->redirectToRoute('admin_calendar_show/edit', array('id' => $calendar->getId()));
+            return $this->redirectToRoute('admin_calendar_edit', array('id' => $calendar->getId()));
         }
 
         return $this->render('calendar/new.html.twig', array(
