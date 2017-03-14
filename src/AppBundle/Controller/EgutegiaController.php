@@ -2,10 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Calendar;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Calendar controller.
@@ -20,12 +22,14 @@ class EgutegiaController extends Controller
      * @Route("/{username}", name="egutegia_user")
      * @Method("GET")
      */
-    public function indexAction($username)
+    public function useregutegiaAction($username)
     {
         $em = $this->getDoctrine()->getManager();
-
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsername($username);
 
-        return $this->render('egutegia/user_egutegia.html.twig', array('calendar' => $calendar));
+        return $this->render('egutegia/user_egutegia.html.twig', array(
+            'calendar' => $calendar,
+            'username' => $username
+        ));
     }
 }

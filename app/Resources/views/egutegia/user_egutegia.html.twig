@@ -1,5 +1,4 @@
 {% extends 'base.html.twig' %}
-
 {% block content_content %}
-{{ calendar }}
+    {{ render(controller('AppBundle:Calendar:new', {'username': username})) }}
 {% endblock %}

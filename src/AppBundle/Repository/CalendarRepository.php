@@ -14,11 +14,12 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
         $em = $this->getEntityManager();
 
-        $dql = "
+        $dql = '
             SELECT c
             FROM AppBundle:Calendar c
-            WHERE c.username = :username
-        ";
+              INNER Join c.user u
+            WHERE u.username = :username
+        ';
 
         $query = $em->createQuery($dql);
         $query->setParameter('username', $username);

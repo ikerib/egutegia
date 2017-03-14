@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -35,13 +36,18 @@ class CalendarController extends Controller
     /**
      * Creates a new calendar entity.
      *
-     * @Route("/new", name="admin_calendar_new")
+     * @Route("/new/{username}", name="admin_calendar_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, $username="")
     {
         $calendar = new Calendar();
-        $form = $this->createForm('AppBundle\Form\CalendarType', $calendar);
+        $year =  (new DateTime)->format("Y");
+        $calendar->setName($username.' - '.$year);
+        $form = $this->createForm('AppBundle\Form\CalendarType', $calendar, array(
+            'action' => $this->generateUrl('admin_calendar_new'),
+            'method' => 'POST',
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -49,7 +55,7 @@ class CalendarController extends Controller
             $em->persist($calendar);
             $em->flush($calendar);
 
-            return $this->redirectToRoute('admin_calendar_show', array('id' => $calendar->getId()));
+            return $this->redirectToRoute('admin_calendar_show/edit', array('id' => $calendar->getId()));
         }
 
         return $this->render('calendar/new.html.twig', array(
