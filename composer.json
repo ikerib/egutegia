@@ -27,6 +27,7 @@
         "friendsofsymfony/rest-bundle": "^2.1",
         "incenteev/composer-parameter-handler": "^2.0",
         "knplabs/knp-menu-bundle": "dev-master",
+        "mopa/bootstrap-bundle": "dev-master",
         "ldaptools/ldaptools-bundle": "^0.6.0",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",

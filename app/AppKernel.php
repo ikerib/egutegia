@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
+            new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
             new AppBundle\AppBundle(),
         ];
 

@@ -85,6 +85,10 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
 
+mopa_bootstrap:
+    form: ~ # Adds twig form theme support
+    menu: ~ # enables twig helpers for menu
+
 ldap_tools:
     domains:
         pasaia:

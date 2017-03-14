@@ -44,7 +44,15 @@
 
 {% block body %}
     {% block navbar %}
-        <!-- No navbar included here to reduce dependencies, see https://github.com/phiamo/MopaBootstrapSandboxBundle/blob/master/Resources/views/base.html.twig for howto include it -->
+        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true } %}
+            {% block brand %}
+                <a class="navbar-brand" href="#">Aupa</a>
+            {% endblock %}
+
+            {% block menu %}
+                {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+            {% endblock %}
+        {% endembed %}
     {% endblock navbar %}
 
 {% block container %}
@@ -89,7 +97,7 @@
 {% block content_div_end %}</div>{% endblock content_div_end %}
 
 {% block footer_tag_start %}
-    <footer class="navbar-fixed-bottom">
+    <footer>
 {% endblock footer_tag_start %}
 
     {% block footer %}
