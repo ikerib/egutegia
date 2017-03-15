@@ -7,6 +7,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\Validator\Constraints\Date;
 
 
 /**
@@ -60,6 +61,21 @@ class Calendar {
      */
     private $opor_orduak_hartuta=0;
 
+    /**
+     * @var \DateTime
+     * @Expose
+     *
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     */
+    private $start_date;
+
+    /**
+     * @var \DateTime
+     * @Expose
+     *
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
+     */
+    private $end_date;
 
     /**
      * @Gedmo\Slug(fields={"name"})
@@ -364,5 +380,53 @@ class Calendar {
     public function getOporOrduakHartuta()
     {
         return $this->opor_orduak_hartuta;
+    }
+
+    /**
+     * Set startDate
+     *
+     * @param \DateTime $startDate
+     *
+     * @return Calendar
+     */
+    public function setStartDate($startDate)
+    {
+        $this->start_date = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get startDate
+     *
+     * @return \DateTime
+     */
+    public function getStartDate()
+    {
+        return $this->start_date;
+    }
+
+    /**
+     * Set endDate
+     *
+     * @param \DateTime $endDate
+     *
+     * @return Calendar
+     */
+    public function setEndDate($endDate)
+    {
+        $this->end_date = $endDate;
+
+        return $this;
+    }
+
+    /**
+     * Get endDate
+     *
+     * @return \DateTime
+     */
+    public function getEndDate()
+    {
+        return $this->end_date;
     }
 }
