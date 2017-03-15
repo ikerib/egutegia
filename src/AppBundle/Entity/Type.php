@@ -4,17 +4,22 @@ namespace AppBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Type
  *
  * @ORM\Table(name="type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeRepository")
+ * @ExclusionPolicy("all")
  */
 class Type
 {
     /**
      * @var int
+     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -24,6 +29,7 @@ class Type
 
     /**
      * @var string
+     * @Expose
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
@@ -32,6 +38,7 @@ class Type
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
+     * @Expose
      */
     private $slug;
 

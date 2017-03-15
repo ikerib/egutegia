@@ -4,17 +4,23 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
+
 
 /**
  * Calendar
  *
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
+ * @ExclusionPolicy("all")
  */
 class Calendar {
 
     /**
      * @var int
+     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -24,6 +30,7 @@ class Calendar {
 
     /**
      * @var string
+     * @Expose
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
@@ -31,6 +38,7 @@ class Calendar {
 
     /**
      * @var double
+     * @Expose
      *
      * @ORM\Column(name="lan_orduak_guztira", type="string", length=255)
      */
@@ -38,6 +46,7 @@ class Calendar {
 
     /**
      * @var double
+     * @Expose
      *
      * @ORM\Column(name="opor_orduak_guztira", type="string", length=255)
      */
@@ -45,6 +54,7 @@ class Calendar {
 
     /**
      * @var double
+     * @Expose
      *
      * @ORM\Column(name="opor_orduak_hartuta", type="string", length=255)
      */
@@ -54,6 +64,7 @@ class Calendar {
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
+     * @Expose
      */
     private $slug;
 
