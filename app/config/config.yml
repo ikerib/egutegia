@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
+    - { resource: "@ApiBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -84,6 +85,20 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             timestampable: true
+
+nelmio_api_doc: ~
+
+fos_rest:
+    disable_csrf_role: ROLE_API
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+    access_denied_listener:
+        json: true
+    body_listener: true
+    routing_loader:
+            default_format: json
+    view:
+            view_response_listener: 'force'
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support
