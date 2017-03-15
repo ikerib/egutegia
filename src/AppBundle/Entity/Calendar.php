@@ -30,6 +30,28 @@ class Calendar {
     private $name;
 
     /**
+     * @var double
+     *
+     * @ORM\Column(name="lan_orduak_guztira", type="string", length=255)
+     */
+    private $lan_orduak_guztira=1500;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="opor_orduak_guztira", type="string", length=255)
+     */
+    private $opor_orduak_guztira=0;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="opor_orduak_hartuta", type="string", length=255)
+     */
+    private $opor_orduak_hartuta=0;
+
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
      */
@@ -259,5 +281,77 @@ class Calendar {
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set lanOrduakGuztira
+     *
+     * @param string $lanOrduakGuztira
+     *
+     * @return Calendar
+     */
+    public function setLanOrduakGuztira($lanOrduakGuztira)
+    {
+        $this->lan_orduak_guztira = $lanOrduakGuztira;
+
+        return $this;
+    }
+
+    /**
+     * Get lanOrduakGuztira
+     *
+     * @return string
+     */
+    public function getLanOrduakGuztira()
+    {
+        return $this->lan_orduak_guztira;
+    }
+
+    /**
+     * Set oporOrduakGuztira
+     *
+     * @param string $oporOrduakGuztira
+     *
+     * @return Calendar
+     */
+    public function setOporOrduakGuztira($oporOrduakGuztira)
+    {
+        $this->opor_orduak_guztira = $oporOrduakGuztira;
+
+        return $this;
+    }
+
+    /**
+     * Get oporOrduakGuztira
+     *
+     * @return string
+     */
+    public function getOporOrduakGuztira()
+    {
+        return $this->opor_orduak_guztira;
+    }
+
+    /**
+     * Set oporOrduakHartuta
+     *
+     * @param string $oporOrduakHartuta
+     *
+     * @return Calendar
+     */
+    public function setOporOrduakHartuta($oporOrduakHartuta)
+    {
+        $this->opor_orduak_hartuta = $oporOrduakHartuta;
+
+        return $this;
+    }
+
+    /**
+     * Get oporOrduakHartuta
+     *
+     * @return string
+     */
+    public function getOporOrduakHartuta()
+    {
+        return $this->opor_orduak_hartuta;
     }
 }

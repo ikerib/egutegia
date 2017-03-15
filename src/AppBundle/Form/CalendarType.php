@@ -13,7 +13,12 @@ class CalendarType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name');
+        $builder
+            ->add('name')
+            ->add('lanOrduakGuztira')
+            ->add('oporOrduakGuztira')
+            ->add('oporOrduakHartuta')
+        ;
     }
     
     /**

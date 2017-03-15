@@ -15,10 +15,17 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
             new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
+
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+
+            new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
+
+            new JMS\SerializerBundle\JMSSerializerBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
+
             new AppBundle\AppBundle(),
         ];
 

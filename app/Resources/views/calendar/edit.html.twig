@@ -1,21 +1,68 @@
 {% extends 'base.html.twig' %}
 
+{% block headline %} {% endblock  %}
+
 {% block content_content %}
-    <h1>Calendar edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    {#{{ dump(calendar) }}#}
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_calendar_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <div class="row" style="display: none;">
+        {{ form_start(delete_form) }}
+        <input id="btnDelete" type="submit" value="Delete">
+        {{ form_end(delete_form) }}
+    </div>
+
+
+    <div class="modal-dialog" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                <h4 class="modal-title">
+                    {#{{ username ~ '-ren egutegia' | trans }}#}
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                {{ form_start(edit_form, { 'attr': {'class': 'form-horizontal'} }) }}
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-4 control-label">{{ 'Lan orduak guztira' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.lanOrduakGuztira, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-4 control-label">{{ 'Opor orduak guztira' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.oporOrduakGuztira, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-4 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.oporOrduakHartuta, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                {{ form_end(edit_form) }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                <button type="button" class="btn btn-primary" id="save-event">{{ 'Gorde' | trans }}</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="admincalendar" class="admincalendar"></div>
+
+
+
 {% endblock %}
