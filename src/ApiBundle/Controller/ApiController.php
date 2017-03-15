@@ -35,7 +35,7 @@ class ApiController extends FOSRestController
     public function getEventsAction()
     {
         $em         = $this->getDoctrine()->getManager();
-        $events = $em->getRepository('AppBundle:Calendar')->findAll();
+        $events = $em->getRepository('AppBundle:Event')->findAll();
 
         $view = View::create();
         $view->setData($events);

@@ -63,6 +63,15 @@ class Type
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
     /**
      * Get id
      *
@@ -120,12 +129,39 @@ class Type
     {
         return $this->slug;
     }
+
     /**
-     * Constructor
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return Type
      */
-    public function __construct()
+    public function addEvent(\AppBundle\Entity\Event $event)
     {
-        $this->calendars = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 
     /**

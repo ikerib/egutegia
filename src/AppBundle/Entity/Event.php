@@ -10,14 +10,14 @@ use JMS\Serializer\Annotation\Expose;
 
 
 /**
- * Calendar
+ * Event
  *
- * @ORM\Table(name="calendar")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
+ * @ORM\Table(name="event")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
  * @ExclusionPolicy("all")
  */
-class Calendar
-{
+class Event {
+
     /**
      * @var int
      * @Expose
@@ -37,35 +37,20 @@ class Calendar
     private $name;
 
     /**
-     * @var double
+     * @var \DateTime
      * @Expose
      *
-     * @ORM\Column(name="lan_orduak_guztira", type="string", length=255)
+     * @ORM\Column(name="start_date", type="datetime", nullable=true)
      */
-    private $lan_orduak_guztira=1500;
+    private $start_date;
 
     /**
-     * @var double
+     * @var \DateTime
      * @Expose
      *
-     * @ORM\Column(name="opor_orduak_guztira", type="string", length=255)
+     * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
-    private $opor_orduak_guztira=0;
-
-    /**
-     * @var double
-     * @Expose
-     *
-     * @ORM\Column(name="opor_orduak_hartuta", type="string", length=255)
-     */
-    private $opor_orduak_hartuta=0;
-
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(length=105, unique=true)
-     * @Expose
-     */
-    private $slug;
+    private $end_date;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -90,28 +75,32 @@ class Calendar
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\User
+     * @var \AppBundle\Entity\Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    private $user;
+    private $calendar;
+
+    /**
+     * @var \AppBundle\Entity\Type
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $type;
 
     public function __toString()
     {
         return $this->getSlug();
     }
 
-    /**
-     * @var events[]
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="type",cascade={"persist"})
-     * @ORM\OrderBy({"name" = "ASC"})
-     */
-    private $events;
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
+
+
 
     /**
      * Get id
@@ -128,7 +117,7 @@ class Calendar
      *
      * @param string $name
      *
-     * @return Calendar
+     * @return Event
      */
     public function setName($name)
     {
@@ -148,99 +137,51 @@ class Calendar
     }
 
     /**
-     * Set lanOrduakGuztira
+     * Set startDate
      *
-     * @param string $lanOrduakGuztira
+     * @param \DateTime $startDate
      *
-     * @return Calendar
+     * @return Event
      */
-    public function setLanOrduakGuztira($lanOrduakGuztira)
+    public function setStartDate($startDate)
     {
-        $this->lan_orduak_guztira = $lanOrduakGuztira;
+        $this->start_date = $startDate;
 
         return $this;
     }
 
     /**
-     * Get lanOrduakGuztira
+     * Get startDate
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getLanOrduakGuztira()
+    public function getStartDate()
     {
-        return $this->lan_orduak_guztira;
+        return $this->start_date;
     }
 
     /**
-     * Set oporOrduakGuztira
+     * Set endDate
      *
-     * @param string $oporOrduakGuztira
+     * @param \DateTime $endDate
      *
-     * @return Calendar
+     * @return Event
      */
-    public function setOporOrduakGuztira($oporOrduakGuztira)
+    public function setEndDate($endDate)
     {
-        $this->opor_orduak_guztira = $oporOrduakGuztira;
+        $this->end_date = $endDate;
 
         return $this;
     }
 
     /**
-     * Get oporOrduakGuztira
+     * Get endDate
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getOporOrduakGuztira()
+    public function getEndDate()
     {
-        return $this->opor_orduak_guztira;
-    }
-
-    /**
-     * Set oporOrduakHartuta
-     *
-     * @param string $oporOrduakHartuta
-     *
-     * @return Calendar
-     */
-    public function setOporOrduakHartuta($oporOrduakHartuta)
-    {
-        $this->opor_orduak_hartuta = $oporOrduakHartuta;
-
-        return $this;
-    }
-
-    /**
-     * Get oporOrduakHartuta
-     *
-     * @return string
-     */
-    public function getOporOrduakHartuta()
-    {
-        return $this->opor_orduak_hartuta;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Calendar
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
+        return $this->end_date;
     }
 
     /**
@@ -248,7 +189,7 @@ class Calendar
      *
      * @param \DateTime $created
      *
-     * @return Calendar
+     * @return Event
      */
     public function setCreated($created)
     {
@@ -272,7 +213,7 @@ class Calendar
      *
      * @param \DateTime $updated
      *
-     * @return Calendar
+     * @return Event
      */
     public function setUpdated($updated)
     {
@@ -296,7 +237,7 @@ class Calendar
      *
      * @param \DateTime $nameChanged
      *
-     * @return Calendar
+     * @return Event
      */
     public function setNameChanged($nameChanged)
     {
@@ -320,7 +261,7 @@ class Calendar
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return Calendar
+     * @return Event
      */
     public function setUser(\AppBundle\Entity\User $user = null)
     {
@@ -338,20 +279,13 @@ class Calendar
     {
         return $this->user;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set type
      *
      * @param \AppBundle\Entity\Type $type
      *
-     * @return Calendar
+     * @return Event
      */
     public function setType(\AppBundle\Entity\Type $type = null)
     {
@@ -371,36 +305,26 @@ class Calendar
     }
 
     /**
-     * Add event
+     * Set calendar
      *
-     * @param \AppBundle\Entity\Event $event
+     * @param \AppBundle\Entity\Calendar $calendar
      *
-     * @return Calendar
+     * @return Event
      */
-    public function addEvent(\AppBundle\Entity\Event $event)
+    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
     {
-        $this->events[] = $event;
+        $this->calendar = $calendar;
 
         return $this;
     }
 
     /**
-     * Remove event
+     * Get calendar
      *
-     * @param \AppBundle\Entity\Event $event
+     * @return \AppBundle\Entity\Calendar
      */
-    public function removeEvent(\AppBundle\Entity\Event $event)
+    public function getCalendar()
     {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Get events
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEvents()
-    {
-        return $this->events;
+        return $this->calendar;
     }
 }

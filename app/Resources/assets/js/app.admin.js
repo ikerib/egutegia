@@ -71,7 +71,7 @@ $(function() {
         style:'background',
         language: 'eu',
         minDate: new Date('2017-01-01'),
-        disabledWeekDays: [0,7],
+        // disabledWeekDays: [0,7],
         allowOverlap: true,
         displayWeekNumber: true,
         enableContextMenu: true,

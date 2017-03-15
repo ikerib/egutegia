@@ -59,7 +59,7 @@ class User
     /**
      * @var calendars[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="user",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="user",cascade={"persist"})
      * @ORM\OrderBy({"username" = "ASC"})
      */
     private $calendars;
