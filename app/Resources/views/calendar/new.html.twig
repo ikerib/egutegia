@@ -1,11 +1,9 @@
-{% extends 'base.html.twig' %}
+<h3>{{ 'Egutegi berria' | trans }}</h3>
 
-{% block body %}
-    <h1>{{ 'Egutegi berria' | trans }}</h1>
-
-    {{ form_start(form) }}
+{{ form_start(form, { 'attr': {'class': 'form-inline'} }) }}
+{{ form_errors(form) }}
+    <div class="form-group">
         {{ form_widget(form) }}
-        <input type="submit" value="{{ 'Gorde' | trans }}" />
-    {{ form_end(form) }}
-
-{% endblock %}
+    </div>
+    <input type="submit" value="{{ 'Gorde' | trans }}" class="btn btn-info"/>
+{{ form_end(form) }}

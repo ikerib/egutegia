@@ -66,7 +66,7 @@ function onError(err) {
 
 // UTILS
 gulp.task('watch', function () {
-    gulp.watch('./app/Resources/assets/scss/**/*.scss', ['sass']);
+    gulp.watch('./app/Resources/assets/scss/**/*.scss', ['sass:dev']);
     gulp.watch('./app/Resources/assets/js/app.js', ['js:dev'])
 });
 
