@@ -37,28 +37,36 @@ class Calendar
     private $name;
 
     /**
-     * @var double
+     * @var decimal
      * @Expose
      *
-     * @ORM\Column(name="lan_orduak_guztira", type="string", length=255)
+     * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      */
-    private $lan_orduak_guztira=1500;
+    private $hours_year=0;
 
     /**
-     * @var double
+     * @var decimal
      * @Expose
      *
-     * @ORM\Column(name="opor_orduak_guztira", type="string", length=255)
+     * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
      */
-    private $opor_orduak_guztira=0;
+    private $hours_free=0;
 
     /**
-     * @var double
+     * @var decimal
      * @Expose
      *
-     * @ORM\Column(name="opor_orduak_hartuta", type="string", length=255)
+     * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
      */
-    private $opor_orduak_hartuta=0;
+    private $hours_self=0;
+
+    /**
+     * @var decimal
+     * @Expose
+     *
+     * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
+     */
+    private $hours_compensed=0;
 
     /**
      * @Gedmo\Slug(fields={"name"})
@@ -97,21 +105,40 @@ class Calendar
      */
     private $user;
 
-    public function __toString()
-    {
-        return $this->getSlug();
-    }
+    /**
+     * @var \AppBundle\Entity\Template
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Template")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $template;
 
     /**
      * @var events[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="type",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="calendar",cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $events;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
+    }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
+
+
 
     /**
      * Get id
@@ -148,75 +175,99 @@ class Calendar
     }
 
     /**
-     * Set lanOrduakGuztira
+     * Set hoursYear
      *
-     * @param string $lanOrduakGuztira
+     * @param string $hoursYear
      *
      * @return Calendar
      */
-    public function setLanOrduakGuztira($lanOrduakGuztira)
+    public function setHoursYear($hoursYear)
     {
-        $this->lan_orduak_guztira = $lanOrduakGuztira;
+        $this->hours_year = $hoursYear;
 
         return $this;
     }
 
     /**
-     * Get lanOrduakGuztira
+     * Get hoursYear
      *
      * @return string
      */
-    public function getLanOrduakGuztira()
+    public function getHoursYear()
     {
-        return $this->lan_orduak_guztira;
+        return $this->hours_year;
     }
 
     /**
-     * Set oporOrduakGuztira
+     * Set hoursFree
      *
-     * @param string $oporOrduakGuztira
+     * @param string $hoursFree
      *
      * @return Calendar
      */
-    public function setOporOrduakGuztira($oporOrduakGuztira)
+    public function setHoursFree($hoursFree)
     {
-        $this->opor_orduak_guztira = $oporOrduakGuztira;
+        $this->hours_free = $hoursFree;
 
         return $this;
     }
 
     /**
-     * Get oporOrduakGuztira
+     * Get hoursFree
      *
      * @return string
      */
-    public function getOporOrduakGuztira()
+    public function getHoursFree()
     {
-        return $this->opor_orduak_guztira;
+        return $this->hours_free;
     }
 
     /**
-     * Set oporOrduakHartuta
+     * Set hoursSelf
      *
-     * @param string $oporOrduakHartuta
+     * @param string $hoursSelf
      *
      * @return Calendar
      */
-    public function setOporOrduakHartuta($oporOrduakHartuta)
+    public function setHoursSelf($hoursSelf)
     {
-        $this->opor_orduak_hartuta = $oporOrduakHartuta;
+        $this->hours_self = $hoursSelf;
 
         return $this;
     }
 
     /**
-     * Get oporOrduakHartuta
+     * Get hoursSelf
      *
      * @return string
      */
-    public function getOporOrduakHartuta()
+    public function getHoursSelf()
     {
-        return $this->opor_orduak_hartuta;
+        return $this->hours_self;
+    }
+
+    /**
+     * Set hoursCompensed
+     *
+     * @param string $hoursCompensed
+     *
+     * @return Calendar
+     */
+    public function setHoursCompensed($hoursCompensed)
+    {
+        $this->hours_compensed = $hoursCompensed;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursCompensed
+     *
+     * @return string
+     */
+    public function getHoursCompensed()
+    {
+        return $this->hours_compensed;
     }
 
     /**
@@ -338,36 +389,29 @@ class Calendar
     {
         return $this->user;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
-     * Set type
+     * Set template
      *
-     * @param \AppBundle\Entity\Type $type
+     * @param \AppBundle\Entity\Template $template
      *
      * @return Calendar
      */
-    public function setType(\AppBundle\Entity\Type $type = null)
+    public function setTemplate(\AppBundle\Entity\Template $template = null)
     {
-        $this->type = $type;
+        $this->template = $template;
 
         return $this;
     }
 
     /**
-     * Get type
+     * Get template
      *
-     * @return \AppBundle\Entity\Type
+     * @return \AppBundle\Entity\Template
      */
-    public function getType()
+    public function getTemplate()
     {
-        return $this->type;
+        return $this->template;
     }
 
     /**

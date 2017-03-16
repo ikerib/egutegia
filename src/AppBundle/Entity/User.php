@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -59,7 +60,7 @@ class User
     /**
      * @var calendars[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="user",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="user",cascade={"persist"})
      * @ORM\OrderBy({"username" = "ASC"})
      */
     private $calendars;
@@ -70,9 +71,18 @@ class User
         return $this->getSlug();
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->calendars = new ArrayCollection();
+    }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
+
 
     /**
      * Get id
@@ -154,13 +164,6 @@ class User
     public function getSlug()
     {
         return $this->slug;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->calendars = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

@@ -8,19 +8,17 @@ use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-
 /**
- * Event
+ * TemplateEvent
  *
- * @ORM\Table(name="event")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @ORM\Table(name="template_event")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateEventRepository")
  * @ExclusionPolicy("all")
  */
-class Event {
-
+class TemplateEvent
+{
     /**
      * @var int
-     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -30,7 +28,6 @@ class Event {
 
     /**
      * @var string
-     * @Expose
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
@@ -51,14 +48,6 @@ class Event {
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
      */
     private $end_date;
-
-    /**
-     * @var decimal
-     * @Expose
-     *
-     * @ORM\Column(name="hours", type="decimal", precision=10, scale=2)
-     */
-    private $hours=0;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -83,20 +72,13 @@ class Event {
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Calendar
+     * @var \AppBundle\Entity\Template
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
-     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Template")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    private $calendar;
+    private $template;
 
-    /**
-     * @var \AppBundle\Entity\Type
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    private $type;
 
     public function __toString()
     {
@@ -105,8 +87,6 @@ class Event {
 
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-    /*****************************************************************************************************************/
-
 
 
     /**
@@ -124,7 +104,7 @@ class Event {
      *
      * @param string $name
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setName($name)
     {
@@ -148,7 +128,7 @@ class Event {
      *
      * @param \DateTime $startDate
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setStartDate($startDate)
     {
@@ -172,7 +152,7 @@ class Event {
      *
      * @param \DateTime $endDate
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setEndDate($endDate)
     {
@@ -192,35 +172,11 @@ class Event {
     }
 
     /**
-     * Set hours
-     *
-     * @param string $hours
-     *
-     * @return Event
-     */
-    public function setHours($hours)
-    {
-        $this->hours = $hours;
-
-        return $this;
-    }
-
-    /**
-     * Get hours
-     *
-     * @return string
-     */
-    public function getHours()
-    {
-        return $this->hours;
-    }
-
-    /**
      * Set created
      *
      * @param \DateTime $created
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setCreated($created)
     {
@@ -244,7 +200,7 @@ class Event {
      *
      * @param \DateTime $updated
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setUpdated($updated)
     {
@@ -268,7 +224,7 @@ class Event {
      *
      * @param \DateTime $nameChanged
      *
-     * @return Event
+     * @return TemplateEvent
      */
     public function setNameChanged($nameChanged)
     {
@@ -288,50 +244,26 @@ class Event {
     }
 
     /**
-     * Set calendar
+     * Set template
      *
-     * @param \AppBundle\Entity\Calendar $calendar
+     * @param \AppBundle\Entity\Template $template
      *
-     * @return Event
+     * @return TemplateEvent
      */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    public function setTemplate(\AppBundle\Entity\Template $template = null)
     {
-        $this->calendar = $calendar;
+        $this->template = $template;
 
         return $this;
     }
 
     /**
-     * Get calendar
+     * Get template
      *
-     * @return \AppBundle\Entity\Calendar
+     * @return \AppBundle\Entity\Template
      */
-    public function getCalendar()
+    public function getTemplate()
     {
-        return $this->calendar;
-    }
-
-    /**
-     * Set type
-     *
-     * @param \AppBundle\Entity\Type $type
-     *
-     * @return Event
-     */
-    public function setType(\AppBundle\Entity\Type $type = null)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \AppBundle\Entity\Type
-     */
-    public function getType()
-    {
-        return $this->type;
+        return $this->template;
     }
 }

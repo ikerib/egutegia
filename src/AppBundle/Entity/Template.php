@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -10,14 +11,14 @@ use JMS\Serializer\Annotation\Expose;
 
 
 /**
- * Event
+ * Template
  *
- * @ORM\Table(name="event")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @ORM\Table(name="template")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateRepository")
  * @ExclusionPolicy("all")
  */
-class Event {
-
+class Template
+{
     /**
      * @var int
      * @Expose
@@ -37,28 +38,43 @@ class Event {
     private $name;
 
     /**
-     * @var \DateTime
+     * @var decimal
      * @Expose
      *
-     * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      */
-    private $start_date;
-
-    /**
-     * @var \DateTime
-     * @Expose
-     *
-     * @ORM\Column(name="end_date", type="datetime", nullable=true)
-     */
-    private $end_date;
+    private $hours_year=0;
 
     /**
      * @var decimal
      * @Expose
      *
-     * @ORM\Column(name="hours", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
      */
-    private $hours=0;
+    private $hours_free=0;
+
+    /**
+     * @var decimal
+     * @Expose
+     *
+     * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
+     */
+    private $hours_self=0;
+
+    /**
+     * @var decimal
+     * @Expose
+     *
+     * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
+     */
+    private $hours_compensed=0;
+
+    /**
+     * @Gedmo\Slug(fields={"name"})
+     * @ORM\Column(length=105, unique=true)
+     * @Expose
+     */
+    private $slug;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -83,30 +99,28 @@ class Event {
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Calendar
+     * @var template_events[]
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
-     * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TemplateEvent", mappedBy="template",cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
      */
-    private $calendar;
+    private $template_events;
 
     /**
-     * @var \AppBundle\Entity\Type
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     * Constructor
      */
-    private $type;
+    public function __construct()
+    {
+        $this->template_events = new ArrayCollection();
+    }
 
     public function __toString()
     {
         return $this->getSlug();
     }
-
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-
 
 
     /**
@@ -124,7 +138,7 @@ class Event {
      *
      * @param string $name
      *
-     * @return Event
+     * @return Template
      */
     public function setName($name)
     {
@@ -144,75 +158,123 @@ class Event {
     }
 
     /**
-     * Set startDate
+     * Set hoursYear
      *
-     * @param \DateTime $startDate
+     * @param string $hoursYear
      *
-     * @return Event
+     * @return Template
      */
-    public function setStartDate($startDate)
+    public function setHoursYear($hoursYear)
     {
-        $this->start_date = $startDate;
+        $this->hours_year = $hoursYear;
 
         return $this;
     }
 
     /**
-     * Get startDate
-     *
-     * @return \DateTime
-     */
-    public function getStartDate()
-    {
-        return $this->start_date;
-    }
-
-    /**
-     * Set endDate
-     *
-     * @param \DateTime $endDate
-     *
-     * @return Event
-     */
-    public function setEndDate($endDate)
-    {
-        $this->end_date = $endDate;
-
-        return $this;
-    }
-
-    /**
-     * Get endDate
-     *
-     * @return \DateTime
-     */
-    public function getEndDate()
-    {
-        return $this->end_date;
-    }
-
-    /**
-     * Set hours
-     *
-     * @param string $hours
-     *
-     * @return Event
-     */
-    public function setHours($hours)
-    {
-        $this->hours = $hours;
-
-        return $this;
-    }
-
-    /**
-     * Get hours
+     * Get hoursYear
      *
      * @return string
      */
-    public function getHours()
+    public function getHoursYear()
     {
-        return $this->hours;
+        return $this->hours_year;
+    }
+
+    /**
+     * Set hoursFree
+     *
+     * @param string $hoursFree
+     *
+     * @return Template
+     */
+    public function setHoursFree($hoursFree)
+    {
+        $this->hours_free = $hoursFree;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursFree
+     *
+     * @return string
+     */
+    public function getHoursFree()
+    {
+        return $this->hours_free;
+    }
+
+    /**
+     * Set hoursSelf
+     *
+     * @param string $hoursSelf
+     *
+     * @return Template
+     */
+    public function setHoursSelf($hoursSelf)
+    {
+        $this->hours_self = $hoursSelf;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSelf
+     *
+     * @return string
+     */
+    public function getHoursSelf()
+    {
+        return $this->hours_self;
+    }
+
+    /**
+     * Set hoursCompensed
+     *
+     * @param string $hoursCompensed
+     *
+     * @return Template
+     */
+    public function setHoursCompensed($hoursCompensed)
+    {
+        $this->hours_compensed = $hoursCompensed;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursCompensed
+     *
+     * @return string
+     */
+    public function getHoursCompensed()
+    {
+        return $this->hours_compensed;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Template
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -220,7 +282,7 @@ class Event {
      *
      * @param \DateTime $created
      *
-     * @return Event
+     * @return Template
      */
     public function setCreated($created)
     {
@@ -244,7 +306,7 @@ class Event {
      *
      * @param \DateTime $updated
      *
-     * @return Event
+     * @return Template
      */
     public function setUpdated($updated)
     {
@@ -268,7 +330,7 @@ class Event {
      *
      * @param \DateTime $nameChanged
      *
-     * @return Event
+     * @return Template
      */
     public function setNameChanged($nameChanged)
     {
@@ -288,50 +350,36 @@ class Event {
     }
 
     /**
-     * Set calendar
+     * Add templateEvent
      *
-     * @param \AppBundle\Entity\Calendar $calendar
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
      *
-     * @return Event
+     * @return Template
      */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    public function addTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
     {
-        $this->calendar = $calendar;
+        $this->template_events[] = $templateEvent;
 
         return $this;
     }
 
     /**
-     * Get calendar
+     * Remove templateEvent
      *
-     * @return \AppBundle\Entity\Calendar
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
      */
-    public function getCalendar()
+    public function removeTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
     {
-        return $this->calendar;
+        $this->template_events->removeElement($templateEvent);
     }
 
     /**
-     * Set type
+     * Get templateEvents
      *
-     * @param \AppBundle\Entity\Type $type
-     *
-     * @return Event
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function setType(\AppBundle\Entity\Type $type = null)
+    public function getTemplateEvents()
     {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \AppBundle\Entity\Type
-     */
-    public function getType()
-    {
-        return $this->type;
+        return $this->template_events;
     }
 }

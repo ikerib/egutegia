@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -47,30 +48,31 @@ class Type
     /*****************************************************************************************************************/
 
     /**
-     * @var calendars[]
+     * @var events[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="type",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="type",cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
-    private $calendars;
+    private $events;
 
     public function __toString()
     {
         return $this->getSlug();
     }
 
-    /*****************************************************************************************************************/
-    /*****************************************************************************************************************/
-    /*****************************************************************************************************************/
-
-
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->events = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->events = new ArrayCollection();
     }
+
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+
+
 
     /**
      * Get id
@@ -162,39 +164,5 @@ class Type
     public function getEvents()
     {
         return $this->events;
-    }
-
-    /**
-     * Add calendar
-     *
-     * @param \AppBundle\Entity\Calendar $calendar
-     *
-     * @return Type
-     */
-    public function addCalendar(\AppBundle\Entity\Calendar $calendar)
-    {
-        $this->calendars[] = $calendar;
-
-        return $this;
-    }
-
-    /**
-     * Remove calendar
-     *
-     * @param \AppBundle\Entity\Calendar $calendar
-     */
-    public function removeCalendar(\AppBundle\Entity\Calendar $calendar)
-    {
-        $this->calendars->removeElement($calendar);
-    }
-
-    /**
-     * Get calendars
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCalendars()
-    {
-        return $this->calendars;
     }
 }
