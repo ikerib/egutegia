@@ -7,4 +7,9 @@ $( document ).ready(function() {
 
         $('form').submit();
     });
+
+    $('.btnPageHeaderEdit').on('click', function () {
+        $('#edit-modal').modal();
+    });
+
 });

@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block headline %}{{ template.name }}{% endblock  %}
+{% block headline %}{{ template.name }}{% endblock %}
 {% block subheadline %}
     <div class="row">
-        <div class="col-sm-4">{{ 'Urteko lan orduak: ' | trans  ~ template.hoursYear }}</div>
-        <div class="col-sm-4">{{ 'Urteko opor orduak: ' | trans ~ template.hoursFree }}</div>
-        <div class="col-sm-4">{{ 'Urteko norberarentzako orduak: ' | trans ~ template.hoursSelf }}</div>
+        <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
+        <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
+        <div class="col-sm-4"><strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
     </div>
 {% endblock %}
 {% block content_content %}
@@ -14,7 +14,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span></button>
                     <h4 class="modal-title">
                         Event
                     </h4>
@@ -59,7 +60,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span></button>
                     <h4 class="modal-title">
                         Event
                     </h4>
@@ -67,7 +69,7 @@
                 <div class="modal-body">
                     {{ form_start(edit_form) }}
                     {{ form_widget(edit_form) }}
-                    <input type="submit" value="Edit" />
+                    <input type="submit" value="Edit"/>
                     {{ form_end(edit_form) }}
                 </div>
                 <div class="modal-footer">
@@ -79,6 +81,6 @@
             </div>
         </div>
     </div>
-    <div id="calendar" class="calendar"></div>
+    <div id="admincalendar" class="admincalendar"></div>
 
 {% endblock %}
