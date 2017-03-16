@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Txantiloiak' | trans }} {% endblock  %}
+
+{% block content_content %}
+    <h2>{{ 'Txantiloi zerrenda' | trans }}</h2>
+
+    <table class="table table-responsive table-bordered table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Hours_year</th>
+                <th>Hours_free</th>
+                <th>Hours_self</th>
+                <th>Hours_compensed</th>
+                <th>Slug</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Namechanged</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for template in templates %}
+            <tr>
+                <td>{{ template.name }}</td>
+                <td>{{ template.hoursyear }}</td>
+                <td>{{ template.hoursfree }}</td>
+                <td>{{ template.hoursself }}</td>
+                <td>{{ template.hourscompensed }}</td>
+                <td>{{ template.slug }}</td>
+                <td>{% if template.created %}{{ template.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if template.updated %}{{ template.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if template.nameChanged %}{{ template.nameChanged|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_template_show', { 'id': template.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_template_edit', { 'id': template.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

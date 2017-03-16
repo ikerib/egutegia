@@ -26,6 +26,7 @@
             {% else %}
                 <link href="{{ asset('css/app.min.css') }}" type="text/css" rel="stylesheet">
             {% endif %}
+
         {% endblock head_style %}
 
         {% block head_script %}
@@ -44,7 +45,7 @@
 
 {% block body %}
     {% block navbar %}
-        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true } %}
+        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true } %}
             {% block brand %}
                 <a class="navbar-brand" href="#">Egutegiak</a>
             {% endblock %}
@@ -55,6 +56,19 @@
         {% endembed %}
     {% endblock navbar %}
 
+    {% block subnav %}
+        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false } %}
+            {% block brand %}
+
+            {% endblock %}
+
+            {% block menu %}
+                {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}
+                {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}
+            {% endblock %}
+        {% endembed %}
+    {% endblock %}
+
 {% block container %}
 {% block container_div_start %}<div class="{% block container_class %}container{% endblock container_class %}">{% endblock container_div_start %}
     {% block header %}
@@ -63,7 +77,8 @@
 {% block content_div_start %}<div class="content">{% endblock content_div_start %}
     {% block page_header %}
         <div class="page-header">
-            <h1>{% block headline %}HEADLIKE{% endblock headline %}</h1>
+            <h2>{% block headline %}HEADLIKE{% endblock headline %}</h2>
+            {% block subheadline %}{% endblock %}
         </div>
     {% endblock page_header %}
 

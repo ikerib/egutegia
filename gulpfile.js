@@ -160,7 +160,7 @@ gulp.task('js:prod', function () {
 // Task guztiak batuz
 gulp.task('prod', ['clean', 'icons', 'js:prod', 'sass:prod']);
 
-gulp.task('dev', ['default']);
+gulp.task('dev', ['icons', 'js:dev', 'sass:dev']);
 
 gulp.task('default', ['clean', 'icons', 'js:dev', 'sass:dev', 'watch']);
 

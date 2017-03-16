@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Txantiloi berria' | trans }}{% endblock  %}
+
+{% block content_content %}
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <div style="display: none;">
+            <input type="submit" value="{{ 'Sortu' | trans }}" />
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -142,8 +142,6 @@ $(function() {
 
     });
 
-
-
     $('#save-event').click(function() {
         saveEvent();
     });
