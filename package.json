@@ -32,5 +32,8 @@
     "merge-stream": "^1.0.1",
     "postcss-cssnext": "^2.9.0",
     "uglify-js": "^2.8.12"
+  },
+  "dependencies": {
+    "bootbox": "^4.4.0"
   }
 }

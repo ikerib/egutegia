@@ -27,8 +27,14 @@ class TypeController extends Controller
 
         $types = $em->getRepository('AppBundle:Type')->findAll();
 
+        $deleteForms = array();
+        foreach ($types as $type) {
+            $deleteForms[$type->getId()] = $this->createDeleteForm($type)->createView();
+        }
+
         return $this->render('type/index.html.twig', array(
             'types' => $types,
+            'deleteforms' => $deleteForms,
         ));
     }
 
@@ -71,7 +77,6 @@ class TypeController extends Controller
     public function editAction(Request $request, Type $type)
     {
         $deleteForm = $this->createDeleteForm($type);
-        $editForm = $this->createForm('AppBundle\Form\TypeType', $type);
         $editForm = $this->createForm(
             TypeType::class, $type, array(
             'action' => $this->generateUrl('admin_type_edit', array('id' => $type->getId())),

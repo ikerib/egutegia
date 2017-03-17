@@ -55,6 +55,7 @@ otherJS = [
     './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.plugin.autotable.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
     './app/Resources/assets/js/libs/bootstrap-popover.js',
+    './app/Resources/assets/js/bootbox/bootbox.min.js',
     './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js',
     './app/Resources/assets/js/app.admin.js'
