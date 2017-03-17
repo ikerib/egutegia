@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Type;
+use AppBundle\Form\TypeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +41,11 @@ class TypeController extends Controller
     public function newAction(Request $request)
     {
         $type = new Type();
-        $form = $this->createForm('AppBundle\Form\TypeType', $type);
+        $form = $this->createForm(
+            TypeType::class, $type, array(
+            'action' => $this->generateUrl('admin_type_new'),
+            'method' => 'POST',
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,28 +53,12 @@ class TypeController extends Controller
             $em->persist($type);
             $em->flush();
 
-            return $this->redirectToRoute('admin_type_show', array('id' => $type->getId()));
+            return $this->redirectToRoute('admin_type_index');
         }
 
         return $this->render('type/new.html.twig', array(
             'type' => $type,
             'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Finds and displays a type entity.
-     *
-     * @Route("/{id}", name="admin_type_show")
-     * @Method("GET")
-     */
-    public function showAction(Type $type)
-    {
-        $deleteForm = $this->createDeleteForm($type);
-
-        return $this->render('type/show.html.twig', array(
-            'type' => $type,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -83,12 +72,17 @@ class TypeController extends Controller
     {
         $deleteForm = $this->createDeleteForm($type);
         $editForm = $this->createForm('AppBundle\Form\TypeType', $type);
+        $editForm = $this->createForm(
+            TypeType::class, $type, array(
+            'action' => $this->generateUrl('admin_type_edit', array('id' => $type->getId())),
+            'method' => 'POST',
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_type_edit', array('id' => $type->getId()));
+            return $this->redirectToRoute('admin_type_index');
         }
 
         return $this->render('type/edit.html.twig', array(

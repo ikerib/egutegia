@@ -13,7 +13,7 @@
             return pageNumber + ' emaitza orriko.';
         },
         formatShowingRows: function (pageFrom, pageTo, totalRows) {
-            return pageFrom + ' -etik ' + pageTo + ' -ra erakusten ' + totalRows + ' emaitzetatik.';
+            return totalRows + ' erregistroetatik ' + pageFrom + 'etik ' + pageTo +'erakoak erakusten';
         },
         formatSearch: function () {
             return 'Bilatu';

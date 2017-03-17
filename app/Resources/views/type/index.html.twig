@@ -12,7 +12,7 @@
 
            data-pagination="true"
            data-search="true"
-           data-height="100"
+           data-height="300"
 
            data-sort-name="name"
            data-sort-order="asc"
@@ -22,6 +22,7 @@
            data-show-toggle="true"
            data-show-columns="true"
 
+           data-toolbar="#toolbar"
            data-show-export="true"
            data-export-types="['csv','excel', 'pdf']"
            data-export-options='{
@@ -40,7 +41,7 @@
             <tr>
                 <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>
                 <th data-halign="center" data-align="right" data-field="hours"  data-sortable="true">{{ 'Orduak' | trans }}</th>
-                <th></th>
+                <th data-halign="center" data-align="center"></th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +52,12 @@
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('admin_type_edit', { 'id': type.id }) }}">edit</a>
+                            <a class="btnEditRow" data-id="{{ type.id }}" href="javascript:void(0);">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
+                            <a class="btnRemoveRow" data-id="{{ type.id }}" href="javascript:void(0);">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </a>
                         </li>
                     </ul>
                 </td>
@@ -59,6 +65,53 @@
         {% endfor %}
         </tbody>
     </table>
+
+    <div class="modal modal-fade" id="new-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span></button>
+                    <h4 class="modal-title">
+                        Event
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('AppBundle:Type:new' )) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary" id="btnGordeModal">
+                        {{ 'Gorde' | trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-fade" id="new-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">Close</span></button>
+                    <h4 class="modal-title">
+                        Event
+                    </h4>
+                </div>
+                <div id="divEditModalBody" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary" id="btnGordeEditModal">
+                        {{ 'Gorde' | trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block foot_script %}
@@ -67,7 +120,23 @@
     <script >
         $( document ).ready(function() {
 
+            $('#btnBerria').on('click', function () {
+                $('#new-modal').modal();
+            });
 
+            $('#new-modal').on('shown.bs.modal', function () {
+                $('#appbundle_type_name').focus()
+            });
+
+            $('.btnEditRow').on('click', function () {
+                var miid = $(this).data('id');
+                var url = Routing.generate('admin_type_edit', { id: miid });
+                $('#divEditModalBody').load(url);
+            });
+
+            $('#btnGordeEditModal').on('click', function () {
+                $('#form_type_edit').submit();
+            });
 
         });
     </script>

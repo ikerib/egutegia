@@ -100,6 +100,9 @@ fos_rest:
     view:
             view_response_listener: 'force'
 
+fos_js_routing:
+    routes_to_expose: [ admin_type_edit ]
+
 mopa_bootstrap:
     form: ~ # Adds twig form theme support
     menu: ~ # enables twig helpers for menu
