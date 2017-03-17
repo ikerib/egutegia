@@ -47,6 +47,12 @@ otherJS = [
     './app/Resources/assets/js/bootstrap-year-calendar/js/bootstrap-year-calendar.min.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.eu.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.es.js',
+    './app/Resources/assets/js/bootstrap-table/dist/bootstrap-table.min.js',
+    './app/Resources/assets/js/bootstrap-table/dist/locale/bootstrap-table-eu-EU.js',
+    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
+    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/tableExport.js',
+    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.min.js',
+    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.plugin.autotable.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
     './app/Resources/assets/js/libs/bootstrap-popover.js',
     './app/Resources/assets/js/example.js',
@@ -57,6 +63,7 @@ otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css',
     './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-year-calendar.min.css',
+    './app/Resources/assets/js/bootstrap-table/dist/bootstrap-table.css',
     './app/Resources/assets/'
 ];
 

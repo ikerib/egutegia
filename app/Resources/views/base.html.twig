@@ -22,6 +22,7 @@
                 <link href="{{ asset('css/bootstrap-theme.css') }}" type="text/css" rel="stylesheet">
                 <link href="{{ asset('css/font-awesome.css') }}" type="text/css" rel="stylesheet">
                 <link href="{{ asset('css/bootstrap-year-calendar.min.css') }}" type="text/css" rel="stylesheet">
+                <link href="{{ asset('css/bootstrap-table.css') }}" type="text/css" rel="stylesheet">
                 <link href="{{ asset('css/app.css') }}" type="text/css" rel="stylesheet">
             {% else %}
                 <link href="{{ asset('css/app.min.css') }}" type="text/css" rel="stylesheet">
@@ -78,7 +79,7 @@
     {% block page_header %}
         <div class="page-header">
             <h2>{% block headline %}HEADLIKE{% endblock headline %}</h2>
-            <a class="btnPageHeaderEdit" href="javascript:void(0)">Editatu</a>
+
             {% block subheadline %}{% endblock %}
         </div>
     {% endblock page_header %}
@@ -141,6 +142,12 @@
     <script src="{{ asset('js/bootstrap-year-calendar.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap-year-calendar.es.js') }}"></script>
     <script src="{{ asset('js/bootstrap-year-calendar.eu.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table-eu-EU.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-table-export.min.js') }}"></script>
+    <script src="{{ asset('js/jspdf.min.js') }}"></script>
+    <script src="{{ asset('js/jspdf.plugin.autotable.js') }}"></script>
+    <script src="{{ asset('js/tableExport.js') }}"></script>
     <script src="{{ asset('js/bootstrap-popover.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/app.admin.js') }}"></script>

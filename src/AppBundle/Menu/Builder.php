@@ -31,6 +31,22 @@ class Builder {
         $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
         $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
 
+        $dropdown = $menu->addChild('Taula Laguntzaileak', array(
+            'dropdown' => true,
+            'caret'    => true,
+        ));
+        $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
+        $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
+
+        $dropdown = $menu->addChild('Motak', array(
+            'dropdown' => true,
+            'caret'    => true,
+        ));
+        $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
+        $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
+
+
+
 
         $menu->addChild('User', array('label' => 'Kaixo user'))
             ->setAttribute('dropdown', true)
@@ -65,15 +81,15 @@ class Builder {
 
     public function subMenuRight(FactoryInterface $factory, array $options)
     {
-        $menu = $factory->createItem('root');
+        $menu = $factory->createItem('root', array('childrenAttributes' => array('class' => 'nav nav-right')));
     //
     //    $menu->setAttribute('class', 'navbar-right');
     //    //$menu->setAttributes(array(
     //    //    'class' => 'navbar-right'));
     //    //$menu->setChildrenAttribute('class', 'navbar-right');
     //
-    //    $menu->addChild('eskuin');
-    //    $menu['eskuin']->setLabelAttribute('class', 'no-link-span');
+        $menu->addChild('eskuin');
+        $menu['eskuin']->setLabelAttribute('class', 'no-link-span');
     //
     //
         return $menu;

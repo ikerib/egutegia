@@ -3,8 +3,17 @@
  */
 
 $( document ).ready(function() {
-    $('#btnGorde').on('click', function() {
 
+    $(document).on('mouseenter', '.page-header', function () {
+        $('.btnPageHeaderEdit').show();
+    }).on('mouseleave', '.page-header', function () {
+        $('.btnPageHeaderEdit').hide();
+    });
+
+    $('#btnGorde').on('click', function() {
+        $('form').submit();
+    });
+    $('#btnGordeModal').on('click', function() {
         $('form').submit();
     });
 

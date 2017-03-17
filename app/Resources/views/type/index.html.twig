@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Motak' | trans }} {% endblock  %}
+
+{% block content_content %}
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default">Mota berria</button>
+    </div>
+    <table data-toggle="table"
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
+
+           data-pagination="true"
+           data-search="true"
+           data-height="100"
+
+           data-sort-name="name"
+           data-sort-order="asc"
+
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
+             "fileName": "export",
+             "worksheetName": "export",
+             "jspdf": {
+               "autotable": {
+                 "styles": { "rowHeight": 20, "fontSize": 10 },
+                 "headerStyles": { "fillColor": 255, "textColor": 0 },
+                 "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+               }
+             }
+           }'>
+
+        <thead>
+            <tr>
+                <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>
+                <th data-halign="center" data-align="right" data-field="hours"  data-sortable="true">{{ 'Orduak' | trans }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type in types %}
+            <tr>
+                <td>{{ type.name }}</td>
+                <td>{{ type.hours }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_type_edit', { 'id': type.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+
+    <script >
+        $( document ).ready(function() {
+
+
+
+        });
+    </script>
+
+{% endblock %}
