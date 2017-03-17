@@ -16,6 +16,10 @@ class TypeType extends AbstractType
         $builder
             ->add('name')
             ->add('hours')
+            ->add('color', null, array(
+                'label' => 'Kolorea',
+                'data'  => '#e01b1b'
+            ))
         ;
     }
     

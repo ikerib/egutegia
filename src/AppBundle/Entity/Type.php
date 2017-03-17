@@ -52,6 +52,14 @@ class Type
     private $hours=0;
 
     /**
+     * @var string
+     * @Expose
+     *
+     * @ORM\Column(name="color", type="string", length=255)
+     */
+    private $color="#e01b1b";
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -92,6 +100,7 @@ class Type
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->color = "#e01b1b";
     }
 
     /*****************************************************************************************************************/
@@ -286,5 +295,29 @@ class Type
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Type
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

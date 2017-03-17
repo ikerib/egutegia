@@ -40,6 +40,17 @@ otherFonts = [
     config.bowerDir + '/bootstrap/fonts/**.*'
 ];
 
+freeIMG = [
+    './app/Resources/assets/js/bootstrap-colorpicker/dist/img/**/*'
+];
+freeJS = [
+    './app/Resources/assets/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'
+];
+
+freeCSS = [
+    './app/Resources/assets/js/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css'
+];
+
 otherJS = [
     './app/Resources/assets/js/libs/respond.min.js',
     './app/Resources/assets/js/jquery/dist/jquery.js',
@@ -116,6 +127,11 @@ gulp.task('css:dev', function () {
 });
 
 gulp.task('sass:dev', ['clean', 'css:dev', 'scss-lint'], function () {
+    gulp.src(freeCSS)
+        .pipe(gulp.dest('web/css/'));
+
+    gulp.src(freeIMG)
+        .pipe(gulp.dest('web/img/'));
     gulp.src(paths.sass)
         .pipe(plumber({
             errorHandler: onError
@@ -129,6 +145,11 @@ gulp.task('sass:dev', ['clean', 'css:dev', 'scss-lint'], function () {
 });
 
 gulp.task('sass:prod', ['clean'], function () {
+    gulp.src(freeCSS)
+        .pipe(gulp.dest('web/css/'));
+
+    gulp.src(freeIMG)
+        .pipe(gulp.dest('web/img/'));
 
     var niresass = gulp.src(paths.sass + '/app.scss')
         .pipe(plumber({errorHandler: onError}))
@@ -152,11 +173,15 @@ gulp.task('sass:prod', ['clean'], function () {
 
 // JS
 gulp.task('js:dev', function () {
+    gulp.src(freeJS)
+        .pipe(gulp.dest('web/js/'));
     return gulp.src(otherJS)
         .pipe(gulp.dest('web/js/'));
 });
 
 gulp.task('js:prod', function () {
+    gulp.src(freeJS)
+        .pipe(gulp.dest('web/js/'));
     return gulp.src(otherJS)
         .pipe(minify())
         .pipe(concat('app.min.js'))
