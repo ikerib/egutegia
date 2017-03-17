@@ -111,3 +111,7 @@
     <div id="admincalendar" class="admincalendar"></div>
 
 {% endblock %}
+
+{% block content_sidebar %}
+    {{ render(controller('AppBundle:Type:list' )) }}
+{% endblock content_sidebar %}

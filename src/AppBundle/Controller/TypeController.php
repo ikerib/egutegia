@@ -39,6 +39,23 @@ class TypeController extends Controller
     }
 
     /**
+     * Lists all type entities.
+     *
+     * @Route("/list", name="admin_type_list")
+     * @Method("GET")
+     */
+    public function listAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $types = $em->getRepository('AppBundle:Type')->findAll();
+
+        return $this->render('type/list.html.twig', array(
+            'types' => $types
+        ));
+    }
+
+    /**
      * Creates a new type entity.
      *
      * @Route("/new", name="admin_type_new")

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Template;
+use AppBundle\Form\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -26,8 +27,14 @@ class TemplateController extends Controller
 
         $templates = $em->getRepository('AppBundle:Template')->findAll();
 
+        $deleteForms = array();
+        foreach ($templates as $template) {
+            $deleteForms[$template->getId()] = $this->createDeleteForm($template)->createView();
+        }
+
         return $this->render('template/index.html.twig', array(
             'templates' => $templates,
+            'deleteforms' => $deleteForms,
         ));
     }
 
@@ -40,7 +47,11 @@ class TemplateController extends Controller
     public function newAction(Request $request)
     {
         $template = new Template();
-        $form = $this->createForm('AppBundle\Form\TemplateType', $template);
+        $form = $this->createForm(
+            TemplateType::class, $template, array(
+            'action' => $this->generateUrl('admin_template_new'),
+            'method' => 'POST',
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

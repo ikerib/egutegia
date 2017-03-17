@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form;
 
-use Doctrine\DBAL\Types\DecimalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,11 +15,11 @@ class TemplateType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, array('label' => 'Izena', 'required'=>'required'))
-            ->add('hours_year', null, array('label' => 'Lan orduak guztira', 'required' => true))
-            ->add('hours_free', null, array('label' => 'Opor orduak guztira', 'required' => true))
-            ->add('hours_self', null, array('label' => 'Norberarentzako orduak', 'required' => true))
-            ;
+            ->add('name')
+            ->add('hours_year')
+            ->add('hours_free')
+            ->add('hours_self')
+        ;
     }
 
     /**
