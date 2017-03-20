@@ -126,7 +126,7 @@ gulp.task('css:dev', function () {
         .pipe(gulp.dest('web/css/'));
 });
 
-gulp.task('sass:dev', ['clean', 'css:dev', 'scss-lint'], function () {
+gulp.task('sass:dev', ['css:dev', 'scss-lint'], function () {
     gulp.src(freeCSS)
         .pipe(gulp.dest('web/css/'));
 

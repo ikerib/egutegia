@@ -1,18 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block headline %}
-    <div class="row">
-        <div class="col-xs-11">{{ template.name }}</div>
-        <div class="col-xs-1"><a class="btn btn-sm btn-primary btnPageHeaderEdit" href="javascript:void(0)" style="display: none;">Editatu</a></div>
+{% block page_header %}
+    <div class="page-header hovebutton">
+        <h2>
+            <div class="row">
+                <div class="col-xs-11">{{ template.name }}</div>
+                <div class="col-xs-1"><a class="btn btn-xs btn-primary btnPageHeaderEdit" href="javascript:void(0)" style="display: none;">Editatu</a></div>
+            </div>
+        </h2>
+
+        <div class="row">
+            <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
+            <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
+            <div class="col-sm-4"><strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
+        </div>
     </div>
-{% endblock %}
-{% block subheadline %}
-    <div class="row">
-        <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
-        <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
-        <div class="col-sm-4"><strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
-    </div>
-{% endblock %}
+{% endblock page_header %}
+
 {% block content_content %}
 
     <div class="modal modal-fade" id="event-modal">
