@@ -48,7 +48,6 @@ class ApiController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $tevents = $em->getRepository('AppBundle:TemplateEvent')->getTemplateEvents($templateid);
 
         if ($tevents === null) {

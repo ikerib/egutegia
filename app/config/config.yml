@@ -10,7 +10,7 @@ parameters:
     locale: eu
 
 framework:
-    ide: "phpstorm://open?file=%%f&line=%%l"
+    ide: 'phpstorm://open?file=%%f&line=%%l'
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
@@ -42,7 +42,7 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         # Bootstrap:
-        - bootstrap_3_layout.html.twig
+#        - bootstrap_3_layout.html.twig
         - bootstrap_3_horizontal_layout.html.twig
 
 # Doctrine Configuration
@@ -87,6 +87,16 @@ stof_doctrine_extensions:
             timestampable: true
 
 nelmio_api_doc: ~
+
+# Nelmio CORS
+nelmio_cors:
+    defaults:
+        allow_origin:  ["%cors_allow_origin%"]
+        allow_methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"]
+        allow_headers: ["content-type", "authorization"]
+        max_age:       3600
+    paths:
+        '^/': ~
 
 fos_rest:
     disable_csrf_role: ROLE_API
