@@ -5,14 +5,16 @@
         <h2>
             <div class="row">
                 <div class="col-xs-11">{{ template.name }}</div>
-                <div class="col-xs-1"><a class="btn btn-xs btn-primary btnPageHeaderEdit" href="javascript:void(0)" style="display: none;">Editatu</a></div>
+                <div class="col-xs-1"><a class="btn btn-xs btn-primary btnPageHeaderEdit" href="javascript:void(0)"
+                                         style="display: none;">Editatu</a></div>
             </div>
         </h2>
 
         <div class="row">
             <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
             <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
-            <div class="col-sm-4"><strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
+            <div class="col-sm-4">
+                <strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
         </div>
     </div>
 {% endblock page_header %}
@@ -24,37 +26,44 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                                class="sr-only">Close</span></button>
+                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
                     <h4 class="modal-title">
-                        Event
+                        {{ 'Egutegia' | trans }}
                     </h4>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="event-index">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-5 control-label">Name</label>
-                            <div class="col-sm-7">
-                                <input name="event-name" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-5 control-label">Location</label>
-                            <div class="col-sm-7">
-                                <input name="event-location" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-5 control-label">Dates</label>
-                            <div class="col-sm-7">
-                                <div class="input-group input-daterange" data-provide="datepicker">
-                                    <input name="event-start-date" type="text" class="form-control" value="2012-04-05">
-                                    <span class="input-group-addon">to</span>
-                                    <input name="event-end-date" type="text" class="form-control" value="2012-04-19">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
+                                <div class="col-sm-8">
+                                    <input name="event-name" type="text" class="form-control">
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                            <div class="form-group">
+                                <label for="min-date" class="col-sm-3 control-label">{{ 'Mota'|trans }}</label>
+                                <div class="col-sm-8">
+                                    <select name="event-type" class="form-control">
+                                        {% for type in types %}
+                                            <option data-color="{{ type.color }}" value="{{ type.id }}">{{ type.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {#<input name="event-location" type="text" class="form-control">#}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="min-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group input-daterange" data-provide="datepicker">
+                                        <input name="event-start-date" type="text" class="form-control" value="2012-04-05">
+                                        <span class="input-group-addon">&nbsp;-&nbsp;</span>
+                                        <input name="event-end-date" type="text" class="form-control" value="2012-04-19">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
@@ -96,7 +105,8 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-4 control-label">{{ 'Norberarentzako orduak' | trans }}</label>
+                        <label for="min-date"
+                               class="col-sm-4 control-label">{{ 'Norberarentzako orduak' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hours_self, { 'attr': {'class': 'form-control'} }) }}
                         </div>
@@ -112,6 +122,9 @@
             </div>
         </div>
     </div>
+
+    <a id="btnGrabatu" href="javascript:void(0);" class="btn btn-success">Grabatu</a>
+    <input type="hidden" id="templateid" value="{{ template.id }}">
     <div id="admincalendar" class="admincalendar"></div>
 
 {% endblock %}
@@ -119,3 +132,8 @@
 {% block content_sidebar %}
     {{ render(controller('AppBundle:Type:list' )) }}
 {% endblock content_sidebar %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script src="{{ asset('js/calendar-template.js') }}"></script>
+{% endblock %}

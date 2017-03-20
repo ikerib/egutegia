@@ -44,7 +44,8 @@ freeIMG = [
     './app/Resources/assets/js/bootstrap-colorpicker/dist/img/**/*'
 ];
 freeJS = [
-    './app/Resources/assets/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js'
+    './app/Resources/assets/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
+    './app/Resources/assets/js/calendar-template.js'
 ];
 
 freeCSS = [
@@ -68,8 +69,7 @@ otherJS = [
     './app/Resources/assets/js/libs/bootstrap-popover.js',
     './app/Resources/assets/js/bootbox/bootbox.min.js',
     './app/Resources/assets/js/example.js',
-    './app/Resources/assets/js/app.js',
-    './app/Resources/assets/js/app.admin.js'
+    './app/Resources/assets/js/app.js'
 ];
 otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',

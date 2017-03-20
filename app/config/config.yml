@@ -101,7 +101,7 @@ fos_rest:
             view_response_listener: 'force'
 
 fos_js_routing:
-    routes_to_expose: [ admin_type_edit ]
+    routes_to_expose: [ admin_type_edit, post_events ]
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

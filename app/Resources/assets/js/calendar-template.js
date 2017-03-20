@@ -5,10 +5,13 @@
 function editEvent(event) {
     $('#event-modal input[name="event-index"]').val(event ? event.id : '');
     $('#event-modal input[name="event-name"]').val(event ? event.name : '');
-    $('#event-modal input[name="event-location"]').val(event ? event.location : '');
+    $('#event-modal input[name="event-type"]').val(event ? event.type : '');
     $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
     $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
     $('#event-modal').modal();
+    $('#event-modal').on('shown.bs.modal', function () {
+        $('#event-modal input[name="event-name"]').focus()
+    })
 }
 
 function deleteEvent(event) {
@@ -28,7 +31,8 @@ function saveEvent() {
     var event = {
         id: $('#event-modal input[name="event-index"]').val(),
         name: $('#event-modal input[name="event-name"]').val(),
-        location: $('#event-modal input[name="event-location"]').val(),
+        type: $('#event-modal option:selected').val(),
+        color: $('#event-modal option:selected').data('color'),
         startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
         endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
     }
@@ -39,7 +43,8 @@ function saveEvent() {
         for(var i in dataSource) {
             if(dataSource[i].id == event.id) {
                 dataSource[i].name = event.name;
-                dataSource[i].location = event.location;
+                dataSource[i].type = event.type;
+                dataSource[i].color = event.color;
                 dataSource[i].startDate = event.startDate;
                 dataSource[i].endDate = event.endDate;
             }
@@ -73,7 +78,7 @@ $(function() {
         minDate: new Date('2017-01-01'),
         // disabledWeekDays: [0,7],
         allowOverlap: true,
-        displayWeekNumber: true,
+        // displayWeekNumber: true,
         enableContextMenu: true,
         enableRangeSelection: true,
         contextMenuItems:[
@@ -96,7 +101,7 @@ $(function() {
                 for(var i in e.events) {
                     content += '<div class="event-tooltip-content">'
                         + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                        + '<div class="event-location">' + e.events[i].location + '</div>'
+                        // + '<div class="event-type">' + e.events[i].type + '</div>'
                         + '</div>';
                 }
 
@@ -145,4 +150,37 @@ $(function() {
     $('#save-event').click(function() {
         saveEvent();
     });
+
+    $('#btnGrabatu').on('click', function () {
+
+        var datuak = $('#admincalendar').data('calendar').getDataSource();
+
+        for (var i = 0; i < datuak.length; i++) {
+
+            var url = Routing.generate('post_events');
+            var datua = datuak[i];
+            datua.templateid = $('#templateid').val();
+
+            var d = JSON.stringify(datuak);
+            console.log(d);
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: d,
+                contentType: "application/json",
+                dataType: "json",
+                success: function (e) {
+                    console.log(e);
+                }
+            }).fail(function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+            });
+
+        }
+
+    });
+
 });
