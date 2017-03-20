@@ -125,27 +125,28 @@ $(function() {
         }
     });
 
-    $.ajax({
-        url: "http://egutegia.dev/app_dev.php/api/events",
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            console.log("erantzuna");
-            console.log(response);
-            var data = [];
-            for (var i = 0; i < response.length; i++) {
-                data.push({
-                    id: response[i].id,
-                    name: response[i].name,
-                    startDate: new Date(response[i].start_date),
-                    endDate: new Date(response[i].end_date)
-                });
-            }
-            console.log(data);
-            $('#admincalendar').data('calendar').setDataSource(data);
-        }
 
-    });
+    // var url = Routing.generate('template_events');
+    //
+    // $.ajax({
+    //     url: "http://egutegia.dev/app_dev.php/api/events",
+    //     type: "GET",
+    //     dataType: "json",
+    //     success: function (response) {
+    //         var data = [];
+    //         for (var i = 0; i < response.length; i++) {
+    //             data.push({
+    //                 id: response[i].id,
+    //                 name: response[i].name,
+    //                 startDate: new Date(response[i].start_date),
+    //                 endDate: new Date(response[i].end_date)
+    //             });
+    //         }
+    //         console.log(data);
+    //         $('#admincalendar').data('calendar').setDataSource(data);
+    //     }
+    //
+    // });
 
     $('#save-event').click(function() {
         saveEvent();
@@ -157,7 +158,7 @@ $(function() {
 
         for (var i = 0; i < datuak.length; i++) {
 
-            var url = Routing.generate('post_events');
+            var url = Routing.generate('template_post_events');
             var datua = datuak[i];
             datua.templateid = $('#templateid').val();
 

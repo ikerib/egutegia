@@ -4,6 +4,8 @@ namespace ApiBundle\Controller;
 
 use AppBundle\AppBundle;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Template;
+use AppBundle\Entity\TemplateEvent;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
@@ -20,13 +22,13 @@ class ApiController extends FOSRestController
 {
 
     /**
-     * Egutegia eskuratu.
+     * Get template Events
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Egutegia eskuratu",
+     *   description = "Get template events",
      *   statusCodes = {
-     *     200 = "Zuzena denean"
+     *     200 = "OK"
      *   }
      * )
      *
@@ -34,7 +36,7 @@ class ApiController extends FOSRestController
      *
      * @Annotations\View()
      */
-    public function getEventsAction()
+    public function getTemplateEventsAction($templateid)
     {
         $em         = $this->getDoctrine()->getManager();
         $events = $em->getRepository('AppBundle:Event')->findAll();
@@ -45,7 +47,7 @@ class ApiController extends FOSRestController
         header("access-control-allow-origin: *");
         return $view;
 
-    }// "get_events"            [GET] /events
+    }// "get_templateevents"            [GET] /templateevents
 
     /**
      * Save events.
@@ -63,30 +65,29 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @return static
      */
-    public function postEventsAction(Request $request)
+    public function postTemplateEventsAction(Request $request)
     {
         $em         = $this->getDoctrine()->getManager();
         $jsonData = json_decode($request->getContent(), true)[0];
 
         // bilatu egutegia
-        $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData[ 'templateid' ]);
-        // bilatu mota
-        $type = $em->getRepository('AppBundle:Type')->find($jsonData[ 'type' ]);
+        $template = $em->getRepository('AppBundle:Template')->find($jsonData[ 'templateid' ]);
 
-        $event = new Event();
-        $event->setCalendar($calendar);
-        $event->setName($jsonData[ 'name' ]);
-        $event->setType($type);
-        $em->persist($event);
+        $templateevent = new TemplateEvent();
+        $templateevent->setTemplate($template);
+        $templateevent->setName($jsonData[ 'name' ]);
+
+
+        $em->persist($templateevent);
         $em->flush();
 
         $view = View::create();
-        $view->setData($event);
+        $view->setData($templateevent);
         header('content-type: application/json; charset=utf-8');
         header("access-control-allow-origin: *");
         return $view;
 
-    }// "post_events"            [POST] /events
+    }// "post_templateevents"            [POST] /templateevents
 
 
 
