@@ -25,8 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FOS\RestBundle\Controller\Annotations as Rest;
 
 
-class ApiController extends FOSRestController
-{
+class ApiController extends FOSRestController {
 
     /**
      * Get template Events
@@ -50,7 +49,8 @@ class ApiController extends FOSRestController
 
         $tevents = $em->getRepository('AppBundle:TemplateEvent')->getTemplateEvents($templateid);
 
-        if ($tevents === null) {
+        if ($tevents === null)
+        {
             return new View("there are no users exist", Response::HTTP_NOT_FOUND);
         }
 
@@ -75,20 +75,20 @@ class ApiController extends FOSRestController
      */
     public function postTemplateEventsAction(Request $request)
     {
-        $em         = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $data = $request->getContent();
         $jsonData = json_decode($request->getContent(), true);
 
         // bilatu egutegia
-        $template = $em->getRepository('AppBundle:Template')->find($jsonData[ 'templateid' ]);
+        $template = $em->getRepository('AppBundle:Template')->find($jsonData['templateid']);
 
         /** @var TemplateEvent $templateevent */
         $templateevent = new TemplateEvent();
         $templateevent->setTemplate($template);
-        $templateevent->setName($jsonData[ 'name' ]);
-        $tempini = new \DateTime($jsonData[ 'startDate' ]);
+        $templateevent->setName($jsonData['name']);
+        $tempini = new \DateTime($jsonData['startDate']);
         $templateevent->setStartDate($tempini);
-        $tempfin = new \DateTime($jsonData[ 'endDate' ]);
+        $tempfin = new \DateTime($jsonData['endDate']);
         $templateevent->setEndDate($tempfin);
 
         $em->persist($templateevent);
@@ -98,10 +98,10 @@ class ApiController extends FOSRestController
         $view->setData($templateevent);
         header('content-type: application/json; charset=utf-8');
         header("access-control-allow-origin: *");
+
         return $view;
 
     }// "post_templateevents"            [POST] /templateevents
-
 
 
 }
