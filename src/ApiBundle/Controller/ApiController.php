@@ -7,6 +7,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Template;
 use AppBundle\Entity\TemplateEvent;
 use FOS\RestBundle\Controller\Annotations;
+use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Request\ParamFetcherInterface;
 use FOS\RestBundle\View\View;
@@ -17,6 +18,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
 
 class ApiController extends FOSRestController
 {
@@ -32,22 +39,24 @@ class ApiController extends FOSRestController
      *   }
      * )
      *
+     * @param $templateid
      * @return array|View
-     *
      * @Annotations\View()
+     * @Get("/templateevents/{templateid}")
      */
     public function getTemplateEventsAction($templateid)
     {
-        $em         = $this->getDoctrine()->getManager();
-        $events = $em->getRepository('AppBundle:Event')->findAll();
+        $em = $this->getDoctrine()->getManager();
 
-        $view = View::create();
-        $view->setData($events);
-        header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
-        return $view;
 
-    }// "get_templateevents"            [GET] /templateevents
+        $tevents = $em->getRepository('AppBundle:TemplateEvent')->getTemplateEvents($templateid);
+
+        if ($tevents === null) {
+            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        }
+
+        return $tevents;
+    }
 
     /**
      * Save events.
@@ -68,15 +77,20 @@ class ApiController extends FOSRestController
     public function postTemplateEventsAction(Request $request)
     {
         $em         = $this->getDoctrine()->getManager();
-        $jsonData = json_decode($request->getContent(), true)[0];
+        $data = $request->getContent();
+        $jsonData = json_decode($request->getContent(), true);
 
         // bilatu egutegia
         $template = $em->getRepository('AppBundle:Template')->find($jsonData[ 'templateid' ]);
 
+        /** @var TemplateEvent $templateevent */
         $templateevent = new TemplateEvent();
         $templateevent->setTemplate($template);
         $templateevent->setName($jsonData[ 'name' ]);
-
+        $tempini = new \DateTime($jsonData[ 'startDate' ]);
+        $templateevent->setStartDate($tempini);
+        $tempfin = new \DateTime($jsonData[ 'endDate' ]);
+        $templateevent->setEndDate($tempfin);
 
         $em->persist($templateevent);
         $em->flush();

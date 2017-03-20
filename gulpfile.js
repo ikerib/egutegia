@@ -68,6 +68,7 @@ otherJS = [
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
     './app/Resources/assets/js/libs/bootstrap-popover.js',
     './app/Resources/assets/js/bootbox/bootbox.min.js',
+    './app/Resources/assets/js/moment/min/moment-with-locales.js',
     './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js'
 ];

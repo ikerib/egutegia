@@ -35,7 +35,8 @@ function saveEvent() {
         color: $('#event-modal option:selected').data('color'),
         startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
         endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
-    }
+    };
+    console.log(event);
 
     var dataSource = $('#admincalendar').data('calendar').getDataSource();
 
@@ -126,27 +127,28 @@ $(function() {
     });
 
 
-    // var url = Routing.generate('template_events');
-    //
-    // $.ajax({
-    //     url: "http://egutegia.dev/app_dev.php/api/events",
-    //     type: "GET",
-    //     dataType: "json",
-    //     success: function (response) {
-    //         var data = [];
-    //         for (var i = 0; i < response.length; i++) {
-    //             data.push({
-    //                 id: response[i].id,
-    //                 name: response[i].name,
-    //                 startDate: new Date(response[i].start_date),
-    //                 endDate: new Date(response[i].end_date)
-    //             });
-    //         }
-    //         console.log(data);
-    //         $('#admincalendar').data('calendar').setDataSource(data);
-    //     }
-    //
-    // });
+    var url = Routing.generate('get_template_events', { 'templateid': $('#templateid').val()});
+
+    $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log(response);
+            var data = [];
+            for (var i = 0; i < response.length; i++) {
+                data.push({
+                    id: response[i].id,
+                    name: response[i].name,
+                    startDate: new Date(response[i].start_date),
+                    endDate: new Date(response[i].end_date)
+                });
+            }
+            console.log(data);
+            $('#admincalendar').data('calendar').setDataSource(data);
+        }
+
+    });
 
     $('#save-event').click(function() {
         saveEvent();
@@ -158,17 +160,28 @@ $(function() {
 
         for (var i = 0; i < datuak.length; i++) {
 
-            var url = Routing.generate('template_post_events');
-            var datua = datuak[i];
-            datua.templateid = $('#templateid').val();
+            var url = Routing.generate('post_template_events');
+            // var fini = moment().set(datuak[i].startDate);
+            // var fend = moment().set(datuak[i].endDate);
 
-            var d = JSON.stringify(datuak);
+            var d = {};
+            d.templateid = $('#templateid').val();
+            d.name = datuak[i].name;
+            d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
+            d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
+            d.color = datuak[i].color;
+
+            // var d = JSON.stringify(datuak);
+            console.log("*****************************************");
+            console.log("POST datuk:");
             console.log(d);
+            console.log("*****************************************");
+
 
             $.ajax({
                 url: url,
                 type: 'POST',
-                data: d,
+                data: JSON.stringify(d),
                 contentType: "application/json",
                 dataType: "json",
                 success: function (e) {

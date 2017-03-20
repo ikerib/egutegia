@@ -13,8 +13,7 @@ use JMS\Serializer\Annotation\Expose;
  *
  * @ORM\Table(name="template_event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateEventRepository")
- * @ExclusionPolicy("all")
- */
+  */
 class TemplateEvent
 {
     /**
@@ -23,6 +22,7 @@ class TemplateEvent
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
@@ -30,22 +30,23 @@ class TemplateEvent
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Expose()
      */
     private $name;
 
     /**
      * @var \DateTime
-     * @Expose
      *
      * @ORM\Column(name="start_date", type="datetime", nullable=true)
+     * @Expose()
      */
     private $start_date;
 
     /**
      * @var \DateTime
-     * @Expose
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
+     * @Expose()
      */
     private $end_date;
 
