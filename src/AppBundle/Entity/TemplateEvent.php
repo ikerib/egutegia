@@ -80,7 +80,15 @@ class TemplateEvent
      */
     private $template;
 
+    /**
+     * @var \AppBundle\Entity\Type
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $type;
 
+    
     public function __toString()
     {
         return $this->getSlug();
@@ -266,5 +274,29 @@ class TemplateEvent
     public function getTemplate()
     {
         return $this->template;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \AppBundle\Entity\Type $type
+     *
+     * @return TemplateEvent
+     */
+    public function setType(\AppBundle\Entity\Type $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \AppBundle\Entity\Type
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 }
