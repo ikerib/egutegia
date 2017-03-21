@@ -2,20 +2,39 @@
 
 {% block page_header %}
     <div class="page-header hovebutton">
-        <h2>
-            <div class="row">
-                <div class="col-xs-11">{{ template.name }}</div>
-                <div class="col-xs-1"><a class="btn btn-xs btn-primary btnPageHeaderEdit" href="javascript:void(0)"
-                                         style="display: none;">Editatu</a></div>
-            </div>
-        </h2>
 
-        <div class="row">
-            <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
-            <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
-            <div class="col-sm-4">
-                <strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-11">
+                        <h3 class="panel-title">{{ template.name }}</h3>
+                    </div>
+                    <div class="col-md-1">
+                        <a class="btn btn-xs btn-default btnPageHeaderEdit" href="javascript:void(0)"
+                           style="display: none;">Editatu</a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
+                    <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
+                    <div class="col-sm-4">
+                        <strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
+                </div>
+            </div>
         </div>
+
+        {#<div class="panel panel-default">#}
+            {#<div class="panel-heading">#}
+                {#<div class="col-xs-11"><h3></h3></div>#}
+                {#<div class="col-xs-1"></div>#}
+            {#</div>#}
+            {#<div class="panel-body">#}
+                {##}
+            {#</div>#}
+        {#</div>#}
+
     </div>
 {% endblock page_header %}
 
