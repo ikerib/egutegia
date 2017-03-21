@@ -27,7 +27,7 @@ class TemplateEventRepository extends EntityRepository
 
         //$consulta = $em->createQuery($dql);
         $query->setParameter('templateid', $templateid);
-
+        dump($query->getSQL());
         return $query->getResult();
 
     }
