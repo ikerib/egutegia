@@ -69,9 +69,13 @@ class ApiController extends FOSRestController {
         // bilatu egutegia
         $template = $em->getRepository('AppBundle:Template')->find($jsonData['templateid']);
 
+        // bilatu egutegia
+        $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
+
         /** @var TemplateEvent $templateevent */
         $templateevent = new TemplateEvent();
         $templateevent->setTemplate($template);
+        $templateevent->setType($type);
         $templateevent->setName($jsonData['name']);
         $tempini = new \DateTime($jsonData['startDate']);
         $templateevent->setStartDate($tempini);

@@ -171,6 +171,7 @@ $(function() {
             d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
             d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
             d.color = datuak[i].color;
+            d.type = datuak[i].type;
 
             // var d = JSON.stringify(datuak);
             console.log("*****************************************");
