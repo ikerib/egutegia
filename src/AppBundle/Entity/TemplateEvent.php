@@ -76,7 +76,7 @@ class TemplateEvent
     /**
      * @var \AppBundle\Entity\Template
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Template")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Template", inversedBy="template_events")
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $template;
@@ -84,7 +84,7 @@ class TemplateEvent
     /**
      * @var \AppBundle\Entity\Type
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="template_events")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
     protected $type;
