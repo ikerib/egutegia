@@ -65,7 +65,10 @@
 
             {% block menu %}
                 {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}
-                {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}
+                <div class="pull-right">
+                    {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}
+                </div>
+
             {% endblock %}
         {% endembed %}
     {% endblock %}

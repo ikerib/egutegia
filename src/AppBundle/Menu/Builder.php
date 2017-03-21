@@ -9,12 +9,16 @@
 namespace AppBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Builder {
+class Builder implements ContainerAwareInterface
+{
+    use ContainerAwareTrait;
 
     public function mainMenu(FactoryInterface $factory, array $options)
     {
-
+        $em = $this->container->get('doctrine')->getManager();
         $menu = $factory->createItem('root', array(
             'navbar' => true,
         ));
@@ -63,35 +67,25 @@ class Builder {
             'navbar' => true,
         ));
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
-
         $menu->addChild('Txantiloiak', array('uri' => 'javascript:void(0);'));
-
-
-        $menu->addChild('Gorde', array('uri' => 'javascript:void(0);'));
-        $menu['Gorde']->setAttribute('id', 'btnGorde');
-        $menu['Gorde']->setAttribute('class', 'pull-right');
-
-
-
+        
         return $menu;
     }
 
-    //TODO: ESKUINEKO MENUA => GORDE EZEZTATU
-
-
     public function subMenuRight(FactoryInterface $factory, array $options)
     {
-        $menu = $factory->createItem('root', array('childrenAttributes' => array('class' => 'nav nav-right')));
-    //
-    //    $menu->setAttribute('class', 'navbar-right');
-    //    //$menu->setAttributes(array(
-    //    //    'class' => 'navbar-right'));
-    //    //$menu->setChildrenAttribute('class', 'navbar-right');
-    //
-        $menu->addChild('eskuin');
-        $menu['eskuin']->setLabelAttribute('class', 'no-link-span');
-    //
-    //
+        $menu = $factory->createItem('root', array(
+            'navbar' => true,
+        ));
+        $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
+        $menu->addChild('Grabatu', array(
+            'attributes' => array(
+                'id' => 'btnGrabatu',
+                'class' => 'btn btn-primary navbar-btn'
+            )
+        ));
+
+
         return $menu;
     }
 }

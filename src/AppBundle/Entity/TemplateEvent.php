@@ -5,15 +5,16 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
+//use JMS\Serializer\Annotation\ExclusionPolicy;
+//use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * TemplateEvent
  *
  * @ORM\Table(name="template_event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateEventRepository")
-  */
+ */
 class TemplateEvent
 {
     /**
@@ -22,7 +23,7 @@ class TemplateEvent
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Expose()
+
      */
     private $id;
 
@@ -30,7 +31,7 @@ class TemplateEvent
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @Expose()
+
      */
     private $name;
 
@@ -38,7 +39,7 @@ class TemplateEvent
      * @var \DateTime
      *
      * @ORM\Column(name="start_date", type="datetime", nullable=true)
-     * @Expose()
+
      */
     private $start_date;
 
@@ -46,7 +47,7 @@ class TemplateEvent
      * @var \DateTime
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
-     * @Expose()
+     
      */
     private $end_date;
 
@@ -86,12 +87,12 @@ class TemplateEvent
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    private $type;
+    protected $type;
 
     
     public function __toString()
     {
-        return $this->getSlug();
+        return (string) $this->getSlug();
     }
 
     /*****************************************************************************************************************/

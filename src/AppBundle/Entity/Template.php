@@ -21,58 +21,58 @@ class Template
 {
     /**
      * @var int
-     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
     /**
      * @var string
-     * @Expose
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Expose()
      */
     private $name;
 
     /**
      * @var decimal
-     * @Expose
      *
      * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
+     * @Expose()
      */
     private $hours_year=0;
 
     /**
      * @var decimal
-     * @Expose
      *
      * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
+     * @Expose()
      */
     private $hours_free=0;
 
     /**
      * @var decimal
-     * @Expose
      *
      * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
+     * @Expose()
      */
     private $hours_self=0;
 
     /**
      * @var decimal
-     * @Expose
      *
      * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
+     * @Expose()
      */
     private $hours_compensed=0;
 
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
-     * @Expose
+     * @Expose()
      */
     private $slug;
 

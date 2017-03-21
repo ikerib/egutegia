@@ -9,6 +9,7 @@ use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
+
 /**
  * Type
  *
@@ -20,42 +21,42 @@ class Type
 {
     /**
      * @var int
-     * @Expose
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
     /**
      * @var string
-     * @Expose
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Expose()
      */
     private $name;
 
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
-     * @Expose
+     * @Expose()
      */
     private $slug;
 
     /**
      * @var decimal
-     * @Expose
      *
      * @ORM\Column(name="hours", type="decimal", precision=10, scale=2)
+     * @Expose()
      */
     private $hours=0;
 
     /**
      * @var string
-     * @Expose
      *
      * @ORM\Column(name="color", type="string", length=255)
+     * @Expose()
      */
     private $color="#e01b1b";
 
@@ -82,12 +83,13 @@ class Type
     /*****************************************************************************************************************/
 
     /**
-     * @var events[]
+     * @var template_events[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="type",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TemplateEvent", mappedBy="type",cascade={"persist"})
      * @ORM\OrderBy({"name" = "ASC"})
+     * @Expose()
      */
-    private $events;
+    private $template_events;
 
     public function __toString()
     {
@@ -99,7 +101,7 @@ class Type
      */
     public function __construct()
     {
-        $this->events = new ArrayCollection();
+        $this->template_events = new ArrayCollection();
         $this->color = "#e01b1b";
     }
 
@@ -319,5 +321,39 @@ class Type
     public function getColor()
     {
         return $this->color;
+    }
+
+    /**
+     * Add templateEvent
+     *
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
+     *
+     * @return Type
+     */
+    public function addTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
+    {
+        $this->template_events[] = $templateEvent;
+
+        return $this;
+    }
+
+    /**
+     * Remove templateEvent
+     *
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
+     */
+    public function removeTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
+    {
+        $this->template_events->removeElement($templateEvent);
+    }
+
+    /**
+     * Get templateEvents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTemplateEvents()
+    {
+        return $this->template_events;
     }
 }

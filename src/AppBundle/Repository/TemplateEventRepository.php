@@ -18,10 +18,10 @@ class TemplateEventRepository extends EntityRepository
         $em = $this->getEntityManager();
         /** @var  $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery("
-            SELECT te,tt
+            SELECT te
                 FROM AppBundle:TemplateEvent te 
                   INNER JOIN te.template t
-                  INNER JOIN te.type tt
+                  LEFT JOIN te.type tt
                 WHERE t.id = :templateid
         ");
 

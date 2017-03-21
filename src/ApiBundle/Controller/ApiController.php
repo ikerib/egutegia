@@ -31,14 +31,14 @@ class ApiController extends FOSRestController {
      * @Annotations\View()
      * @Get("/templateevents/{templateid}")
      */
-    public function getTemplateEventsAction ($templateid)
+    public function getTemplateEventsAction($templateid)
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $tevents = $em->getRepository('AppBundle:TemplateEvent')->getTemplateEvents($templateid);
 
-        if ($tevents === null) {
+        if ($tevents === null)
+        {
             return new View("there are no users exist", Response::HTTP_NOT_FOUND);
         }
 
@@ -61,22 +61,21 @@ class ApiController extends FOSRestController {
      * @param Request $request
      * @return static
      */
-    public function postTemplateEventsAction (Request $request)
+    public function postTemplateEventsAction(Request $request)
     {
-        $em       = $this->getDoctrine()->getManager();
-        $data     = $request->getContent();
+        $em = $this->getDoctrine()->getManager();
         $jsonData = json_decode($request->getContent(), true);
 
         // bilatu egutegia
-        $template = $em->getRepository('AppBundle:Template')->find($jsonData[ 'templateid' ]);
+        $template = $em->getRepository('AppBundle:Template')->find($jsonData['templateid']);
 
         /** @var TemplateEvent $templateevent */
         $templateevent = new TemplateEvent();
         $templateevent->setTemplate($template);
-        $templateevent->setName($jsonData[ 'name' ]);
-        $tempini = new \DateTime($jsonData[ 'startDate' ]);
+        $templateevent->setName($jsonData['name']);
+        $tempini = new \DateTime($jsonData['startDate']);
         $templateevent->setStartDate($tempini);
-        $tempfin = new \DateTime($jsonData[ 'endDate' ]);
+        $tempfin = new \DateTime($jsonData['endDate']);
         $templateevent->setEndDate($tempfin);
 
         $em->persist($templateevent);
