@@ -1,65 +1,132 @@
 {% extends 'base.html.twig' %}
-{% block content_content %}
-    Homepage.<i class="fa fa-bath" aria-hidden="true"></i>
 
-    {#{% for user in users %}#}
+{% block content_div_start %}{% endblock %}
+{% block content_div_end %}{% endblock %}
+{% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock  %}
 
-        {#{{ dump(user) }}#}
-        {#{{ user.username }}#}
+{% block content_row %}
+        <div id="toolbar">
+            <button id="btnBerria" class="btn btn-default">Txantiloi berria</button>
+        </div>
+        <table id="table"
+               {#data-toggle="table"#}
+               data-classes="table table-hover table-condensed"
+               data-striped="true"
 
-    {#{% endfor %}#}
+               data-pagination="true"
+               data-search="true"
+               data-height="300"
+
+               data-sort-name="name"
+               data-sort-order="asc"
+
+               data-icon-size="sm"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+
+               data-toolbar="#toolbar"
+               data-show-export="true"
+               data-export-types="['csv','excel', 'pdf']"
+               data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
+            <thead>
+                <tr>
+                    <th data-halign="left" data-align="left" data-field="firstName" data-sortable="true">Nombre</th>
+                    <th data-halign="left" data-align="left" data-field="lastName" data-sortable="true">Abizenak</th>
+                    <th data-halign="left" data-align="left" data-field="calendar" data-sortable="true">Egutegia</th>
+                    {#<th>Actions</th>#}
+                </tr>
+            </thead>
+            <tbody>
+            {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
+                <tr>
+                    <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
+                    <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
+                    <td>
+                        {% if user.calendar %}
+                            {{ user.calendar }}
+                        {% else %}
+                            <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs" data-username="{{ user.user.username }}">
+                                <i class="fa fa-plus-square-o" aria-hidden="true"> Sortu</i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 
-    {#<div data-provide="calendar"></div>#}
-    <div class="modal modal-fade" id="event-modal">
-        <div class="modal-dialog">
+    {#<div class="modal modal-fade" id="new-modal">#}
+    <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="Modal">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
                     <h4 class="modal-title">
                         Event
                     </h4>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="event-index">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-4 control-label">Name</label>
-                            <div class="col-sm-7">
-                                <input name="event-name" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-4 control-label">Location</label>
-                            <div class="col-sm-7">
-                                <input name="event-location" type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="min-date" class="col-sm-4 control-label">Dates</label>
-                            <div class="col-sm-7">
-                                <div class="input-group input-daterange" data-provide="datepicker">
-                                    <input name="event-start-date" type="text" class="form-control" value="2012-04-05">
-                                    <span class="input-group-addon">to</span>
-                                    <input name="event-end-date" type="text" class="form-control" value="2012-04-19">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <div class="modal-body" id="divModalCalendarNew">
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="save-event">
-                        Save
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary" id="btnGordeModal">
+                        {{ 'Gorde' | trans }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <div id="calendar" class="calendar"></div>
+
 
 {% endblock %}
 {% block foot_script %}
     {{ parent() }}
-    <script src="{{ asset('js/example.js') }}"></script>
+    <script>
+        var $table = $('#table'),selections = [];
+        function initTable() {
+            $table.bootstrapTable({
+                height: getHeight()
+            });
+        }
+        function getHeight() {
+            var winh = $(window).height();
+            var h2h = $('h2').outerHeight(true);
+            var fooh = $('footer').outerHeight(true);
+            var emaitza = winh - h2h - fooh -200;
+            console.log(winh);
+            console.log(h2h);
+            console.log(fooh);
+            console.log(emaitza);
+            return emaitza;
+        }
+
+        $(function () {
+            initTable()
+
+            $('.btnNewCalendar').on('click', function () {
+                $('#divModalCalendarNew').empty();
+                var myusername = $(this).data('username');
+                var url = Routing.generate('admin_calendar_new', { username: myusername });
+                $('#divModalCalendarNew').load(url, function () {
+                $('#new-modal').modal();
+
+                });
+            });
+        });
+    </script>
 {% endblock %}

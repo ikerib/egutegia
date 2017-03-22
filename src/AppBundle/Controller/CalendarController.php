@@ -60,10 +60,19 @@ class CalendarController extends Controller
             return $this->redirectToRoute('admin_calendar_edit', array('id' => $calendar->getId()));
         }
 
-        return $this->render('calendar/new.html.twig', array(
-            'calendar' => $calendar,
-            'form' => $form->createView(),
-        ));
+        if($request->isXmlHttpRequest()) {
+            return $this->render('calendar/_ajax_new.html.twig', array(
+                'calendar' => $calendar,
+                'form' => $form->createView(),
+            ));
+        } else {
+            return $this->render('calendar/new.html.twig', array(
+                'calendar' => $calendar,
+                'form' => $form->createView(),
+            ));
+        }
+
+
     }
 
     /**

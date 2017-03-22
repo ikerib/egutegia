@@ -15,9 +15,7 @@ class CalendarType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('lanOrduakGuztira')
-            ->add('oporOrduakGuztira')
-            ->add('oporOrduakHartuta')
+            ->add('template')
         ;
     }
     
