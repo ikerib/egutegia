@@ -140,7 +140,7 @@ $(function() {
                 data.push({
                     id: response[i].id,
                     name: response[i].name,
-                    color: response[i].color,
+                    color: response[i].type.color,
                     startDate: new Date(response[i].start_date),
                     endDate: new Date(response[i].end_date)
                 });
