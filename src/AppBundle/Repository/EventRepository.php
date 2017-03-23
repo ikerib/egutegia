@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
+    public function getEvents($calendarid)
+    {
+        $em = $this->getEntityManager();
+        /** @var  $query \Doctrine\DBAL\Query\QueryBuilder */
+        $query = $em->createQuery("
+            SELECT e
+                FROM AppBundle:Event e 
+                  LEFT JOIN e.calendar c
+                WHERE c.id = :calendarid
+        ");
+
+        //$consulta = $em->createQuery($dql);
+        $query->setParameter('calendarid', $calendarid);
+
+        return $query->getResult();
+
+    }
 }

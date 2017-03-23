@@ -45,7 +45,9 @@ freeIMG = [
 ];
 freeJS = [
     './app/Resources/assets/js/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js',
-    './app/Resources/assets/js/calendar-template.js'
+    './app/Resources/assets/js/calendar-template.js',
+    './app/Resources/assets/js/calendar-admin.js',
+    './app/Resources/assets/js/calendar-share.js'
 ];
 
 freeCSS = [

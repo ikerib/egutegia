@@ -32,19 +32,7 @@ class CalendarType extends AbstractType
                 'choice_label' => function ($template) {
                     /** @var  $template \AppBundle\Entity\Template */
                     return $template->getName()."(".$template->getHoursYear().")";
-                }
-            ))
-            //->add('template', TemplateType::class, array(
-            //    'placeholder' => 'Choose a gender',
-            //))
-
-            ->add(
-                'template',
-                null,
-                array(
-                    'label' => 'Txantiloia',
-                    'required' => true
-                )
+                })
             )
             ->add('hoursYear',NumberType::class, array(
                 'label_attr' => array('class'=>'col-sm-4'),

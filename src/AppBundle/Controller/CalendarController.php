@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Event;
+use AppBundle\Form\EventType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -100,7 +102,14 @@ class CalendarController extends Controller
     public function editAction(Request $request, Calendar $calendar)
     {
         $deleteForm = $this->createDeleteForm($calendar);
-        $editForm = $this->createForm('AppBundle\Form\CalendarType', $calendar);
+        $editForm = $this->createForm(
+            CalendarType::class,
+            $calendar,
+            array(
+                'action' => $this->generateUrl('admin_calendar_edit', array('id' => $calendar->getId())),
+                'method' => 'POST',
+            )
+        );
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -109,10 +118,13 @@ class CalendarController extends Controller
             return $this->redirectToRoute('admin_calendar_edit', array('id' => $calendar->getId()));
         }
 
+        $em = $this->getDoctrine()->getManager();
+        $types = $em->getRepository('AppBundle:Type')->findAll();
         return $this->render('calendar/edit.html.twig', array(
             'calendar' => $calendar,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'types' => $types
         ));
     }
 

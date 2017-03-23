@@ -2,6 +2,8 @@
 
 namespace ApiBundle\Controller;
 
+use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\TemplateEvent;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -15,6 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends FOSRestController {
 
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** TEMPLATE ****** ********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
     /**
      * Get template Info
      *
@@ -45,6 +52,11 @@ class ApiController extends FOSRestController {
         return $template;
     }
 
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** TEMPLATE EVENTS ********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
     /**
      * Get template Events
      *
@@ -124,5 +136,90 @@ class ApiController extends FOSRestController {
 
     }// "post_templateevents"            [POST] /templateevents
 
+
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** CALENDAR EVENTS ********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /**
+     * Get calendar Events
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Get calendar events",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param $calendarid
+     * @return array|View
+     * @Annotations\View()
+     * @Get("/events/{calendarid}")
+     */
+    public function getEventsAction($calendarid)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $events = $em->getRepository('AppBundle:Event')->getEvents($calendarid);
+
+        if ($events === null)
+        {
+            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        }
+
+        return $events;
+    }
+
+    /**
+     * Save events.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Save a event",
+     *   statusCodes = {
+     *     200 = "OK response"
+     *   }
+     * )
+     *
+     * @var Request $request
+     * @Annotations\View()
+     * @param Request $request
+     * @return static
+     */
+    public function postEventsAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $jsonData = json_decode($request->getContent(), true);
+
+        // bilatu egutegia
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
+
+        // bilatu egutegia
+        $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
+
+
+        /** @var Event $event */
+        $event = new Event();
+        $event->setCalendar($calendar);
+        $event->setName($jsonData['name']);
+        $tempini = new \DateTime($jsonData['startDate']);
+        $event->setStartDate($tempini);
+        $tempfin = new \DateTime($jsonData['endDate']);
+        $event->setEndDate($tempfin);
+        $event->setHours($jsonData[ 'hours' ]);
+        $event->setType($type);
+        $em->persist($event);
+        $em->flush();
+
+        $view = View::create();
+        $view->setData($event);
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        return $view;
+
+    }// "post_events"            [POST] /events
 
 }
