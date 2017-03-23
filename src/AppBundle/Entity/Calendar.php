@@ -43,7 +43,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      */
-    private $hours_year=0;
+    private $hours_year=0; // Urteko lan orduak
 
     /**
      * @var decimal
@@ -51,7 +51,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
      */
-    private $hours_free=0;
+    private $hours_free=0; // Opor orduak hartuta
 
     /**
      * @var decimal
@@ -59,7 +59,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
      */
-    private $hours_self=0;
+    private $hours_self=0; // Urteko norberarentzako orduak
 
     /**
      * @var decimal
@@ -67,7 +67,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
      */
-    private $hours_compensed=0;
+    private $hours_compensed=0; // Ordu konpentsatuak
 
     /**
      * @Gedmo\Slug(fields={"name"})

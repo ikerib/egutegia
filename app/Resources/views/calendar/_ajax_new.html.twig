@@ -1,7 +1,74 @@
-{#{{ form_start(form, { 'attr': {'class': 'form-inline'} }) }}#}
-{{ form_start(form) }}
-{{ form_errors(form) }}
-    <div class="form-group">
-        {{ form_widget(form) }}
+<div class="row">
+    <div class="col-md-1">&nbsp;</div>
+    <div class="col-md-8">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Txantiloia' | trans }}</label>
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.template, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_label(form.hoursYear, null, {'label_attr': {'class': 'control-label col-sm-4'}}) }}
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_label(form.hoursFree, null, {'label_attr': {'class': 'col-sm-4'}}) }}
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_label(form.hoursSelf, null, {'label_attr': {'class': 'col-sm-4'}}) }}
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_label(form.hoursCompensed, null, {'label_attr': {'class': 'col-sm-4'}}) }}
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
-{{ form_end(form) }}
+    <div class="col-md-1">&nbsp;</div>
+</div>

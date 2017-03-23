@@ -16,6 +16,36 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiController extends FOSRestController {
 
     /**
+     * Get template Info
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Get template info",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param $id
+     * @return array|View
+     * @Annotations\View()
+     * @Get("/template/{id}")
+     */
+    public function getTemplateAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $template = $em->getRepository('AppBundle:Template')->find($id);
+
+        if ($template === null)
+        {
+            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        }
+
+        return $template;
+    }
+
+    /**
      * Get template Events
      *
      * @ApiDoc(
