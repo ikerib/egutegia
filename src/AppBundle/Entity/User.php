@@ -2,12 +2,16 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Query\Expr\Base;
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+
 
 /**
  * User
@@ -16,7 +20,7 @@ use JMS\Serializer\Annotation\Expose;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ExclusionPolicy("all")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -26,7 +30,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -34,22 +38,14 @@ class User
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @var string
-     * @Expose
-     *
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
-     */
-    private $username;
+    protected $name;
 
     /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
      * @Expose
      */
-    private $slug;
+    protected $slug;
 
 
 
@@ -76,6 +72,7 @@ class User
      */
     public function __construct()
     {
+        parent::__construct();
         $this->calendars = new ArrayCollection();
     }
     /*****************************************************************************************************************/
