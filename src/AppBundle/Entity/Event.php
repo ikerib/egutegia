@@ -95,6 +95,7 @@ class Event {
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $type;
 
