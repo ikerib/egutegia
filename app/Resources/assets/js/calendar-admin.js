@@ -126,7 +126,6 @@ $(function() {
         }
     });
 
-
     var url = Routing.generate('get_events', { 'calendarid': $('#calendarid').val()});
 
     $.ajax({

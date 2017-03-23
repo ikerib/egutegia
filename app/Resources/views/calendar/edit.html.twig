@@ -36,8 +36,9 @@
     </div>
 
 
-    <div class="modal modal-fade" id="calendar-modal">
-        <div class="modal-content">
+    <div class="modal modal-fade" id="edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{{ 'Itxi' | trans }}</span></button>
                 <h4 class="modal-title">
@@ -46,7 +47,7 @@
             </div>
             <div class="modal-body">
 
-                {{ form_start(edit_form, { 'attr': {'class': 'form-horizontal'} }) }}
+                {{ form_start(edit_form, { 'attr': {'id':'frmEditCalendar','class': 'form-horizontal'} }) }}
                 <div class="form-group">
                     <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
                     <div class="col-sm-7">
@@ -81,12 +82,16 @@
                     </div>
                 </div>
 
-                {{ form_end(edit_form) }}
+                <div class="hidden">
+                    {{ form_end(edit_form) }}
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
                 <button type="button" class="btn btn-primary" id="saveCalendarEditModal">{{ 'Gorde' | trans }}</button>
             </div>
+        </div>
         </div>
     </div>
 
@@ -159,29 +164,6 @@
             </div>
         </div>
     </div>
-    <div class="modal modal-fade" id="edit-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                                class="sr-only">Close</span></button>
-                    <h4 class="modal-title">
-                        Event
-                    </h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                    <button type="button" class="btn btn-primary" id="btnGordeModal">
-                        {{ 'Gorde' | trans }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <div id="calendar" class="calendar"></div>
 
@@ -197,4 +179,11 @@
 {% block foot_script %}
     {{ parent() }}
     <script src="{{ asset('js/calendar-admin.js') }}"></script>
+    <script>
+        $(function () {
+            $('#saveCalendarEditModal').on('click', function() {
+                $('#frmEditCalendar').submit();
+            })
+        });
+    </script>
 {% endblock %}
