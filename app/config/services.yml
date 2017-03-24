@@ -1,11 +1,1 @@
 services:
-  sonata.admin.calendar:
-    class: AppBundle\Admin\CalendarAdmin
-    tags:
-      - { name: sonata.admin, manager_type: orm, group: "Content", label: "Egutegia" }
-    arguments:
-      - ~
-      - AppBundle\Entity\Calendar
-      - ~
-    calls:
-      - [ setTranslationDomain, [AppBundle]]

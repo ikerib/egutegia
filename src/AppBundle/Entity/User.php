@@ -11,6 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use FR3D\LdapBundle\Model\LdapUserInterface;
 
 
 /**
@@ -20,7 +21,7 @@ use JMS\Serializer\Annotation\Expose;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ExclusionPolicy("all")
  */
-class User extends BaseUser
+class User extends BaseUser implements LdapUserInterface
 {
     /**
      * @var int
@@ -33,20 +34,9 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @var string
-     * @Expose
-     *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(type="string")
      */
-    protected $name;
-
-    /**
-     * @Gedmo\Slug(fields={"name"})
-     * @ORM\Column(length=105, unique=true)
-     * @Expose
-     */
-    protected $slug;
-
+    protected $dn;
 
 
     /*****************************************************************************************************************/
@@ -74,21 +64,33 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->calendars = new ArrayCollection();
+        if (empty($this->roles)) {
+            $this->roles[] = 'ROLE_USER';
+        }
     }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
 
+    /**
+     * Set Ldap Distinguished Name.
+     *
+     * @param string $dn Distinguished Name
+     */
+    public function setDn ($dn)
+    {
+        $this->dn = $dn;
+    }
 
     /**
-     * Get id
+     * Get Ldap Distinguished Name.
      *
-     * @return integer
+     * @return null|string Distinguished Name
      */
-    public function getId()
+    public function getDn ()
     {
-        return $this->id;
+        return $this->dn;
     }
 
     /**
@@ -113,30 +115,6 @@ class User extends BaseUser
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
     }
 
     /**

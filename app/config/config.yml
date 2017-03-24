@@ -140,3 +140,20 @@ fos_user:
     from_email:
         address: informatika@pasaia.net
         sender_name: "Iker Ibarguren"
+
+fr3d_ldap:
+   driver:
+      host: %ldap_domain%
+#      port:     389
+      username: %ldap_username%
+      password: %ldap_password%
+      useSsl:   false
+      accountDomainName: donibane.pasaia.net
+      accountDomainNameShort: pasaia
+   user:
+      baseDn: dc=pasaia, dc=net
+      usernameAttribute: sAMAccountName
+      attributes:
+         - { ldap_attr: samaccountname,  user_method: setUsername }
+         - { ldap_attr: mail,  user_method: setEmail }
+      filter: (&(ObjectClass=posixAccount))
