@@ -1,1 +1,3 @@
 services:
+  app.ldap.user_hydrator:
+      class: AppBundle\Ldap\UserHydrator

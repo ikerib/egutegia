@@ -144,7 +144,6 @@ fos_user:
 fr3d_ldap:
    driver:
       host: %ldap_domain%
-#      port:     389
       username: %ldap_username%
       password: %ldap_password%
       useSsl:   false
@@ -162,3 +161,5 @@ fr3d_ldap:
          - { ldap_attr: displayname, user_method: setDisplayname }
          - { ldap_attr: memberof, user_method: setMembers }
       filter: (&(ObjectClass=posixAccount))
+   service:
+      user_hydrator: app.ldap.user_hydrator

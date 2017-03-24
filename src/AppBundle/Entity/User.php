@@ -39,22 +39,22 @@ class User extends BaseUser implements LdapUserInterface
     protected $dn;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $department;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $displayname;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $nan;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $lanpostua;
 
