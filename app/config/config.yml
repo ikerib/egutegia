@@ -54,10 +54,10 @@ doctrine:
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
-        charset: UTF8
-#        default_table_options:
-#            charset: utf8mb4
-#            collate: utf8mb4_unicode_ci
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
 #            engine: InnoDB
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
@@ -156,4 +156,9 @@ fr3d_ldap:
       attributes:
          - { ldap_attr: samaccountname,  user_method: setUsername }
          - { ldap_attr: mail,  user_method: setEmail }
+         - { ldap_attr: department, user_method: setDepartment }
+         - { ldap_attr: employeeid, user_method: setNan }
+         - { ldap_attr: description, user_method: setLanpostua }
+         - { ldap_attr: displayname, user_method: setDisplayname }
+         - { ldap_attr: memberof, user_method: setMembers }
       filter: (&(ObjectClass=posixAccount))

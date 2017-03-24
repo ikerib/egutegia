@@ -38,6 +38,37 @@ class User extends BaseUser implements LdapUserInterface
      */
     protected $dn;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $department;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $displayname;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $nan;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $lanpostua;
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $members = array();
+
+    ///**
+    // * @var members[]
+    // * @ORM\Column(type="string")
+    // */
+    //protected $members;
+
 
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
@@ -63,6 +94,7 @@ class User extends BaseUser implements LdapUserInterface
     public function __construct()
     {
         parent::__construct();
+        $this->members = array();
         $this->calendars = new ArrayCollection();
         if (empty($this->roles)) {
             $this->roles[] = 'ROLE_USER';
@@ -71,6 +103,37 @@ class User extends BaseUser implements LdapUserInterface
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
+    //public function addMembers($member)  {
+    //    if (!in_array($member, $this->members, true)) {
+    //        $this->members[] = $member;
+    //    }
+    //
+    //    return $this;
+    //}
+    //
+    //public function getMembers()
+    //{
+    //    return array_unique($this->members);
+    //}
+    //
+    //public function hasMembers($member)
+    //{
+    //    return in_array(strtoupper($member), $this->getMembers(), true);
+    //}
+
+    public function getMembers()
+    {
+        return $this->members;
+    }
+
+    public function setMembers(array $members)
+    {
+        $this->members = $members;
+
+        // allows for chaining
+        return $this;
+    }
 
 
     /**
@@ -91,54 +154,6 @@ class User extends BaseUser implements LdapUserInterface
     public function getDn ()
     {
         return $this->dn;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return User
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return User
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**
@@ -173,5 +188,103 @@ class User extends BaseUser implements LdapUserInterface
     public function getCalendars()
     {
         return $this->calendars;
+    }
+
+    /**
+     * Set department
+     *
+     * @param string $department
+     *
+     * @return User
+     */
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+
+        return $this;
+    }
+
+    /**
+     * Get department
+     *
+     * @return string
+     */
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    /**
+     * Set displayname
+     *
+     * @param string $displayname
+     *
+     * @return User
+     */
+    public function setDisplayname($displayname)
+    {
+        $this->displayname = $displayname;
+
+        return $this;
+    }
+
+    /**
+     * Get displayname
+     *
+     * @return string
+     */
+    public function getDisplayname()
+    {
+        return $this->displayname;
+    }
+
+
+
+    /**
+     * Set nan
+     *
+     * @param string $nan
+     *
+     * @return User
+     */
+    public function setNan($nan)
+    {
+        $this->nan = $nan;
+
+        return $this;
+    }
+
+    /**
+     * Get nan
+     *
+     * @return string
+     */
+    public function getNan()
+    {
+        return $this->nan;
+    }
+
+    /**
+     * Set lanpostua
+     *
+     * @param string $lanpostua
+     *
+     * @return User
+     */
+    public function setLanpostua($lanpostua)
+    {
+        $this->lanpostua = $lanpostua;
+
+        return $this;
+    }
+
+    /**
+     * Get lanpostua
+     *
+     * @return string
+     */
+    public function getLanpostua()
+    {
+        return $this->lanpostua;
     }
 }
