@@ -10,7 +10,7 @@ namespace AppBundle\Repository;
  */
 class CalendarRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findByUsername($username) {
+    public function findByUsernameYear($username, $year) {
 
         $em = $this->getEntityManager();
 
@@ -18,11 +18,13 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
             SELECT c
             FROM AppBundle:Calendar c
               INNER Join c.user u
-            WHERE u.username = :username
+            WHERE u.username LIKE :username
+              AND c.year = :year
         ';
 
         $query = $em->createQuery($dql);
         $query->setParameter('username', $username);
+        $query->setParameter('year', $year);
 
         return $query->getResult();
 

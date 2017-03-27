@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\User;
 use AppBundle\Form\EventType;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\CalendarType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Calendar controller.
@@ -44,18 +47,50 @@ class CalendarController extends Controller
      */
     public function newAction(Request $request, $username="")
     {
+        $em = $this->getDoctrine()->getManager();
+        $year = Date("Y");
         $calendar = new Calendar();
+        $calendar->setYear($year);
+        if ($username !== "") {
+            $user = $em->getRepository('AppBundle:User')->findOneBy(
+                array(
+                    'username' => $username,
+                )
+            );
+            $calendar->setUser($user);
+        }
         $year =  (new DateTime)->format("Y");
         $calendar->setName($username.' - '.$year);
         $form = $this->createForm(
             CalendarType::class, $calendar, array(
             'action' => $this->generateUrl('admin_calendar_new'),
             'method' => 'POST',
+            'username' => $username
         ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            /* Check if User exist in our app */
+            $username = $form->get('username')->getData();
+
+            $u = $em->getRepository('AppBundle:User')->findOneBy(
+                array(
+                    'username' => $username,
+                )
+            );
+
+            if (!$u) {
+                $userManager = $this->container->get('fos_user.user_manager');
+                /** @var $user User */
+                $user = $userManager->createUser();
+                $user->setUsername($username);
+                $user->setEmail('');
+                $user->setPassword('');
+                $user->setDn('');
+                $userManager->updateUser($user);
+                $u = $user;
+            }
+            $calendar->setUser($u);
             $em->persist($calendar);
             $em->flush($calendar);
 
@@ -65,11 +100,13 @@ class CalendarController extends Controller
         if($request->isXmlHttpRequest()) {
             return $this->render('calendar/_ajax_new.html.twig', array(
                 'calendar' => $calendar,
+                'username' => $username,
                 'form' => $form->createView(),
             ));
         } else {
             return $this->render('calendar/new.html.twig', array(
                 'calendar' => $calendar,
+                'username' => $username,
                 'form' => $form->createView(),
             ));
         }

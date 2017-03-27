@@ -27,7 +27,10 @@ class AdminController extends Controller
         foreach ($ldapusers as $user) {
             $u = [];
             $u["user"] = $user;
-            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsername($user->getUsername());
+            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
+                $user->getUsername(),
+                Date('Y')
+            );
             $u[ "calendar" ] = $calendar;
             array_push($userdata, $u);
         }

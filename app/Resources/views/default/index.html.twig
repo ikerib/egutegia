@@ -2,33 +2,33 @@
 
 {% block content_div_start %}{% endblock %}
 {% block content_div_end %}{% endblock %}
-{% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock  %}
+{% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
-        <div id="toolbar">
-            <button id="btnBerria" class="btn btn-default">Txantiloi berria</button>
-        </div>
-        <table id="table"
-               {#data-toggle="table"#}
-               data-classes="table table-hover table-condensed"
-               data-striped="true"
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default">Txantiloi berria</button>
+    </div>
+    <table id="table"
+            {#data-toggle="table"#}
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
 
-               data-pagination="true"
-               data-search="true"
-               data-height="300"
+           data-pagination="true"
+           data-search="true"
+           data-height="300"
 
-               data-sort-name="name"
-               data-sort-order="asc"
+           data-sort-name="name"
+           data-sort-order="asc"
 
-               data-icon-size="sm"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-show-columns="true"
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
 
-               data-toolbar="#toolbar"
-               data-show-export="true"
-               data-export-types="['csv','excel', 'pdf']"
-               data-export-options='{
+           data-toolbar="#toolbar"
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
                  "fileName": "export",
                  "worksheetName": "export",
                  "jspdf": {
@@ -40,35 +40,54 @@
                  }
                }'>
 
-            <thead>
-                <tr>
-                    <th data-halign="left" data-align="left" data-field="firstName" data-sortable="true">Nombre</th>
-                    <th data-halign="left" data-align="left" data-field="lastName" data-sortable="true">Abizenak</th>
-                    <th data-halign="left" data-align="left" data-field="calendar" data-sortable="true">Egutegia</th>
-                    {#<th>Actions</th>#}
-                </tr>
-            </thead>
-            <tbody>
-            {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
-                <tr>
-                    <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
-                    <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
+        <thead>
+        <tr>
+            <th data-halign="left" data-align="left" data-field="firstName"
+                data-sortable="true">{{ 'Nombre' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="lastName"
+                data-sortable="true">{{ 'Abizenak' | trans }}</th>
+            <th data-halign="left" data-align="left">{{ 'Egutegia' | trans }}</th>
+            <th data-halign="left" data-align="left">{{ 'Txantiloia' | trans }}</th>
+            <th data-halign="left" data-align="left">{{ 'Urteko orduak' | trans }}</th>
+            <th data-halign="center" data-align="center">{{ 'Opor orduak' | trans }}</th>
+            <th data-halign="center" data-align="center">{{ 'Norberarentzako orduak' | trans }}</th>
+            <th data-halign="center" data-align="center">{{ 'Konpentsatutako orduak' | trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
+            <tr>
+                <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
+                <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
+                {% if user.calendar %}
                     <td>
-                        {% if user.calendar %}
-                            {{ user.calendar }}
-                        {% else %}
-                            <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs" data-username="{{ user.user.username }}">
-                                <i class="fa fa-plus-square-o" aria-hidden="true"> Sortu</i>
-                            </a>
-                        {% endif %}
+                        <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">{{ user.calendar[0] }}</a>
                     </td>
-                </tr>
-            {% endfor %}
+                    <td>
+                        <a href="{{ path('admin_template_edit', { 'id': user.calendar[0].template.id }) }}">{{ user.calendar[0].template }}</a>
+                    </td>
+                    <td>{{ user.calendar[0].hoursYear }} / {{ user.calendar[0].template.hoursYear }}</td>
+                    <td>{{ user.calendar[0].hoursFree }} / {{ user.calendar[0].template.hoursFree }}</td>
+                    <td>{{ user.calendar[0].hoursSelf }} / {{ user.calendar[0].template.hoursSelf }}</td>
+                    <td>{{ user.calendar[0].hoursCompensed }} </td>
+                {% else %}
+                    <td>
+                        <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs"
+                           data-username="{{ user.user.username }}">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"> Sortu</i>
+                        </a>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
-
-    {#<div class="modal modal-fade" id="new-modal">#}
     <div class="modal fade" id="new-modal" tabindex="-1" role="dialog" aria-labelledby="Modal">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -97,7 +116,7 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
-        var $table = $('#table'),selections = [];
+        var $table = $('#table'), selections = [];
         function initTable() {
             $table.bootstrapTable({
                 height: getHeight()
@@ -115,29 +134,28 @@
             $('.btnNewCalendar').on('click', function () {
                 $('#divModalCalendarNew').empty();
                 var myusername = $(this).data('username');
-                var url = Routing.generate('admin_calendar_new', { username: myusername });
+                var url = Routing.generate('admin_calendar_new', {username: myusername});
                 $('#divModalCalendarNew').load(url, function () {
-                    $('#appbundle_calendar_template').append("<option value='-1'>Aukeratu bat</option>");
+                    $('#appbundle_calendar_template').append("<option value='-1' selected>Aukeratu bat</option>");
                     $('#new-modal').modal();
-
                 });
             });
 
-            $(document).on('click', '#appbundle_calendar_template' , function() {
+            $(document).on('click', '#appbundle_calendar_template', function () {
                 var val = $(this).val();
-                if ( val !== "-1" ) {
+                if (val !== "-1") {
                     var url = Routing.generate('get_template', {'id': val});
                     $.ajax({
                         url: url,
                         data: {
                             format: 'json'
                         },
-                        success: function(result){
+                        success: function (result) {
                             $('#appbundle_calendar_hoursYear').val(result.hours_year);
                             $('#appbundle_calendar_hoursFree').val(result.hours_free);
                             $('#appbundle_calendar_hoursSelf').val(result.hours_self);
                         },
-                        error: function() {
+                        error: function () {
                             console.log("HORROR!");
                         }
                     });

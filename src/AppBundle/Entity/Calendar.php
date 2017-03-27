@@ -38,6 +38,14 @@ class Calendar
     private $name;
 
     /**
+     * @var integer
+     * @Expose
+     *
+     * @ORM\Column(name="year", type="integer")
+     */
+    private $year;
+
+    /**
      * @var decimal
      * @Expose
      *
@@ -447,5 +455,29 @@ class Calendar
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set year
+     *
+     * @param integer $year
+     *
+     * @return Calendar
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * Get year
+     *
+     * @return integer
+     */
+    public function getYear()
+    {
+        return $this->year;
     }
 }

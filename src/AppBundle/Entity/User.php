@@ -59,7 +59,7 @@ class User extends BaseUser implements LdapUserInterface
     protected $lanpostua;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @ORM\Column(type="json_array", nullable=true)
      */
     private $members = array();
 
@@ -85,7 +85,7 @@ class User extends BaseUser implements LdapUserInterface
 
     public function __toString()
     {
-        return $this->getSlug();
+        return $this->getUsername();
     }
 
     /**
