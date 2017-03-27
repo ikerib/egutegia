@@ -1,9 +1,14 @@
-<h3>{{ 'Egutegi berria' | trans }}</h3>
+{% extends 'base.html.twig' %}
 
-{{ form_start(form, { 'attr': {'class': 'form-inline'} }) }}
-{{ form_errors(form) }}
-    <div class="form-group">
-        {{ form_widget(form) }}
-    </div>
-    <input type="submit" value="{{ 'Gorde' | trans }}" class="btn btn-info"/>
-{{ form_end(form) }}
+{% block headline %}
+    {{ 'Egutegi berria' | trans }}
+{% endblock headline %}
+
+{% block content_row %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+        <div class="form-group">
+            {{ form_widget(form) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock content_row %}
