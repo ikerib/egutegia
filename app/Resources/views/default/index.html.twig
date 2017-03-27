@@ -131,7 +131,7 @@
 
         $(function () {
             initTable();
-            $('.btnNewCalendar').on('click', function () {
+            $(document).on('click', '.btnNewCalendar', function() {
                 $('#divModalCalendarNew').empty();
                 var myusername = $(this).data('username');
                 var url = Routing.generate('admin_calendar_new', {username: myusername});

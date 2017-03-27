@@ -12,6 +12,7 @@ use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
+
 class Builder implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
@@ -25,7 +26,7 @@ class Builder implements ContainerAwareInterface
 
         $menu->addChild('Hasiera', array(
             'icon'  => 'home',
-            'route' => 'homepage',
+            'route' => 'dashboard',
         ));
 
         $dropdown = $menu->addChild('Txantiloiak', array(
@@ -35,19 +36,12 @@ class Builder implements ContainerAwareInterface
         $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
         $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
 
-        $dropdown = $menu->addChild('Taula Laguntzaileak', array(
+        $menu->addChild('Motak', array(
             'dropdown' => true,
             'caret'    => true,
         ));
-        $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
-        $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
-
-        $dropdown = $menu->addChild('Motak', array(
-            'dropdown' => true,
-            'caret'    => true,
-        ));
-        $dropdown->addChild('Zerrenda', array('route' => 'admin_template_index'));
-        $dropdown->addChild('Berria', array('route' => 'admin_template_new'));
+        $menu['Motak']->addChild('Zerrenda', array('route' => 'admin_type_index'));
+        $menu['Motak']->addChild('Berria', array('route' => 'admin_type_new'));
 
 
 
@@ -57,6 +51,33 @@ class Builder implements ContainerAwareInterface
             ->setAttribute('icon', 'fa fa-user');
         $menu['User']->addChild('Edit profile', array('route' => 'homepage'))
             ->setAttribute('icon', 'fa fa-edit');
+
+
+        $sc = $this->container->get('security.context');
+
+        if($sc->getToken())
+        {
+            $menu->addChild('Members', array('uri' => '#'))
+                ->setAttribute('dropdown', true);
+
+            if($sc->isGranted('IS_AUTHENTICATED_REMEMBERED'))
+            {
+                $menu['Members']->addChild('My profile', array('route' => 'fos_user_profile_show'));
+
+                if($sc->isGranted('ROLE_ADMIN'))
+                {
+                    $menu['Members']->addChild('Dashboard', array('route' => 'sonata_admin_dashboard'))
+                        ->setAttribute('divider_append', true);
+                }
+
+                $menu['Members']->addChild('Logout', array('route' => 'fos_user_security_logout'));
+            }
+            else
+            {
+                $menu['Members']->addChild('Login', array('route' => 'fos_user_security_login'));
+                $menu['Members']->addChild('Registration', array('route' => 'fos_user_registration_register'));
+            }
+        }
 
         return $menu;
     }
