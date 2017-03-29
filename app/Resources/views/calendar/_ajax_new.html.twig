@@ -2,6 +2,7 @@
     <div class="col-md-1">&nbsp;</div>
     <div class="col-md-8">
         {{ form_start(form) }}
+        {#{{ form_start(form, {'action': path('admin_calendar_new', { 'username': username } ), 'method': 'GET'}) }}#}
         {{ form_errors(form) }}
         <div class="row">
             <div class="form-group">
@@ -79,9 +80,9 @@
                 </div>
             </div>
         </div>
-        <div style="display: none;">
+        {#<div style="display: none;">#}
             {{ form_end(form) }}
-        </div>
+        {#</div>#}
     </div>
     <div class="col-md-1">&nbsp;</div>
 </div>

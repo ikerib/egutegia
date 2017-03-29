@@ -51,6 +51,7 @@ class CalendarController extends Controller
         $year = Date("Y");
         $calendar = new Calendar();
         $calendar->setYear($year);
+
         if ($username !== "") {
             $user = $em->getRepository('AppBundle:User')->findOneBy(
                 array(
@@ -73,20 +74,17 @@ class CalendarController extends Controller
             /* Check if User exist in our app */
             $username = $form->get('username')->getData();
 
-            $u = $em->getRepository('AppBundle:User')->findOneBy(
-                array(
-                    'username' => $username,
-                )
-            );
+            $u = $em->getRepository('AppBundle:User')->getByUsername($username);
 
             if (!$u) {
                 $userManager = $this->container->get('fos_user.user_manager');
                 /** @var $user User */
                 $user = $userManager->createUser();
                 $user->setUsername($username);
-                $user->setEmail('');
+                $user->setEmail($username.'@pasaia.net');
                 $user->setPassword('');
                 $user->setDn('');
+                $user->setEnabled(true);
                 $userManager->updateUser($user);
                 $u = $user;
             }

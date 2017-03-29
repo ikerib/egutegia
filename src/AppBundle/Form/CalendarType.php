@@ -28,7 +28,7 @@ class CalendarType extends AbstractType
             ))
             ->add('year')
             ->add('user')
-            ->add('username',HiddenType::class, array(
+            ->add('username',TextType::class, array(
                 'mapped' => false,
                 'data' => $username
             ))
