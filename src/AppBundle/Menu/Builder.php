@@ -51,15 +51,15 @@ class Builder implements ContainerAwareInterface {
         $menu = $factory->createItem('root',array('navbar' => true,'icon'=>'glyphicon glyphicon-user'));
 
         if ($checker->isGranted('ROLE_USER') || ($checker->isGranted('ROLE_ADMIN'))) {
-            $menu->addChild('User', array( 'label' => $user->getDisplayname() ))
+            $menu->addChild('User', array( 'label' =>  $user->getDisplayname() ))
                 ->setAttribute('dropdown', true)
                 ->setAttribute('icon', 'glyphicon glyphicon-user');
 
             if ($checker->isGranted('ROLE_ADMIN')) {
-                $menu[ 'User' ]->addChild('Egutegia', array( 'route' => 'homepage' ))
+                $menu[ 'User' ]->addChild('Egutegia', array( 'route' => 'dashboard' ))
                     ->setAttribute('icon', 'fa fa-edit');
             } else {
-                $menu[ 'User' ]->addChild('Egutegiak', array( 'route' => 'dashboard' ))
+                $menu[ 'User' ]->addChild('Egutegia', array( 'route' => 'user_homepage' ))
                     ->setAttribute('icon', 'fa fa-edit');
             }
 

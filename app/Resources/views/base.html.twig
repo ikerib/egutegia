@@ -48,11 +48,20 @@
     {% block navbar %}
         {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true } %}
             {% block brand %}
-                <a class="navbar-brand" href="#">Egutegiak</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="navbar-brand" href="#">Egutegiak</a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('user_homepage') }}">
+                        {% if app.user.displayname %}
+                            {{ app.user.displayname }}{% else %}{{ app.user.username }}{% endif %}
+                    </a>
+                {% endif %}
             {% endblock %}
 
             {% block menu %}
-                {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+                {% if is_granted('ROLE_ADMIN') %}
+                    {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+                {% endif %}
                 <div class="pull-right">
                     {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
                 </div>
@@ -60,21 +69,23 @@
         {% endembed %}
     {% endblock navbar %}
 
-    {% block subnav %}
-        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false } %}
-            {% block brand %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% block subnav %}
+            {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false } %}
+                {% block brand %}
 
-            {% endblock %}
+                {% endblock %}
 
-            {% block menu %}
-                {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}
-                <div class="pull-right">
-                    {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}
-                </div>
+                {% block menu %}
+                    {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}
+                    <div class="pull-right">
+                        {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}
+                    </div>
 
-            {% endblock %}
-        {% endembed %}
-    {% endblock %}
+                {% endblock %}
+            {% endembed %}
+        {% endblock %}
+    {% endif %}
 
 {% block container %}
 {% block container_div_start %}<div class="{% block container_class %}container{% endblock container_class %}">{% endblock container_div_start %}
