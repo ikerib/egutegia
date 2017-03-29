@@ -53,6 +53,9 @@
 
             {% block menu %}
                 {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+                <div class="pull-right">
+                    {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+                </div>
             {% endblock %}
         {% endembed %}
     {% endblock navbar %}

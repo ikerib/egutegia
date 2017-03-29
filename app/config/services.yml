@@ -1,3 +1,14 @@
 services:
   app.ldap.user_hydrator:
       class: AppBundle\Ldap\UserHydrator
+
+  app.menu_builder:
+      class: AppBundle\Menu\Builder
+      arguments: ["@service_container"]
+
+  app.main_menu:
+      class: Knp\Menu\MenuItem # the service definition requires setting the class
+      factory: ["@app.menu_builder", createMainMenu]
+      arguments: ["@request_stack"]
+      tags:
+          - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
