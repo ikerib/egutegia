@@ -149,6 +149,7 @@ fr3d_ldap:
       useSsl:   false
       accountDomainName: donibane.pasaia.net
       accountDomainNameShort: pasaia
+      bindRequiresDn: false # Ez du gordetzen DN-a datu basean. SE SUPONE
    user:
       baseDn: dc=pasaia, dc=net
       usernameAttribute: sAMAccountName

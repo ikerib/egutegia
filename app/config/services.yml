@@ -1,4 +1,17 @@
+
+parameters:
+    fr3d_ldap.security.authentication.provider.class: AppBundle\Security\Authentication\LdapAuthenticationProvider
+
 services:
+  fr3d_ldap.security.authentication.provider:
+      class: "%fr3d_ldap.security.authentication.provider.class%"
+      arguments:
+          - '@security.user_checker'
+          - ''
+          - ''
+          - '@fr3d_ldap.ldap_manager'
+          - '@fos_user.user_manager'
+          - "%security.authentication.hide_user_not_found%"
   app.ldap.user_hydrator:
       class: AppBundle\Ldap\UserHydrator
 
