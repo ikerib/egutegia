@@ -1,7 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block content_row %}
+{% block page_header %}
+    <div class="page-header hovebutton">
 
-    xieeeeeeeeeeeeeee2
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-11">
+                        <h3 class="panel-title">{{ calendar.name }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong> {{ calendar.hoursYear}}</div>
+                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong> {{ calendar.hoursFree }}</div>
+                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong> {{ calendar.hoursSelf}}</div>
+                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoo: ' | trans }} </strong> {{ calendar.hoursCompensed }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock page_header %}
 
-{% endblock content_row %}
+{% block content_content %}
+
+
+    <div id="usercalendar" class="usercalendar"></div>
+
+    <input type="hidden" id="calendarid" value="{{ calendar.id }}">
+
+{% endblock %}
+
+{% block content_sidebar %}
+    {{ render(controller('AppBundle:Type:list' )) }}
+{% endblock content_sidebar %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script src="{{ asset('js/calendar-user.js') }}"></script>
+    <script>
+        $(function () {
+
+        });
+    </script>
+{% endblock %}
