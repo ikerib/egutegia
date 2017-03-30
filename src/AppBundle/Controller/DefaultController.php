@@ -25,16 +25,22 @@ class DefaultController extends Controller {
     }
 
     /**
-     * @Route("/user", name="user_homepage")
+     * @Route("/egutegia", name="user_homepage")
      */
     public function userhomepageAction ()
     {
+        //if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        //    return $this->redirectToRoute('dashboard');
+        //}
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user     = $this->getUser();
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), Date('Y'));
 
         if (( ! $calendar ) || ( count($calendar) > 1 )) {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('dashboard');
+            }
             throw new EntityNotFoundException('Ez da egutegirik topatu edo egutegi bat baino gehiago ditu');
         }
 

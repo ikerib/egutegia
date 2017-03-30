@@ -27,7 +27,7 @@ security:
             security: false
             form_login:
                 always_use_default_target_path: true
-                default_target_path: /profile
+                default_target_path: /homepage
             logout:       true
             anonymous:    true
 
@@ -36,7 +36,7 @@ security:
             fr3d_ldap:  ~
             form_login:
                 always_use_default_target_path: true
-                default_target_path: /
+                default_target_path: /egutegia
             logout:       true
             anonymous:    true
 

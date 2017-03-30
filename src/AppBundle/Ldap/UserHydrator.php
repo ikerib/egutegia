@@ -47,10 +47,10 @@ class UserHydrator implements HydratorInterface {
                 $sp = ldap_explode_dn($value,1);
                 if ( $sp[0] == "InformatikaSaila") {
                     $rol = "ROLE_ADMIN";
+                    $user->addRole('ROLE_ADMIN');
                 }
             }
             $user->setMembers($ldapEntry[ 'memberof' ]);
-            $user->addRole('ROLE_ADMIN');
         }
         $user->setDn($ldapEntry[ 'dn' ]);
         $user->setEnabled(true);
