@@ -63,6 +63,21 @@ function saveEvent() {
         newId++;
         event.id = newId;
 
+        // Types array
+        var types = [];
+        jQuery('.typestype').each(function() {
+            var currentElement = $(this);
+
+            var t = {};
+            t.id = currentElement.data('id');
+            t.name = currentElement.data('name');
+            t.color = currentElement.data('color');
+            types.push(t)
+        });
+
+        // Orduak Birkalkulatzen motaren arabera
+        // if ( event.type)
+
         dataSource.push(event);
     }
 
