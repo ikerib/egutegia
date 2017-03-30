@@ -102,6 +102,14 @@ class Calendar
      */
     private $nameChanged;
 
+    /**
+     * @var string $contentChangedBy
+     *
+     * @ORM\Column(nullable=true)
+     * @Gedmo\Blameable(on="change", field={"title", "body"})
+     */
+    private $contentChangedBy;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -479,5 +487,29 @@ class Calendar
     public function getYear()
     {
         return $this->year;
+    }
+
+    /**
+     * Set contentChangedBy
+     *
+     * @param string $contentChangedBy
+     *
+     * @return Calendar
+     */
+    public function setContentChangedBy($contentChangedBy)
+    {
+        $this->contentChangedBy = $contentChangedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get contentChangedBy
+     *
+     * @return string
+     */
+    public function getContentChangedBy()
+    {
+        return $this->contentChangedBy;
     }
 }

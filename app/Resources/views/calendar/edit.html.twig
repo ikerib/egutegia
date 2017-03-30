@@ -17,10 +17,10 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong> {{ calendar.hoursYear}}</div>
-                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong> {{ calendar.hoursFree }}</div>
-                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong> {{ calendar.hoursSelf}}</div>
-                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoo: ' | trans }} </strong> {{ calendar.hoursCompensed }}</div>
+                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong><span id="hoursYear">{{ calendar.hoursYear}}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong><span id="hoursFree">{{ calendar.hoursFree }}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong><span id="hoursSelf"> {{ calendar.hoursSelf}}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoak: ' | trans }} </strong><span id="hoursCompensed">{{ calendar.hoursCompensed }}</span></div>
                 </div>
             </div>
         </div>
@@ -84,6 +84,7 @@
 
                 <div class="hidden">
                     {{ form_end(edit_form) }}
+
                 </div>
 
             </div>
@@ -151,7 +152,14 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div style="display: none;">
+                                <div class="form-group">
+                                    <label for="oldValue" class="col-sm-3 control-label">oldValue</label>
+                                    <div class="col-sm-8">
+                                        <input id="oldValue" name="oldValue" type="text" class="form-control" value="2012-04-19">
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

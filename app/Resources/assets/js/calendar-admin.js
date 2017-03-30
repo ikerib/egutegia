@@ -1,6 +1,82 @@
 /**
  * Created by iibarguren on 3/13/17.
  */
+
+function findValueInObjectArray(obj, find) {
+    var result = -1;
+    $.each(obj, function (k, v) {
+        if (v.id === parseInt(find)) {
+            result = k;
+            return k;
+        }
+    });
+    return result;
+}
+
+function hoursCalc(event, ezabatu) {
+    // Types array
+    var arrTypes = [];
+    jQuery('.typestype').each(function () {
+        var currentElement = $(this);
+        var t = {};
+        t.id = currentElement.data('id');
+        t.name = currentElement.data('name');
+        t.color = currentElement.data('color');
+        arrTypes.push(t)
+    });
+    // Orduak Birkalkulatzen motaren arabera
+    var typeIndex = findValueInObjectArray(arrTypes, event.type);
+    if (typeIndex === -1) {
+        bootbox.alert({
+            message: "Egutegi motak ez daude finkatuak",
+            className: 'bb-alternate-modal'
+        });
+    } else {
+        var tipoa = arrTypes[typeIndex];
+        var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val());
+        var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val());
+        var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val());
+        var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val());
+        var oldValue = 0;
+
+        if ($('#oldValue').val() !== "") {
+            oldValue = parseFloat($('#oldValue').val());
+        }
+
+        if (tipoa.name === "Oporrak") {
+            if ((ezabatu === 1) || (ezabatu === true)) {
+                hoursFree = hoursFree + oldValue;
+            } else {
+                hoursFree = hoursFree + oldValue - event.hours;
+            }
+
+            $('input#appbundle_calendar_hoursFree').val(hoursFree);
+            $('#hoursFree').html(hoursFree);
+        }
+
+        if (tipoa.name === "Norberarentzako") {
+            if ((ezabatu === 1) || (ezabatu === true)) {
+                hoursSelf = hoursSelf + oldValue;
+            } else {
+                hoursSelf = hoursSelf + oldValue - event.hours;
+            }
+            $('input#appbundle_calendar_hoursSelf').val(hoursSelf);
+            $('#hoursSelf').html(hoursSelf);
+        }
+
+        if (tipoa.name === "Konpentsatuak") {
+            if ((ezabatu === 1) || (ezabatu === true)) {
+                hoursCompensed = hoursCompensed + oldValue;
+            } else {
+                hoursCompensed = hoursCompensed + oldValue - event.hours;
+            }
+            $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed);
+            $('#hoursCompensed').html(hoursCompensed);
+        }
+
+    }
+}
+
 function editEvent(event) {
     $('#event-modal input[name="event-index"]').val(event ? event.id : '');
     $('#event-modal input[name="event-name"]').val(event ? event.name : '');
@@ -8,6 +84,9 @@ function editEvent(event) {
     $('#event-modal input[name="event-hours"]').val(event ? event.hours : '');
     $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
     $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
+
+    $('#oldValue').val(event ? event.hours : 0);
+
     $('#event-modal').modal();
     $('#event-modal').on('shown.bs.modal', function () {
         $('#event-modal input[name="event-name"]').focus()
@@ -17,12 +96,15 @@ function editEvent(event) {
 function deleteEvent(event) {
     var dataSource = $('#calendar').data('calendar').getDataSource();
 
-    for(var i in dataSource) {
-        if(dataSource[i].id == event.id) {
+    for (var i in dataSource) {
+        if (dataSource[i].id == event.id) {
             dataSource.splice(i, 1);
+            $('#oldValue').val(event ? event.hours : 0);
+            hoursCalc(event, true);
             break;
         }
     }
+
 
     $('#calendar').data('calendar').setDataSource(dataSource);
 }
@@ -39,23 +121,23 @@ function saveEvent() {
     };
     var dataSource = $('#calendar').data('calendar').getDataSource();
 
-    if(event.id) {
-        for(var i in dataSource) {
-            if(dataSource[i].id == event.id) {
+    if (event.id) {
+        for (var i in dataSource) {
+            if (dataSource[i].id == event.id) {
                 dataSource[i].name = event.name;
                 dataSource[i].type = event.type;
                 dataSource[i].hours = parseFloat(event.hours);
                 dataSource[i].color = event.color;
                 dataSource[i].startDate = event.startDate;
                 dataSource[i].endDate = event.endDate;
+                hoursCalc(event);
             }
         }
     }
-    else
-    {
+    else {
         var newId = 0;
-        for(var i in dataSource) {
-            if(dataSource[i].id > newId) {
+        for (var i in dataSource) {
+            if (dataSource[i].id > newId) {
                 newId = dataSource[i].id;
             }
         }
@@ -63,20 +145,7 @@ function saveEvent() {
         newId++;
         event.id = newId;
 
-        // Types array
-        var types = [];
-        jQuery('.typestype').each(function() {
-            var currentElement = $(this);
-
-            var t = {};
-            t.id = currentElement.data('id');
-            t.name = currentElement.data('name');
-            t.color = currentElement.data('color');
-            types.push(t)
-        });
-
-        // Orduak Birkalkulatzen motaren arabera
-        // if ( event.type)
+        hoursCalc(event);
 
         dataSource.push(event);
     }
@@ -85,11 +154,11 @@ function saveEvent() {
     $('#event-modal').modal('hide');
 }
 
-$(function() {
+$(function () {
     var currentYear = new Date().getFullYear();
 
     $('#calendar').calendar({
-        style:'background',
+        style: 'background',
         language: 'eu',
         minDate: new Date('2017-01-01'),
         // disabledWeekDays: [0,7],
@@ -97,7 +166,7 @@ $(function() {
         // displayWeekNumber: true,
         enableContextMenu: true,
         enableRangeSelection: true,
-        contextMenuItems:[
+        contextMenuItems: [
             {
                 text: 'Eguneratu',
                 click: editEvent
@@ -107,41 +176,41 @@ $(function() {
                 click: deleteEvent
             }
         ],
-        selectRange: function(e) {
-            editEvent({ startDate: e.startDate, endDate: e.endDate });
+        selectRange: function (e) {
+            editEvent({startDate: e.startDate, endDate: e.endDate});
         },
-        mouseOnDay: function(e) {
-            if(e.events.length > 0) {
+        mouseOnDay: function (e) {
+            if (e.events.length > 0) {
                 var content = '';
 
-                for(var i in e.events) {
+                for (var i in e.events) {
                     content += '<div class="event-tooltip-content">'
                         + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                        + '<div class="event-type">' + e.events[i].hours + '</div>'
+                        + '<div class="event-type">' + "Orduak: " + e.events[i].hours + '</div>'
                         + '</div>';
                 }
 
                 $(e.element).popover({
                     trigger: 'manual',
                     container: 'body',
-                    html:true,
+                    html: true,
                     content: content
                 });
 
                 $(e.element).popover('show');
             }
         },
-        mouseOutDay: function(e) {
-            if(e.events.length > 0) {
+        mouseOutDay: function (e) {
+            if (e.events.length > 0) {
                 $(e.element).popover('hide');
             }
         },
-        dayContextMenu: function(e) {
+        dayContextMenu: function (e) {
             $(e.element).popover('hide');
         }
     });
 
-    var url = Routing.generate('get_events', { 'calendarid': $('#calendarid').val()});
+    var url = Routing.generate('get_events', {'calendarid': $('#calendarid').val()});
 
     $.ajax({
         url: url,
@@ -149,17 +218,17 @@ $(function() {
         dataType: "json",
         success: function (response) {
             var data = [];
-            if ( response.length > 0 ) {
+            if (response.length > 0) {
                 for (var i = 0; i < response.length; i++) {
                     var d = {};
                     d.id = response[i].id;
                     d.name = response[i].name;
-                    if ( "type" in response[i] ) {
-                        if ( "color" in response[i].type ) {
+                    if ("type" in response[i]) {
+                        if ("color" in response[i].type) {
                             d.color = response[i].type.color;
                         }
                     }
-                    d.hours =  parseFloat(response[i].hours);
+                    d.hours = parseFloat(response[i].hours);
                     d.startDate = new Date(response[i].start_date);
                     d.endDate = new Date(response[i].end_date);
                     data.push(d);
@@ -167,13 +236,13 @@ $(function() {
             }
             $('#calendar').data('calendar').setDataSource(data);
         },
-        error: function() {
+        error: function () {
             console.log("HORROR!!");
         }
 
     });
 
-    $('#save-event').click(function() {
+    $('#save-event').click(function () {
         // TODO: Validation
         saveEvent();
     });
