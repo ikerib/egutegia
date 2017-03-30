@@ -10,7 +10,7 @@ parameters:
     locale: eu
 
 framework:
-    ide: 'phpstorm://open?file=%%f&line=%%l'
+    ide: "phpstorm://open?file=%%f&line=%%l"
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
