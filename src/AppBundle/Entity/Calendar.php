@@ -97,12 +97,6 @@ class Calendar
     private $updated;
 
     /**
-     * @ORM\Column(name="name_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name"})
-     */
-    private $nameChanged;
-
-    /**
      * @var string $contentChangedBy
      *
      * @ORM\Column(nullable=true)
@@ -359,29 +353,6 @@ class Calendar
         return $this->updated;
     }
 
-    /**
-     * Set nameChanged
-     *
-     * @param \DateTime $nameChanged
-     *
-     * @return Calendar
-     */
-    public function setNameChanged($nameChanged)
-    {
-        $this->nameChanged = $nameChanged;
-
-        return $this;
-    }
-
-    /**
-     * Get nameChanged
-     *
-     * @return \DateTime
-     */
-    public function getNameChanged()
-    {
-        return $this->nameChanged;
-    }
 
     /**
      * Set user

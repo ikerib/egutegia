@@ -74,6 +74,7 @@ class Builder implements ContainerAwareInterface {
 
     public function subMenuLeft (FactoryInterface $factory, array $options)
     {
+        dump($options);
         $menu = $factory->createItem(
             'root',
             array(
@@ -96,7 +97,16 @@ class Builder implements ContainerAwareInterface {
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
         $menu->addChild(
-            'Grabatu',
+            'Egutegia Ezabatu',
+            array(
+                'attributes' => array(
+                    'id'    => 'btnEzabatu',
+                    'class' => 'btn btn-danger navbar-btn',
+                ),
+            )
+        );
+        $menu->addChild(
+            'Egutegia Grabatu',
             array(
                 'attributes' => array(
                     'id'    => 'btnGrabatu',

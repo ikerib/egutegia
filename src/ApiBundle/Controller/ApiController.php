@@ -55,6 +55,7 @@ class ApiController extends FOSRestController {
         return $template;
     }
 
+
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /***** TEMPLATE EVENTS ********************************************************************************************/
@@ -214,6 +215,45 @@ class ApiController extends FOSRestController {
         $event->setHours($jsonData[ 'hours' ]);
         $event->setType($type);
         $em->persist($event);
+
+
+        $query = $em->createQuery('
+                UPDATE AppBundle:Calendar c
+                SET c.hours_year = c.hours_year - :hoursYear  
+                , c.hours_free = c.hours_free - :hoursFree  
+                , c.hours_self = c.hours_self - :hoursSelf
+                , c.hours_compensed = c.hours_compensed - :hoursCompensed 
+                WHERE c.id = :calendarid');
+        $query->setParameter('calendarid', $calendarid);
+
+        if ( $e->getType()->getName() === "Oporrak" ) {
+            $query->setParameter('hoursYear', 0);
+            $query->setParameter('hoursFree', $e->getHours());
+            $query->setParameter('hoursSelf', 0);
+            $query->setParameter('hoursCompensed', 0);
+        } elseif ($e->getType()->getName() === "Norberarentzako") {
+            $query->setParameter('hoursYear', 0);
+            $query->setParameter('hoursFree', 0);
+            $query->setParameter('hoursSelf', $e->getHours());
+            $query->setParameter('hoursCompensed', 0);
+        } elseif ($e->getType()->getName() === "Konpentsatuak") {
+            $query->setParameter('hoursYear', 0);
+            $query->setParameter('hoursFree', 0);
+            $query->setParameter('hoursSelf', 0);
+            $query->setParameter('hoursCompensed', $e->getHours());
+        }
+
+        /** @var Log $log */
+        $log = new Log();
+        $log->setName("Update Calendar hours");
+        $log->setDescription($query->getSql());
+        $em->persist($log);
+        $em->flush();
+
+        $query->execute();
+
+
+
         $em->flush();
 
         $view = View::create();
@@ -282,7 +322,44 @@ class ApiController extends FOSRestController {
         }
         $em->flush();
 
-        // Now we can remove calendar events
+        // Now we can remove calendar events but first we need to update calendar hours
+        foreach ($events as $e) {
+
+            $query = $em->createQuery('
+                UPDATE AppBundle:Calendar c
+                SET c.hours_year = c.hours_year + :hoursYear  
+                , c.hours_free = c.hours_free + :hoursFree  
+                , c.hours_self = c.hours_self + :hoursSelf
+                , c.hours_compensed = c.hours_compensed +:hoursCompensed 
+                WHERE c.id = :calendarid');
+            $query->setParameter('calendarid', $calendarid);
+
+            if ( $e->getType()->getName() === "Oporrak" ) {
+                $query->setParameter('hoursYear', 0);
+                $query->setParameter('hoursFree', $e->getHours());
+                $query->setParameter('hoursSelf', 0);
+                $query->setParameter('hoursCompensed', 0);
+            } elseif ($e->getType()->getName() === "Norberarentzako") {
+                $query->setParameter('hoursYear', 0);
+                $query->setParameter('hoursFree', 0);
+                $query->setParameter('hoursSelf', $e->getHours());
+                $query->setParameter('hoursCompensed', 0);
+            } elseif ($e->getType()->getName() === "Konpentsatuak") {
+                $query->setParameter('hoursYear', 0);
+                $query->setParameter('hoursFree', 0);
+                $query->setParameter('hoursSelf', 0);
+                $query->setParameter('hoursCompensed', $e->getHours());
+            }
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setName("Update Calendar hours");
+            $log->setDescription($query->getSql());
+            $em->persist($log);
+            $em->flush();
+
+            $query->execute();
+        }
 
         /** @var $query QueryBuilder */
         $query = $em->createQuery('DELETE AppBundle:Event e WHERE e.calendar = :calendarid');
@@ -297,6 +374,8 @@ class ApiController extends FOSRestController {
         return $view;
 
     }
+
+
 
 
 }

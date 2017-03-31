@@ -66,12 +66,6 @@ class EventHistory
      */
     private $updated;
 
-    /**
-     * @ORM\Column(name="name_changed", type="datetime", nullable=true)
-     * @Gedmo\Timestampable(on="change", field={"name"})
-     */
-    private $nameChanged;
-
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -257,29 +251,9 @@ class EventHistory
         return $this->updated;
     }
 
-    /**
-     * Set nameChanged
-     *
-     * @param \DateTime $nameChanged
-     *
-     * @return EventHistory
-     */
-    public function setNameChanged($nameChanged)
-    {
-        $this->nameChanged = $nameChanged;
 
-        return $this;
-    }
 
-    /**
-     * Get nameChanged
-     *
-     * @return \DateTime
-     */
-    public function getNameChanged()
-    {
-        return $this->nameChanged;
-    }
+
 
     /**
      * Set calendar

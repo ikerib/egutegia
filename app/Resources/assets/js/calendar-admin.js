@@ -319,7 +319,7 @@ $(function () {
                             console.log(e);
                         }
                     }).fail(function (xhr, status, error) {
-                        Bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
+                        bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
                         console.log(xhr);
                         console.log(status);
                         console.log(error);

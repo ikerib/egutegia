@@ -29,10 +29,6 @@
                 <th>Updated</th>
                 <td>{% if event.updated %}{{ event.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
-            <tr>
-                <th>Namechanged</th>
-                <td>{% if event.nameChanged %}{{ event.nameChanged|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
         </tbody>
     </table>
 

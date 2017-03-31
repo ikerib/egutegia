@@ -145,8 +145,12 @@ class CalendarController extends Controller {
      * @Route("/{id}/edit", name="admin_calendar_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction (Request $request, Calendar $calendar)
+    public function editAction (Request $request, Calendar $calendar=null)
     {
+        if (empty($calendar)) {
+            $this->addFlash('danger', "Ez da egutegia topatu");
+            return $this->redirectToRoute('dashboard');
+        }
         $deleteForm = $this->createDeleteForm($calendar);
         $editForm   = $this->createForm(
             CalendarType::class,
