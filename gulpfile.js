@@ -66,7 +66,7 @@ otherJS = [
     './app/Resources/assets/js/bootstrap-table/dist/locale/bootstrap-table-eu-EU.js',
     './app/Resources/assets/js/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js',
     './app/Resources/assets/js/bootstrap-table/dist/extensions/export/tableExport.js',
-    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.min.js',
+    './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.js',
     './app/Resources/assets/js/bootstrap-table/dist/extensions/export/jspdf.plugin.autotable.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
     './app/Resources/assets/js/libs/bootstrap-popover.js',
