@@ -2,7 +2,6 @@
 
 namespace ApiBundle\Controller;
 
-use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventHistory;
 use AppBundle\Entity\Log;
@@ -216,7 +215,7 @@ class ApiController extends FOSRestController {
         $event->setType($type);
         $em->persist($event);
 
-
+        /** @var  $query */
         $query = $em->createQuery('
                 UPDATE AppBundle:Calendar c
                 SET c.hours_year = c.hours_year - :hoursYear  
@@ -224,23 +223,23 @@ class ApiController extends FOSRestController {
                 , c.hours_self = c.hours_self - :hoursSelf
                 , c.hours_compensed = c.hours_compensed - :hoursCompensed 
                 WHERE c.id = :calendarid');
-        $query->setParameter('calendarid', $calendarid);
+        $query->setParameter('calendarid', $jsonData['calendarid']);
 
-        if ( $e->getType()->getName() === "Oporrak" ) {
+        if ( $event->getType()->getName() === "Oporrak" ) {
             $query->setParameter('hoursYear', 0);
-            $query->setParameter('hoursFree', $e->getHours());
+            $query->setParameter('hoursFree', $event->getHours());
             $query->setParameter('hoursSelf', 0);
             $query->setParameter('hoursCompensed', 0);
-        } elseif ($e->getType()->getName() === "Norberarentzako") {
+        } elseif ($event->getType()->getName() === "Norberarentzako") {
             $query->setParameter('hoursYear', 0);
             $query->setParameter('hoursFree', 0);
-            $query->setParameter('hoursSelf', $e->getHours());
+            $query->setParameter('hoursSelf', $event->getHours());
             $query->setParameter('hoursCompensed', 0);
-        } elseif ($e->getType()->getName() === "Konpentsatuak") {
+        } elseif ($event->getType()->getName() === "Konpentsatuak") {
             $query->setParameter('hoursYear', 0);
             $query->setParameter('hoursFree', 0);
             $query->setParameter('hoursSelf', 0);
-            $query->setParameter('hoursCompensed', $e->getHours());
+            $query->setParameter('hoursCompensed', $event->getHours());
         }
 
         /** @var Log $log */

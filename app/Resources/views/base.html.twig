@@ -84,10 +84,11 @@
                         <div class="col-md-3">
                             {{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6" id="alertSpot">
                             {% for type, flashes in app.session.flashbag.all %}
                                 {% for flash in flashes %}
-                                    <div class="alert alert-{{ type }} fade in">
+                                    <div class="alert alert-{{ type }} fade in alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         {{ flash }}
                                     </div>
                                 {% endfor %}
