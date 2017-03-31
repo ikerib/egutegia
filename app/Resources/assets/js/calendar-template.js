@@ -2,8 +2,6 @@
  * Created by iibarguren on 3/13/17.
  */
 
-// TODO: Events delete and Edit
-
 function editEvent(event) {
     $('#event-modal input[name="event-index"]').val(event ? event.id : '');
     $('#event-modal input[name="event-name"]').val(event ? event.name : '');

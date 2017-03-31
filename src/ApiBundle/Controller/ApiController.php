@@ -4,6 +4,7 @@ namespace ApiBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Log;
 use AppBundle\Entity\TemplateEvent;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -193,10 +194,10 @@ class ApiController extends FOSRestController {
         $em = $this->getDoctrine()->getManager();
         $jsonData = json_decode($request->getContent(), true);
 
-        // bilatu egutegia
+        // find calendar
         $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
 
-        // bilatu egutegia
+        // find type
         $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
 
 
@@ -221,5 +222,80 @@ class ApiController extends FOSRestController {
         return $view;
 
     }// "post_events"            [POST] /events
+
+    /**
+     * Backup all events of a given calendar
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Save a calendar events to history",
+     *   statusCodes = {
+     *     200 = "OK response"
+     *   }
+     * )
+     *
+     * @Annotations\View()
+     * @param Request $request
+     * @param $calendarid
+     * @return array|View
+     * @Rest\Post("/backup/{calendarid}")
+     */
+    public function backupEventsAction(Request $request, $calendarid)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $jsonData = json_decode($request->getContent(), true);
+
+        // find calendar
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
+
+        // get all events from given calendar
+        $events = $em->getRepository('AppBundle:Calendar')->findBy(
+            array(
+                'calendar' => $calendarid,
+            )
+        );
+
+        foreach ($events as $e) {
+
+            /** @var Event $event */
+            $event = new Event();
+            $event->setCalendar($calendar);
+            $event->setName($e['name']);
+            $tempini = new \DateTime($e['startDate']);
+            $event->setStartDate($tempini);
+            $tempfin = new \DateTime($e['endDate']);
+            $event->setEndDate($tempfin);
+            $event->setHours($e[ 'hours' ]);
+            // find type
+            $type = $em->getRepository('AppBundle:Type')->find($e['type']);
+            $event->setType($type);
+
+            /** @var $log Log */
+            $log = New Log();
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $log->setUser($user);
+            $log->setCalendar($calendar);
+            $log->setEvent($e);
+            $log->setName("Backup");
+            $log->setDescription($e->getUser()->getDisplayname() . " erabailtzailearen . ".$calendar->getName()." egutegiaren segurtasun kopia");
+
+            $em->persist($event);
+            $em->persist($log);
+
+        }
+
+
+
+        $em->flush();
+
+        $view = View::create();
+        $view->setData($calendar);
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        return $view;
+
+    }
+
 
 }

@@ -117,6 +117,7 @@ fos_js_routing:
         - get_template
         - admin_type_edit
         - admin_calendar_new
+        - backup_events
         - get_events
         - post_events
 
