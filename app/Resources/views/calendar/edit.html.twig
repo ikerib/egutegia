@@ -124,7 +124,8 @@
                             <div class="form-group">
                                 <label for="min-date" class="col-sm-3 control-label">{{ 'Mota'|trans }}</label>
                                 <div class="col-sm-8">
-                                    <select name="event-type" class="form-control">
+                                    <select id="cmbTypeSelect" name="event-type" class="form-control">
+                                            <option selected value="-1">Aukeratu bat</option>
                                         {% for type in types %}
                                             <option data-color="{{ type.color }}" value="{{ type.id }}">{{ type.name }}</option>
                                         {% endfor %}

@@ -4,8 +4,10 @@ namespace ApiBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventHistory;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\TemplateEvent;
+use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -243,13 +245,12 @@ class ApiController extends FOSRestController {
     public function backupEventsAction(Request $request, $calendarid)
     {
         $em = $this->getDoctrine()->getManager();
-        $jsonData = json_decode($request->getContent(), true);
 
         // find calendar
-        $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
 
         // get all events from given calendar
-        $events = $em->getRepository('AppBundle:Calendar')->findBy(
+        $events = $em->getRepository('AppBundle:Event')->findBy(
             array(
                 'calendar' => $calendarid,
             )
@@ -257,18 +258,14 @@ class ApiController extends FOSRestController {
 
         foreach ($events as $e) {
 
-            /** @var Event $event */
-            $event = new Event();
-            $event->setCalendar($calendar);
-            $event->setName($e['name']);
-            $tempini = new \DateTime($e['startDate']);
-            $event->setStartDate($tempini);
-            $tempfin = new \DateTime($e['endDate']);
-            $event->setEndDate($tempfin);
-            $event->setHours($e[ 'hours' ]);
-            // find type
-            $type = $em->getRepository('AppBundle:Type')->find($e['type']);
-            $event->setType($type);
+            /** @var EventHistory $eventhistory */
+            $eventhistory = new EventHistory();
+            $eventhistory->setCalendar($calendar);
+            $eventhistory->setName($e->getName());
+            $eventhistory->setStartDate($e->getStartDate());
+            $eventhistory->setEndDate($e->getEndDate());
+            $eventhistory->setHours($e->getHours());
+            $eventhistory->setType($e->getType());
 
             /** @var $log Log */
             $log = New Log();
@@ -277,16 +274,20 @@ class ApiController extends FOSRestController {
             $log->setCalendar($calendar);
             $log->setEvent($e);
             $log->setName("Backup");
-            $log->setDescription($e->getUser()->getDisplayname() . " erabailtzailearen . ".$calendar->getName()." egutegiaren segurtasun kopia");
+            $log->setDescription($e->getCalendar()->getUser()->getDisplayname() . " erabailtzailearen . ".$calendar->getName()." egutegiaren segurtasun kopia");
 
-            $em->persist($event);
+            $em->persist($eventhistory);
             $em->persist($log);
 
         }
-
-
-
         $em->flush();
+
+        // Now we can remove calendar events
+
+        /** @var $query QueryBuilder */
+        $query = $em->createQuery('DELETE AppBundle:Event e WHERE e.calendar = :calendarid');
+        $query->setParameter('calendarid', $calendarid);
+        $query->execute();
 
         $view = View::create();
         $view->setData($calendar);

@@ -87,6 +87,12 @@ function editEvent(event) {
 
     $('#oldValue').val(event ? event.hours : 0);
 
+    if ( event ) {
+        if ( event.type === undefined ) {
+            $('#cmbTypeSelect').val("-1");
+        }
+    }
+
     $('#event-modal').modal();
     $('#event-modal').on('shown.bs.modal', function () {
         $('#event-modal input[name="event-name"]').focus()
@@ -119,6 +125,29 @@ function saveEvent() {
         startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
         endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
     };
+
+    // Data Validation
+    if ( event.name.length === 0 ) {
+        bootbox.alert("Izena jartzea beharrezkoa da.");
+        return;
+    }
+    if ( event.type === "-1" ) {
+        bootbox.alert("Mota zehaztea beharrezkoa da.");
+        return;
+    }
+    if ( event.hours.length === 0 ) {
+        event.hours = 0;
+    } else {
+        if ($.isNumeric (event.hours) === false) {
+            bootbox.alert("Ordu kopuruak zenbakia izan behar du.");
+            return;
+        }
+    }
+    if ( (Date.parse(event.startDate)===false) || ( Date.parse(event.endDate)===false ) ) {
+        bootbox.alert("Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.");
+        return;
+    }
+
     var dataSource = $('#calendar').data('calendar').getDataSource();
 
     if (event.id) {
@@ -226,6 +255,7 @@ $(function () {
                     if ("type" in response[i]) {
                         if ("color" in response[i].type) {
                             d.color = response[i].type.color;
+                            d.type = response[i].type.id;
                         }
                     }
                     d.hours = parseFloat(response[i].hours);
@@ -248,45 +278,62 @@ $(function () {
     });
 
     $('#btnGrabatu').on('click', function () {
+        var calendarid = $('#calendarid').val();
 
-        var datuak = $('#calendar').data('calendar').getDataSource();
+        // first I backup and remove all calendar events
+        var url = Routing.generate('backup_events', {'calendarid': calendarid});
 
-        for (var i = 0; i < datuak.length; i++) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function () {
 
-            var url = Routing.generate('post_events');
+                // Now I save all the events in the given calendar
+                var datuak = $('#calendar').data('calendar').getDataSource();
 
-            var d = {};
-            d.calendarid = $('#calendarid').val();
-            d.name = datuak[i].name;
-            d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
-            d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
-            d.color = datuak[i].color;
-            d.type = datuak[i].type;
-            d.hours = parseFloat(datuak[i].hours);
+                for (var i = 0; i < datuak.length; i++) {
 
-            // var d = JSON.stringify(datuak);
-            console.log("*****************************************");
-            console.log("POST datuk:");
-            console.log(d);
-            console.log("*****************************************");
+                    var url = Routing.generate('post_events');
 
+                    var d = {};
+                    d.calendarid = calendarid;
+                    d.name = datuak[i].name;
+                    d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
+                    d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
+                    d.color = datuak[i].color;
+                    d.type = datuak[i].type;
+                    d.hours = parseFloat(datuak[i].hours);
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: JSON.stringify(d),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (e) {
-                    console.log(e);
+                    console.log("*****************************************");
+                    console.log("POST datuk:");
+                    console.log(d);
+                    console.log("*****************************************");
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: JSON.stringify(d),
+                        contentType: "application/json",
+                        dataType: "json",
+                        success: function (e) {
+                            console.log(e);
+                        }
+                    }).fail(function (xhr, status, error) {
+                        Bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
+                        console.log(xhr);
+                        console.log(status);
+                        console.log(error);
+                    });
+
                 }
-            }).fail(function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            });
+            }
+        }).fail(function (xhr, status, error) {
+            bootbox.alert("Arazo bat egon da egutegia historikora pasatzerakoan.");
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+        });
 
-        }
 
     });
 
