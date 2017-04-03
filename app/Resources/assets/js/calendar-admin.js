@@ -87,6 +87,8 @@ function editEvent(event) {
 
     $('#oldValue').val(event ? event.hours : 0);
 
+    $('#cmbTypeSelect').val(event ? event.type : '');
+
     if ( event ) {
         if ( event.type === undefined ) {
             $('#cmbTypeSelect').val("-1");
@@ -279,61 +281,84 @@ $(function () {
 
     $('#btnGrabatu').on('click', function () {
         var calendarid = $('#calendarid').val();
-
+        var akatsa = 0;
         // first I backup and remove all calendar events
         var url = Routing.generate('backup_events', {'calendarid': calendarid});
 
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function () {
+        function waitUntilComplete() {
+            return $.ajax({
+                url: url,
+                type: 'POST',
+                success: function () {
 
-                // Now I save all the events in the given calendar
-                var datuak = $('#calendar').data('calendar').getDataSource();
+                    // Now I save all the events in the given calendar
+                    var datuak = $('#calendar').data('calendar').getDataSource();
 
-                for (var i = 0; i < datuak.length; i++) {
 
-                    var url = Routing.generate('post_events');
+                    for (var i = 0; i < datuak.length && akatsa === 0; i++) {
 
-                    var d = {};
-                    d.calendarid = calendarid;
-                    d.name = datuak[i].name;
-                    d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
-                    d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
-                    d.color = datuak[i].color;
-                    d.type = datuak[i].type;
-                    d.hours = parseFloat(datuak[i].hours);
+                        var url = Routing.generate('post_events');
 
-                    console.log("*****************************************");
-                    console.log("POST datuk:");
-                    console.log(d);
-                    console.log("*****************************************");
+                        var d = {};
+                        d.calendarid = calendarid;
+                        d.name = datuak[i].name;
+                        d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
+                        d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
+                        d.color = datuak[i].color;
+                        d.type = datuak[i].type;
+                        d.hours = parseFloat(datuak[i].hours);
 
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: JSON.stringify(d),
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (e) {
-                            console.log(e);
-                        }
-                    }).fail(function (xhr, status, error) {
-                        bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
-                        console.log(xhr);
-                        console.log(status);
-                        console.log(error);
-                    });
+                        return $.ajax({
+                            url: url,
+                            async:false,
+                            type: 'POST',
+                            data: JSON.stringify(d),
+                            contentType: "application/json",
+                            dataType: "json"
+                        }).fail(function (xhr, status, error) {
+                            // bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
+                            // console.log(xhr);
+                            // console.log(status);
+                            // console.log(error);
+                            akatsa = 1;
+                            return;
+                        });
 
+                    }
                 }
-            }
-        }).fail(function (xhr, status, error) {
-            bootbox.alert("Arazo bat egon da egutegia historikora pasatzerakoan.");
-            console.log(xhr);
-            console.log(status);
-            console.log(error);
-        });
+            }).fail(function (xhr, status, error) {
+                // bootbox.alert("Arazo bat egon da egutegia historikora pasatzerakoan.");
+                // console.log(xhr);
+                // console.log(status);
+                // console.log(error);
+                akatsa = 1;
+                return;
+            })
+        }
 
+        $.when(waitUntilComplete()).done(function (e) {
+            // console.log("COMPLETED!!!");
+            // console.log(e);
+            // console.log("COMPLETED!!!");
+            // console.log(akatsa);
+            $("#myAlert").hide();
+            if (akatsa === 1) {
+                $('#alertSpot').append(
+                    '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.');
+            } else {
+                $('#alertSpot').append(
+                    '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    'Datuak <strong>ongi</strong> grabatuak izan dira.');
+            }
+
+            $("#myAlert").alert();
+            $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
+                $("#myAlert").slideUp(500);
+            });
+        })
 
     });
 
