@@ -1,0 +1,46 @@
+---
+- name: Pasaiako Udal langileen egutekien kudeaketa Web Aplikazioa
+  hosts: all
+  remote_user: root
+  roles:
+    - cbrunnkvist.ansistrano-symfony-deploy
+  vars:
+    ansistrano_keep_releases: 3
+    symfony_deploy_env: prod
+    symfony_dir: "./"
+    symfony_app_dir: "{{ symfony_dir }}/app"
+    symfony_console_path: 'bin/console'
+
+    symfony_run_composer: true
+    symfony_composer_path: "{{ ansistrano_deploy_to }}/composer.phar"
+    symfony_composer_options: '--no-dev --optimize-autoloader --no-interaction'
+    symfony_composer_self_update: true # Always attempt a composer self-update
+
+    symfony_run_assets_install: true
+    symfony_assets_options: '--no-interaction'
+
+    symfony_run_assetic_dump: false
+    symfony_assetic_options: '--no-interaction'
+
+    symfony_run_cache_clear_and_warmup: true
+    symfony_cache_options: ''
+
+    ansistrano_deploy_from: "{{ playbook_dir }}/../"
+    ansistrano_git_repo: "https://github.com/PasaiakoUdala/egutegia.git"
+    ansistrano_deploy_to: "{{ deploy_path }}"
+    ansistrano_deploy_via: "git"
+
+    shared_path_parameters: "{{ symfony_app_dir }}/config/parameters.yml"
+
+    ansistrano_shared_paths:
+      - var/logs
+      - var/sessions
+      - var/cache
+      - web/uploads
+
+    ansistrano_shared_files:
+      - app/config/parameters.yml
+
+
+    ansistrano_after_update_code_tasks_file: "{{ playbook_dir }}/tasks/after-update-code.yml"
+    ansistrano_after_symlink_tasks_file: "{{ playbook_dir }}/tasks/after-symlink.yml"
