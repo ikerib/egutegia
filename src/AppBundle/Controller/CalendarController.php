@@ -199,7 +199,7 @@ class CalendarController extends Controller {
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_calendar_index');
+        return $this->redirectToRoute('dashboard');
     }
 
     /**

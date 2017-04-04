@@ -30,7 +30,7 @@
 {% block content_content %}
 
     <div class="row" style="display: none;">
-        {{ form_start(delete_form) }}
+        {{ form_start(delete_form, {'attr': {'id': 'frmDelCalendar'}}) }}
         <input id="btnDelete" type="submit" value="Delete">
         {{ form_end(delete_form) }}
     </div>

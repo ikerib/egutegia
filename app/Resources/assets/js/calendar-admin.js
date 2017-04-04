@@ -454,4 +454,25 @@ $(function () {
 
     });
 
+    $('#btnEzabatu').on('click', function () {
+        bootbox.confirm({
+            message: "Ziur zaude Egutegia ezabatu nahi duzula?",
+            buttons: {
+                confirm: {
+                    label: 'Bai',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Ez',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if ( result === true ) {
+                    $('#frmDelCalendar').submit();
+                }
+            }
+        });
+    });
+
 });
