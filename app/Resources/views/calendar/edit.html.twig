@@ -178,6 +178,13 @@
 
     <input type="hidden" id="calendarid" value="{{ calendar.id }}">
 
+    {% if calendar.template is not null  %}
+        {% set templateid =  calendar.template.id %}
+    {% else %}
+        {% set templateid =  -1 %}
+    {% endif %}
+    <input type="hidden" id="templateid" value="{{ templateid }}">
+
 
 {% endblock %}
 

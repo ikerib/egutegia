@@ -95,7 +95,7 @@ class Template
     /**
      * @var template_events[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TemplateEvent", mappedBy="template",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TemplateEvent", mappedBy="template",cascade={"remove"})
      * @ORM\OrderBy({"name" = "ASC"})
      */
     private $template_events;

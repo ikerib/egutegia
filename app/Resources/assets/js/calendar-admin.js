@@ -241,36 +241,132 @@ $(function () {
         }
     });
 
-    var url = Routing.generate('get_events', {'calendarid': $('#calendarid').val()});
-
-    $.ajax({
-        url: url,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            var data = [];
-            if (response.length > 0) {
-                for (var i = 0; i < response.length; i++) {
-                    var d = {};
-                    d.id = response[i].id;
-                    d.name = response[i].name;
-                    if ("type" in response[i]) {
-                        if ("color" in response[i].type) {
-                            d.color = response[i].type.color;
-                            d.type = response[i].type.id;
+    var getAjaxEvents = function () {
+        var url = Routing.generate('get_events', {'calendarid': $('#calendarid').val()});
+        return $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                var data = [];
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        var d = {};
+                        d.id = response[i].id;
+                        d.name = response[i].name;
+                        if ("type" in response[i]) {
+                            if ("color" in response[i].type) {
+                                d.color = response[i].type.color;
+                                d.type = response[i].type.id;
+                            }
                         }
+                        d.hours = parseFloat(response[i].hours);
+                        d.startDate = new Date(response[i].start_date);
+                        d.endDate = new Date(response[i].end_date);
+                        data.push(d);
                     }
-                    d.hours = parseFloat(response[i].hours);
-                    d.startDate = new Date(response[i].start_date);
-                    d.endDate = new Date(response[i].end_date);
-                    data.push(d);
+                }
+                return data;
+                // $('#calendar').data('calendar').setDataSource(data);
+            },
+            error: function () {
+                return -1;
+                console.log("HORROR!!");
+            }
+
+        });
+    };
+
+
+    var getAjaxTemplateEvents = function () {
+        var tmpl = $('#templateid').val();
+        if ( tmpl === -1 ) {
+            console.log("ez du template-rik");
+            return -1;
+        }
+        var url2 = Routing.generate('get_template_events', {'templateid': tmpl});
+        return $.ajax({
+            url: url2,
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                var data = [];
+                if (response.length > 0) {
+                    for (var i = 0; i < response.length; i++) {
+                        var d = {};
+                        d.id = response[i].id;
+                        d.name = response[i].name;
+                        if ("type" in response[i]) {
+                            if ("color" in response[i].type) {
+                                d.color = response[i].type.color;
+                                d.type = response[i].type.id;
+                            }
+                        }
+                        d.hours = parseFloat(response[i].hours);
+                        d.startDate = new Date(response[i].start_date);
+                        d.endDate = new Date(response[i].end_date);
+                        data.push(d);
+                    }
+                }
+                // $('#calendar').data('calendar').setDataSource(data);
+                return data;
+            },
+            error: function () {
+                return -1;
+                console.log("HORROR!!");
+            }
+
+        });
+    };
+
+    $.when(getAjaxTemplateEvents(), getAjaxEvents()).done(function(a1, a2){
+        var resp = [];
+        // Check if template is set
+        var tmpl = a1[0];
+
+        if ( tmpl.length > 0 ) { // Template is set
+            for (var i = 0; i < tmpl.length; i++) {
+                var d = {};
+                d.id = tmpl[i].id;
+                d.name = tmpl[i].name;
+                if ("type" in tmpl[i]) {
+                    if ("color" in tmpl[i].type) {
+                        // d.color = tmpl[i].type.color;
+                        d.color = "#3a4d57";
+                        d.type = tmpl[i].type.id;
+                    }
+                }
+                d.hours = parseFloat(tmpl[i].hours);
+                d.startDate = new Date(tmpl[i].start_date);
+                d.endDate = new Date(tmpl[i].end_date);
+                d.istemplate = 1;
+
+                resp.push(d);
+            }
+        }
+
+        var eve = a2[0]; // Events
+        for (var j = 0; i < eve.length; j++) {
+            var d2 = {};
+            d2.id = eve[j].id;
+            d2.name = eve[j].name;
+            if ("type" in eve[j]) {
+                if ("color" in eve[j].type) {
+                    d2.color = eve[j].type.color;
+                    d2.type = eve[j].type.id;
                 }
             }
-            $('#calendar').data('calendar').setDataSource(data);
-        },
-        error: function () {
-            console.log("HORROR!!");
+            d2.hours = parseFloat(eve[j].hours);
+            d2.startDate = new Date(eve[j].start_date);
+            d2.endDate = new Date(eve[j].end_date);
+            d2.istemplate = 0;
+
+            resp.push(d2);
         }
+
+
+        $('#calendar').data('calendar').setDataSource(resp);
+
 
     });
 
@@ -297,50 +393,39 @@ $(function () {
 
                     for (var i = 0; i < datuak.length && akatsa === 0; i++) {
 
-                        var url = Routing.generate('post_events');
+                        if ( datuak[i].istemplate === 0 ) { // Template Events are not saved
+                            var url = Routing.generate('post_events');
 
-                        var d = {};
-                        d.calendarid = calendarid;
-                        d.name = datuak[i].name;
-                        d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
-                        d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
-                        d.color = datuak[i].color;
-                        d.type = datuak[i].type;
-                        d.hours = parseFloat(datuak[i].hours);
+                            var d = {};
+                            d.calendarid = calendarid;
+                            d.name = datuak[i].name;
+                            d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
+                            d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
+                            d.color = datuak[i].color;
+                            d.type = datuak[i].type;
+                            d.hours = parseFloat(datuak[i].hours);
 
-                        return $.ajax({
-                            url: url,
-                            async:false,
-                            type: 'POST',
-                            data: JSON.stringify(d),
-                            contentType: "application/json",
-                            dataType: "json"
-                        }).fail(function (xhr, status, error) {
-                            // bootbox.alert("Arazo bat egon da 'event' bat grabatzerakoan. Ez dira datu guztiak ongi gorde.");
-                            // console.log(xhr);
-                            // console.log(status);
-                            // console.log(error);
-                            akatsa = 1;
-                            return;
-                        });
-
+                            return $.ajax({
+                                url: url,
+                                async:false,
+                                type: 'POST',
+                                data: JSON.stringify(d),
+                                contentType: "application/json",
+                                dataType: "json"
+                            }).fail(function (xhr, status, error) {
+                                akatsa = 1;
+                                return;
+                            });
+                        }
                     }
                 }
             }).fail(function (xhr, status, error) {
-                // bootbox.alert("Arazo bat egon da egutegia historikora pasatzerakoan.");
-                // console.log(xhr);
-                // console.log(status);
-                // console.log(error);
                 akatsa = 1;
                 return;
             })
         }
 
         $.when(waitUntilComplete()).done(function (e) {
-            // console.log("COMPLETED!!!");
-            // console.log(e);
-            // console.log("COMPLETED!!!");
-            // console.log(akatsa);
             $("#myAlert").hide();
             if (akatsa === 1) {
                 $('#alertSpot').append(

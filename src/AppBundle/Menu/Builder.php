@@ -27,7 +27,7 @@ class Builder implements ContainerAwareInterface {
 
         $dropdown = $menu->addChild('Txantiloiak',array('dropdown' => true,'caret'    => true,));
         $dropdown->addChild('Zerrenda', array( 'route' => 'admin_template_index' ));
-        $dropdown->addChild('Berria', array( 'route' => 'admin_template_new' ));
+
 
         $menu->addChild(
             'Motak',
@@ -37,7 +37,6 @@ class Builder implements ContainerAwareInterface {
             )
         );
         $menu[ 'Motak' ]->addChild('Zerrenda', array( 'route' => 'admin_type_index' ));
-        $menu[ 'Motak' ]->addChild('Berria', array( 'route' => 'admin_type_new' ));
 
         return $menu;
     }
@@ -74,7 +73,6 @@ class Builder implements ContainerAwareInterface {
 
     public function subMenuLeft (FactoryInterface $factory, array $options)
     {
-        dump($options);
         $menu = $factory->createItem(
             'root',
             array(

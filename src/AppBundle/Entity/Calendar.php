@@ -120,7 +120,7 @@ class Calendar
      * @var \AppBundle\Entity\Template
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Template")
-     * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="SET NULL")
      */
     private $template;
 

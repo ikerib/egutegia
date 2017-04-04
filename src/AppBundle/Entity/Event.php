@@ -81,6 +81,7 @@ class Event {
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $calendar;
 

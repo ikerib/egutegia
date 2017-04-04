@@ -22,16 +22,6 @@
 
 # Any specific installation steps
 
-- name: Install vendors
-  composer: command=install working_dir={{ symfony_path }} arguments="--no-interaction"
-
-
-
-- name: npm install/update
-  shell: /usr/bin/zsh -lc "/root/.nvm/versions/node/v6.10.1/bin/npm install"
-  tags: npm
-  args:
-    chdir: "{{ ansistrano_release_path.stdout }}"
 
 #- name: Install packages based on package.json.
 #  command: "/opt/npm/bin/gulp"
