@@ -11,6 +11,7 @@ namespace AppBundle\Menu;
 use AppBundle\AppBundle;
 use AppBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -73,6 +74,9 @@ class Builder implements ContainerAwareInterface {
 
     public function subMenuLeft (FactoryInterface $factory, array $options)
     {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $routeName = $request->get('_route');
+
         $menu = $factory->createItem(
             'root',
             array(
@@ -80,13 +84,22 @@ class Builder implements ContainerAwareInterface {
             )
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
-        $menu->addChild('Txantiloiak', array( 'uri' => 'javascript:void(0);' ));
+
+        if ($routeName == 'dashboard') {
+            $menu->addChild('Egutegiak', array( 'uri' => 'javascript:void(0);' ));
+        } else {
+            $menu->addChild('Txantiloiak', array( 'uri' => 'javascript:void(0);' ));
+        }
+
 
         return $menu;
     }
 
     public function subMenuRight (FactoryInterface $factory, array $options)
     {
+        $request = $this->container->get('request_stack')->getCurrentRequest();
+        $routeName = $request->get('_route');
+
         $menu = $factory->createItem(
             'root',
             array(
@@ -94,24 +107,28 @@ class Builder implements ContainerAwareInterface {
             )
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
-        $menu->addChild(
-            'Egutegia Ezabatu',
-            array(
-                'attributes' => array(
-                    'id'    => 'btnEzabatu',
-                    'class' => 'btn btn-danger navbar-btn',
-                ),
-            )
-        );
-        $menu->addChild(
-            'Egutegia Grabatu',
-            array(
-                'attributes' => array(
-                    'id'    => 'btnGrabatu',
-                    'class' => 'btn btn-primary navbar-btn',
-                ),
-            )
-        );
+
+        if ($routeName != 'dashboard') {
+            $menu->addChild(
+                'Egutegia Ezabatu',
+                array(
+                    'attributes' => array(
+                        'id'    => 'btnEzabatu',
+                        'class' => 'btn btn-danger navbar-btn',
+                    ),
+                )
+            );
+            $menu->addChild(
+                'Egutegia Grabatu',
+                array(
+                    'attributes' => array(
+                        'id'    => 'btnGrabatu',
+                        'class' => 'btn btn-primary navbar-btn',
+                    ),
+                )
+            );
+        }
+
 
 
         return $menu;
