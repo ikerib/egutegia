@@ -346,7 +346,7 @@ $(function () {
         }
 
         var eve = a2[0]; // Events
-        for (var j = 0; i < eve.length; j++) {
+        for (var j = 0; j < eve.length; j++) {
             var d2 = {};
             d2.id = eve[j].id;
             d2.name = eve[j].name;
@@ -393,6 +393,10 @@ $(function () {
 
                     for (var i = 0; i < datuak.length && akatsa === 0; i++) {
 
+                        if ( datuak[i].istemplate === undefined) {
+                            datuak[i].istemplate=0;
+                        }
+
                         if ( datuak[i].istemplate === 0 ) { // Template Events are not saved
                             var url = Routing.generate('post_events');
 
@@ -405,7 +409,10 @@ $(function () {
                             d.type = datuak[i].type;
                             d.hours = parseFloat(datuak[i].hours);
 
-                            return $.ajax({
+                            console.log("POST!");
+                            console.log(d);
+
+                            $.ajax({
                                 url: url,
                                 async:false,
                                 type: 'POST',
