@@ -79,6 +79,7 @@ otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css',
     './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-year-calendar.min.css',
+    './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-datepicker.min.css',
     './app/Resources/assets/js/bootstrap-table/dist/bootstrap-table.css',
     './app/Resources/assets/'
 ];
