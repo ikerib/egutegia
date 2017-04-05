@@ -228,7 +228,7 @@ $(function() {
         };
         $.when (funcDeleteTemplateEvents(), funcSaveTemplateEvents() ).done(function(a1,a2) {
             $("#myAlert").hide();
-            $('#alertSpot').clear();
+            $('#alertSpot').empty();
             if (a2 === -1) {
                 $('#alertSpot').append(
                     '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +

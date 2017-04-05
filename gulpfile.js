@@ -185,7 +185,7 @@ gulp.task('js:dev', function () {
 });
 
 gulp.task('js:prod', function () {
-    gulp.src(freeJS)
+    gulp.src(freeJS).pipe(minify())
         .pipe(gulp.dest('web/js/'));
     return gulp.src(otherJS)
         .pipe(minify())
@@ -196,7 +196,7 @@ gulp.task('js:prod', function () {
 
 
 // Task guztiak batuz
-gulp.task('prod', ['clean', 'icons', 'js:prod', 'sass:prod']);
+gulp.task('prod', ['icons', 'js:prod', 'sass:prod']);
 
 gulp.task('dev', ['icons', 'js:dev', 'sass:dev']);
 

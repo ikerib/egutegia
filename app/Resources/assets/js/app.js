@@ -21,4 +21,6 @@ $( document ).ready(function() {
         $('#edit-modal').modal();
     });
 
+    $('.dropdown-toggle').dropdown()
+
 });
