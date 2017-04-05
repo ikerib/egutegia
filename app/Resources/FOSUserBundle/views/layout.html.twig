@@ -203,14 +203,17 @@
     {% endblock %}
 </div>
 
-
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
-<script src="{{ asset('js/jquery.js') }}"></script>
-<!-- Include all JavaScripts, compiled by Assetic -->
-<script src="{{ asset('js/bootstrap.js') }}"></script>
+{% if app.debug %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <!-- Include all JavaScripts, compiled by Assetic -->
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+{% else %}
+    <script src="{{ asset('js/app.min.js') }}"></script>
+{% endif %}
 {% block javascripts %}{% endblock %}
 </body>
 </html>

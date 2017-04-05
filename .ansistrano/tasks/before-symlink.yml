@@ -12,8 +12,8 @@
 #- name: BEFORE SYMLINK npm install
 #  shell: '/usr/bin/zsh -lc npm install /var/www/egutegia/current/package.json"'
 #  tags: npm
-- name: Install npm packages
-  npm: path=/www/vector state=present
+#- name: Install npm packages
+#  npm: path=/www/vector state=present
 #- name: Install required node packages
 #  npm:
 #    name: "{{ item.name }}"
@@ -24,7 +24,7 @@
 #  - name: bower
 
 
-- name: Run gulp
-  command: /root/.nvm/versions/node/v6.10.1/bin/gulp
-  args:
-    chdir: /var/www/egutegia/current
+#- name: Run gulp
+#  command: /root/.nvm/versions/node/v6.10.1/bin/gulp
+#  args:
+#    chdir: /var/www/egutegia/current
