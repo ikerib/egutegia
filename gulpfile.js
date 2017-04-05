@@ -149,7 +149,7 @@ gulp.task('sass:dev', ['css:dev', 'scss-lint'], function () {
         .pipe(livereload());
 });
 
-gulp.task('sass:prod', ['clean'], function () {
+gulp.task('sass:prod', function () {
     gulp.src(freeCSS)
         .pipe(gulp.dest('web/css/'));
 

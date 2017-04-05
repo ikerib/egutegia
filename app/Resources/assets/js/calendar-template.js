@@ -36,7 +36,7 @@ function saveEvent() {
         startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
         endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
     };
-    
+
     var dataSource = $('#admincalendar').data('calendar').getDataSource();
 
     if(event.id) {
