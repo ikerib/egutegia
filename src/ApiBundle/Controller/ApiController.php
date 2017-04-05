@@ -13,6 +13,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -138,6 +139,41 @@ class ApiController extends FOSRestController {
         return $view;
 
     }// "post_templateevents"            [POST] /templateevents
+
+    /**
+     * Delete template Events
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Delete template events",
+     *   statusCodes = {
+     *     204 = "OK"
+     *   }
+     * )
+     *
+     * @param $templateid
+     *
+     * @Rest\Delete("/templateevents/{templateid}")
+     * @Rest\View(statusCode=204)
+     * @return array
+     */
+    public function deleteTemplateEventsAction($templateid)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $template = $em->getRepository('AppBundle:Template')->find($templateid);
+
+        if ($template=== null)
+        {
+            return new View("there are no Template events exist", Response::HTTP_NOT_FOUND);
+        }
+
+        $tevents = $template->getTemplateEvents();
+        foreach ($tevents as $t) {
+            $em->remove($t);
+        }
+        $em->flush();
+    }
 
 
     /******************************************************************************************************************/

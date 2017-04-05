@@ -136,15 +136,22 @@ $(function() {
         success: function (response) {
             var data = [];
             for (var i = 0; i < response.length; i++) {
-                data.push({
-                    id: response[i].id,
-                    name: response[i].name,
-                    color: response[i].type.color,
-                    startDate: new Date(response[i].start_date),
-                    endDate: new Date(response[i].end_date)
-                });
+                var d = {};
+                d.id = response[i].id;
+                d.name = response[i].name;
+                if ("type" in response[i]) {
+                    if ("color" in response[i].type) {
+                        d.color = response[i].type.color;
+                        d.type = response[i].type.id;
+                    }
+                }
+                // d.hours = parseFloat(tmpl[i].hours);
+                d.startDate = new Date(response[i].start_date);
+                d.endDate = new Date(response[i].end_date);
+                d.istemplate = 1;
+
+                data.push(d);
             }
-            console.log(data);
             $('#admincalendar').data('calendar').setDataSource(data);
         }
 
@@ -155,46 +162,91 @@ $(function() {
     });
 
     $('#btnGrabatu').on('click', function () {
+        var templateid = $('#templateid').val();
+        var akatsa = 0;
 
-        var datuak = $('#admincalendar').data('calendar').getDataSource();
+        var funcDeleteTemplateEvents = function () {
 
-        for (var i = 0; i < datuak.length; i++) {
-
-            var url = Routing.generate('post_template_events');
-            // var fini = moment().set(datuak[i].startDate);
-            // var fend = moment().set(datuak[i].endDate);
-
-            var d = {};
-            d.templateid = $('#templateid').val();
-            d.name = datuak[i].name;
-            d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
-            d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
-            d.color = datuak[i].color;
-            d.type = datuak[i].type;
-
-            // var d = JSON.stringify(datuak);
-            console.log("*****************************************");
-            console.log("POST datuk:");
-            console.log(d);
-            console.log("*****************************************");
-
-
-            $.ajax({
+            var url = Routing.generate('delete_template_events', {'templateid': templateid});
+            return $.ajax({
                 url: url,
-                type: 'POST',
-                data: JSON.stringify(d),
-                contentType: "application/json",
-                dataType: "json",
-                success: function (e) {
-                    console.log(e);
-                }
-            }).fail(function (xhr, status, error) {
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-            });
+                type: "DELETE"
+            }).done(function ( data, textStatus, jqXHR) {
+                return jqXHR.status; //handle your 204 or other status codes here
+            }).fail(function(){
+                akatsa = 1;
+                return -1;
+            })
 
-        }
+        };
+
+        var funcSaveTemplateEvents = function () {
+            var aka = 0;
+            var datuak = $('#admincalendar').data('calendar').getDataSource();
+            for (var i = 0; i < datuak.length && aka ===0; i++) {
+
+                var url = Routing.generate('post_template_events');
+
+                var d = {};
+                d.templateid = $('#templateid').val();
+                d.name = datuak[i].name;
+                d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
+                d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
+                d.color = datuak[i].color;
+                if ( typeof(datuak[i].type) === 'object' ) {
+                    d.type = datuak[i].type.id;
+                } else {
+                    d.type = datuak[i].type;
+                }
+
+
+                $.ajax({
+                    url: url,
+                    async:false,
+                    type: 'POST',
+                    data: JSON.stringify(d),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (e) {
+                        return 1;
+                    }
+                }).fail(function (xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                    aka = 1;
+                    akatsa = 1;
+                    return -1;
+                });
+
+            }
+            if ( aka === 0 ) {
+                return 1;
+            } else {
+                return -1;
+            }
+
+        };
+        $.when (funcDeleteTemplateEvents(), funcSaveTemplateEvents() ).done(function(a1,a2) {
+            $("#myAlert").hide();
+            $('#alertSpot').clear();
+            if (a2 === -1) {
+                $('#alertSpot').append(
+                    '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.');
+            } else {
+                $('#alertSpot').append(
+                    '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                    'Datuak <strong>ongi</strong> grabatuak izan dira.');
+            }
+
+            $("#myAlert").alert();
+            $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
+                $("#myAlert").slideUp(500);
+            });
+        });
 
     });
 

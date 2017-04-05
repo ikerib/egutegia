@@ -112,6 +112,7 @@ fos_rest:
 
 fos_js_routing:
     routes_to_expose:
+        - delete_template_events
         - post_template_events
         - get_template_events
         - get_template
