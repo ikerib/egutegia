@@ -20,7 +20,14 @@
     </div>
 
     <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
+        <label for="min-date" class="col-sm-4 control-label">{{ 'Norberarentzako orduak' | trans }}</label>
+        <div class="col-sm-7">
+            {{ form_widget(form.hours_self, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="min-date" class="col-sm-4 control-label">{{ 'Egun bat zenbat ordu dira' | trans }}</label>
         <div class="col-sm-7">
             {{ form_widget(form.hours_self, { 'attr': {'class': 'form-control'} }) }}
         </div>

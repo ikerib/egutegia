@@ -77,9 +77,9 @@ otherJS = [
 ];
 otherCSS = [
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap.css',
+    './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-datepicker.min.css',
     './app/Resources/assets/js/bootstrap/dist/css/bootstrap-theme.css',
     './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-year-calendar.min.css',
-    './app/Resources/assets/js/bootstrap-year-calendar/css/bootstrap-datepicker.min.css',
     './app/Resources/assets/js/bootstrap-table/dist/bootstrap-table.css',
     './app/Resources/assets/'
 ];
@@ -156,23 +156,23 @@ gulp.task('sass:prod', function () {
     gulp.src(freeIMG)
         .pipe(gulp.dest('web/img/'));
 
-    var niresass = gulp.src(paths.sass + '/app.scss')
-        .pipe(plumber({errorHandler: onError}))
-        .pipe(sass({errLogToConsole: true}))
-        .pipe(postcss([cssnext]))
-        .pipe(cssnano({
-            keepSpecialComments: 1,
-            rebase: false
-        }))
-        .pipe(rename({suffix: '.min'}));
-    var besteCss = gulp.src(otherCSS).pipe(cssnano({
-        keepSpecialComments: 1,
-        rebase: false
-    }));
 
-    return merge(niresass, besteCss)
-        .pipe(concat('app.min.css'))
-        .pipe(gulp.dest(paths.buildCss));
+    return merge (
+        gulp.src(otherCSS)
+            .pipe(cssnano({keepSpecialComments: 1,rebase: false}))
+            .pipe(gulp.dest(paths.buildCss)),
+        gulp.src(paths.sass)
+            .pipe(plumber({errorHandler: onError}))
+            .pipe(sass({errLogToConsole: true}))
+            .pipe(postcss([cssnext]))
+            .pipe(cssnano({keepSpecialComments: 1,rebase: false}))
+            .pipe(gulp.dest(paths.buildCss))
+
+
+    ).pipe(concat('app.min.css')).pipe(gulp.dest(paths.buildCss));;
+
+
+    // return merge(niresass, besteCss).pipe(concat('app.min.css')).pipe(gulp.dest(paths.buildCss));
 });
 
 

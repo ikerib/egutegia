@@ -2,190 +2,192 @@
  * Created by iibarguren on 3/13/17.
  */
 
-function findValueInObjectArray(obj, find) {
-    var result = -1;
-    $.each(obj, function (k, v) {
-        if (v.id === parseInt(find)) {
-            result = k;
-            return k;
-        }
-    });
-    return result;
-}
-
-function hoursCalc(event, ezabatu) {
-    // Types array
-    var arrTypes = [];
-    jQuery('.typestype').each(function () {
-        var currentElement = $(this);
-        var t = {};
-        t.id = currentElement.data('id');
-        t.name = currentElement.data('name');
-        t.color = currentElement.data('color');
-        arrTypes.push(t)
-    });
-    // Orduak Birkalkulatzen motaren arabera
-    var typeIndex = findValueInObjectArray(arrTypes, event.type);
-    if (typeIndex === -1) {
-        bootbox.alert({
-            message: "Egutegi motak ez daude finkatuak",
-            className: 'bb-alternate-modal'
+$(function () {
+    function findValueInObjectArray(obj, find) {
+        var result = -1;
+        $.each(obj, function (k, v) {
+            if (v.id === parseInt(find)) {
+                result = k;
+                return k;
+            }
         });
-    } else {
-        var tipoa = arrTypes[typeIndex];
-        var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val());
-        var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val());
-        var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val());
-        var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val());
-        var oldValue = 0;
+        return result;
+    }
 
-        if ($('#oldValue').val() !== "") {
-            oldValue = parseFloat($('#oldValue').val());
-        }
+    function hoursCalc(event, ezabatu) {
+        // Types array
+        var arrTypes = [];
+        jQuery('.typestype').each(function () {
+            var currentElement = $(this);
+            var t = {};
+            t.id = currentElement.data('id');
+            t.name = currentElement.data('name');
+            t.color = currentElement.data('color');
+            arrTypes.push(t)
+        });
+        // Orduak Birkalkulatzen motaren arabera
+        var typeIndex = findValueInObjectArray(arrTypes, event.type);
+        if (typeIndex === -1) {
+            bootbox.alert({
+                message: "Egutegi motak ez daude finkatuak",
+                className: 'bb-alternate-modal'
+            });
+        } else {
+            var tipoa = arrTypes[typeIndex];
+            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val());
+            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val());
+            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val());
+            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val());
+            var oldValue = 0;
 
-        if (tipoa.name === "Oporrak") {
-            if ((ezabatu === 1) || (ezabatu === true)) {
-                hoursFree = hoursFree + oldValue;
-            } else {
-                hoursFree = hoursFree + oldValue - event.hours;
+            if ($('#oldValue').val() !== "") {
+                oldValue = parseFloat($('#oldValue').val());
             }
 
-            $('input#appbundle_calendar_hoursFree').val(hoursFree);
-            $('#hoursFree').html(hoursFree);
-        }
+            if (tipoa.name === "Oporrak") {
+                if ((ezabatu === 1) || (ezabatu === true)) {
+                    hoursFree = hoursFree + oldValue;
+                } else {
+                    hoursFree = hoursFree + oldValue - event.hours;
+                }
 
-        if (tipoa.name === "Norberarentzako") {
-            if ((ezabatu === 1) || (ezabatu === true)) {
-                hoursSelf = hoursSelf + oldValue;
-            } else {
-                hoursSelf = hoursSelf + oldValue - event.hours;
+                $('input#appbundle_calendar_hoursFree').val(hoursFree);
+                $('#hoursFree').html(hoursFree);
             }
-            $('input#appbundle_calendar_hoursSelf').val(hoursSelf);
-            $('#hoursSelf').html(hoursSelf);
-        }
 
-        if (tipoa.name === "Konpentsatuak") {
-            if ((ezabatu === 1) || (ezabatu === true)) {
-                hoursCompensed = hoursCompensed + oldValue;
-            } else {
-                hoursCompensed = hoursCompensed + oldValue - event.hours;
+            if (tipoa.name === "Norberarentzako") {
+                if ((ezabatu === 1) || (ezabatu === true)) {
+                    hoursSelf = hoursSelf + oldValue;
+                } else {
+                    hoursSelf = hoursSelf + oldValue - event.hours;
+                }
+                $('input#appbundle_calendar_hoursSelf').val(hoursSelf);
+                $('#hoursSelf').html(hoursSelf);
             }
-            $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed);
-            $('#hoursCompensed').html(hoursCompensed);
-        }
 
-    }
-}
+            if (tipoa.name === "Konpentsatuak") {
+                if ((ezabatu === 1) || (ezabatu === true)) {
+                    hoursCompensed = hoursCompensed + oldValue;
+                } else {
+                    hoursCompensed = hoursCompensed + oldValue - event.hours;
+                }
+                $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed);
+                $('#hoursCompensed').html(hoursCompensed);
+            }
 
-function editEvent(event) {
-    $('#event-modal input[name="event-index"]').val(event ? event.id : '');
-    $('#event-modal input[name="event-name"]').val(event ? event.name : '');
-    $('#event-modal input[name="event-type"]').val(event ? event.type : '');
-    $('#event-modal input[name="event-hours"]').val(event ? event.hours : '');
-    $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
-    $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
-
-    $('#oldValue').val(event ? event.hours : 0);
-
-    $('#cmbTypeSelect').val(event ? event.type : '');
-
-    if ( event ) {
-        if ( event.type === undefined ) {
-            $('#cmbTypeSelect').val("-1");
         }
     }
 
-    $('#event-modal').modal();
-    $('#event-modal').on('shown.bs.modal', function () {
-        $('#event-modal input[name="event-name"]').focus()
-    })
-}
+    function editEvent(event) {
+        $('#event-modal input[name="event-index"]').val(event ? event.id : '');
+        $('#event-modal input[name="event-name"]').val(event ? event.name : '');
+        $('#event-modal input[name="event-type"]').val(event ? event.type : '');
+        $('#event-modal input[name="event-hours"]').val(event ? event.hours : '');
+        $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
+        $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
 
-function deleteEvent(event) {
-    var dataSource = $('#calendar').data('calendar').getDataSource();
+        $('#oldValue').val(event ? event.hours : 0);
 
-    for (var i in dataSource) {
-        if (dataSource[i].id == event.id) {
-            dataSource.splice(i, 1);
-            $('#oldValue').val(event ? event.hours : 0);
-            hoursCalc(event, true);
-            break;
+        $('#cmbTypeSelect').val(event ? event.type : '');
+
+        if ( event ) {
+            if ( event.type === undefined ) {
+                $('#cmbTypeSelect').val("-1");
+            }
         }
+
+        $('#event-modal').modal();
+        $('#event-modal').on('shown.bs.modal', function () {
+            $('#event-modal input[name="event-name"]').focus()
+        })
     }
 
+    function deleteEvent(event) {
+        var dataSource = $('#calendar').data('calendar').getDataSource();
 
-    $('#calendar').data('calendar').setDataSource(dataSource);
-}
-
-function saveEvent() {
-    var event = {
-        id: $('#event-modal input[name="event-index"]').val(),
-        name: $('#event-modal input[name="event-name"]').val(),
-        type: $('#event-modal option:selected').val(),
-        hours: $('#event-modal input[name="event-hours"]').val(),
-        color: $('#event-modal option:selected').data('color'),
-        startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-        endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
-    };
-
-    // Data Validation
-    if ( event.name.length === 0 ) {
-        bootbox.alert("Izena jartzea beharrezkoa da.");
-        return;
-    }
-    if ( event.type === "-1" ) {
-        bootbox.alert("Mota zehaztea beharrezkoa da.");
-        return;
-    }
-    if ( event.hours.length === 0 ) {
-        event.hours = 0;
-    } else {
-        if ($.isNumeric (event.hours) === false) {
-            bootbox.alert("Ordu kopuruak zenbakia izan behar du.");
-            return;
-        }
-    }
-    if ( (Date.parse(event.startDate)===false) || ( Date.parse(event.endDate)===false ) ) {
-        bootbox.alert("Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.");
-        return;
-    }
-
-    var dataSource = $('#calendar').data('calendar').getDataSource();
-
-    if (event.id) {
         for (var i in dataSource) {
             if (dataSource[i].id == event.id) {
-                dataSource[i].name = event.name;
-                dataSource[i].type = event.type;
-                dataSource[i].hours = parseFloat(event.hours);
-                dataSource[i].color = event.color;
-                dataSource[i].startDate = event.startDate;
-                dataSource[i].endDate = event.endDate;
-                hoursCalc(event);
-            }
-        }
-    }
-    else {
-        var newId = 0;
-        for (var i in dataSource) {
-            if (dataSource[i].id > newId) {
-                newId = dataSource[i].id;
+                dataSource.splice(i, 1);
+                $('#oldValue').val(event ? event.hours : 0);
+                hoursCalc(event, true);
+                break;
             }
         }
 
-        newId++;
-        event.id = newId;
 
-        hoursCalc(event);
-
-        dataSource.push(event);
+        $('#calendar').data('calendar').setDataSource(dataSource);
     }
 
-    $('#calendar').data('calendar').setDataSource(dataSource);
-    $('#event-modal').modal('hide');
-}
+    function saveEvent() {
+        var event = {
+            id: $('#event-modal input[name="event-index"]').val(),
+            name: $('#event-modal input[name="event-name"]').val(),
+            type: $('#event-modal option:selected').val(),
+            hours: $('#event-modal input[name="event-hours"]').val(),
+            color: $('#event-modal option:selected').data('color'),
+            startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
+            endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+        };
 
-$(function () {
+        // Data Validation
+        if ( event.name.length === 0 ) {
+            bootbox.alert("Izena jartzea beharrezkoa da.");
+            return;
+        }
+        if ( event.type === "-1" ) {
+            bootbox.alert("Mota zehaztea beharrezkoa da.");
+            return;
+        }
+        if ( event.hours.length === 0 ) {
+            event.hours = 0;
+        } else {
+            if ($.isNumeric (event.hours) === false) {
+                bootbox.alert("Ordu kopuruak zenbakia izan behar du.");
+                return;
+            }
+        }
+        if ( (Date.parse(event.startDate)===false) || ( Date.parse(event.endDate)===false ) ) {
+            bootbox.alert("Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.");
+            return;
+        }
+
+        var dataSource = $('#calendar').data('calendar').getDataSource();
+
+        if (event.id) {
+            for (var i in dataSource) {
+                if (dataSource[i].id == event.id) {
+                    dataSource[i].name = event.name;
+                    dataSource[i].type = event.type;
+                    dataSource[i].hours = parseFloat(event.hours);
+                    dataSource[i].color = event.color;
+                    dataSource[i].startDate = event.startDate;
+                    dataSource[i].endDate = event.endDate;
+                    // hoursCalc(event);
+                }
+            }
+        }
+        else {
+            var newId = 0;
+            for (var i in dataSource) {
+                if (dataSource[i].id > newId) {
+                    newId = dataSource[i].id;
+                }
+            }
+
+            newId++;
+            event.id = newId;
+
+            hoursCalc(event);
+
+            dataSource.push(event);
+        }
+
+        $('#calendar').data('calendar').setDataSource(dataSource);
+        $('#event-modal').modal('hide');
+
+        return -1;
+    }
+
     var currentYear = new Date().getFullYear();
 
     $('#calendar').calendar({
@@ -370,9 +372,8 @@ $(function () {
 
     });
 
-    $('#save-event').click(function () {
-        // TODO: Validation
-        saveEvent();
+    $('#save-event').on('click',function () {
+        return saveEvent();
     });
 
     $('#btnGrabatu').on('click', function () {

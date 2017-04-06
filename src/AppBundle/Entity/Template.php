@@ -70,6 +70,14 @@ class Template
     private $hours_compensed=0;
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="hours_day", type="decimal", precision=10, scale=2)
+     * @Expose()
+     */
+    private $hours_day=0;
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
      * @Expose()
@@ -352,5 +360,29 @@ class Template
     public function getTemplateEvents()
     {
         return $this->template_events;
+    }
+
+    /**
+     * Set hoursDay
+     *
+     * @param string $hoursDay
+     *
+     * @return Template
+     */
+    public function setHoursDay($hoursDay)
+    {
+        $this->hours_day = $hoursDay;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursDay
+     *
+     * @return string
+     */
+    public function getHoursDay()
+    {
+        return $this->hours_day;
     }
 }

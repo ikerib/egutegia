@@ -78,6 +78,21 @@ class Calendar
     private $hours_compensed=0; // Ordu konpentsatuak
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="hours_day", type="decimal", precision=10, scale=2)
+     * @Expose()
+     */
+    private $hours_day=0;
+
+    /**
+     * @var string
+     * @Expose
+     * @ORM\Column(name="note", type="text", nullable=true)
+     */
+    private $note;
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
      * @Expose
@@ -482,5 +497,53 @@ class Calendar
     public function getContentChangedBy()
     {
         return $this->contentChangedBy;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Calendar
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set hoursDay
+     *
+     * @param string $hoursDay
+     *
+     * @return Calendar
+     */
+    public function setHoursDay($hoursDay)
+    {
+        $this->hours_day = $hoursDay;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursDay
+     *
+     * @return string
+     */
+    public function getHoursDay()
+    {
+        return $this->hours_day;
     }
 }

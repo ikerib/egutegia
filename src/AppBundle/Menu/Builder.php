@@ -77,6 +77,8 @@ class Builder implements ContainerAwareInterface {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $routeName = $request->get('_route');
 
+
+
         $menu = $factory->createItem(
             'root',
             array(
@@ -85,7 +87,7 @@ class Builder implements ContainerAwareInterface {
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
 
-        if ($routeName == 'dashboard') {
+        if (strpos($routeName, 'egutegia') !== false) {
             $menu->addChild('Egutegiak', array( 'uri' => 'javascript:void(0);' ));
         } else {
             $menu->addChild('Txantiloiak', array( 'uri' => 'javascript:void(0);' ));
@@ -99,6 +101,10 @@ class Builder implements ContainerAwareInterface {
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $routeName = $request->get('_route');
+        $noToolBarRouteNames = [
+            'dashboard',
+            'admin_template_index',
+        ];
 
         $menu = $factory->createItem(
             'root',
@@ -108,7 +114,7 @@ class Builder implements ContainerAwareInterface {
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
 
-        if ($routeName != 'dashboard') {
+        if (!in_array($routeName , $noToolBarRouteNames)) {
             $menu->addChild(
                 'Egutegia Ezabatu',
                 array(
@@ -133,4 +139,5 @@ class Builder implements ContainerAwareInterface {
 
         return $menu;
     }
+
 }
