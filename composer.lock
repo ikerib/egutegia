@@ -1098,12 +1098,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfSymfony/FOSUserBundle.git",
-                "reference": "298695ac5c23cae37a131acac63e4894a33d73aa"
+                "reference": "fda6cbe3db268ab35d569d28a37d9b0f6d0eef60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/298695ac5c23cae37a131acac63e4894a33d73aa",
-                "reference": "298695ac5c23cae37a131acac63e4894a33d73aa",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSUserBundle/zipball/fda6cbe3db268ab35d569d28a37d9b0f6d0eef60",
+                "reference": "fda6cbe3db268ab35d569d28a37d9b0f6d0eef60",
                 "shasum": ""
             },
             "require": {
@@ -1167,7 +1167,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2017-04-03 15:08:26"
+            "time": "2017-04-05 07:28:52"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -3765,7 +3765,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
