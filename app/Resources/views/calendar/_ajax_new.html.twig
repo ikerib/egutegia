@@ -4,6 +4,7 @@
         {{ form_start(form) }}
         {#{{ form_start(form, {'action': path('admin_calendar_new', { 'username': username } ), 'method': 'GET'}) }}#}
         {{ form_errors(form) }}
+
         <div class="row">
             <div class="form-group">
                 <div class="col-sm-4">
@@ -36,7 +37,7 @@
                 </div>
             </div>
         </div>
-
+        <hr>
         <div class="row">
             <div class="form-group">
                 <div class="col-sm-4">
@@ -80,6 +81,18 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4">
+                    {{ form_label(form.hoursDay, null, {'label_attr': {'class': 'col-sm-4'}}) }}
+                </div>
+                <div class="col-sm-8">
+                    {{ form_widget(form.hoursDay, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+        </div>
+
         <div style="display: none;">
             {{ form_end(form) }}
         </div>

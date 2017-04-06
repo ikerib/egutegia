@@ -50,7 +50,7 @@
         {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true , 'fluid': true } %}
             {% block brand %}
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a class="navbar-brand" href="#">Egutegiak</a>
+                    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
                 {% else %}
                     <a class="navbar-brand" href="{{ path('user_homepage') }}">
                         {% if is_granted('ROLE_USER') %}

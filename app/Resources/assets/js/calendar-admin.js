@@ -34,21 +34,21 @@ $(function () {
             });
         } else {
             var tipoa = arrTypes[typeIndex];
-            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val());
-            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val());
-            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val());
-            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val());
+            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(",","."));
+            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(",","."));
+            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(",","."));
+            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(",","."));
             var oldValue = 0;
 
             if ($('#oldValue').val() !== "") {
-                oldValue = parseFloat($('#oldValue').val());
+                oldValue = parseFloat($('#oldValue').val().replace(",","."));
             }
 
             if (tipoa.name === "Oporrak") {
                 if ((ezabatu === 1) || (ezabatu === true)) {
-                    hoursFree = hoursFree + oldValue;
+                    hoursFree = (hoursFree + oldValue).toFixed(2);;
                 } else {
-                    hoursFree = hoursFree + oldValue - event.hours;
+                    hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2);;
                 }
 
                 $('input#appbundle_calendar_hoursFree').val(hoursFree);
@@ -78,6 +78,19 @@ $(function () {
         }
     }
 
+    function workday_count(fstart,fend) {
+        start = moment(fstart);
+        end = moment(fend);
+        var first = start.clone().endOf('week'); // end of first week
+        var last = end.clone().startOf('week'); // start of last week
+        var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
+        var wfirst = first.day() - start.day(); // check first week
+        if(start.day() == 0) --wfirst; // -1 if start with sunday
+        var wlast = end.day() - last.day(); // check last week
+        if(end.day() == 6) --wlast; // -1 if end with saturday
+        return wfirst + days + wlast; // get the total
+    }
+
     function editEvent(event) {
         $('#event-modal input[name="event-index"]').val(event ? event.id : '');
         $('#event-modal input[name="event-name"]').val(event ? event.name : '');
@@ -96,6 +109,14 @@ $(function () {
             }
         }
 
+        // Number of working days selected
+        var d = workday_count(event.startDate, event.endDate )
+        $('#txtWorkingDaysSelected').val(d);
+        var j = $('#txtTotalHousSelected').data("jornada");
+
+        var t = d * parseFloat(j);
+
+        $('#txtTotalHousSelected').val(t);
         $('#event-modal').modal();
         $('#event-modal').on('shown.bs.modal', function () {
             $('#event-modal input[name="event-name"]').focus()
@@ -194,7 +215,7 @@ $(function () {
         style: 'background',
         language: 'eu',
         minDate: new Date('2017-01-01'),
-        // disabledWeekDays: [0,7],
+        disabledWeekDays: [6, 0],
         allowOverlap: true,
         // displayWeekNumber: true,
         enableContextMenu: true,

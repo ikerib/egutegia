@@ -21,6 +21,6 @@
     "font-awesome": "fontawesome#^4.7.0",
     "bootstrap-sass": "bootstrap-sass-official#^3.3.7",
     "bootstrap-year-calendar": "^1.1.0",
-    "moment": "^2.18.0"
+    "moment": "^2.18.1"
   }
 }

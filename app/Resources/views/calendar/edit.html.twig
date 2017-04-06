@@ -133,11 +133,25 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label for="txtWorkingDaysSelected" class="col-sm-3 control-label">Aukeratuko egun kopurua:</label>
+                                <div class="col-sm-9">
+                                    <input name="txtWorkingDaysSelected" id="txtWorkingDaysSelected" type="text" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="txtJornada" class="col-sm-3 control-label">Jornada orduak: </label>
+                                <div class="col-sm-9">
+                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}" disabled>
+                                </div>
+                            </div>
+
 
                             <div class="form-group">
                                 <label for="hours" class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
                                 <div class="col-sm-8">
-                                    <input name="event-hours" type="text" class="form-control">
+                                    <input id="txtTotalHousSelected" data-jornada="{{ calendar.hoursDay }}" name="event-hours" type="text" class="form-control">
                                 </div>
                             </div>
 
@@ -153,6 +167,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div style="display: none;">
                                 <div class="form-group">
                                     <label for="oldValue" class="col-sm-3 control-label">oldValue</label>
@@ -161,6 +176,7 @@
                                     </div>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </div>

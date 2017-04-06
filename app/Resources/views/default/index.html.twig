@@ -5,9 +5,7 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
-    <div id="toolbar">
-        <button id="btnBerria" class="btn btn-default">Txantiloi berria</button>
-    </div>
+
     <table id="table"
             {#data-toggle="table"#}
            data-classes="table table-hover table-condensed"
@@ -179,6 +177,7 @@
                             $('#appbundle_calendar_hoursYear').val(result.hours_year);
                             $('#appbundle_calendar_hoursFree').val(result.hours_free);
                             $('#appbundle_calendar_hoursSelf').val(result.hours_self);
+                            $('#appbundle_calendar_hoursDay').val(result.hours_day);
                         },
                         error: function () {
                             console.log("HORROR!");

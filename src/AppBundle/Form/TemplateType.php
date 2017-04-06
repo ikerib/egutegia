@@ -19,6 +19,7 @@ class TemplateType extends AbstractType {
             ->add('hours_year')
             ->add('hours_free')
             ->add('hours_self')
+            ->add('hoursDay')
         ;
     }
 

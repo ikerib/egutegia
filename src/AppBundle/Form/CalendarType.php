@@ -61,6 +61,10 @@ class CalendarType extends AbstractType
                 'label' => 'Urterako ordu konpentsatuak',
                 'required' => true
             ))
+            ->add('hoursDay', NumberType::class, array(
+                'label' => 'Jornada',
+                'required' => true
+            ))
         ;
     }
     
