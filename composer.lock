@@ -1710,16 +1710,16 @@
         },
         {
             "name": "ldaptools/ldaptools",
-            "version": "v0.23.0",
+            "version": "v0.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ldaptools/ldaptools.git",
-                "reference": "b8f9cde84ddb84984f6a3bb91dc206a7c34e54a8"
+                "reference": "31e05ae6082fc7e61afc666e2c773ee8cb0e47b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ldaptools/ldaptools/zipball/b8f9cde84ddb84984f6a3bb91dc206a7c34e54a8",
-                "reference": "b8f9cde84ddb84984f6a3bb91dc206a7c34e54a8",
+                "url": "https://api.github.com/repos/ldaptools/ldaptools/zipball/31e05ae6082fc7e61afc666e2c773ee8cb0e47b5",
+                "reference": "31e05ae6082fc7e61afc666e2c773ee8cb0e47b5",
                 "shasum": ""
             },
             "require": {
@@ -1766,7 +1766,7 @@
                 "ldap",
                 "openldap"
             ],
-            "time": "2016-11-27T23:59:52+00:00"
+            "time": "2017-04-09T23:39:51+00:00"
         },
         {
             "name": "ldaptools/ldaptools-bundle",
