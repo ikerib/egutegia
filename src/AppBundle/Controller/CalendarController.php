@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\User;
+use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\CalendarType;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -171,12 +172,18 @@ class CalendarController extends Controller {
         $em    = $this->getDoctrine()->getManager();
         $types = $em->getRepository('AppBundle:Type')->findAll();
 
+        $frmnote = $this->createForm(
+            CalendarNoteType::class,
+            $calendar
+        );
+
         return $this->render(
             'calendar/edit.html.twig',
             array(
                 'calendar'    => $calendar,
                 'edit_form'   => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
+                'frmnote'     => $frmnote->createView(),
                 'types'       => $types,
             )
         );

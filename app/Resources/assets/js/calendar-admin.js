@@ -34,21 +34,21 @@ $(function () {
             });
         } else {
             var tipoa = arrTypes[typeIndex];
-            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(",","."));
-            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(",","."));
-            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(",","."));
-            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(",","."));
+            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(",", "."));
+            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(",", "."));
+            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(",", "."));
+            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(",", "."));
             var oldValue = 0;
 
             if ($('#oldValue').val() !== "") {
-                oldValue = parseFloat($('#oldValue').val().replace(",","."));
+                oldValue = parseFloat($('#oldValue').val().replace(",", "."));
             }
 
             if (tipoa.name === "Oporrak") {
                 if ((ezabatu === 1) || (ezabatu === true)) {
-                    hoursFree = (hoursFree + oldValue).toFixed(2);;
+                    hoursFree = (hoursFree + oldValue).toFixed(2);
                 } else {
-                    hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2);;
+                    hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2);
                 }
 
                 $('input#appbundle_calendar_hoursFree').val(hoursFree);
@@ -78,16 +78,16 @@ $(function () {
         }
     }
 
-    function workday_count(fstart,fend) {
+    function workday_count(fstart, fend) {
         start = moment(fstart);
         end = moment(fend);
         var first = start.clone().endOf('week'); // end of first week
         var last = end.clone().startOf('week'); // start of last week
-        var days = last.diff(first,'days') * 5 / 7; // this will always multiply of 7
+        var days = last.diff(first, 'days') * 5 / 7; // this will always multiply of 7
         var wfirst = first.day() - start.day(); // check first week
-        if(start.day() == 0) --wfirst; // -1 if start with sunday
+        if (start.day() == 0) --wfirst; // -1 if start with sunday
         var wlast = end.day() - last.day(); // check last week
-        if(end.day() == 6) --wlast; // -1 if end with saturday
+        if (end.day() == 6) --wlast; // -1 if end with saturday
         return wfirst + days + wlast; // get the total
     }
 
@@ -103,20 +103,20 @@ $(function () {
 
         $('#cmbTypeSelect').val(event ? event.type : '');
 
-        if ( event ) {
-            if ( event.type === undefined ) {
+        if (event) {
+            if (event.type === undefined) {
                 $('#cmbTypeSelect').val("-1");
             }
         }
 
         // Number of working days selected
-        var d = workday_count(event.startDate, event.endDate )
-        $('#txtWorkingDaysSelected').val(d);
+        var d = workday_count(event.startDate, event.endDate);
+        $('#txtWorkingDaysSelected').val(d.toFixed(2));
         var j = $('#txtTotalHousSelected').data("jornada");
 
         var t = d * parseFloat(j);
 
-        $('#txtTotalHousSelected').val(t);
+        $('#txtTotalHousSelected').val(t.toFixed(2));
         $('#event-modal').modal();
         $('#event-modal').on('shown.bs.modal', function () {
             $('#event-modal input[name="event-name"]').focus()
@@ -151,23 +151,23 @@ $(function () {
         };
 
         // Data Validation
-        if ( event.name.length === 0 ) {
+        if (event.name.length === 0) {
             bootbox.alert("Izena jartzea beharrezkoa da.");
             return;
         }
-        if ( event.type === "-1" ) {
+        if (event.type === "-1") {
             bootbox.alert("Mota zehaztea beharrezkoa da.");
             return;
         }
-        if ( event.hours.length === 0 ) {
+        if (event.hours.length === 0) {
             event.hours = 0;
         } else {
-            if ($.isNumeric (event.hours) === false) {
+            if ($.isNumeric(event.hours) === false) {
                 bootbox.alert("Ordu kopuruak zenbakia izan behar du.");
                 return;
             }
         }
-        if ( (Date.parse(event.startDate)===false) || ( Date.parse(event.endDate)===false ) ) {
+        if ((Date.parse(event.startDate) === false) || ( Date.parse(event.endDate) === false )) {
             bootbox.alert("Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.");
             return;
         }
@@ -300,10 +300,9 @@ $(function () {
         });
     };
 
-
     var getAjaxTemplateEvents = function () {
         var tmpl = $('#templateid').val();
-        if ( tmpl === -1 ) {
+        if (tmpl === -1) {
             console.log("ez du template-rik");
             return -1;
         }
@@ -342,12 +341,12 @@ $(function () {
         });
     };
 
-    $.when(getAjaxTemplateEvents(), getAjaxEvents()).done(function(a1, a2){
+    $.when(getAjaxTemplateEvents(), getAjaxEvents()).done(function (a1, a2) {
         var resp = [];
         // Check if template is set
         var tmpl = a1[0];
 
-        if ( tmpl.length > 0 ) { // Template is set
+        if (tmpl.length > 0) { // Template is set
             for (var i = 0; i < tmpl.length; i++) {
                 var d = {};
                 d.id = tmpl[i].id;
@@ -393,7 +392,7 @@ $(function () {
 
     });
 
-    $('#save-event').on('click',function () {
+    $('#save-event').on('click', function () {
         return saveEvent();
     });
 
@@ -415,11 +414,11 @@ $(function () {
 
                     for (var i = 0; i < datuak.length && akatsa === 0; i++) {
 
-                        if ( datuak[i].istemplate === undefined) {
-                            datuak[i].istemplate=0;
+                        if (datuak[i].istemplate === undefined) {
+                            datuak[i].istemplate = 0;
                         }
 
-                        if ( datuak[i].istemplate === 0 ) { // Template Events are not saved
+                        if (datuak[i].istemplate === 0) { // Template Events are not saved
                             var url = Routing.generate('post_events');
 
                             var d = {};
@@ -436,7 +435,7 @@ $(function () {
 
                             $.ajax({
                                 url: url,
-                                async:false,
+                                async: false,
                                 type: 'POST',
                                 data: JSON.stringify(d),
                                 contentType: "application/json",
@@ -490,7 +489,7 @@ $(function () {
                 }
             },
             callback: function (result) {
-                if ( result === true ) {
+                if (result === true) {
                     $('#frmDelCalendar').submit();
                 }
             }

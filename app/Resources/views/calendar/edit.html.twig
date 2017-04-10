@@ -190,9 +190,46 @@
         </div>
     </div>
 
+    <div class="modal modal-fade" id="edit-notes">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                    <h4 class="modal-title">
+                        {{ 'Oharrak' | trans }}
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <form class="form-horizontal" id="frmNotes">
+
+                            <div class="form-group">
+                                <label for="txtJornada" class="col-sm-12 control-label"></label>
+                                <div class="col-sm-12">
+
+                                    {{ form_widget(frmnote.note, { 'id': 'txtNotes' }) }}
+
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary" id="save-calendar-note">
+                        {{ 'Gorde' | trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="calendar" class="calendar"></div>
 
-    <input type="hidden" id="calendarid" value="{{ calendar.id }}">
 
     {% if calendar.template is not null  %}
         {% set templateid =  calendar.template.id %}
@@ -200,12 +237,15 @@
         {% set templateid =  -1 %}
     {% endif %}
     <input type="hidden" id="templateid" value="{{ templateid }}">
+    <input type="hidden" id="calendarid" value="{{ calendar.id }}">
 
 
 {% endblock %}
 
 {% block content_sidebar %}
     {{ render(controller('AppBundle:Type:list' )) }}
+    <h2><a class="btnEditNote" href="javascript:void(0);" data-toggle="modal" data-target="#edit-notes">{{ "Oharrak" | trans }}</a></h2>
+    {{ calendar.note | raw }}
 {% endblock content_sidebar %}
 
 {% block foot_script %}
@@ -213,9 +253,41 @@
     <script src="{{ asset('js/calendar-admin.js') }}"></script>
     <script>
         $(function () {
-            $('#saveCalendarEditModal').on('click', function() {
+            $('#saveCalendarEditModal').on('click', function () {
                 $('#frmEditCalendar').submit();
-            })
+            });
+
+            $('#save-calendar-note').on('click', function () {
+                var calendarid = $('#calendarid').val();
+                var url = Routing.generate('post_notes', {'calendarid': calendarid});
+
+                var values = {};
+                $.each( $("#frmNotes").serializeArray(), function(i, field) {
+                    values[field.name] = field.value;
+                });
+
+                $.ajax({
+                    url:url,
+                    data: values,
+                    type: "POST",
+                    success: function() {
+                        $("#myAlert").hide();
+                        $('#alertSpot').empty();
+                        $('#alertSpot').append(
+                            '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
+                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                            'Datuak <strong>ongi</strong> grabatuak izan dira.');
+
+                        $("#myAlert").alert();
+                        $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
+                            $("#myAlert").slideUp(500);
+                        });
+                        $('#edit-notes').modal('hide');
+                        location.reload();
+                    }
+                });
+            });
+
         });
     </script>
 {% endblock %}

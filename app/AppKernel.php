@@ -21,6 +21,8 @@ class AppKernel extends Kernel
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
+            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+
             new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
 
             new JMS\SerializerBundle\JMSSerializerBundle(),

@@ -2,16 +2,19 @@
 
 namespace ApiBundle\Controller;
 
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventHistory;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\TemplateEvent;
+use AppBundle\Form\CalendarNoteType;
 use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use HttpException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
@@ -410,7 +413,57 @@ class ApiController extends FOSRestController {
 
     }
 
+    /**
+     * Save Notes.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Save calendar notes",
+     *   statusCodes = {
+     *     200 = "OK response"
+     *   }
+     * )
+     *
+     * @var Request $request
+     * @Annotations\View()
+     * @param Request $request
+     * @return static
+     */
+    public function postNotesAction(Request $request, $calendarid )
+    {
+        $em = $this->getDoctrine()->getManager();
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
 
+        $frmnote = $this->createForm(
+            CalendarNoteType::class,
+            $calendar
+        );
+        $frmnote->handleRequest( $request );
+        if ( $frmnote->isValid( ) ) {
+
+            $em->persist($calendar);
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setName("Egutegiaren oharrak eguneratuak");
+            $log->setDescription('Testua eguneratua');
+            $em->persist($log);
+            $em->flush();
+
+            $view = View::create();
+            $view->setData($calendar);
+
+            header('content-type: application/json; charset=utf-8');
+            header("access-control-allow-origin: *");
+
+            return $view;
+        } else {
+            throw new HttpException(400, "ez da topatu.");
+        }
+
+
+
+    }// "post_notes"            [POST] /notes/{calendarid}
 
 
 }
