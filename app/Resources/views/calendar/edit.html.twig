@@ -17,10 +17,14 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong><span id="hoursYear">{{ calendar.hoursYear}}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong><span id="hoursFree">{{ calendar.hoursFree }}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong><span id="hoursSelf"> {{ calendar.hoursSelf}}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoak: ' | trans }} </strong><span id="hoursCompensed">{{ calendar.hoursCompensed }}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong><span
+                                id="hoursYear">{{ calendar.hoursYear }}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong><span
+                                id="hoursFree">{{ calendar.hoursFree }}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong><span
+                                id="hoursSelf"> {{ calendar.hoursSelf }}</span></div>
+                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoak: ' | trans }} </strong><span
+                                id="hoursCompensed">{{ calendar.hoursCompensed }}</span></div>
                 </div>
             </div>
         </div>
@@ -39,60 +43,62 @@
     <div class="modal modal-fade" id="edit-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{{ 'Itxi' | trans }}</span></button>
-                <h4 class="modal-title">
-                    {#{{ username ~ '-ren egutegia' | trans }}#}
-                </h4>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                    <h4 class="modal-title">
+                        {#{{ username ~ '-ren egutegia' | trans }}#}
+                    </h4>
+                </div>
+                <div class="modal-body">
+
+                    {{ form_start(edit_form, { 'attr': {'id':'frmEditCalendar','class': 'form-horizontal'} }) }}
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Lan orduak guztira' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak guztira' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="hidden">
+                        {{ form_end(edit_form) }}
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary"
+                            id="saveCalendarEditModal">{{ 'Gorde' | trans }}</button>
+                </div>
             </div>
-            <div class="modal-body">
-
-                {{ form_start(edit_form, { 'attr': {'id':'frmEditCalendar','class': 'form-horizontal'} }) }}
-                <div class="form-group">
-                    <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
-                    <div class="col-sm-7">
-                        {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="min-date"class="col-sm-3 control-label">{{ 'Lan orduak guztira' | trans }}</label>
-                    <div class="col-sm-7">
-                        {{ form_widget(edit_form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak guztira' | trans }}</label>
-                    <div class="col-sm-7">
-                        {{ form_widget(edit_form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
-                    <div class="col-sm-7">
-                        {{ form_widget(edit_form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
-                    <div class="col-sm-7">
-                        {{ form_widget(edit_form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
-                    </div>
-                </div>
-
-                <div class="hidden">
-                    {{ form_end(edit_form) }}
-
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                <button type="button" class="btn btn-primary" id="saveCalendarEditModal">{{ 'Gorde' | trans }}</button>
-            </div>
-        </div>
         </div>
     </div>
 
@@ -125,25 +131,29 @@
                                 <label for="cmbTypeSelect" class="col-sm-3 control-label">{{ 'Mota'|trans }}</label>
                                 <div class="col-sm-8">
                                     <select id="cmbTypeSelect" name="event-type" class="form-control">
-                                            <option selected value="-1">Aukeratu bat</option>
+                                        <option selected value="-1">Aukeratu bat</option>
                                         {% for type in types %}
-                                            <option data-color="{{ type.color }}" value="{{ type.id }}">{{ type.name }}</option>
+                                            <option data-color="{{ type.color }}"
+                                                    value="{{ type.id }}">{{ type.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="txtWorkingDaysSelected" class="col-sm-3 control-label">Aukeratuko egun kopurua:</label>
+                                <label for="txtWorkingDaysSelected" class="col-sm-3 control-label">Aukeratuko egun
+                                    kopurua:</label>
                                 <div class="col-sm-9">
-                                    <input name="txtWorkingDaysSelected" id="txtWorkingDaysSelected" type="text" disabled>
+                                    <input name="txtWorkingDaysSelected" id="txtWorkingDaysSelected" type="text"
+                                           disabled>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="txtJornada" class="col-sm-3 control-label">Jornada orduak: </label>
                                 <div class="col-sm-9">
-                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}" disabled>
+                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}"
+                                           disabled>
                                 </div>
                             </div>
 
@@ -151,19 +161,21 @@
                             <div class="form-group">
                                 <label for="hours" class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
                                 <div class="col-sm-8">
-                                    <input id="txtTotalHousSelected" data-jornada="{{ calendar.hoursDay }}" name="event-hours" type="text" class="form-control">
+                                    <input id="txtTotalHousSelected" data-jornada="{{ calendar.hoursDay }}"
+                                           name="event-hours" type="text" class="form-control">
                                 </div>
                             </div>
-
 
 
                             <div class="form-group">
                                 <label for="min-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-daterange" data-provide="datepicker">
-                                        <input name="event-start-date" type="text" class="form-control" value="2012-04-05">
+                                        <input name="event-start-date" type="text" class="form-control"
+                                               value="2012-04-05">
                                         <span class="input-group-addon">&nbsp;-&nbsp;</span>
-                                        <input name="event-end-date" type="text" class="form-control" value="2012-04-19">
+                                        <input name="event-end-date" type="text" class="form-control"
+                                               value="2012-04-19">
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +184,8 @@
                                 <div class="form-group">
                                     <label for="oldValue" class="col-sm-3 control-label">oldValue</label>
                                     <div class="col-sm-8">
-                                        <input id="oldValue" name="oldValue" type="text" class="form-control" value="2012-04-19">
+                                        <input id="oldValue" name="oldValue" type="text" class="form-control"
+                                               value="2012-04-19">
                                     </div>
                                 </div>
                             </div>
@@ -231,7 +244,7 @@
     <div id="calendar" class="calendar"></div>
 
 
-    {% if calendar.template is not null  %}
+    {% if calendar.template is not null %}
         {% set templateid =  calendar.template.id %}
     {% else %}
         {% set templateid =  -1 %}
@@ -244,7 +257,8 @@
 
 {% block content_sidebar %}
     {{ render(controller('AppBundle:Type:list' )) }}
-    <h2><a class="btnEditNote" href="javascript:void(0);" data-toggle="modal" data-target="#edit-notes">{{ "Oharrak" | trans }}</a></h2>
+    <h2><a class="btnEditNote" href="javascript:void(0);" data-toggle="modal"
+           data-target="#edit-notes">{{ "Oharrak" | trans }}</a></h2>
     {{ calendar.note | raw }}
 {% endblock content_sidebar %}
 
@@ -262,15 +276,15 @@
                 var url = Routing.generate('post_notes', {'calendarid': calendarid});
 
                 var values = {};
-                $.each( $("#frmNotes").serializeArray(), function(i, field) {
+                $.each($("#frmNotes").serializeArray(), function (i, field) {
                     values[field.name] = field.value;
                 });
 
                 $.ajax({
-                    url:url,
+                    url: url,
                     data: values,
                     type: "POST",
-                    success: function() {
+                    success: function () {
                         $("#myAlert").hide();
                         $('#alertSpot').empty();
                         $('#alertSpot').append(
