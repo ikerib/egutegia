@@ -148,6 +148,14 @@ class Calendar
     private $events;
 
     /**
+     * @var files[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\File", mappedBy="calendar",cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $files;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -545,5 +553,39 @@ class Calendar
     public function getHoursDay()
     {
         return $this->hours_day;
+    }
+
+    /**
+     * Add file
+     *
+     * @param \AppBundle\Entity\File $file
+     *
+     * @return Calendar
+     */
+    public function addFile(\AppBundle\Entity\File $file)
+    {
+        $this->files[] = $file;
+
+        return $this;
+    }
+
+    /**
+     * Remove file
+     *
+     * @param \AppBundle\Entity\File $file
+     */
+    public function removeFile(\AppBundle\Entity\File $file)
+    {
+        $this->files->removeElement($file);
+    }
+
+    /**
+     * Get files
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

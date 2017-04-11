@@ -178,3 +178,9 @@ ivory_ck_editor:
             jquery: true
             forcePasteAsPlainText: true;
 
+vich_uploader:
+    db_driver: orm # or mongodb or propel or phpcr
+    mappings:
+        uploadfile:
+            uri_prefix:         /uploads
+            upload_destination: '%kernel.root_dir%/../web/uploads'
