@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Calendar;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
@@ -63,9 +64,9 @@ class File
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Calendar
+     * @var Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="files")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
      */
@@ -195,11 +196,11 @@ class File
     /**
      * Set calendar
      *
-     * @param \AppBundle\Entity\Calendar $calendar
+     * @param Calendar $calendar
      *
      * @return File
      */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    public function setCalendar(Calendar $calendar = null)
     {
         $this->calendar = $calendar;
 
@@ -209,7 +210,7 @@ class File
     /**
      * Get calendar
      *
-     * @return \AppBundle\Entity\Calendar
+     * @return Calendar
      */
     public function getCalendar()
     {

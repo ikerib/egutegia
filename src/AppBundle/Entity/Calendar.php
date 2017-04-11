@@ -126,7 +126,7 @@ class Calendar
     /**
      * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="calendars")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $user;
@@ -151,7 +151,6 @@ class Calendar
      * @var files[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\File", mappedBy="calendar",cascade={"persist"})
-     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $files;
 
@@ -161,6 +160,7 @@ class Calendar
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->files = new ArrayCollection();
     }
 
     public function __toString()

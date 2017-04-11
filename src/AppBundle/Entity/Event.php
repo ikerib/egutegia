@@ -79,7 +79,7 @@ class Event {
     /**
      * @var \AppBundle\Entity\Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="events")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
      */
