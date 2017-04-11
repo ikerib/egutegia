@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\File;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\CalendarType;
+use AppBundle\Form\FileType;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -177,6 +180,10 @@ class CalendarController extends Controller {
             $calendar
         );
 
+        $file = new File();
+        $frmFile = $this->createForm(
+            FileType::class, $file
+        );
         return $this->render(
             'calendar/edit.html.twig',
             array(
@@ -184,6 +191,7 @@ class CalendarController extends Controller {
                 'edit_form'   => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
                 'frmnote'     => $frmnote->createView(),
+                'frmfile'     => $frmFile->createView(),
                 'types'       => $types,
             )
         );

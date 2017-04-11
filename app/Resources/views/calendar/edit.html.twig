@@ -203,21 +203,25 @@
         </div>
     </div>
 
-    <div class="modal modal-fade" id="edit-notes">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+    <div>
 
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
-                    <h4 class="modal-title">
-                        {{ 'Oharrak' | trans }}
-                    </h4>
-                </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{ "Egutegia" | trans }}</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">{{ "Oharrak" | trans }}</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">{{ "Fitxategiak" | trans }}</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">{{ "Denboralerroa" | trans }}</a></li>
+        </ul>
 
-                <div class="modal-body">
-                    <div class="row">
-                        <form class="form-horizontal" id="frmNotes">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="home">
+                <div id="calendar" class="calendar"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="profile">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form class="" id="frmNotes">
 
                             <div class="form-group">
                                 <label for="txtJornada" class="col-sm-12 control-label"></label>
@@ -231,17 +235,25 @@
                         </form>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                    <button type="button" class="btn btn-primary" id="save-calendar-note">
-                        {{ 'Gorde' | trans }}
-                    </button>
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-sm-10"></div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="save-calendar-note">
+                                {{ 'Gorde' | trans }}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane fade" id="messages">...</div>
+            <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
         </div>
+
     </div>
 
-    <div id="calendar" class="calendar"></div>
+
 
 
     {% if calendar.template is not null %}
@@ -257,9 +269,8 @@
 
 {% block content_sidebar %}
     {{ render(controller('AppBundle:Type:list' )) }}
-    <h2><a class="btnEditNote" href="javascript:void(0);" data-toggle="modal"
-           data-target="#edit-notes">{{ "Oharrak" | trans }}</a></h2>
-    {{ calendar.note | raw }}
+    {#<h2>{{ "Oharrak" | trans }}</h2>#}
+    {#{{ calendar.note | raw }}#}
 {% endblock content_sidebar %}
 
 {% block foot_script %}
@@ -296,8 +307,6 @@
                         $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
                             $("#myAlert").slideUp(500);
                         });
-                        $('#edit-notes').modal('hide');
-                        location.reload();
                     }
                 });
             });

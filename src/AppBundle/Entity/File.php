@@ -15,6 +15,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Table(name="file")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\FileRepository")
+ * @Vich\Uploadable
  */
 class File
 {
