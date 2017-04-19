@@ -345,6 +345,10 @@
             {# Denboralerroa #}
             <div role="tabpanel" class="tab-pane fade" id="timeline">
 
+                <div class="alert alert-warning" role="alert" style="display: none;" id="divTimelineAlert">
+                    Datuak eguneratu behar dira, sakatu F5 (Gorde ez diren aldaketak galduko dira.)
+                </div>
+
                 <section id="cd-timeline" class="cd-container">
                     {% for log in logs %}
                         <div class="cd-timeline-block">
@@ -354,7 +358,11 @@
                                 {% elseif log.name == "Egutegia eguneratua" %}
                                     <img src="{{ asset('img/calendar-edit.png') }}" alt="Aldaketak egutegian">
                                 {% elseif log.name == "Fitxategia ezabatua" %}
-                                    <img src="{{ asset('img/file.png') }}" alt="Aldaketak egutegian">
+                                    <img src="{{ asset('img/file-del.png') }}" alt="Fitxategia ezabatua">
+                                {% elseif log.name == "Fitxategi berria" %}
+                                    <img src="{{ asset('img/file-new.png') }}" alt="Fitxategi berria">
+                                {% else %}
+                                    <img src="{{ asset('img/calendar.jpg') }}" alt="egutegia">
                                 {% endif %}
 
                             </div> <!-- cd-timeline-img -->
@@ -402,8 +410,22 @@
     <script>
       $(function () {
 
+        var url = document.location.toString();
+        if (url.match('#')) {
+          $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show');
+        } //add a suffix
+
+        // Change hash for page-reload
+        $('.nav-tabs a').on('shown.bs.tab', function (e) {
+          e.preventDefault();
+          console.log(e.target.hash);
+          window.location.hash = "!" + e.target.hash;
+          return false;
+        })
+
         // show specific tab
         var hash = window.location.hash;
+        hash = window.location.hash.replace(/^#!/, '');
         $('#myTab a[href="' + hash + '"]').tab('show');
 
         $('#saveCalendarEditModal').on('click', function () {

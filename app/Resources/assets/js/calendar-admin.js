@@ -469,6 +469,8 @@ $(function () {
             $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
                 $("#myAlert").slideUp(500);
             });
+            $('#divTimelineAlert').show();
+
         })
 
     });
