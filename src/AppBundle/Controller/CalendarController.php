@@ -5,10 +5,11 @@ namespace AppBundle\Controller;
 use AppBundle\AppBundle;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\File;
+use AppBundle\Entity\Log;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\CalendarType;
-use AppBundle\Form\FileType;
+use AppBundle\Form\UserfileType;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -96,6 +97,15 @@ class CalendarController extends Controller {
             }
             $calendar->setUser($u);
             $em->persist($calendar);
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setName( 'Egutegia sortu' );
+            $log->setDescription( $calendar->getName() . " egutegia sortua izan da" );
+            $log->setCalendar( $calendar );
+            $log->setUser( $this->getUser() );
+            $em->persist( $log );
+
             $em->flush($calendar);
 
             return $this->redirectToRoute('admin_calendar_edit', array( 'id' => $calendar->getId() ));
@@ -173,6 +183,9 @@ class CalendarController extends Controller {
         }
 
         $em    = $this->getDoctrine()->getManager();
+
+        $logs = $em->getRepository( 'AppBundle:Log' )->findCalendarLogs( $calendar->getId() );
+
         $types = $em->getRepository('AppBundle:Type')->findAll();
 
         $frmnote = $this->createForm(
@@ -181,8 +194,9 @@ class CalendarController extends Controller {
         );
 
         $file = new File();
+        $file->setCalendar( $calendar );
         $frmFile = $this->createForm(
-            FileType::class, $file
+            UserfileType::class, $file
         );
         return $this->render(
             'calendar/edit.html.twig',
@@ -192,6 +206,7 @@ class CalendarController extends Controller {
                 'delete_form' => $deleteForm->createView(),
                 'frmnote'     => $frmnote->createView(),
                 'frmfile'     => $frmFile->createView(),
+                'logs'        => $logs,
                 'types'       => $types,
             )
         );

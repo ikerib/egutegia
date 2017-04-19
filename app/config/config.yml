@@ -187,6 +187,6 @@ vich_uploader:
             upload_destination: '%kernel.root_dir%/../web/uploads'
 #            namer:              vich_uploader.namer_uniqid # will rename your uploaded files using a uniqueid for the name and keep the extension
             namer:              vich_uploader.namer_origname # will rename your uploaded files using a uniqueid as the prefix of the filename and keeping the original name and extension
-            inject_on_load:     false # should the file be injected into the uploadable entity when it is loaded from the data store.
+            inject_on_load:     true # should the file be injected into the uploadable entity when it is loaded from the data store.
             delete_on_update:   true # should the file be deleted when a new file is uploaded
             delete_on_remove:   true # should the file be deleted when the entity is removed

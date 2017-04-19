@@ -9,16 +9,17 @@ use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 
 /**
- * File
+ * Document
  *
- * @ORM\Table(name="file")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FileRepository")
+ * @ORM\Table(name="document")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
  * @Vich\Uploadable
  */
-class File
+class Document
 {
     /**
      * @var int
@@ -66,7 +67,7 @@ class File
     /**
      * @var Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="files")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="documents")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
      */
@@ -135,6 +136,9 @@ class File
     /*****************************************************************************************************************/
 
 
+
+
+
     /**
      * Get id
      *
@@ -150,7 +154,7 @@ class File
      *
      * @param \DateTime $created
      *
-     * @return File
+     * @return Document
      */
     public function setCreated($created)
     {
@@ -174,7 +178,7 @@ class File
      *
      * @param \DateTime $updated
      *
-     * @return File
+     * @return Document
      */
     public function setUpdated($updated)
     {
@@ -196,11 +200,11 @@ class File
     /**
      * Set calendar
      *
-     * @param Calendar $calendar
+     * @param \AppBundle\Entity\Calendar $calendar
      *
-     * @return File
+     * @return Document
      */
-    public function setCalendar(Calendar $calendar = null)
+    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
     {
         $this->calendar = $calendar;
 
@@ -210,7 +214,7 @@ class File
     /**
      * Get calendar
      *
-     * @return Calendar
+     * @return \AppBundle\Entity\Calendar
      */
     public function getCalendar()
     {

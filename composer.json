@@ -48,8 +48,8 @@
         "vich/uploader-bundle": "^1.5"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0"
+        "phpunit/phpunit": "^6.1",
+        "sensio/generator-bundle": "^3.0"
     },
     "scripts": {
         "symfony-scripts": [

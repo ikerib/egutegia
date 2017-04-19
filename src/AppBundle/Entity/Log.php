@@ -41,6 +41,13 @@ class Log
     private $description;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="query", type="string", length=2000, nullable=true)
+     */
+    private $query;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -164,6 +171,30 @@ class Log
     }
 
     /**
+     * Set query
+     *
+     * @param string $query
+     *
+     * @return Log
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
+
+        return $this;
+    }
+
+    /**
+     * Get query
+     *
+     * @return string
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
@@ -210,10 +241,6 @@ class Log
     {
         return $this->updated;
     }
-
-
-
-
 
     /**
      * Set contentChangedBy

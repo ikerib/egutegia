@@ -148,11 +148,11 @@ class Calendar
     private $events;
 
     /**
-     * @var files[]
+     * @var documents[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\File", mappedBy="calendar",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="calendar",cascade={"persist"})
      */
-    private $files;
+    private $documents;
 
     /**
      * Constructor
@@ -160,7 +160,7 @@ class Calendar
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->files = new ArrayCollection();
+        $this->documents = new ArrayCollection();
     }
 
     public function __toString()
@@ -206,6 +206,30 @@ class Calendar
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set year
+     *
+     * @param integer $year
+     *
+     * @return Calendar
+     */
+    public function setYear($year)
+    {
+        $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * Get year
+     *
+     * @return integer
+     */
+    public function getYear()
+    {
+        return $this->year;
     }
 
     /**
@@ -305,6 +329,54 @@ class Calendar
     }
 
     /**
+     * Set hoursDay
+     *
+     * @param string $hoursDay
+     *
+     * @return Calendar
+     */
+    public function setHoursDay($hoursDay)
+    {
+        $this->hours_day = $hoursDay;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursDay
+     *
+     * @return string
+     */
+    public function getHoursDay()
+    {
+        return $this->hours_day;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Calendar
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
      * Set slug
      *
      * @param string $slug
@@ -376,6 +448,29 @@ class Calendar
         return $this->updated;
     }
 
+    /**
+     * Set contentChangedBy
+     *
+     * @param string $contentChangedBy
+     *
+     * @return Calendar
+     */
+    public function setContentChangedBy($contentChangedBy)
+    {
+        $this->contentChangedBy = $contentChangedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get contentChangedBy
+     *
+     * @return string
+     */
+    public function getContentChangedBy()
+    {
+        return $this->contentChangedBy;
+    }
 
     /**
      * Set user
@@ -460,132 +555,36 @@ class Calendar
     }
 
     /**
-     * Set year
+     * Add document
      *
-     * @param integer $year
+     * @param \AppBundle\Entity\Document $document
      *
      * @return Calendar
      */
-    public function setYear($year)
+    public function addDocument(\AppBundle\Entity\Document $document)
     {
-        $this->year = $year;
+        $this->documents[] = $document;
 
         return $this;
     }
 
     /**
-     * Get year
+     * Remove document
      *
-     * @return integer
+     * @param \AppBundle\Entity\Document $document
      */
-    public function getYear()
+    public function removeDocument(\AppBundle\Entity\Document $document)
     {
-        return $this->year;
+        $this->documents->removeElement($document);
     }
 
     /**
-     * Set contentChangedBy
-     *
-     * @param string $contentChangedBy
-     *
-     * @return Calendar
-     */
-    public function setContentChangedBy($contentChangedBy)
-    {
-        $this->contentChangedBy = $contentChangedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get contentChangedBy
-     *
-     * @return string
-     */
-    public function getContentChangedBy()
-    {
-        return $this->contentChangedBy;
-    }
-
-    /**
-     * Set note
-     *
-     * @param string $note
-     *
-     * @return Calendar
-     */
-    public function setNote($note)
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    /**
-     * Get note
-     *
-     * @return string
-     */
-    public function getNote()
-    {
-        return $this->note;
-    }
-
-    /**
-     * Set hoursDay
-     *
-     * @param string $hoursDay
-     *
-     * @return Calendar
-     */
-    public function setHoursDay($hoursDay)
-    {
-        $this->hours_day = $hoursDay;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursDay
-     *
-     * @return string
-     */
-    public function getHoursDay()
-    {
-        return $this->hours_day;
-    }
-
-    /**
-     * Add file
-     *
-     * @param \AppBundle\Entity\File $file
-     *
-     * @return Calendar
-     */
-    public function addFile(\AppBundle\Entity\File $file)
-    {
-        $this->files[] = $file;
-
-        return $this;
-    }
-
-    /**
-     * Remove file
-     *
-     * @param \AppBundle\Entity\File $file
-     */
-    public function removeFile(\AppBundle\Entity\File $file)
-    {
-        $this->files->removeElement($file);
-    }
-
-    /**
-     * Get files
+     * Get documents
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFiles()
+    public function getDocuments()
     {
-        return $this->files;
+        return $this->documents;
     }
 }

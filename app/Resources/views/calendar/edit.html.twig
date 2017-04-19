@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block head_style %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/vertical-timeline.css') }}">
+{% endblock %}
+
 {% block page_header %}
     <div class="page-header hovebutton">
 
@@ -209,10 +214,14 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#egutegia" aria-controls="home" role="tab" data-toggle="tab">{{ "Egutegia" | trans }}</a></li>
-            <li role="presentation"><a href="#notes" aria-controls="profile" role="tab" data-toggle="tab">{{ "Oharrak" | trans }}</a></li>
-            <li role="presentation"><a href="#files" aria-controls="messages" role="tab" data-toggle="tab">{{ "Fitxategiak" | trans }}</a></li>
-            <li role="presentation"><a href="#timeline" aria-controls="settings" role="tab" data-toggle="tab">{{ "Denboralerroa" | trans }}</a></li>
+            <li role="presentation" class="active"><a href="#egutegia" aria-controls="home" role="tab"
+                                                      data-toggle="tab">{{ "Egutegia" | trans }}</a></li>
+            <li role="presentation"><a href="#notes" aria-controls="profile" role="tab"
+                                       data-toggle="tab">{{ "Oharrak" | trans }}</a></li>
+            <li role="presentation"><a href="#files" aria-controls="messages" role="tab"
+                                       data-toggle="tab">{{ "Fitxategiak" | trans }}</a></li>
+            <li role="presentation"><a href="#timeline" aria-controls="settings" role="tab"
+                                       data-toggle="tab">{{ "Denboralerroa" | trans }}</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -257,55 +266,62 @@
             {# Fitxategiak #}
             <div role="tabpanel" class="tab-pane fade" id="files">
                 {#<div class="modal modal-fade" id="edit-notes">#}
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
 
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                                            class="sr-only">{{ 'Itxi' | trans }}</span></button>
-                                <h4 class="modal-title">
-                                    {{ 'Fitxategiak' | trans }}
-                                </h4>
-                            </div>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span
+                                        aria-hidden="true">×</span><span
+                                        class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                            <h4 class="modal-title">
+                                {{ 'Fitxategiak' | trans }}
+                            </h4>
+                        </div>
 
-                            <div class="modal-body">
-                                <div class="row">
-                                    <form class="form-horizontal" id="frmNotes">
+                        <div class="modal-body">
+                            <div class="row">
+                                {#{{ form_start(frmfile, {'attr': {'id': 'frmFile', 'class': 'form-horizontal'}}) }}#}
 
-                                        <div class="form-group">
-                                            <label for="txtJornada" class="col-sm-12 control-label"></label>
-                                            <div class="col-sm-12">
+                                    {#<div class="form-group">#}
+                                        {#<label for="txtJornada" class="col-sm-12 control-label"></label>#}
+                                        {#<div class="col-sm-12">#}
 
-                                                {{ form_widget(frmfile.uploadfile, { 'id': 'txtuploadfile' }) }}
+                                            {#{{ form_widget(frmfile.uploadfile, { 'id': 'txtuploadfile' }) }}#}
 
-                                            </div>
-                                        </div>
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {#<div style="display: none;">#}
+                                        {#{{ form_rest(frmfile) }}#}
+                                    {#</div>#}
 
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                                <button type="button" class="btn btn-primary" id="save-upload-file">
-                                    {{ 'Gorde' | trans }}
-                                </button>
+
+                                {#{{ form_end(frmfile) }}#}
+                                {{ render(controller('AppBundle:File:new', {'calendarid':  calendar.id})) }}
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                            <button type="button" class="btn btn-primary" id="save-upload-file">
+                                {{ 'Gorde' | trans }}
+                            </button>
+                        </div>
                     </div>
+                </div>
                 {#</div>#}
 
                 <table class="table table-bordered table-condensed table-striped table-condensed table-hover">
                     <thead>
-                        <th>File</th>
-                        <th></th>
+                    <th>File</th>
+                    <th></th>
                     </thead>
                     <tbody>
-                    {#{% for f in calendar.files if calendar.files %}#}
-                        <tr>
-                            <td>{{ dump(calendar) }}</td>
-                            <td></td>
-                        </tr>
-                    {#{% endfor %}#}
+                    {% for f in calendar.files if calendar.files %}
+                    <tr>
+                        <td>{{ vich_uploader_asset(f, 'uploadfile') }}</td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
                     </tbody>
 
                 </table>
@@ -313,7 +329,33 @@
             </div>
 
             {# Denboralerroa #}
-            <div role="tabpanel" class="tab-pane fade" id="timeline">...</div>
+            <div role="tabpanel" class="tab-pane fade" id="timeline">
+
+                <section id="cd-timeline" class="cd-container">
+                    {% for log in logs %}
+                        <div class="cd-timeline-block">
+                            <div class="cd-timeline-img">
+                                {% if log.name == "Egutegia sortu" %}
+                                    <img src="{{ asset('img/calendar-add.png') }}" alt="Egutegi berria">
+                                {% else %}
+                                    <img src="{{ asset('img/calendar-edit.png') }}" alt="Aldaketak egutegian">
+                                {% endif %}
+
+                            </div> <!-- cd-timeline-img -->
+
+                            <div class="cd-timeline-content">
+                                <h2>{{ log.name }}</h2>
+                                <p>{{ log.description }}</p>
+                                <span class="cd-date">{{ log.created | date('Y-m-d H:i:s') }}</span>
+                            </div> <!-- cd-timeline-content -->
+                        </div> <!-- cd-timeline-block -->
+
+                    {% endfor %}
+                </section>
+
+
+
+            </div>
         </div>
 
     </div>
@@ -341,41 +383,82 @@
 {% block foot_script %}
     {{ parent() }}
     <script src="{{ asset('js/calendar-admin.js') }}"></script>
+    <script src="{{ asset('js/vertical-timeline.js') }}"></script>
     <script>
-        $(function () {
-            $('#saveCalendarEditModal').on('click', function () {
-                $('#frmEditCalendar').submit();
-            });
-
-            $('#save-calendar-note').on('click', function () {
-                var calendarid = $('#calendarid').val();
-                var url = Routing.generate('post_notes', {'calendarid': calendarid});
-
-                var values = {};
-                $.each($("#frmNotes").serializeArray(), function (i, field) {
-                    values[field.name] = field.value;
-                });
-
-                $.ajax({
-                    url: url,
-                    data: values,
-                    type: "POST",
-                    success: function () {
-                        $("#myAlert").hide();
-                        $('#alertSpot').empty();
-                        $('#alertSpot').append(
-                            '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
-                            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                            'Datuak <strong>ongi</strong> grabatuak izan dira.');
-
-                        $("#myAlert").alert();
-                        $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
-                            $("#myAlert").slideUp(500);
-                        });
-                    }
-                });
-            });
-
+      $(function () {
+        $('#saveCalendarEditModal').on('click', function () {
+          $('#frmEditCalendar').submit()
         });
+
+//        $('#save-upload-file').on('click', function() {
+//
+////          var form = $('#frmFile')[0]; // You need to use standard javascript object here
+////          var formData = new FormData(form);
+//
+//          var data;
+//          var type = 'GET';
+//          var processData = false;
+//          var contenType = 'application/x-www-form-urlencoded; charset=UTF-8';
+//
+//          data = new FormData();
+//          var $inputs = $('#frmFile :input')
+//          $inputs.each(function() {
+//            if ($(this).attr('type') === 'file' &&  $(this).val() !== '') {
+//              // Each file input is appended if there is a file selected.
+//              // If it was also appended without a selected file, this would
+//              // result in an error in symfony.
+//              data.append($(this).attr('name'), $(this)[0].files[0]);
+//            } else if ($(this).attr('type') !== 'checkbox' || $(this).prop('checked')) {
+//              // Every other input is appended with it's value. Checkboxes
+//              // are only appended if they are selected as per normal form
+//              // submit behaviour.
+//              data.append($(this).attr('name'), $(this).val());
+//            }
+//          });
+//
+//
+////          var url = Routing.generate('post_upload');
+//          var url = Routing.generate('admin_file_new');
+//          $.ajax( {
+//            url: url,
+//            type: 'POST',
+//            data: data,
+//            enctype: 'multipart/form-data',
+//            processData: false,
+//            contentType: false
+//          } );
+//
+//        });
+
+        $('#save-calendar-note').on('click', function () {
+          var calendarid = $('#calendarid').val()
+          var url = Routing.generate('post_notes', {'calendarid': calendarid})
+
+          var values = {}
+          $.each($('#frmNotes').serializeArray(), function (i, field) {
+            values[field.name] = field.value
+          })
+
+          $.ajax({
+            url: url,
+            data: values,
+            type: 'POST',
+            success: function () {
+              $('#myAlert').hide()
+              $('#alertSpot').empty()
+              $('#alertSpot').append(
+                '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                'Datuak <strong>ongi</strong> grabatuak izan dira.')
+
+              $('#myAlert').alert()
+              $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+                $('#myAlert').slideUp(500)
+              })
+            }
+          })
+        })
+
+      })
     </script>
 {% endblock %}

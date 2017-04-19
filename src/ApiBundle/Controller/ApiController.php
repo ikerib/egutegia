@@ -5,9 +5,11 @@ namespace ApiBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventHistory;
+use AppBundle\Entity\File;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\TemplateEvent;
 use AppBundle\Form\CalendarNoteType;
+use AppBundle\Form\UserfileType;
 use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -283,15 +285,14 @@ class ApiController extends FOSRestController {
 
         /** @var Log $log */
         $log = new Log();
-        $log->setName("Update Calendar hours");
-        $log->setDescription($query->getSql());
+        $log->setName("Egutegia eguneratua");
+        $log->setCalendar( $calendar );
+        $log->setDescription("Egutegian aldaketak grabatu dira ");
+        $log->setQuery( $query->getSql() );
         $em->persist($log);
-        $em->flush();
+
 
         $query->execute();
-
-
-
         $em->flush();
 
         $view = View::create();
@@ -424,10 +425,12 @@ class ApiController extends FOSRestController {
      *   }
      * )
      *
-     * @var Request $request
-     * @Annotations\View()
      * @param Request $request
+     * @param         $calendarid
+     *
      * @return static
+     * @throws HttpException
+     * @Annotations\View()
      */
     public function postNotesAction(Request $request, $calendarid )
     {
@@ -464,6 +467,5 @@ class ApiController extends FOSRestController {
 
 
     }// "post_notes"            [POST] /notes/{calendarid}
-
 
 }
