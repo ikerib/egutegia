@@ -274,29 +274,13 @@
                                         aria-hidden="true">×</span><span
                                         class="sr-only">{{ 'Itxi' | trans }}</span></button>
                             <h4 class="modal-title">
-                                {{ 'Fitxategiak' | trans }}
+                                {{ 'Dokumentua gehitu' | trans }}
                             </h4>
                         </div>
 
                         <div class="modal-body">
                             <div class="row">
-                                {#{{ form_start(frmfile, {'attr': {'id': 'frmFile', 'class': 'form-horizontal'}}) }}#}
-
-                                    {#<div class="form-group">#}
-                                        {#<label for="txtJornada" class="col-sm-12 control-label"></label>#}
-                                        {#<div class="col-sm-12">#}
-
-                                            {#{{ form_widget(frmfile.uploadfile, { 'id': 'txtuploadfile' }) }}#}
-
-                                        {#</div>#}
-                                    {#</div>#}
-                                    {#<div style="display: none;">#}
-                                        {#{{ form_rest(frmfile) }}#}
-                                    {#</div>#}
-
-
-                                {#{{ form_end(frmfile) }}#}
-                                {{ render(controller('AppBundle:File:new', {'calendarid':  calendar.id})) }}
+                                {{ render(controller('AppBundle:Document:new', {'calendarid':  calendar.id})) }}
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -316,7 +300,7 @@
                     <th></th>
                     </thead>
                     <tbody>
-                    {% for f in calendar.files if calendar.files %}
+                    {% for f in calendar.documents if calendar.documents %}
                     <tr>
                         <td>{{ vich_uploader_asset(f, 'uploadfile') }}</td>
                         <td></td>
@@ -390,7 +374,10 @@
           $('#frmEditCalendar').submit()
         });
 
-//        $('#save-upload-file').on('click', function() {
+        $('#save-upload-file').on('click', function() {
+          console.log("click");
+          $('#frmFile').submit();
+
 //
 ////          var form = $('#frmFile')[0]; // You need to use standard javascript object here
 ////          var formData = new FormData(form);
@@ -428,7 +415,7 @@
 //            contentType: false
 //          } );
 //
-//        });
+        });
 
         $('#save-calendar-note').on('click', function () {
           var calendarid = $('#calendarid').val()

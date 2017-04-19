@@ -1,16 +1,15 @@
-{% extends 'base.html.twig' %}
+{{ form_start(form, {'attr': {'id': 'frmFile'}}) }}
 
-{% block body %}
-    <h1>Document creation</h1>
+    <div class="form-group">
+        <label for="appbundle_document[uploadfile][file]" class="col-sm-3 control-label">{{ 'Aukeratu Dokumentua' | trans }}</label>
+        <div class="col-sm-8">
+            {{ form_widget(form.uploadfile) }}
+        </div>
+    </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+    <div style="display: none;">
+        {{  form_rest(form) }}
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_document_index') }}">Back to the list</a>
-        </li>
-    </ul>
-{% endblock %}
+
+{{ form_end(form) }}
