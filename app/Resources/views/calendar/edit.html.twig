@@ -213,7 +213,7 @@
     <div>
 
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#egutegia" aria-controls="home" role="tab"
                                                       data-toggle="tab">{{ "Egutegia" | trans }}</a></li>
             <li role="presentation"><a href="#notes" aria-controls="profile" role="tab"
@@ -265,51 +265,81 @@
 
             {# Fitxategiak #}
             <div role="tabpanel" class="tab-pane fade" id="files">
-                {#<div class="modal modal-fade" id="edit-notes">#}
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
 
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal"><span
-                                        aria-hidden="true">×</span><span
-                                        class="sr-only">{{ 'Itxi' | trans }}</span></button>
-                            <h4 class="modal-title">
-                                {{ 'Dokumentua gehitu' | trans }}
-                            </h4>
-                        </div>
+                <div class="modal modal-fade" id="modal-files">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
 
-                        <div class="modal-body">
-                            <div class="row">
-                                {{ render(controller('AppBundle:Document:new', {'calendarid':  calendar.id})) }}
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                            aria-hidden="true">×</span><span
+                                            class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                                <h4 class="modal-title">
+                                    {{ 'Dokumentua gehitu' | trans }}
+                                </h4>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default"
-                                    data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                            <button type="button" class="btn btn-primary" id="save-upload-file">
-                                {{ 'Gorde' | trans }}
-                            </button>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    {{ render(controller('AppBundle:Document:new', {'calendarid':  calendar.id})) }}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                                <button type="button" class="btn btn-primary" id="save-upload-file">
+                                    {{ 'Gorde' | trans }}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {#</div>#}
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-files">
+                            {{ "Dokumentu berria" | trans }}
+                        </button>
+                    </div>
+                </div>
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered table-condensed table-striped table-condensed table-hover">
+                            <thead>
+                                <th>{{ "Dokumentua" | trans }}</th>
+                                <th>{{ "Noiz igo da" | trans }}</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                            {% for f in calendar.documents if calendar.documents %}
+                                <tr>
+                                    <td><a href="{{ vich_uploader_asset(f, 'uploadfile') }}"
+                                           target="_blank">{{ f.filename }}</a></td>
+                                    <td>{{ f.created | date('Y-m-d H:i:s') }}</td>
+                                    <td>
+                                        <ul class="list-inline text-center">
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">
+                                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                {{ form_start(deletedocumentforms[f.id],{'attr': {'id': f.id}}) }}
+                                                <a class="btnRemoveRow" data-id="{{ f.id }}" href="javascript:void(0);">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                                {{ form_end(deletedocumentforms[f.id]) }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
 
-                <table class="table table-bordered table-condensed table-striped table-condensed table-hover">
-                    <thead>
-                    <th>File</th>
-                    <th></th>
-                    </thead>
-                    <tbody>
-                    {% for f in calendar.documents if calendar.documents %}
-                    <tr>
-                        <td>{{ vich_uploader_asset(f, 'uploadfile') }}</td>
-                        <td></td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-
-                </table>
-
+                        </table>
+                    </div>
+                </div>
             </div>
 
             {# Denboralerroa #}
@@ -321,8 +351,10 @@
                             <div class="cd-timeline-img">
                                 {% if log.name == "Egutegia sortu" %}
                                     <img src="{{ asset('img/calendar-add.png') }}" alt="Egutegi berria">
-                                {% else %}
+                                {% elseif log.name == "Egutegia eguneratua" %}
                                     <img src="{{ asset('img/calendar-edit.png') }}" alt="Aldaketak egutegian">
+                                {% elseif log.name == "Fitxategia ezabatua" %}
+                                    <img src="{{ asset('img/file.png') }}" alt="Aldaketak egutegian">
                                 {% endif %}
 
                             </div> <!-- cd-timeline-img -->
@@ -336,7 +368,6 @@
 
                     {% endfor %}
                 </section>
-
 
 
             </div>
@@ -370,13 +401,39 @@
     <script src="{{ asset('js/vertical-timeline.js') }}"></script>
     <script>
       $(function () {
+
+        // show specific tab
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+
         $('#saveCalendarEditModal').on('click', function () {
           $('#frmEditCalendar').submit()
+        })
+
+        $('.btnRemoveRow').on('click', function () {
+          var that = $(this);
+          bootbox.confirm({
+            title: "{{ 'Adi!' | trans }}",
+            message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+            buttons: {
+              cancel: {
+                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+              },
+              confirm: {
+                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+              }
+            },
+            callback: function (result) {
+              if ( result === true ) {
+                $(that).closest('form').submit();
+              }
+            }
+          });
         });
 
-        $('#save-upload-file').on('click', function() {
-          console.log("click");
-          $('#frmFile').submit();
+        $('#save-upload-file').on('click', function () {
+
+          $('#frmFile').submit()
 
 //
 ////          var form = $('#frmFile')[0]; // You need to use standard javascript object here
@@ -415,7 +472,7 @@
 //            contentType: false
 //          } );
 //
-        });
+        })
 
         $('#save-calendar-note').on('click', function () {
           var calendarid = $('#calendarid').val()

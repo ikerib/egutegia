@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Document;
+use AppBundle\Entity\Log;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -65,10 +66,22 @@ class DocumentController extends Controller
         if ( $form->isSubmitted() && $form->isValid() ) {
 
             $em->persist( $document );
+
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setCalendar( $calendar );
+            $log->setUser( $this->getUser() );
+            $log->setName( 'Fitxategi berria' );
+            $log->setDescription( $document->getFilename() . " fitxategia sortua izan da." );
+            $em->persist( $log );
+
             $em->flush();
 
-            return $this->redirectToRoute( 'admin_calendar_edit', array( 'id' => $calendarid ) );
-            //return new JsonResponse(array("result" => "OK",));
+            //return $this->redirectToRoute( 'admin_calendar_edit', array( 'id' => $calendarid ) );
+            return $this->redirect(
+                $this->generateUrl( 'admin_calendar_edit', array( 'id' => $calendar->getId())). '#files'
+            );
         }
 
         return $this->render(
@@ -76,25 +89,6 @@ class DocumentController extends Controller
             array(
                 'document' => $document,
                 'form'     => $form->createView(),
-            )
-        );
-    }
-
-    /**
-     * Finds and displays a document entity.
-     *
-     * @Route("/{id}", name="admin_document_show")
-     * @Method("GET")
-     */
-    public function showAction ( Document $document )
-    {
-        $deleteForm = $this->createDeleteForm( $document );
-
-        return $this->render(
-            'document/show.html.twig',
-            array(
-                'document'    => $document,
-                'delete_form' => $deleteForm->createView(),
             )
         );
     }
@@ -138,13 +132,30 @@ class DocumentController extends Controller
         $form = $this->createDeleteForm( $document );
         $form->handleRequest( $request );
 
+        $calendar = $document->getCalendar();
+
         if ( $form->isSubmitted() && $form->isValid() ) {
             $em = $this->getDoctrine()->getManager();
             $em->remove( $document );
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setCalendar( $calendar );
+            $log->setUser( $this->getUser() );
+            $log->setName( 'Fitxategia ezabatua' );
+            $log->setDescription( $document->getFilename() . " fitxategia ezabatua izan da." );
+            $em->persist( $log );
+
             $em->flush();
         }
 
-        return $this->redirectToRoute( 'admin_document_index' );
+        //return $this->redirectToRoute( 'admin_document_index' );
+        //return $this->redirectToRoute('admin_calendar_edit',array('id' => $calendar->getId()));
+
+        return $this->redirect(
+            $this->generateUrl( 'admin_calendar_edit', array( 'id' => $calendar->getId())). '#files'
+        );
+
     }
 
     /**

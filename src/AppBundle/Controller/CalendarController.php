@@ -202,6 +202,12 @@ class CalendarController extends Controller
             $doc
         );
 
+        $documents = $calendar->getDocuments();
+        $deleteDocumentForms = array();
+        foreach ($documents as $doc) {
+            $deleteDocumentForms[ $doc->getId() ] = $this->createDocumentDeleteForm($doc)->createView();
+        }
+
         return $this->render(
             'calendar/edit.html.twig',
             array(
@@ -212,6 +218,7 @@ class CalendarController extends Controller
                 'frmfile'     => $frmFile->createView(),
                 'logs'        => $logs,
                 'types'       => $types,
+                'deletedocumentforms' => $deleteDocumentForms,
             )
         );
     }
@@ -247,6 +254,21 @@ class CalendarController extends Controller
     {
         return $this->createFormBuilder()
             ->setAction( $this->generateUrl( 'admin_calendar_delete', array( 'id' => $calendar->getId() ) ) )
+            ->setMethod( 'DELETE' )
+            ->getForm();
+    }
+
+    /**
+     * Creates a form to delete a calendar entity.
+     *
+     * @param Document $doc The calendar entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDocumentDeleteForm ( Document $doc)
+    {
+        return $this->createFormBuilder()
+            ->setAction( $this->generateUrl( 'admin_document_delete', array( 'id' => $doc->getId() ) ) )
             ->setMethod( 'DELETE' )
             ->getForm();
     }
