@@ -104,7 +104,7 @@ class CalendarController extends Controller
             $log->setName( 'Egutegia sortu' );
             $log->setDescription( $calendar->getName() . " egutegia sortua izan da" );
             $log->setCalendar( $calendar );
-            $log->setUser( $this->getUser() );
+            //$log->setUser( $this->getUser() );
             $em->persist( $log );
 
             $em->flush( $calendar );

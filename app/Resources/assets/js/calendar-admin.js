@@ -3,266 +3,265 @@
  */
 
 $(function () {
-    function findValueInObjectArray(obj, find) {
-        var result = -1;
-        $.each(obj, function (k, v) {
-            if (v.id === parseInt(find)) {
-                result = k;
-                return k;
-            }
-        });
-        return result;
-    }
+  function findValueInObjectArray (obj, find) {
+    var result = -1
+    $.each(obj, function (k, v) {
+      if (v.id === parseInt(find)) {
+        result = k
+        return k
+      }
+    })
+    return result
+  }
 
-    function hoursCalc(event, ezabatu) {
-        // Types array
-        var arrTypes = [];
-        jQuery('.typestype').each(function () {
-            var currentElement = $(this);
-            var t = {};
-            t.id = currentElement.data('id');
-            t.name = currentElement.data('name');
-            t.color = currentElement.data('color');
-            arrTypes.push(t)
-        });
-        // Orduak Birkalkulatzen motaren arabera
-        var typeIndex = findValueInObjectArray(arrTypes, event.type);
-        if (typeIndex === -1) {
-            bootbox.alert({
-                message: "Egutegi motak ez daude finkatuak",
-                className: 'bb-alternate-modal'
-            });
+  function hoursCalc (event, ezabatu) {
+    // Types array
+    var arrTypes = []
+    jQuery('.typestype').each(function () {
+      var currentElement = $(this)
+      var t = {}
+      t.id = currentElement.data('id')
+      t.name = currentElement.data('name')
+      t.color = currentElement.data('color')
+      arrTypes.push(t)
+    })
+    // Orduak Birkalkulatzen motaren arabera
+    var typeIndex = findValueInObjectArray(arrTypes, event.type)
+    if (typeIndex === -1) {
+      bootbox.alert({
+        message: 'Egutegi motak ez daude finkatuak',
+        className: 'bb-alternate-modal'
+      })
+    } else {
+      var tipoa = arrTypes[typeIndex]
+      var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(',', '.'))
+      var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(',', '.'))
+      var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(',', '.'))
+      var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(',', '.'))
+      var oldValue = 0
+
+      if ($('#oldValue').val() !== '') {
+        oldValue = parseFloat($('#oldValue').val().replace(',', '.'))
+      }
+
+      if (tipoa.name === 'Oporrak') {
+        if ((ezabatu === 1) || (ezabatu === true)) {
+          hoursFree = (hoursFree + oldValue).toFixed(2)
         } else {
-            var tipoa = arrTypes[typeIndex];
-            var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(",", "."));
-            var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(",", "."));
-            var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(",", "."));
-            var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(",", "."));
-            var oldValue = 0;
-
-            if ($('#oldValue').val() !== "") {
-                oldValue = parseFloat($('#oldValue').val().replace(",", "."));
-            }
-
-            if (tipoa.name === "Oporrak") {
-                if ((ezabatu === 1) || (ezabatu === true)) {
-                    hoursFree = (hoursFree + oldValue).toFixed(2);
-                } else {
-                    hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2);
-                }
-
-                $('input#appbundle_calendar_hoursFree').val(hoursFree);
-                $('#hoursFree').html(hoursFree);
-            }
-
-            if (tipoa.name === "Norberarentzako") {
-                if ((ezabatu === 1) || (ezabatu === true)) {
-                    hoursSelf = hoursSelf + oldValue;
-                } else {
-                    hoursSelf = hoursSelf + oldValue - event.hours;
-                }
-                $('input#appbundle_calendar_hoursSelf').val(hoursSelf);
-                $('#hoursSelf').html(hoursSelf);
-            }
-
-            if (tipoa.name === "Konpentsatuak") {
-                if ((ezabatu === 1) || (ezabatu === true)) {
-                    hoursCompensed = hoursCompensed + oldValue;
-                } else {
-                    hoursCompensed = hoursCompensed + oldValue - event.hours;
-                }
-                $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed);
-                $('#hoursCompensed').html(hoursCompensed);
-            }
-
-        }
-    }
-
-    function workday_count(fstart, fend) {
-        start = moment(fstart);
-        end = moment(fend);
-        var first = start.clone().endOf('week'); // end of first week
-        var last = end.clone().startOf('week'); // start of last week
-        var days = last.diff(first, 'days') * 5 / 7; // this will always multiply of 7
-        var wfirst = first.day() - start.day(); // check first week
-        if (start.day() == 0) --wfirst; // -1 if start with sunday
-        var wlast = end.day() - last.day(); // check last week
-        if (end.day() == 6) --wlast; // -1 if end with saturday
-        return wfirst + days + wlast; // get the total
-    }
-
-    function editEvent(event) {
-        $('#event-modal input[name="event-index"]').val(event ? event.id : '');
-        $('#event-modal input[name="event-name"]').val(event ? event.name : '');
-        $('#event-modal input[name="event-type"]').val(event ? event.type : '');
-        $('#event-modal input[name="event-hours"]').val(event ? event.hours : '');
-        $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
-        $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
-
-        $('#oldValue').val(event ? event.hours : 0);
-
-        $('#cmbTypeSelect').val(event ? event.type : '');
-
-        if (event) {
-            if (event.type === undefined) {
-                $('#cmbTypeSelect').val("-1");
-            }
+          hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2)
         }
 
-        // Number of working days selected
-        var d = workday_count(event.startDate, event.endDate);
-        $('#txtWorkingDaysSelected').val(d.toFixed(2));
-        var j = $('#txtTotalHousSelected').data("jornada");
+        $('input#appbundle_calendar_hoursFree').val(hoursFree)
+        $('#hoursFree').html(hoursFree)
+      }
 
-        var t = d * parseFloat(j);
+      if (tipoa.name === 'Norberarentzako') {
+        if ((ezabatu === 1) || (ezabatu === true)) {
+          hoursSelf = hoursSelf + oldValue
+        } else {
+          hoursSelf = hoursSelf + oldValue - event.hours
+        }
+        $('input#appbundle_calendar_hoursSelf').val(hoursSelf)
+        $('#hoursSelf').html(hoursSelf)
+      }
 
-        $('#txtTotalHousSelected').val(t.toFixed(2));
-        $('#event-modal').modal();
-        $('#event-modal').on('shown.bs.modal', function () {
-            $('#event-modal input[name="event-name"]').focus()
+      if (tipoa.name === 'Konpentsatuak') {
+        if ((ezabatu === 1) || (ezabatu === true)) {
+          hoursCompensed = hoursCompensed + oldValue
+        } else {
+          hoursCompensed = hoursCompensed + oldValue - event.hours
+        }
+        $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed)
+        $('#hoursCompensed').html(hoursCompensed)
+      }
+
+    }
+  }
+
+  function workday_count (fstart, fend) {
+    start = moment(fstart)
+    end = moment(fend)
+    var first = start.clone().endOf('week') // end of first week
+    var last = end.clone().startOf('week') // start of last week
+    var days = last.diff(first, 'days') * 5 / 7 // this will always multiply of 7
+    var wfirst = first.day() - start.day() // check first week
+    if (start.day() == 0) --wfirst // -1 if start with sunday
+    var wlast = end.day() - last.day() // check last week
+    if (end.day() == 6) --wlast // -1 if end with saturday
+    return wfirst + days + wlast // get the total
+  }
+
+  function editEvent (event) {
+    $('#event-modal input[name="event-index"]').val(event ? event.id : '')
+    $('#event-modal input[name="event-name"]').val(event ? event.name : '')
+    $('#event-modal input[name="event-type"]').val(event ? event.type : '')
+    $('#event-modal input[name="event-hours"]').val(event ? event.hours : '')
+    $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
+    $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+
+    $('#oldValue').val(event ? event.hours : 0)
+
+    $('#cmbTypeSelect').val(event ? event.type : '')
+
+    if (event) {
+      if (event.type === undefined) {
+        $('#cmbTypeSelect').val('-1')
+      }
+    }
+
+    // Number of working days selected
+    var d = workday_count(event.startDate, event.endDate)
+    $('#txtWorkingDaysSelected').val(d.toFixed(2))
+    var j = $('#txtTotalHousSelected').data('jornada')
+
+    var t = d * parseFloat(j)
+
+    $('#txtTotalHousSelected').val(t.toFixed(2))
+    $('#event-modal').modal()
+    $('#event-modal').on('shown.bs.modal', function () {
+      $('#event-modal input[name="event-name"]').focus()
+    })
+  }
+
+  function deleteEvent (event) {
+    var dataSource = $('#calendar').data('calendar').getDataSource()
+
+    for (var i in dataSource) {
+      if (dataSource[i].id == event.id) {
+        dataSource.splice(i, 1)
+        $('#oldValue').val(event ? event.hours : 0)
+        hoursCalc(event, true)
+        break
+      }
+    }
+
+    $('#calendar').data('calendar').setDataSource(dataSource)
+  }
+
+  function saveEvent () {
+    var event = {
+      id: $('#event-modal input[name="event-index"]').val(),
+      name: $('#event-modal input[name="event-name"]').val(),
+      type: $('#event-modal option:selected').val(),
+      hours: $('#event-modal input[name="event-hours"]').val(),
+      color: $('#event-modal option:selected').data('color'),
+      startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
+      endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+    }
+
+    // Data Validation
+    if (event.name.length === 0) {
+      bootbox.alert('Izena jartzea beharrezkoa da.')
+      return
+    }
+    if (event.type === '-1') {
+      bootbox.alert('Mota zehaztea beharrezkoa da.')
+      return
+    }
+    if (event.hours.length === 0) {
+      event.hours = 0
+    } else {
+      if ($.isNumeric(event.hours) === false) {
+        bootbox.alert('Ordu kopuruak zenbakia izan behar du.')
+        return
+      }
+    }
+    if ((Date.parse(event.startDate) === false) || ( Date.parse(event.endDate) === false )) {
+      bootbox.alert('Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.')
+      return
+    }
+
+    var dataSource = $('#calendar').data('calendar').getDataSource()
+
+    if (event.id) {
+      for (var i in dataSource) {
+        if (dataSource[i].id == event.id) {
+          dataSource[i].name = event.name
+          dataSource[i].type = event.type
+          dataSource[i].hours = parseFloat(event.hours)
+          dataSource[i].color = event.color
+          dataSource[i].startDate = event.startDate
+          dataSource[i].endDate = event.endDate
+          // hoursCalc(event);
+        }
+      }
+    }
+    else {
+      var newId = 0
+      for (var i in dataSource) {
+        if (dataSource[i].id > newId) {
+          newId = dataSource[i].id
+        }
+      }
+
+      newId++
+      event.id = newId
+
+      hoursCalc(event)
+
+      dataSource.push(event)
+    }
+
+    $('#calendar').data('calendar').setDataSource(dataSource)
+    $('#event-modal').modal('hide')
+
+    return -1
+  }
+
+  var currentYear = new Date().getFullYear()
+
+  $('#calendar').calendar({
+    style: 'background',
+    language: 'eu',
+    minDate: new Date('2017-01-01'),
+    disabledWeekDays: [6, 0],
+    allowOverlap: true,
+    // displayWeekNumber: true,
+    enableContextMenu: true,
+    enableRangeSelection: true,
+    contextMenuItems: [
+      {
+        text: 'Eguneratu',
+        click: editEvent
+      },
+      {
+        text: 'Ezabatu',
+        click: deleteEvent
+      }
+    ],
+    selectRange: function (e) {
+      editEvent({startDate: e.startDate, endDate: e.endDate})
+    },
+    mouseOnDay: function (e) {
+      if (e.events.length > 0) {
+        var content = ''
+
+        for (var i in e.events) {
+          content += '<div class="event-tooltip-content">'
+            + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+            + '<div class="event-type">' + 'Orduak: ' + e.events[i].hours + '</div>'
+            + '</div>'
+        }
+
+        $(e.element).popover({
+          trigger: 'manual',
+          container: 'body',
+          html: true,
+          content: content
         })
+
+        $(e.element).popover('show')
+      }
+    },
+    mouseOutDay: function (e) {
+      if (e.events.length > 0) {
+        $(e.element).popover('hide')
+      }
+    },
+    dayContextMenu: function (e) {
+      $(e.element).popover('hide')
     }
-
-    function deleteEvent(event) {
-        var dataSource = $('#calendar').data('calendar').getDataSource();
-
-        for (var i in dataSource) {
-            if (dataSource[i].id == event.id) {
-                dataSource.splice(i, 1);
-                $('#oldValue').val(event ? event.hours : 0);
-                hoursCalc(event, true);
-                break;
-            }
-        }
-
-
-        $('#calendar').data('calendar').setDataSource(dataSource);
-    }
-
-    function saveEvent() {
-        var event = {
-            id: $('#event-modal input[name="event-index"]').val(),
-            name: $('#event-modal input[name="event-name"]').val(),
-            type: $('#event-modal option:selected').val(),
-            hours: $('#event-modal input[name="event-hours"]').val(),
-            color: $('#event-modal option:selected').data('color'),
-            startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-            endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
-        };
-
-        // Data Validation
-        if (event.name.length === 0) {
-            bootbox.alert("Izena jartzea beharrezkoa da.");
-            return;
-        }
-        if (event.type === "-1") {
-            bootbox.alert("Mota zehaztea beharrezkoa da.");
-            return;
-        }
-        if (event.hours.length === 0) {
-            event.hours = 0;
-        } else {
-            if ($.isNumeric(event.hours) === false) {
-                bootbox.alert("Ordu kopuruak zenbakia izan behar du.");
-                return;
-            }
-        }
-        if ((Date.parse(event.startDate) === false) || ( Date.parse(event.endDate) === false )) {
-            bootbox.alert("Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.");
-            return;
-        }
-
-        var dataSource = $('#calendar').data('calendar').getDataSource();
-
-        if (event.id) {
-            for (var i in dataSource) {
-                if (dataSource[i].id == event.id) {
-                    dataSource[i].name = event.name;
-                    dataSource[i].type = event.type;
-                    dataSource[i].hours = parseFloat(event.hours);
-                    dataSource[i].color = event.color;
-                    dataSource[i].startDate = event.startDate;
-                    dataSource[i].endDate = event.endDate;
-                    // hoursCalc(event);
-                }
-            }
-        }
-        else {
-            var newId = 0;
-            for (var i in dataSource) {
-                if (dataSource[i].id > newId) {
-                    newId = dataSource[i].id;
-                }
-            }
-
-            newId++;
-            event.id = newId;
-
-            hoursCalc(event);
-
-            dataSource.push(event);
-        }
-
-        $('#calendar').data('calendar').setDataSource(dataSource);
-        $('#event-modal').modal('hide');
-
-        return -1;
-    }
-
-    var currentYear = new Date().getFullYear();
-
-    $('#calendar').calendar({
-        style: 'background',
-        language: 'eu',
-        minDate: new Date('2017-01-01'),
-        disabledWeekDays: [6, 0],
-        allowOverlap: true,
-        // displayWeekNumber: true,
-        enableContextMenu: true,
-        enableRangeSelection: true,
-        contextMenuItems: [
-            {
-                text: 'Eguneratu',
-                click: editEvent
-            },
-            {
-                text: 'Ezabatu',
-                click: deleteEvent
-            }
-        ],
-        selectRange: function (e) {
-            editEvent({startDate: e.startDate, endDate: e.endDate});
-        },
-        mouseOnDay: function (e) {
-            if (e.events.length > 0) {
-                var content = '';
-
-                for (var i in e.events) {
-                    content += '<div class="event-tooltip-content">'
-                        + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-                        + '<div class="event-type">' + "Orduak: " + e.events[i].hours + '</div>'
-                        + '</div>';
-                }
-
-                $(e.element).popover({
-                    trigger: 'manual',
-                    container: 'body',
-                    html: true,
-                    content: content
-                });
-
-                $(e.element).popover('show');
-            }
-        },
-        mouseOutDay: function (e) {
-            if (e.events.length > 0) {
-                $(e.element).popover('hide');
-            }
-        },
-        dayContextMenu: function (e) {
-            $(e.element).popover('hide');
-        }
-    });
+  })
 
   var getAjaxEvents = function () {
     var url = Routing.generate('get_events', {'calendarid': $('#calendarid').val()})
@@ -390,110 +389,109 @@ $(function () {
 
   })
 
-    $('#save-event').on('click', function () {
-        return saveEvent();
-    });
+  $('#save-event').on('click', function () {
+    return saveEvent()
+  })
 
-    $('#btnGrabatu').on('click', function () {
-        var calendarid = $('#calendarid').val();
-        var akatsa = 0;
-        // first I backup and remove all calendar events
-        var url = Routing.generate('backup_events', {'calendarid': calendarid});
+  $('#btnGrabatu').on('click', function () {
+    var calendarid = $('#calendarid').val()
+    var akatsa = 0
+    // first I backup and remove all calendar events
+    var url = Routing.generate('backup_events', {'calendarid': calendarid})
 
-        function waitUntilComplete() {
-            return $.ajax({
+    function waitUntilComplete () {
+      return $.ajax({
+        url: url,
+        type: 'POST',
+        success: function () {
+
+          // Now I save all the events in the given calendar
+          var datuak = $('#calendar').data('calendar').getDataSource()
+
+          for (var i = 0; i < datuak.length && akatsa === 0; i++) {
+
+            if (datuak[i].istemplate === undefined) {
+              datuak[i].istemplate = 0
+            }
+
+            if (datuak[i].istemplate === 0) { // Template Events are not saved
+              var url = Routing.generate('post_events')
+
+              var d = {}
+              d.calendarid = calendarid
+              d.name = datuak[i].name
+              d.startDate = moment(datuak[i].startDate).format('YYYY-MM-DD')
+              d.endDate = moment(datuak[i].endDate).format('YYYY-MM-DD')
+              d.color = datuak[i].color
+              d.type = datuak[i].type
+              d.hours = parseFloat(datuak[i].hours)
+
+              console.log('POST!')
+              console.log(d)
+
+              $.ajax({
                 url: url,
+                async: false,
                 type: 'POST',
-                success: function () {
-
-                    // Now I save all the events in the given calendar
-                    var datuak = $('#calendar').data('calendar').getDataSource();
-
-
-                    for (var i = 0; i < datuak.length && akatsa === 0; i++) {
-
-                        if (datuak[i].istemplate === undefined) {
-                            datuak[i].istemplate = 0;
-                        }
-
-                        if (datuak[i].istemplate === 0) { // Template Events are not saved
-                            var url = Routing.generate('post_events');
-
-                            var d = {};
-                            d.calendarid = calendarid;
-                            d.name = datuak[i].name;
-                            d.startDate = moment(datuak[i].startDate).format("YYYY-MM-DD")
-                            d.endDate = moment(datuak[i].endDate).format("YYYY-MM-DD")
-                            d.color = datuak[i].color;
-                            d.type = datuak[i].type;
-                            d.hours = parseFloat(datuak[i].hours);
-
-                            console.log("POST!");
-                            console.log(d);
-
-                            $.ajax({
-                                url: url,
-                                async: false,
-                                type: 'POST',
-                                data: JSON.stringify(d),
-                                contentType: "application/json",
-                                dataType: "json"
-                            }).fail(function (xhr, status, error) {
-                                akatsa = 1;
-                                return;
-                            });
-                        }
-                    }
-                }
-            }).fail(function (xhr, status, error) {
-                akatsa = 1;
-                return;
-            })
+                data: JSON.stringify(d),
+                contentType: 'application/json',
+                dataType: 'json'
+              }).fail(function (xhr, status, error) {
+                akatsa = 1
+                return
+              })
+            }
+          }
         }
+      }).fail(function (xhr, status, error) {
+        akatsa = 1
+        return
+      })
+    }
 
-        $.when(waitUntilComplete()).done(function (e) {
-            $("#myAlert").hide();
-            if (akatsa === 1) {
-                $('#alertSpot').append(
-                    '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                    '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.');
-            } else {
-                $('#alertSpot').append(
-                    '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                    'Datuak <strong>ongi</strong> grabatuak izan dira.');
-            }
+    $.when(waitUntilComplete()).done(function (e) {
+      $('#myAlert').hide()
+      if (akatsa === 1) {
+        $('#alertSpot').append(
+          '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+          '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+          '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.')
+      } else {
+        $('#alertSpot').append(
+          '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
+          '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+          'Datuak <strong>ongi</strong> grabatuak izan dira.')
+      }
 
-            $("#myAlert").alert();
-            $("#myAlert").fadeTo(2000, 500).slideUp(500, function () {
-                $("#myAlert").slideUp(500);
-            });
-            $('#divTimelineAlert').show();
+      $('#myAlert').alert()
+      $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+        $('#myAlert').slideUp(500)
+      })
+      $('#divTimelineAlert').show()
 
-        })
+    })
 
-    });
+  })
 
-    $('#btnEzabatu').on('click', function () {
-        bootbox.confirm({
-            message: "Ziur zaude Egutegia ezabatu nahi duzula?",
-            buttons: {
-                confirm: {
-                    label: 'Bai',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'Ez',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function (result) {
-                if (result === true) {
-                    $('#frmDelCalendar').submit();
-                }
-            }
-        });
-    });
+  $('#btnEzabatu').on('click', function () {
+    bootbox.confirm({
+      message: 'Ziur zaude Egutegia ezabatu nahi duzula?',
+      buttons: {
+        confirm: {
+          label: 'Bai',
+          className: 'btn-success'
+        },
+        cancel: {
+          label: 'Ez',
+          className: 'btn-danger'
+        }
+      },
+      callback: function (result) {
+        if (result === true) {
+          $('#frmDelCalendar').submit()
+        }
+      }
+    })
+  })
 
-});
+})

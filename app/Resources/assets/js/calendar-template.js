@@ -1,92 +1,92 @@
 /**
  * Created by iibarguren on 3/13/17.
  */
+$(function () {
 
-function editEvent (event) {
-  $('#event-modal input[name="event-index"]').val(event ? event.id : '')
-  $('#event-modal input[name="event-name"]').val(event ? event.name : '')
-  $('#event-modal input[name="event-type"]').val(event ? event.type : '')
-  $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
-  $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
-  $('#event-modal').modal()
-  $('#event-modal').on('shown.bs.modal', function () {
-    $('#event-modal input[name="event-name"]').focus()
-  })
-}
-
-function deleteEvent (event) {
-  var dataSource = $('#admincalendar').data('calendar').getDataSource()
-
-  for (var i in dataSource) {
-    if (dataSource[i].id == event.id) {
-      dataSource.splice(i, 1)
-      break
-    }
+  function editEvent (event) {
+    $('#event-modal input[name="event-index"]').val(event ? event.id : '')
+    $('#event-modal input[name="event-name"]').val(event ? event.name : '')
+    $('#event-modal input[name="event-type"]').val(event ? event.type : '')
+    $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
+    $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+    $('#event-modal').modal()
+    $('#event-modal').on('shown.bs.modal', function () {
+      $('#event-modal input[name="event-name"]').focus()
+    })
   }
 
-  $('#admincalendar').data('calendar').setDataSource(dataSource)
-}
+  function deleteEvent (event) {
+    var dataSource = $('#admincalendar').data('calendar').getDataSource()
 
-function saveEvent () {
-  var event = {
-    id: $('#event-modal input[name="event-index"]').val(),
-    name: $('#event-modal input[name="event-name"]').val(),
-    type: $('#event-modal option:selected').val(),
-    color: $('#event-modal option:selected').data('color'),
-    startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-    endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
-  }
-
-  var dataSource = $('#admincalendar').data('calendar').getDataSource()
-
-  if (event.id) {
     for (var i in dataSource) {
       if (dataSource[i].id == event.id) {
-        dataSource[i].name = event.name
-        dataSource[i].type = event.type
-        dataSource[i].color = event.color
-        dataSource[i].startDate = event.startDate
-        dataSource[i].endDate = event.endDate
-      }
-    }
-  }
-  else {
-    var newId = 0
-    for (var i in dataSource) {
-      if (dataSource[i].id > newId) {
-        newId = dataSource[i].id
+        dataSource.splice(i, 1)
+        break
       }
     }
 
-    newId++
-    event.id = newId
-
-    dataSource.push(event)
+    $('#admincalendar').data('calendar').setDataSource(dataSource)
   }
 
-  $('#admincalendar').data('calendar').setDataSource(dataSource)
-  $('#event-modal').modal('hide')
-}
+  function saveEvent () {
+    var event = {
+      id: $('#event-modal input[name="event-index"]').val(),
+      name: $('#event-modal input[name="event-name"]').val(),
+      type: $('#event-modal option:selected').val(),
+      color: $('#event-modal option:selected').data('color'),
+      startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
+      endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+    }
 
-$(function () {
+    var dataSource = $('#admincalendar').data('calendar').getDataSource()
+
+    if (event.id) {
+      for (var i in dataSource) {
+        if (dataSource[i].id == event.id) {
+          dataSource[i].name = event.name
+          dataSource[i].type = event.type
+          dataSource[i].color = event.color
+          dataSource[i].startDate = event.startDate
+          dataSource[i].endDate = event.endDate
+        }
+      }
+    }
+    else {
+      var newId = 0
+      for (var i in dataSource) {
+        if (dataSource[i].id > newId) {
+          newId = dataSource[i].id
+        }
+      }
+
+      newId++
+      event.id = newId
+
+      dataSource.push(event)
+    }
+
+    $('#admincalendar').data('calendar').setDataSource(dataSource)
+    $('#event-modal').modal('hide')
+  }
+
   var currentYear = new Date().getFullYear()
 
   $('#admincalendar').calendar({
     style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
-    // disabledWeekDays: [0,7],
+    disabledWeekDays: [6,0],
     allowOverlap: true,
     // displayWeekNumber: true,
     enableContextMenu: true,
     enableRangeSelection: true,
     contextMenuItems: [
       {
-        text: 'Update',
+        text: 'Eguneratu',
         click: editEvent
       },
       {
-        text: 'Delete',
+        text: 'Ezabatu',
         click: deleteEvent
       }
     ],
