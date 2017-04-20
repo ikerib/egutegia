@@ -48,6 +48,7 @@
         "vich/uploader-bundle": "^1.5"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "phpunit/phpunit": "^6.1",
         "sensio/generator-bundle": "^3.0"
     },
