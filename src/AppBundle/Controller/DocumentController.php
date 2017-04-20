@@ -39,6 +39,7 @@ class DocumentController extends Controller
         );
     }
 
+
     /**
      * Creates a new document entity.
      *

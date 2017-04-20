@@ -208,10 +208,7 @@
         </div>
     </div>
 
-
-
     <div>
-
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#egutegia" aria-controls="home" role="tab"
@@ -307,9 +304,9 @@
                     <div class="col-sm-12">
                         <table class="table table-bordered table-condensed table-striped table-condensed table-hover">
                             <thead>
-                                <th>{{ "Dokumentua" | trans }}</th>
-                                <th>{{ "Noiz igo da" | trans }}</th>
-                                <th></th>
+                            <th>{{ "Dokumentua" | trans }}</th>
+                            <th>{{ "Noiz igo da" | trans }}</th>
+                            <th></th>
                             </thead>
                             <tbody>
                             {% for f in calendar.documents if calendar.documents %}
@@ -399,8 +396,13 @@
 
 {% block content_sidebar %}
     {{ render(controller('AppBundle:Type:list' )) }}
-    {#<h2>{{ "Oharrak" | trans }}</h2>#}
-    {#{{ calendar.note | raw }}#}
+    {#<h2>{{ "Dokumentuak" | trans }}</h2>#}
+    {#<ul class="list-unstyled">#}
+        {#{% for doc in calendar.documents %}#}
+            {#<li><a href="{{ vich_uploader_asset(doc, 'uploadfile') }}"target="_blank">{{ doc.filename }}</a></li>#}
+        {#{% endfor %}#}
+    {#</ul>#}
+
 {% endblock content_sidebar %}
 
 {% block foot_script %}
@@ -410,33 +412,33 @@
     <script>
       $(function () {
 
-        var url = document.location.toString();
+        var url = document.location.toString()
         if (url.match('#')) {
-          $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show');
+          $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show')
         } //add a suffix
 
         // Change hash for page-reload
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
-          e.preventDefault();
-          console.log(e.target.hash);
-          window.location.hash = "!" + e.target.hash;
-          return false;
+          e.preventDefault()
+          console.log(e.target.hash)
+          window.location.hash = '!' + e.target.hash
+          return false
         })
 
         // show specific tab
-        var hash = window.location.hash;
-        hash = window.location.hash.replace(/^#!/, '');
-        $('#myTab a[href="' + hash + '"]').tab('show');
+        var hash = window.location.hash
+        hash = window.location.hash.replace(/^#!/, '')
+        $('#myTab a[href="' + hash + '"]').tab('show')
 
         $('#saveCalendarEditModal').on('click', function () {
           $('#frmEditCalendar').submit()
         })
 
         $('.btnRemoveRow').on('click', function () {
-          var that = $(this);
+          var that = $(this)
           bootbox.confirm({
-            title: "{{ 'Adi!' | trans }}",
-            message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+            title: '{{ 'Adi!' | trans }}',
+            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
             buttons: {
               cancel: {
                 label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
@@ -446,12 +448,12 @@
               }
             },
             callback: function (result) {
-              if ( result === true ) {
-                $(that).closest('form').submit();
+              if (result === true) {
+                $(that).closest('form').submit()
               }
             }
-          });
-        });
+          })
+        })
 
         $('#save-upload-file').on('click', function () {
 
