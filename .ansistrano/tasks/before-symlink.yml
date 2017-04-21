@@ -1,30 +1,12 @@
 ---
 
-# After code is cloned to release path and symlink to shared parameters.yml is created, we need to update the
-# parameters file in case we've got some new parameters from the branch
-#
-#- name: Install vendors
-#  composer: command=install working_dir={{ symfony_dir }} no_dev={{ (symfony_deploy_env == "prod") | ternary('yes', 'no') }} arguments="--no-interaction"
-#  environment:
-#    SYMFONY_ENV: "{{ symfony_deploy_env }}"
+- name: Install packages based on package.json.
+  npm:
+    path: "{{ ansistrano_release_path.stdout }}"
+    executable: /root/.nvm/versions/node/v6.10.1/bin/npm
+    state: present
 
-
-#- name: BEFORE SYMLINK npm install
-#  shell: '/usr/bin/zsh -lc npm install /var/www/egutegia/current/package.json"'
-#  tags: npm
-#- name: Install npm packages
-#  npm: path=/www/vector state=present
-#- name: Install required node packages
-#  npm:
-#    name: "{{ item.name }}"
-#    global: yes
-#    state: latest
-#  with_items:
-#  - name: gulp
-#  - name: bower
-
-
-#- name: Run gulp
-#  command: /root/.nvm/versions/node/v6.10.1/bin/gulp
-#  args:
-#    chdir: /var/www/egutegia/current
+- name: Run gulp
+  command: /root/.nvm/versions/node/v6.10.1/bin/gulp prod
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
