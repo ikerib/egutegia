@@ -55,17 +55,8 @@
         <tbody>
         {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
             <tr>
-                <td>
-                    {% if user.user.has('firstName') %}
-                        <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">{{ user.user.get('firstName') }}</a>
-                    {% endif %}</td>
-                <td>
-                    {% if user.user.has('lastName') %}
-                        <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">
-                            {{ user.user.get('lastName') }}
-                        </a>
-                    {% endif %}
-                </td>
+                <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
+                <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 {% if user.calendar %}
                     <td>
                         <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">{{ user.calendar[0] }}</a>

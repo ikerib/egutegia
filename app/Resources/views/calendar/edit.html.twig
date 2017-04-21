@@ -263,7 +263,7 @@
             {# Fitxategiak #}
             <div role="tabpanel" class="tab-pane fade" id="files">
 
-                <div class="modal modal-fade" id="modal-files">
+                <div class="modal modal-fade" id="modal-files-open">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
 
@@ -294,7 +294,7 @@
                 <div class="row">&nbsp;</div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-files">
+                        <button type="button" class="btn btn-primary" id="btnModalOpenFile">
                             {{ "Dokumentu berria" | trans }}
                         </button>
                     </div>
@@ -420,7 +420,6 @@
         // Change hash for page-reload
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
           e.preventDefault()
-          console.log(e.target.hash)
           window.location.hash = '!' + e.target.hash
           return false
         })
@@ -433,6 +432,11 @@
         $('#saveCalendarEditModal').on('click', function () {
           $('#frmEditCalendar').submit()
         })
+
+        $('#btnModalOpenFile').on('click', function() {
+          $('#modal-files-open').modal('show');
+        });
+
 
         $('.btnRemoveRow').on('click', function () {
           var that = $(this)
