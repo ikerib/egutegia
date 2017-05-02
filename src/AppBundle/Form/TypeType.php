@@ -17,8 +17,7 @@ class TypeType extends AbstractType
             ->add('name')
             ->add('hours')
             ->add('color', null, array(
-                'label' => 'Kolorea',
-                'data'  => '#e01b1b'
+                'label' => 'Kolorea'
             ))
             ->add('orden')
         ;

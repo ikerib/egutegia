@@ -61,7 +61,7 @@
                     <td>
                         <ul class="list-unstyled list-inline">
                             <li>
-                                <a class="btnEditRow" data-id="{{ type.id }}" href="javascript:void(0);">
+                                <a class="btnEditRow" data-id="{{ type.id }}" data-color="{{ type.color }}" href="javascript:void(0);">
                                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                 </a>
                             </li>
@@ -109,7 +109,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
                                 class="sr-only">Close</span></button>
                     <h4 class="modal-title">
-                        Event
+                        Mota
                     </h4>
                 </div>
                 <div id="divEditModalBody" class="modal-body">
@@ -143,10 +143,13 @@
 
             $('.btnEditRow').on('click', function () {
                 $('#divEditModalBody').empty();
+                var color = $(this).data('color');
                 var miid = $(this).data('id');
                 var url = Routing.generate('admin_type_edit', { id: miid });
+
                 $('#divEditModalBody').load(url, function () {
                     $('#edit-modal').modal();
+                    $('#appbundle_type_color').val(color)
                     $('#cp2').colorpicker();
                 });
             });
