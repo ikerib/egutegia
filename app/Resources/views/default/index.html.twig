@@ -5,7 +5,6 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
-
     <table id="table"
             {#data-toggle="table"#}
            data-classes="table table-hover table-condensed"
@@ -44,6 +43,8 @@
                 data-sortable="true">{{ 'Nombre' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="lastName"
                 data-sortable="true">{{ 'Abizenak' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="saila"
+                data-sortable="true">{{ 'Saila' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Egutegia' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Txantiloia' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Urteko orduak' | trans }}</th>
@@ -57,6 +58,7 @@
             <tr>
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
+                <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
                 {% if user.calendar %}
                     <td>
                         <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">{{ user.calendar[0] }}</a>

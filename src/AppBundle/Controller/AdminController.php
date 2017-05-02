@@ -21,7 +21,9 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $ldap = $this->get('ldap_tools.ldap_manager');
-        $ldapusers = $ldap->buildLdapQuery()->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+        $ldapusers = $ldap->buildLdapQuery()
+            ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department'])
+            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
 
         $userdata=[];
         foreach ($ldapusers as $user) {
