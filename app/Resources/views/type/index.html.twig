@@ -17,7 +17,7 @@
 
                data-pagination="true"
                data-search="true"
-               data-height="300"
+               {#data-height="300"#}
 
                data-sort-name="name"
                data-sort-order="asc"
@@ -141,7 +141,8 @@
                 $('#appbundle_type_name').focus()
             });
 
-            $('.btnEditRow').on('click', function () {
+          $('body').on('click', '.btnEditRow', function () {
+
                 $('#divEditModalBody').empty();
                 var color = $(this).data('color');
                 var miid = $(this).data('id');
@@ -161,7 +162,7 @@
                 $('#form_type_edit').submit();
             });
 
-            $('.btnRemoveRow').on('click', function () {
+            $('body').on('click', '.btnRemoveRow', function () {
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",
