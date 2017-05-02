@@ -44,6 +44,7 @@
 
             <thead>
                 <tr>
+                    <th data-halign="center" data-align="left" data-field="orden" data-sortable="true">{{ 'Ordena' | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="hours"  data-sortable="true">{{ 'Orduak' | trans }}</th>
                     <th data-halign="center" data-align="center" >{{ 'Kolorea' | trans }}</th>
@@ -53,6 +54,7 @@
             <tbody>
             {% for type in types %}
                 <tr>
+                    <td>{{ type.orden }}</td>
                     <td>{{ type.name }}</td>
                     <td>{{ type.hours }}</td>
                     <td><span class="showColor" style="background-color: {{ type.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>

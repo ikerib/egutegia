@@ -48,7 +48,7 @@ class TypeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $types = $em->getRepository('AppBundle:Type')->findAll();
+        $types = $em->getRepository('AppBundle:Type')->findAllByOrder();
 
         return $this->render('type/list.html.twig', array(
             'types' => $types

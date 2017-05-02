@@ -72,6 +72,12 @@ class Type
      */
     private $updated;
 
+    /**
+     * @var integer
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -188,6 +194,30 @@ class Type
     }
 
     /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return Type
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
@@ -235,63 +265,28 @@ class Type
         return $this->updated;
     }
 
-
     /**
-     * Add event
+     * Set orden
      *
-     * @param \AppBundle\Entity\Event $event
+     * @param integer $orden
      *
      * @return Type
      */
-    public function addEvent(\AppBundle\Entity\Event $event)
+    public function setOrden($orden)
     {
-        $this->events[] = $event;
+        $this->orden = $orden;
 
         return $this;
     }
 
     /**
-     * Remove event
+     * Get orden
      *
-     * @param \AppBundle\Entity\Event $event
+     * @return integer
      */
-    public function removeEvent(\AppBundle\Entity\Event $event)
+    public function getOrden()
     {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Get events
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * Set color
-     *
-     * @param string $color
-     *
-     * @return Type
-     */
-    public function setColor($color)
-    {
-        $this->color = $color;
-
-        return $this;
-    }
-
-    /**
-     * Get color
-     *
-     * @return string
-     */
-    public function getColor()
-    {
-        return $this->color;
+        return $this->orden;
     }
 
     /**

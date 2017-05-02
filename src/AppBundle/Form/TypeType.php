@@ -20,6 +20,7 @@ class TypeType extends AbstractType
                 'label' => 'Kolorea',
                 'data'  => '#e01b1b'
             ))
+            ->add('orden')
         ;
     }
     

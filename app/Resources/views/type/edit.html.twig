@@ -23,5 +23,13 @@
     </div>
 </div>
 
+<div class="form-group">
+    <label for="min-date" class="col-sm-4 control-label">{{ 'Ordena' | trans }}</label>
+    <div class="col-sm-7">
+        {{ form_widget(edit_form.orden, { 'attr': {'class': 'form-control'} }) }}
+    </div>
+</div>
+
+
 {{ form_end(edit_form) }}
 

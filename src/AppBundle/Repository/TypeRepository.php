@@ -10,4 +10,16 @@ namespace AppBundle\Repository;
  */
 class TypeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllByOrder() {
+        $em = $this->getEntityManager();
+        /** @var  $query \Doctrine\DBAL\Query\QueryBuilder */
+        $query = $em->createQuery("
+            SELECT t
+                FROM AppBundle:Type t
+                ORDER BY t.orden
+        ");
+
+
+        return $query->getResult();
+    }
 }
