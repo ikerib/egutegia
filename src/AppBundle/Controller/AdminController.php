@@ -21,9 +21,11 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $ldap = $this->get('ldap_tools.ldap_manager');
+        /* OJO ALDATZEN BADA CalendarController newAction ere aldatu */
         $ldapusers = $ldap->buildLdapQuery()
-            ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department'])
+            ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department', 'description'])
             ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+
 
         $userdata=[];
         foreach ($ldapusers as $user) {

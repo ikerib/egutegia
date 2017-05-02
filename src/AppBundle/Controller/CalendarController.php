@@ -85,14 +85,34 @@ class CalendarController extends Controller
             $u = $em->getRepository( 'AppBundle:User' )->getByUsername( $username );
 
             if ( ! $u ) {
+                $ldap = $this->get('ldap_tools.ldap_manager');
+                $ldapuser = $ldap->buildLdapQuery()
+                    ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department', 'description'])
+                    ->fromUsers()
+                    ->where($ldap->buildLdapQuery()->filter()->eq('username', $username))
+                    ->orderBy('username')
+                    ->getLdapQuery()
+                    ->getSingleResult();
+
+
+
                 $userManager = $this->container->get( 'fos_user.user_manager' );
                 /** @var $user User */
                 $user = $userManager->createUser();
                 $user->setUsername( $username );
                 $user->setEmail( $username . '@pasaia.net' );
                 $user->setPassword( '' );
-                $user->setDn( '' );
+                if ($ldapuser->has('dn')) {
+                    $user->setDn( $ldapuser->getDn() );
+                }
                 $user->setEnabled( true );
+                if ($ldapuser->has('description')) {
+                    $user->setLanpostua( $ldapuser->getDescription() );
+                }
+                if ($ldapuser->has('department')) {
+                    $user->setDepartment( $ldapuser->getDepartment() );
+                }
+
                 $userManager->updateUser( $user );
                 $u = $user;
             }
