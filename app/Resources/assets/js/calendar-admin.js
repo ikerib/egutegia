@@ -333,7 +333,6 @@ $(function () {
       },
       error: function () {
         return -1
-        console.log('HORROR!!')
       }
 
     })
@@ -351,8 +350,8 @@ $(function () {
         d.name = tmpl[i].name
         if ('type' in tmpl[i]) {
           if ('color' in tmpl[i].type) {
-            // d.color = tmpl[i].type.color;
-            d.color = '#3a4d57'
+            d.color = tmpl[i].type.color;
+            // d.color = '#3a4d57'
             d.type = tmpl[i].type.id
           }
         }
