@@ -12,7 +12,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-11">
-                        <h3 class="panel-title">{{ calendar.name }}</h3>
+                        <h3 class="panel-title">{{ calendar.name }} - ({{ calendar.percentYear }}%)</h3>
                     </div>
                     <div class="col-md-1">
                         <a class="btn btn-xs btn-default btnPageHeaderEdit" href="javascript:void(0)"
@@ -22,14 +22,25 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-3"><strong>{{ 'Lan orduak: ' | trans }}</strong><span
-                                id="hoursYear">{{ calendar.hoursYear }}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Opor orduak: ' | trans }} </strong><span
-                                id="hoursFree">{{ calendar.hoursFree }}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Norberarentzako: ' | trans }} </strong><span
-                                id="hoursSelf"> {{ calendar.hoursSelf }}</span></div>
-                    <div class="col-sm-3"><strong>{{ 'Konpentsatutakoak: ' | trans }} </strong><span
-                                id="hoursCompensed">{{ calendar.hoursCompensed }}</span></div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Lan orduak: ' | trans }}</strong>
+                        <span id="hoursYear">{{ calendar.hoursYear }}</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Opor orduak: ' | trans }} </strong>
+                        <span id="hoursFree">{{ calendar.hoursFree }}</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Norberarentzako: ' | trans }} </strong>
+                        <span id="hoursSelf"> {{ calendar.hoursSelf }}</span></div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Konpentsatutakoak: ' | trans }} </strong>
+                        <span id="hoursCompensed">{{ calendar.hoursCompensed }}</span>
+                    </div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Portzentaia: ' | trans }} </strong>
+                        <span id="percentYear">{{ calendar.percentYear }}%</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -86,9 +97,16 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak hartuta' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Konpentsatutako orduak' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'Portzentaia' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.percentYear, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
