@@ -59,6 +59,11 @@ class User extends BaseUser implements LdapUserInterface
     protected $lanpostua;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $notes;
+
+    /**
      * @ORM\Column(type="json_array", nullable=true)
      */
     private $members = array();
@@ -286,5 +291,29 @@ class User extends BaseUser implements LdapUserInterface
     public function getLanpostua()
     {
         return $this->lanpostua;
+    }
+
+    /**
+     * Set notes
+     *
+     * @param string $notes
+     *
+     * @return User
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    /**
+     * Get notes
+     *
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
     }
 }

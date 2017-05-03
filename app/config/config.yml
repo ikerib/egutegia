@@ -123,6 +123,7 @@ fos_js_routing:
         - get_events
         - post_events
         - post_notes
+        - post_usernotes
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

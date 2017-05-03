@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
+use AppBundle\Entity\User;
+use AppBundle\Form\UserNoteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,10 +39,26 @@ class AdminController extends Controller
                 Date('Y')
             );
             $u[ "calendar" ] = $calendar;
+
+            $usernotes = $em->getRepository( 'AppBundle:User' )->getByUsername( $user->getUsername() );
+
+            if ($usernotes) {
+                $user->setNotes( $usernotes->getNotes() );
+            }
+
+
             array_push($userdata, $u);
         }
 
+        $user = new User();
+        $frmusernote = $this->createForm( UserNoteType::class, $user );
 
-        return $this->render('default/index.html.twig', array('userdata'=>$userdata));
+        return $this->render(
+            'default/index.html.twig',
+            array(
+                'userdata'=>$userdata,
+                'frmusernote' => $frmusernote->createView()
+            )
+        );
     }
 }

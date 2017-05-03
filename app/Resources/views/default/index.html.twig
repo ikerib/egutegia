@@ -5,15 +5,16 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
+
     <table id="table"
-            {#data-toggle="table"#}
+
+           data-id-field="id"
            data-classes="table table-hover table-condensed"
            data-striped="true"
 
            data-pagination="true"
            data-page-size="15"
            data-search="true"
-           {#data-height="300"#}
 
            data-sort-name="name"
            data-sort-order="asc"
@@ -22,7 +23,7 @@
            data-show-refresh="true"
            data-show-toggle="true"
            data-show-columns="true"
-
+           data-editable-url="/my/editable/update/path"
            data-toolbar="#toolbar"
            data-show-export="true"
            data-export-types="['csv','excel', 'pdf']"
@@ -46,6 +47,9 @@
                 data-sortable="true">{{ 'Abizenak' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="saila"
                 data-sortable="true">{{ 'Saila' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="notes" data-editable="true"
+                data-editable-emptytext="For free."
+                data-sortable="true">{{ 'Oharrak' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Egutegia' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Txantiloia' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Urteko orduak' | trans }}</th>
@@ -60,6 +64,19 @@
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
+                <td>
+                    {% if user.user.has('notes') %}
+                        <a href="javascript:void(0)" class="btn btnUserNote"
+                           data-username="{{ user.user.get('username') }}"
+                           data-usernote="{{ user.user.get('notes') }}">
+                            {{ user.user.get('notes') }}
+                        </a>
+                    {% else %}
+                        <a href="javascript:void(0)" class="btn btnUserNote"
+                           data-username="{{ user.user.get('username') }}">
+                            <i class="fa fa-sticky-note-o" aria-hidden="true"></i>
+                        </a>
+                    {% endif %}</td>
                 {% if user.calendar %}
                     <td>
                         <a href="{{ path('admin_calendar_edit', { 'id': user.calendar[0].id }) }}">{{ user.calendar[0] }}</a>
@@ -137,58 +154,111 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal-usernote" tabindex="-1" role="dialog" aria-labelledby="Modal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                                class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                    <h4 class="modal-title">
+                        {{ 'Oharrak' | trans }}
+                    </h4>
+                </div>
+                <div class="modal-body" id="divUserNoteModal">
+                    {#{{ form_start(frmusernote, { 'attr': {'id':'frmUserNote','class': 'form-horizontal'} }) }}#}
+                    {{ form_widget(frmusernote.notes, { 'id': 'txtUserNotes' }) }}
+                    <input type="hidden" id="usernoteusername" value="">
+                    {#{{ form_end(frmusernote) }}#}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-usernote">
+                        {{ 'Gorde' | trans }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 {% block foot_script %}
     {{ parent() }}
     <script>
-        var $table = $('#table'), selections = [];
-        function initTable() {
-            $table.bootstrapTable({
-                height: getHeight()
-            });
-        }
-        function getHeight() {
-            var winh = $(window).height();
-            var h2h = $('h2').outerHeight(true);
-            var fooh = $('footer').outerHeight(true);
-            return winh - h2h - fooh - 200;
-        }
+      var $table = $('#table'), selections = []
+      function initTable () {
+        $table.bootstrapTable({
+          height: getHeight()
+        })
+      }
+      function getHeight () {
+        var winh = $(window).height()
+        var h2h = $('h2').outerHeight(true)
+        var fooh = $('footer').outerHeight(true)
+        return winh - h2h - fooh - 200
+      }
 
-        $(function () {
-            initTable();
-            $(document).on('click', '.btnNewCalendar', function() {
-                $('#divModalCalendarNew').empty();
-                var myusername = $(this).data('username');
-                var url = Routing.generate('admin_calendar_new', {username: myusername});
-                $('#divModalCalendarNew').load(url, function () {
-                    $('#appbundle_calendar_template').append("<option value='-1' selected>Aukeratu bat</option>");
-                    $('#new-modal').modal();
-                });
-            });
+      $(function () {
 
-            $(document).on('click', '#appbundle_calendar_template', function () {
-                var val = $(this).val();
-                if (val !== "-1") {
-                    var url = Routing.generate('get_template', {'id': val});
-                    $.ajax({
-                        url: url,
-                        data: {
-                            format: 'json'
-                        },
-                        success: function (result) {
-                            $('#appbundle_calendar_hoursYear').val(result.hours_year);
-                            $('#appbundle_calendar_hoursFree').val(result.hours_free);
-                            $('#appbundle_calendar_hoursSelf').val(result.hours_self);
-                            $('#appbundle_calendar_hoursDay').val(result.hours_day);
-                        },
-                        error: function () {
-                            console.log("HORROR!");
-                        }
-                    });
-                }
-            });
+        initTable()
+        $(document).on('click', '.btnNewCalendar', function () {
+          $('#divModalCalendarNew').empty()
+          var myusername = $(this).data('username')
+          var url = Routing.generate('admin_calendar_new', {username: myusername})
+          $('#divModalCalendarNew').load(url, function () {
+            $('#appbundle_calendar_template').append('<option value=\'-1\' selected>Aukeratu bat</option>')
+            $('#new-modal').modal()
+          })
+        })
 
-        });
+        $(document).on('click', '.btnUserNote', function () {
+          $('#txtUserNotes').val($(this).data('usernote'))
+          $('#usernoteusername').val($(this).data('username'))
+          $('#modal-usernote').modal()
+        })
+
+        $(document).on('click', '#btn-save-usernote', function () {
+          var username = $('#usernoteusername').val()
+          var url = Routing.generate('post_usernotes', {'username': username})
+
+          var d = {};
+          d.notes = $('#txtUserNotes').val()
+
+          $.ajax({
+            url: url,
+            data: JSON.stringify(d),
+            type: 'POST',
+            contentType: 'application/json',
+            success: function() {
+              location.reload();
+            },
+            error: function () {
+              alert('Datuak ez dira gorde, akats bar gertatu da.');
+            }
+          })
+        })
+
+        $(document).on('click', '#appbundle_calendar_template', function () {
+          var val = $(this).val()
+          if (val !== '-1') {
+            var url = Routing.generate('get_template', {'id': val})
+            $.ajax({
+              url: url,
+              data: {
+                format: 'json'
+              },
+              success: function (result) {
+                $('#appbundle_calendar_hoursYear').val(result.hours_year)
+                $('#appbundle_calendar_hoursFree').val(result.hours_free)
+                $('#appbundle_calendar_hoursSelf').val(result.hours_self)
+                $('#appbundle_calendar_hoursDay').val(result.hours_day)
+              },
+              error: function () {
+                console.log('HORROR!')
+              }
+            })
+          }
+        })
+
+      })
     </script>
 {% endblock %}

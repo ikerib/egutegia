@@ -8,8 +8,10 @@ use AppBundle\Entity\EventHistory;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\TemplateEvent;
+use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\UserfileType;
+use AppBundle\Form\UserNoteType;
 use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -468,4 +470,82 @@ class ApiController extends FOSRestController {
 
     }// "post_notes"            [POST] /notes/{calendarid}
 
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** USER API        ********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /**
+     * Save user notes.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Save user notes",
+     *   statusCodes = {
+     *     200 = "OK response"
+     *   }
+     * )
+     *
+     * @param Request $request
+     * @param         $username
+     *
+     * @return static
+     * @throws HttpException
+     * @Annotations\View()
+     */
+    public function postUsernotesAction(Request $request, $username)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')->getByUsername($username);
+
+        $jsonData = json_decode($request->getContent(), true);
+
+        $userManager = $this->container->get( 'fos_user.user_manager' );
+
+        if (!$user) {
+            $ldap = $this->get('ldap_tools.ldap_manager');
+            $ldapuser = $ldap->buildLdapQuery()
+                ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department', 'description'])
+                ->fromUsers()
+                ->where($ldap->buildLdapQuery()->filter()->eq('username', $username))
+                ->orderBy('username')
+                ->getLdapQuery()
+                ->getSingleResult();
+
+
+            /** @var $user User */
+            $user = $userManager->createUser();
+            $user->setUsername( $username );
+            $user->setEmail( $username . '@pasaia.net' );
+            $user->setPassword( '' );
+            if ($ldapuser->has('dn')) {
+                $user->setDn( $ldapuser->getDn() );
+            }
+            $user->setEnabled( true );
+            if ($ldapuser->has('description')) {
+                $user->setLanpostua( $ldapuser->getDescription() );
+            }
+            if ($ldapuser->has('department')) {
+                $user->setDepartment( $ldapuser->getDepartment() );
+            }
+
+
+
+        }
+
+        $user->setNotes($jsonData['notes']);
+
+        $userManager->updateUser( $user );
+
+        $view = View::create();
+        $view->setData($user);
+
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        return $view;
+
+
+
+    }// "post_usernotes"            [POST] /usernotes/{userid}
 }
