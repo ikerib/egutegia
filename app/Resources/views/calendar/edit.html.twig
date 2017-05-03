@@ -209,14 +209,26 @@
     <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist" id="myTab">
-            <li role="presentation" class="active"><a href="#egutegia" aria-controls="home" role="tab"
-                                                      data-toggle="tab">{{ "Egutegia" | trans }}</a></li>
-            <li role="presentation"><a href="#notes" aria-controls="profile" role="tab"
-                                       data-toggle="tab">{{ "Oharrak" | trans }}</a></li>
-            <li role="presentation"><a href="#files" aria-controls="messages" role="tab"
-                                       data-toggle="tab">{{ "Fitxategiak" | trans }}</a></li>
-            <li role="presentation"><a href="#timeline" aria-controls="settings" role="tab"
-                                       data-toggle="tab">{{ "Denboralerroa" | trans }}</a></li>
+            <li role="presentation" class="active">
+                <a href="#egutegia" aria-controls="home" role="tab" data-toggle="tab">
+                    {{ "Egutegia" | trans }}
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#notes" aria-controls="profile" role="tab" data-toggle="tab">
+                    {{ "Oharrak" | trans }}{% if calendar.note | length > 0 %} &nbsp;<i class="fa fa-commenting text-danger" aria-hidden="true"></i>{% endif %}
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#files" aria-controls="messages" role="tab" data-toggle="tab">
+                    {{ "Fitxategiak" | trans }}
+                </a>
+            </li>
+            <li role="presentation">
+                <a href="#timeline" aria-controls="settings" role="tab" data-toggle="tab">
+                    {{ "Denboralerroa" | trans }}
+                </a>
+            </li>
         </ul>
 
         <!-- Tab panes -->
