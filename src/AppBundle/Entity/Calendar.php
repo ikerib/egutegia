@@ -49,6 +49,15 @@ class Calendar
      * @var decimal
      * @Expose
      *
+     * @ORM\Column(name="percent_year", type="decimal", precision=10, scale=2)
+     */
+    private $percent_year=0; // Urteko lan orduak
+
+
+    /**
+     * @var decimal
+     * @Expose
+     *
      * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      */
     private $hours_year=0; // Urteko lan orduak
@@ -161,6 +170,7 @@ class Calendar
     {
         $this->events = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->percent_year = 100;
     }
 
     public function __toString()
@@ -586,5 +596,29 @@ class Calendar
     public function getDocuments()
     {
         return $this->documents;
+    }
+
+    /**
+     * Set percentYear
+     *
+     * @param string $percentYear
+     *
+     * @return Calendar
+     */
+    public function setPercentYear($percentYear)
+    {
+        $this->percent_year = $percentYear;
+
+        return $this;
+    }
+
+    /**
+     * Get percentYear
+     *
+     * @return string
+     */
+    public function getPercentYear()
+    {
+        return $this->percent_year;
     }
 }

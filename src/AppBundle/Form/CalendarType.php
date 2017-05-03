@@ -65,6 +65,10 @@ class CalendarType extends AbstractType
                 'label' => 'Jornada',
                 'required' => true
             ))
+            ->add('percentYear', NumberType::class, array(
+                'label' => 'Portzentaia',
+                'required' => true
+            ))
         ;
     }
     
