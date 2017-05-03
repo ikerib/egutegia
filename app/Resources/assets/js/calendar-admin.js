@@ -79,16 +79,16 @@ $(function () {
   }
 
   function workday_count (fstart, fend) {
-    start = moment(fstart)
-    end = moment(fend)
-    var first = start.clone().endOf('week') // end of first week
-    var last = end.clone().startOf('week') // start of last week
-    var days = last.diff(first, 'days') * 5 / 7 // this will always multiply of 7
-    var wfirst = first.day() - start.day() // check first week
-    if (start.day() == 0) --wfirst // -1 if start with sunday
-    var wlast = end.day() - last.day() // check last week
-    if (end.day() == 6) --wlast // -1 if end with saturday
-    return wfirst + days + wlast // get the total
+    var start = moment(fstart)
+    var end = moment(fend)
+    var first = start.clone().endOf('week'); // end of first week
+    var last = end.clone().startOf('week'); // start of last week
+    var days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
+    var wfirst = first.day() - start.day(); // check first week
+    if(start.day() == 0) --wfirst; // -1 if start with sunday
+    var wlast = end.day() - last.day(); // check last week
+    if(end.day() == 6) --wlast; // -1 if end with saturday
+    return wfirst + days + wlast; // get the total
   }
 
   function editEvent (event) {
@@ -211,12 +211,11 @@ $(function () {
   var currentYear = new Date().getFullYear()
 
   $('#calendar').calendar({
-    style: 'background',
+    // style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
-    disabledWeekDays: [6, 0],
+    // disabledWeekDays: [6, 0],
     allowOverlap: true,
-    // displayWeekNumber: true,
     enableContextMenu: true,
     enableRangeSelection: true,
     contextMenuItems: [

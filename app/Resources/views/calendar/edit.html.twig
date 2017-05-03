@@ -149,16 +149,14 @@
                                 <label for="txtWorkingDaysSelected" class="col-sm-3 control-label">Aukeratuko egun
                                     kopurua:</label>
                                 <div class="col-sm-9">
-                                    <input name="txtWorkingDaysSelected" id="txtWorkingDaysSelected" type="text"
-                                           disabled>
+                                    <input name="txtWorkingDaysSelected" id="txtWorkingDaysSelected" type="text">
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="txtJornada" class="col-sm-3 control-label">Jornada orduak: </label>
                                 <div class="col-sm-9">
-                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}"
-                                           disabled>
+                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}">
                                 </div>
                             </div>
 
@@ -460,46 +458,7 @@
         })
 
         $('#save-upload-file').on('click', function () {
-
           $('#frmFile').submit()
-
-//
-////          var form = $('#frmFile')[0]; // You need to use standard javascript object here
-////          var formData = new FormData(form);
-//
-//          var data;
-//          var type = 'GET';
-//          var processData = false;
-//          var contenType = 'application/x-www-form-urlencoded; charset=UTF-8';
-//
-//          data = new FormData();
-//          var $inputs = $('#frmFile :input')
-//          $inputs.each(function() {
-//            if ($(this).attr('type') === 'file' &&  $(this).val() !== '') {
-//              // Each file input is appended if there is a file selected.
-//              // If it was also appended without a selected file, this would
-//              // result in an error in symfony.
-//              data.append($(this).attr('name'), $(this)[0].files[0]);
-//            } else if ($(this).attr('type') !== 'checkbox' || $(this).prop('checked')) {
-//              // Every other input is appended with it's value. Checkboxes
-//              // are only appended if they are selected as per normal form
-//              // submit behaviour.
-//              data.append($(this).attr('name'), $(this).val());
-//            }
-//          });
-//
-//
-////          var url = Routing.generate('post_upload');
-//          var url = Routing.generate('admin_file_new');
-//          $.ajax( {
-//            url: url,
-//            type: 'POST',
-//            data: data,
-//            enctype: 'multipart/form-data',
-//            processData: false,
-//            contentType: false
-//          } );
-//
         })
 
         $('#save-calendar-note').on('click', function () {
