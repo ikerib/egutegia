@@ -258,6 +258,20 @@
             })
           }
         })
+        
+        $(document).on('change', '#appbundle_calendar_percentYear', function () {
+          var ori = $(this)
+          var des = $('#appbundle_calendar_hoursDay')
+
+          var vori = parseFloat($(ori).val())
+          var vdes = parseFloat($(des).val())
+
+          if ((vdes !== 0) && (vori !==0)) {
+            vdes = vdes * vori / 100
+            $(des).val(vdes.toFixed(2))
+          }
+
+        })
 
       })
     </script>
