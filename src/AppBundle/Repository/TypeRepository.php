@@ -14,7 +14,7 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         /** @var  $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery("
-            SELECT t.id, t.name, t.color, t.hours, t.orden
+            SELECT DISTINCT  t.id, t.name, t.color, t.hours, t.orden
                 FROM AppBundle:Type t
                 INNER JOIN t.events e
                 LEFT JOIN t.template_events te
@@ -27,7 +27,7 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
-    
+
     public function findAllTemplateEventsType ($calendarid) {
         $em = $this->getEntityManager();
 

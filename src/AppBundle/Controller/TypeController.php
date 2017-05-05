@@ -61,7 +61,7 @@ class TypeController extends Controller
     /**
      * Lists all type entities (templates).
      *
-     * @Route("/listtemplatetypes/{templateid}", name="admin_type_list")
+     * @Route("/listtemplatetypes/{templateid}", name="admin_type_listtemplates")
      * @Method("GET")
      */
     public function listtemplatetypesAction($templateid)
