@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,6 +21,10 @@ class TypeType extends AbstractType
                 'label' => 'Kolorea'
             ))
             ->add('orden')
+            ->add('erakutsi',CheckboxType::class, array(
+                'label'    => 'Erakutsi',
+                'translation_domain' => 'messages',
+            ))
         ;
     }
     

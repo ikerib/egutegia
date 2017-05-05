@@ -14,12 +14,12 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
         $em = $this->getEntityManager();
         /** @var  $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery("
-            SELECT t.id, t.name, t.color, t.hours
+            SELECT t.id, t.name, t.color, t.hours, t.orden
                 FROM AppBundle:Type t
                 INNER JOIN t.events e
                 LEFT JOIN t.template_events te
                 INNER JOIN e.calendar c
-                WHERE c.id = :calendarid
+                WHERE c.id = :calendarid AND t.erakutsi = 1
                 ORDER BY t.orden
         ");
 
@@ -34,12 +34,13 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         /** @var \Doctrine\DBAL\Query\QueryBuilder $query */
         $query = $em->createQuery(
-            "SELECT DISTINCT t.id, t.name, t.color, t.hours
+            "SELECT DISTINCT t.id, t.name, t.color, t.hours, t.orden
             FROM AppBundle:Calendar c
             INNER JOIN c.template tt
             INNER JOIN tt.template_events te
             INNER JOIN te.type t
-            WHERE c.id = :calendarid
+            WHERE c.id = :calendarid  AND t.erakutsi = 1
+            ORDER BY t.orden
         "
         );
 

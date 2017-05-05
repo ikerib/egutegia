@@ -78,6 +78,12 @@ class Type
      */
     private $orden;
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="erakutsi", type="boolean", nullable=true)
+     */
+    private $erakutsi;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -113,6 +119,7 @@ class Type
         $this->events = new ArrayCollection();
         $this->template_events = new ArrayCollection();
         $this->color = "#e01b1b";
+        $this->erakutsi = true;
     }
 
     /*****************************************************************************************************************/
@@ -365,5 +372,29 @@ class Type
     public function getEvents()
     {
         return $this->events;
+    }
+
+    /**
+     * Set erakutsi
+     *
+     * @param boolean $erakutsi
+     *
+     * @return Type
+     */
+    public function setErakutsi($erakutsi)
+    {
+        $this->erakutsi = $erakutsi;
+
+        return $this;
+    }
+
+    /**
+     * Get erakutsi
+     *
+     * @return boolean
+     */
+    public function getErakutsi()
+    {
+        return $this->erakutsi;
     }
 }

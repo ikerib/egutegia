@@ -49,6 +49,7 @@
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="hours"  data-sortable="true">{{ 'Orduak' | trans }}</th>
                     <th data-halign="center" data-align="center" >{{ 'Kolorea' | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="erakutsi" data-sortable="true" >{{ 'Erakutsi' | trans }}</th>
                     <th data-halign="center" data-align="center"></th>
                 </tr>
             </thead>
@@ -59,6 +60,13 @@
                     <td>{{ type.name }}</td>
                     <td>{{ type.hours }}</td>
                     <td><span class="showColor" style="background-color: {{ type.color }};">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+                    <td>
+                        {% if type.erakutsi %}
+                            <span class="label label-success">{{ 'Bai'|trans }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ 'Ez'|trans }}</span>
+                        {% endif %}
+                    </td>
                     <td>
                         <ul class="list-unstyled list-inline">
                             <li>
