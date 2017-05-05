@@ -83,6 +83,15 @@ class Type
     /*****************************************************************************************************************/
 
     /**
+     * @var events[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="type",cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     * @Expose()
+     */
+    private $events;
+
+    /**
      * @var template_events[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TemplateEvent", mappedBy="type",cascade={"persist"})
@@ -101,6 +110,7 @@ class Type
      */
     public function __construct()
     {
+        $this->events = new ArrayCollection();
         $this->template_events = new ArrayCollection();
         $this->color = "#e01b1b";
     }
@@ -321,5 +331,39 @@ class Type
     public function getTemplateEvents()
     {
         return $this->template_events;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return Type
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }

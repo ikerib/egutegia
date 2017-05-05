@@ -28,10 +28,11 @@ $(function () {
     // Orduak Birkalkulatzen motaren arabera
     var typeIndex = findValueInObjectArray(arrTypes, event.type)
     if (typeIndex === -1) {
-      bootbox.alert({
-        message: 'Egutegi motak ez daude finkatuak',
-        className: 'bb-alternate-modal'
-      })
+      // Hasieran ez baina gaur egun egon daitezke eragiketarik behar ez duten motako Event-ak
+      // bootbox.alert({
+      //   message: 'Egutegi motak ez daude finkatuak',
+      //   className: 'bb-alternate-modal'
+      // })
     } else {
       var tipoa = arrTypes[typeIndex]
       var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(',', '.'))

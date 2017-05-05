@@ -41,14 +41,17 @@ class TypeController extends Controller
     /**
      * Lists all type entities.
      *
-     * @Route("/list", name="admin_type_list")
+     * @Route("/list/{calendarid}", name="admin_type_list")
      * @Method("GET")
      */
-    public function listAction()
+    public function listAction($calendarid)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $types = $em->getRepository('AppBundle:Type')->findAllByOrder();
+        $typesFromCalendarEvents = $em->getRepository('AppBundle:Type')->findAllByOrder($calendarid);
+        $typesFromTemplateEvents = $em->getRepository('AppBundle:Type' )->findAllTemplateEventsType( $calendarid );
+
+        $types = array_merge( $typesFromTemplateEvents, $typesFromCalendarEvents );
 
         return $this->render('type/list.html.twig', array(
             'types' => $types

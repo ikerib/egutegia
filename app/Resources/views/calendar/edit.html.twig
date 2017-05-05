@@ -41,6 +41,10 @@
                         <strong>{{ 'Portzentaia: ' | trans }} </strong>
                         <span id="percentYear">{{ calendar.percentYear }}%</span>
                     </div>
+                    <div class="col-sm-2">
+                        <strong>{{ 'Jornada: ' | trans }} </strong>
+                        <span id="hoursDay">{{ calendar.hoursDay }}</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -238,6 +242,11 @@
                 </a>
             </li>
             <li role="presentation">
+                <a href="#konpentsatuak" aria-controls="messages" role="tab" data-toggle="tab">
+                    {{ "Konpentsatuak" | trans }}
+                </a>
+            </li>
+            <li role="presentation">
                 <a href="#files" aria-controls="messages" role="tab" data-toggle="tab">
                     {{ "Fitxategiak" | trans }}
                 </a>
@@ -284,6 +293,41 @@
                                 {{ 'Gorde' | trans }}
                             </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            {# Konpentsauak #}
+            <div role="tabpanel" class="tab-pane fade in active" id="konpentsatuak">
+                <div class="row">&nbsp</div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="btn-toolbar pull-right" role="toolbar">
+                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
+                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
+                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">&nbsp</div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table id="KonpentsatuakTaula" class="table table-hover table-striped table-bordered">
+                            <thead>
+                            <th>Eguna</th>
+                            <th>Orduak</th>
+                            <th></th>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -423,14 +467,7 @@
 {% endblock %}
 
 {% block content_sidebar %}
-    {{ render(controller('AppBundle:Type:list' )) }}
-    {#<h2>{{ "Dokumentuak" | trans }}</h2>#}
-    {#<ul class="list-unstyled">#}
-        {#{% for doc in calendar.documents %}#}
-            {#<li><a href="{{ vich_uploader_asset(doc, 'uploadfile') }}"target="_blank">{{ doc.filename }}</a></li>#}
-        {#{% endfor %}#}
-    {#</ul>#}
-
+    {{ render(controller('AppBundle:Type:list', {'calendarid' : calendar.id}  )) }}
 {% endblock content_sidebar %}
 
 {% block foot_script %}

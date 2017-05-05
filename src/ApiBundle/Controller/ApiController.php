@@ -258,43 +258,54 @@ class ApiController extends FOSRestController {
         $event->setType($type);
         $em->persist($event);
 
-        /** @var  $query */
-        $query = $em->createQuery('
-                UPDATE AppBundle:Calendar c
-                SET c.hours_year = c.hours_year - :hoursYear  
-                , c.hours_free = c.hours_free - :hoursFree  
-                , c.hours_self = c.hours_self - :hoursSelf
-                , c.hours_compensed = c.hours_compensed - :hoursCompensed 
-                WHERE c.id = :calendarid');
-        $query->setParameter('calendarid', $jsonData['calendarid']);
 
-        if ( $event->getType()->getName() === "Oporrak" ) {
-            $query->setParameter('hoursYear', 0);
-            $query->setParameter('hoursFree', $event->getHours());
-            $query->setParameter('hoursSelf', 0);
-            $query->setParameter('hoursCompensed', 0);
-        } elseif ($event->getType()->getName() === "Norberarentzako") {
-            $query->setParameter('hoursYear', 0);
-            $query->setParameter('hoursFree', 0);
-            $query->setParameter('hoursSelf', $event->getHours());
-            $query->setParameter('hoursCompensed', 0);
-        } elseif ($event->getType()->getName() === "Konpentsatuak") {
-            $query->setParameter('hoursYear', 0);
-            $query->setParameter('hoursFree', 0);
-            $query->setParameter('hoursSelf', 0);
-            $query->setParameter('hoursCompensed', $event->getHours());
+        /**
+         * Ordu eragiketak egin soilik mota hauetako Event bat denean
+         */
+
+        $KalkuluakEgin = ['Oporrak', 'Norberarentzako', 'Konpentsatuak' ];
+
+        if ( in_array($event->getType()->getName(), $KalkuluakEgin) ) {
+            /** @var  $query */
+            $query = $em->createQuery(
+                '
+                        UPDATE AppBundle:Calendar c
+                        SET c.hours_year = c.hours_year - :hoursYear  
+                        , c.hours_free = c.hours_free - :hoursFree  
+                        , c.hours_self = c.hours_self - :hoursSelf
+                        , c.hours_compensed = c.hours_compensed - :hoursCompensed 
+                        WHERE c.id = :calendarid'
+            );
+            $query->setParameter( 'calendarid', $jsonData[ 'calendarid' ] );
+
+            if ( $event->getType()->getName() === "Oporrak" ) {
+                $query->setParameter( 'hoursYear', 0 );
+                $query->setParameter( 'hoursFree', $event->getHours() );
+                $query->setParameter( 'hoursSelf', 0 );
+                $query->setParameter( 'hoursCompensed', 0 );
+            } elseif ( $event->getType()->getName() === "Norberarentzako" ) {
+                $query->setParameter( 'hoursYear', 0 );
+                $query->setParameter( 'hoursFree', 0 );
+                $query->setParameter( 'hoursSelf', $event->getHours() );
+                $query->setParameter( 'hoursCompensed', 0 );
+            } elseif ( $event->getType()->getName() === "Konpentsatuak" ) {
+                $query->setParameter( 'hoursYear', 0 );
+                $query->setParameter( 'hoursFree', 0 );
+                $query->setParameter( 'hoursSelf', 0 );
+                $query->setParameter( 'hoursCompensed', $event->getHours() );
+            }
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setName( "Egutegia eguneratua" );
+            $log->setCalendar( $calendar );
+            $log->setDescription( "Egutegian aldaketak grabatu dira " );
+            $log->setQuery( $query->getSql() );
+            $em->persist( $log );
+
+
+            $query->execute();
         }
-
-        /** @var Log $log */
-        $log = new Log();
-        $log->setName("Egutegia eguneratua");
-        $log->setCalendar( $calendar );
-        $log->setDescription("Egutegian aldaketak grabatu dira ");
-        $log->setQuery( $query->getSql() );
-        $em->persist($log);
-
-
-        $query->execute();
         $em->flush();
 
         $view = View::create();
