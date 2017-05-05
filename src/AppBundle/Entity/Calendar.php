@@ -164,12 +164,20 @@ class Calendar
     private $documents;
 
     /**
+     * @var hours[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Hour", mappedBy="calendar",cascade={"persist"})
+     */
+    private $hours;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->documents = new ArrayCollection();
+        $this->hours = new ArrayCollection();
         $this->percent_year = 100;
     }
 
@@ -620,5 +628,39 @@ class Calendar
     public function getPercentYear()
     {
         return $this->percent_year;
+    }
+
+    /**
+     * Add hour
+     *
+     * @param \AppBundle\Entity\Hour $hour
+     *
+     * @return Calendar
+     */
+    public function addHour(\AppBundle\Entity\Hour $hour)
+    {
+        $this->hours[] = $hour;
+
+        return $this;
+    }
+
+    /**
+     * Remove hour
+     *
+     * @param \AppBundle\Entity\Hour $hour
+     */
+    public function removeHour(\AppBundle\Entity\Hour $hour)
+    {
+        $this->hours->removeElement($hour);
+    }
+
+    /**
+     * Get hours
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHours()
+    {
+        return $this->hours;
     }
 }

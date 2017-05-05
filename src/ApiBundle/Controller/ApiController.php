@@ -259,13 +259,7 @@ class ApiController extends FOSRestController {
         $em->persist($event);
 
 
-        /**
-         * Ordu eragiketak egin soilik mota hauetako Event bat denean
-         */
-
-        $KalkuluakEgin = ['Oporrak', 'Norberarentzako', 'Konpentsatuak' ];
-
-        if ( in_array($event->getType()->getName(), $KalkuluakEgin) ) {
+        if ( $this->doOperations($event->getType()->getName()) ) {
             /** @var  $query */
             $query = $em->createQuery(
                 '
@@ -316,6 +310,19 @@ class ApiController extends FOSRestController {
         return $view;
 
     }// "post_events"            [POST] /events
+
+
+    public function doOperations($type) {
+        /**
+         * Ordu eragiketak egin soilik mota hauetako Event bat denean
+         */
+        $KalkuluakEgin = ['Oporrak', 'Norberarentzako', 'Konpentsatuak' ];
+        if ( in_array($type, $KalkuluakEgin) ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     /**
      * Backup all events of a given calendar
@@ -377,40 +384,45 @@ class ApiController extends FOSRestController {
         // Now we can remove calendar events but first we need to update calendar hours
         foreach ($events as $e) {
 
-            $query = $em->createQuery('
-                UPDATE AppBundle:Calendar c
-                SET c.hours_year = c.hours_year + :hoursYear  
-                , c.hours_free = c.hours_free + :hoursFree  
-                , c.hours_self = c.hours_self + :hoursSelf
-                , c.hours_compensed = c.hours_compensed +:hoursCompensed 
-                WHERE c.id = :calendarid');
-            $query->setParameter('calendarid', $calendarid);
+            if ( $this->doOperations($e->getType()->getName())) {
 
-            if ( $e->getType()->getName() === "Oporrak" ) {
-                $query->setParameter('hoursYear', 0);
-                $query->setParameter('hoursFree', $e->getHours());
-                $query->setParameter('hoursSelf', 0);
-                $query->setParameter('hoursCompensed', 0);
-            } elseif ($e->getType()->getName() === "Norberarentzako") {
-                $query->setParameter('hoursYear', 0);
-                $query->setParameter('hoursFree', 0);
-                $query->setParameter('hoursSelf', $e->getHours());
-                $query->setParameter('hoursCompensed', 0);
-            } elseif ($e->getType()->getName() === "Konpentsatuak") {
-                $query->setParameter('hoursYear', 0);
-                $query->setParameter('hoursFree', 0);
-                $query->setParameter('hoursSelf', 0);
-                $query->setParameter('hoursCompensed', $e->getHours());
+                $query = $em->createQuery(
+                    '
+                    UPDATE AppBundle:Calendar c
+                    SET c.hours_year = c.hours_year + :hoursYear  
+                    , c.hours_free = c.hours_free + :hoursFree  
+                    , c.hours_self = c.hours_self + :hoursSelf
+                    , c.hours_compensed = c.hours_compensed +:hoursCompensed 
+                    WHERE c.id = :calendarid'
+                );
+                $query->setParameter( 'calendarid', $calendarid );
+
+                if ( $e->getType()->getName() === "Oporrak" ) {
+                    $query->setParameter( 'hoursYear', 0 );
+                    $query->setParameter( 'hoursFree', $e->getHours() );
+                    $query->setParameter( 'hoursSelf', 0 );
+                    $query->setParameter( 'hoursCompensed', 0 );
+                } elseif ( $e->getType()->getName() === "Norberarentzako" ) {
+                    $query->setParameter( 'hoursYear', 0 );
+                    $query->setParameter( 'hoursFree', 0 );
+                    $query->setParameter( 'hoursSelf', $e->getHours() );
+                    $query->setParameter( 'hoursCompensed', 0 );
+                } elseif ( $e->getType()->getName() === "Konpentsatuak" ) {
+                    $query->setParameter( 'hoursYear', 0 );
+                    $query->setParameter( 'hoursFree', 0 );
+                    $query->setParameter( 'hoursSelf', 0 );
+                    $query->setParameter( 'hoursCompensed', $e->getHours() );
+                }
+
+                /** @var Log $log */
+                $log = new Log();
+                $log->setName( "Update Calendar hours" );
+                $log->setDescription( $query->getSql() );
+                $em->persist( $log );
+                $em->flush();
+
+                $query->execute();
             }
-
-            /** @var Log $log */
-            $log = new Log();
-            $log->setName("Update Calendar hours");
-            $log->setDescription($query->getSql());
-            $em->persist($log);
-            $em->flush();
-
-            $query->execute();
         }
 
         /** @var $query QueryBuilder */
