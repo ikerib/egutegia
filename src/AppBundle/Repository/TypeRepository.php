@@ -27,8 +27,7 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
-
-
+    
     public function findAllTemplateEventsType ($calendarid) {
         $em = $this->getEntityManager();
 
@@ -48,15 +47,25 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
 
-//        select DISTINCT t.*
-//from calendar as c
-//INNER JOIN template as tt
-//	on c.template_id = tt.id
-//INNER join template_event as te
-//	on te.template_id = tt.id
-//INNER join type as t
-//	on te.type_id = t.id
-//where c.id = 6
+    }
+
+    public function findAllTypesOfTemplateEvents ($templateid) {
+        $em = $this->getEntityManager();
+
+        /** @var \Doctrine\DBAL\Query\QueryBuilder $query */
+        $query = $em->createQuery(
+            "SELECT DISTINCT t.id, t.name, t.color, t.hours, t.orden
+            FROM AppBundle:Template tt
+            INNER JOIN tt.template_events te
+            INNER JOIN te.type t
+            WHERE tt.id = :templateid  AND t.erakutsi = 1
+            ORDER BY t.orden
+        "
+        );
+
+        $query->setParameter( 'templateid', $templateid);
+
+        return $query->getResult();
 
     }
 

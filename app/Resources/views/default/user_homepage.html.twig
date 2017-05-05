@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block content_sidebar %}
-    {{ render(controller('AppBundle:Type:list' )) }}
+    {{ render(controller('AppBundle:Type:list', {'calendarid': calendar.id} )) }}
 {% endblock content_sidebar %}
 
 {% block foot_script %}
