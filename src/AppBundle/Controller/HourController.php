@@ -73,8 +73,8 @@ class HourController extends Controller
             /** @var Log $log */
             $log = new Log();
             $log->setCalendar( $calendar );
-            $log->setName( 'Ordu konpentsatuak' );
-            $log->setDescription( 'Ordu konpentsatuak erregistratuak eta gehituak izan dira.' );
+            $log->setName( 'Ordu konpentsatuak gehitu' );
+            $log->setDescription( "Fetxa: ".date_format($hour->getDate(), 'Y/m/d')." Orduak: ". $hour->getHours(). " Minutuak: ".$hour->getMinutes()." Total: ".$hour->getTotal() );
             $log->setUser( $this->getUser() );
 
             $em->persist( $log );
@@ -130,7 +130,7 @@ class HourController extends Controller
             $log = new Log();
             $log->setUser( $this->getUser() );
             $log->setName( 'Ordu Konpentsatuak. Zuzenketa.' );
-            $log->setDescription( 'Zuzenketa bat erregistratu da.' );
+            $log->setDescription( "Fetxa: ".date_format($hour->getDate(), 'Y/m/d')." Orduak: ". $hour->getHours(). " Minutuak: ".$hour->getMinutes()." Total: ".$hour->getTotal() );
             $log->setCalendar( $calendar );
 
             $em->persist( $log );
@@ -175,7 +175,7 @@ class HourController extends Controller
             $log->setCalendar( $calendar );
             $log->setUser( $this->getUser() );
             $log->setName( 'Ordu konpentsatua ezabatua' );
-            $log->setDescription( "ordu konpentsatu taulako erregistroa ezabatua izan da." );
+            $log->setDescription( "Fetxa: ".date_format($hour->getDate(), 'Y/m/d')." Orduak: ". $hour->getHours(). " Minutuak: ".$hour->getMinutes()." Total: ".$hour->getTotal() );
             $em->persist( $log );
 
 
