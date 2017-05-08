@@ -302,12 +302,10 @@
                 <div class="row">&nbsp</div>
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="btn-toolbar pull-right" role="toolbar">
-                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
-                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a></div>
-                            <div class="btn-group btn-default" role="group"><a href="javascript:void(0);"><i class="fa fa-times" aria-hidden="true"></i></a></div>
-                        </div>
+                    <div class="col-sm-11">
+                    </div>
+                    <div class="col-sm-1">
+                        <a id="btnAddKonpentsatua" href="javascript:void(0);"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -319,19 +317,69 @@
                             <th>Eguna</th>
                             <th>Orduak</th>
                             <th>Minutuak</th>
-                            <th>Ordu konpentsatuak</th>
+                            <th>Faktorea</th>
+                            <th>Orduak konpentsatzera</th>
+                            <th></th>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                                {% for o in orduak %}
+                                    <tr>
+                                        <td>{{ o.date | date('Y/m/d') }}</td>
+                                        <td>{{ o.hours }}</td>
+                                        <td>{{ o.minutes }}</td>
+                                        <td>{{ o.factor }}</td>
+                                        <td>{{ o.total }}</td>
+                                        <td class="text-center">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    <a data-id="{{ o.id }}" class="btn-edit-konpentsatua" href="javascript:void(0);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li>
+                                                    {{ form_start(deletehourforms[o.id],{'attr': {'id': o.id}}) }}
+                                                    <a class="btnRemoveHourwRow" data-id="{{ o.id }}" href="javascript:void(0);">
+                                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                    </a>
+                                                    {{ form_end(deletehourforms[o.id]) }}
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
                 </div>
+
+
+                <div class="modal modal-fade" id="modal-konpentsatuak">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span
+                                            aria-hidden="true">×</span><span
+                                            class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                                <h4 class="modal-title">
+                                    {{ 'Ordu konpentsatuak' | trans }}
+                                </h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row" id="modal-content-konpentsatuak">
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                                <button type="button" class="btn btn-primary" data-action="" id="save-konpentsatua">
+                                    {{ 'Gorde' | trans }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             {# Fitxategiak #}
@@ -479,6 +527,9 @@
     <script>
       $(function () {
 
+        /*************************************************************************************************************/
+        /** HASH funtzioak *******************************************************************************************/
+        /*************************************************************************************************************/
         var url = document.location.toString()
         if (url.match('#')) {
           $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show')
@@ -496,40 +547,10 @@
         hash = window.location.hash.replace(/^#!/, '')
         $('#myTab a[href="' + hash + '"]').tab('show')
 
-        $('#saveCalendarEditModal').on('click', function () {
-          $('#frmEditCalendar').submit()
-        })
 
-        $('#btnModalOpenFile').on('click', function() {
-          $('#modal-files-open').modal('show');
-        });
-
-
-        $('.btnRemoveRow').on('click', function () {
-          var that = $(this)
-          bootbox.confirm({
-            title: '{{ 'Adi!' | trans }}',
-            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
-            buttons: {
-              cancel: {
-                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
-              },
-              confirm: {
-                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
-              }
-            },
-            callback: function (result) {
-              if (result === true) {
-                $(that).closest('form').submit()
-              }
-            }
-          })
-        })
-
-        $('#save-upload-file').on('click', function () {
-          $('#frmFile').submit()
-        })
-
+        /*************************************************************************************************************/
+        /** Egutegia Tab *********************************************************************************************/
+        /*************************************************************************************************************/
         $('#save-calendar-note').on('click', function () {
           var calendarid = $('#calendarid').val()
           var url = Routing.generate('post_notes', {'calendarid': calendarid})
@@ -558,6 +579,119 @@
             }
           })
         })
+
+        $('#saveCalendarEditModal').on('click', function () {
+          $('#frmEditCalendar').submit()
+        })
+
+        /*************************************************************************************************************/
+        /** Fitxategiak Tab ******************************************************************************************/
+        /*************************************************************************************************************/
+        $('.btnRemoveRow').on('click', function () {
+          var that = $(this)
+          bootbox.confirm({
+            title: '{{ 'Adi!' | trans }}',
+            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
+            buttons: {
+              cancel: {
+                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+              },
+              confirm: {
+                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+              }
+            },
+            callback: function (result) {
+              if (result === true) {
+                $(that).closest('form').submit()
+              }
+            }
+          })
+        })
+
+        $('#save-upload-file').on('click', function () {
+          $('#frmFile').submit()
+        })
+
+
+        /*************************************************************************************************************/
+        /** Konpentsatuak Tab ******************************************************************************************/
+        /*************************************************************************************************************/
+        $('#btnAddKonpentsatua').click(function () {
+          $('#modal-content-konpentsatuak').empty()
+
+          var calendarid = $('#calendarid').val()
+          var url = Routing.generate('admin_hour_new', {'calendarid': calendarid})
+          $('#modal-content-konpentsatuak').load(url, function () {
+            $('#modal-konpentsatuak').modal()
+          });
+        })
+
+        $('.btn-edit-konpentsatua').click(function () {
+          $('#modal-content-konpentsatuak').empty()
+
+          var miid = $(this).data('id')
+          var url = Routing.generate('admin_hour_edit', {'id': miid })
+          console.log(url)
+          $('#modal-content-konpentsatuak').load(url, function () {
+            $('#modal-konpentsatuak').modal()
+          });
+        })
+
+        $(document).on('click', '#save-konpentsatua', function () {
+          $('#frmaddkonpentsatua').submit()
+        })
+
+        $('#btnModalOpenFile').on('click', function() {
+          $('#modal-files-open').modal('show');
+        });
+
+        $(document).on('click', '.btnRemoveHourwRow', function () {
+          var that = $(this)
+          bootbox.confirm({
+            title: '{{ 'Adi!' | trans }}',
+            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
+            buttons: {
+              cancel: {
+                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+              },
+              confirm: {
+                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+              }
+            },
+            callback: function (result) {
+              if (result === true) {
+                $(that).closest('form').submit()
+              }
+            }
+          })
+        })
+
+        $(document).on('change', '.birkalk', function () {
+          birKalkulatu()
+        })
+
+        function birKalkulatu() {
+          var iHour = $('#appbundle_hour_hours').val().replace(/\,/g, '.')
+          if (iHour.length === 0) { iHour = 0 }
+          if (!$.isNumeric(iHour)) { iHour = 0 }
+          var fHour = parseFloat( iHour)
+
+          var iMinu = $('#appbundle_hour_minutes').val().replace(/\,/g, '.')
+          if (iMinu.length === 0) { iMinu = 0 }
+          if (!$.isNumeric(iMinu)) { iMinu = 0 }
+          var fMinu = parseFloat(iMinu)
+
+          var iFact = $('#appbundle_hour_factor').val().replace(/\,/g, '.')
+          if (iFact.length === 0) { iFact = 0 }
+          if (!$.isNumeric(iFact)) { iFact = 0 }
+          var fFact = parseFloat(iFact)
+
+          var dest  = $('#appbundle_hour_total');
+
+          var tempOrduak = fHour + parseFloat( fMinu / 60)
+          dest.val( parseFloat(tempOrduak * fFact).toFixed(2) )
+
+        }
 
       })
     </script>

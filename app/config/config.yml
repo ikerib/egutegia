@@ -124,6 +124,8 @@ fos_js_routing:
         - post_events
         - post_notes
         - post_usernotes
+        - admin_hour_new
+        - admin_hour_edit
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

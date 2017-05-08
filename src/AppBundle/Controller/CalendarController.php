@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
 use AppBundle\Entity\File;
+use AppBundle\Entity\Hour;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
@@ -228,10 +229,17 @@ class CalendarController extends Controller
             $deleteDocumentForms[ $doc->getId() ] = $this->createDocumentDeleteForm($doc)->createView();
         }
 
+        $hours = $calendar->getHours();
+        $deleteHoursForms = array();
+        foreach ($hours as $h) {
+            $deleteHoursForms[ $h->getId() ] = $this->createHourDeleteForm($h)->createView();
+        }
+
         return $this->render(
             'calendar/edit.html.twig',
             array(
                 'calendar'    => $calendar,
+                'orduak'      => $calendar->getHours(),
                 'edit_form'   => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
                 'frmnote'     => $frmnote->createView(),
@@ -239,6 +247,7 @@ class CalendarController extends Controller
                 'logs'        => $logs,
                 'types'       => $types,
                 'deletedocumentforms' => $deleteDocumentForms,
+                'deletehourforms' => $deleteHoursForms
             )
         );
     }
@@ -289,6 +298,21 @@ class CalendarController extends Controller
     {
         return $this->createFormBuilder()
             ->setAction( $this->generateUrl( 'admin_document_delete', array( 'id' => $doc->getId() ) ) )
+            ->setMethod( 'DELETE' )
+            ->getForm();
+    }
+
+    /**
+     * Creates a form to delete a Hour entity.
+     *
+     * @param Hour $h The calendar entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createHourDeleteForm ( Hour $h)
+    {
+        return $this->createFormBuilder()
+            ->setAction( $this->generateUrl( 'admin_hour_delete', array( 'id' => $h->getId() ) ) )
             ->setMethod( 'DELETE' )
             ->getForm();
     }

@@ -41,23 +41,22 @@ Abizenak: Apellidos
 Sartu: Entrar
 'Txantiloi berria': 'Nueva Plantilla'
 'Egun bat zenbat ordu dira': 'Cuantas horas son un día'
-'Lan orduak:' : 'Horas trabaho'
-'Norberarentzako:' : 'Asuntos propios'
-'Konpentsatutakoak:' : 'Compensadas'
-'Hasiera': 'Inicio'
-'Txantiloiak': 'Plantillas'
-'Motak': 'Tipos'
-'Egutegia': 'Calendario'
-'Itxi': 'Cerrar'
-'Izena': 'Nombre'
-'Lan orduak guztira': 'Total horas trabajadas'
-'Opor orduak guztira': 'Total horas vacaciones'
-'Opor orduak hartuta': 'Total horas disfrutadas'
-'Ezeztatu': 'Cancelar'
-'Gorde': 'Guardar'
-'Mota': 'Tipo'
-'Orduak': 'Horas'
-'Fetxak': 'Fechas'
-'Oharrak': 'Notas'
-'Fitxategiak': 'Ficheros'
-'Denboralerroa': 'Línea de tiempo'
+'Portzentaia:': 'Porcentage:'
+'Jornada:': 'Jornada:'
+Portzentaia: Porcentage
+Konpentsatuak: Compensadas
+'Ordu konpentsatuak': 'Horas Compensadas'
+'Dokumentua gehitu': 'Añadir Documento'
+'Dokumentu berria': 'Nuevo Documento'
+Dokumentua: Documento
+'Noiz igo da': 'Cuando ha sido subido'
+Fetxa: Fecha
+Minutuak: Minutos
+Faktorea: Factor
+'Orduak konpentsatzera': 'Horas a compensar'
+Saila: Departamento
+Ordena: Orden
+Erakutsi: Mostrar
+Bai: Si
+Ez: No
+'Aukeratu Dokumentua': 'Selecciona Documento'
