@@ -88,6 +88,14 @@ class Calendar
 
     /**
      * @var decimal
+     * @Expose
+     *
+     * @ORM\Column(name="hours_sindikal", type="decimal", precision=10, scale=2)
+     */
+    private $hours_sindikal=0; // Ordu Sindikalak
+
+    /**
+     * @var decimal
      *
      * @ORM\Column(name="hours_day", type="decimal", precision=10, scale=2)
      * @Expose()
@@ -662,5 +670,29 @@ class Calendar
     public function getHours()
     {
         return $this->hours;
+    }
+
+    /**
+     * Set hoursSindikal
+     *
+     * @param string $hoursSindikal
+     *
+     * @return Calendar
+     */
+    public function setHoursSindikal($hoursSindikal)
+    {
+        $this->hours_sindikal = $hoursSindikal;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSindikal
+     *
+     * @return string
+     */
+    public function getHoursSindikal()
+    {
+        return $this->hours_sindikal;
     }
 }

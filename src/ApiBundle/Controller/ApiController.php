@@ -5,13 +5,13 @@ namespace ApiBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventHistory;
-use AppBundle\Entity\File;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\Template;
 use AppBundle\Entity\TemplateEvent;
+use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
-use AppBundle\Form\UserfileType;
-use AppBundle\Form\UserNoteType;
+use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -20,10 +20,9 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use HttpException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use FOS\RestBundle\Controller\Annotations\Put;
 
 class ApiController extends FOSRestController {
 
@@ -202,7 +201,6 @@ class ApiController extends FOSRestController {
      * @param $calendarid
      * @return array|View
      * @Annotations\View()
-     * @Get("/events/{calendarid}")
      */
     public function getEventsAction($calendarid)
     {
@@ -217,6 +215,140 @@ class ApiController extends FOSRestController {
 
         return $events;
     }
+
+    /**
+     * Update a Event
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Update a Event",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param         $id
+     *
+     * @return static
+     * @throws EntityNotFoundException
+     * @Rest\View(statusCode=200)
+     * @Rest\Put("/events/{id}")
+     */
+    public function putEventAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $jsonData = json_decode($request->getContent(), true);
+
+        // find event
+        $event = $em->getRepository( 'AppBundle:Event' )->find( $id );
+        if (!$event) {
+            throw new EntityNotFoundException();
+        }
+
+        // find calendar
+        /** @var Calendar $calendar */
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
+
+        // find type
+        /** @var Type $type */
+        $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
+
+
+        $event->setName($jsonData['name']);
+        $tempini = new \DateTime($jsonData['startDate']);
+        $event->setStartDate($tempini);
+        $tempfin = new \DateTime($jsonData['endDate']);
+        $event->setEndDate($tempfin);
+        $event->setHours($jsonData[ 'hours' ]);
+        $event->setType($type);
+        $em->persist($event);
+
+        $oldValue = $jsonData[ "oldValue" ];
+        $newValue = $jsonData[ "hours" ];
+        $oldType = $jsonData[ "oldType" ];
+        $hours = floatval($event->getHours()) - floatval( $oldValue );
+
+
+        if ( $type->getRelated() ) {
+
+            if ( $type->getId() === intval($oldType) ) { // Mota berdinekoak badira, zuzenketa
+
+                /** @var Type $t */
+                $t = $event->getType();
+                if ( $t->getRelated() === "hours_free" ) {
+                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) + $hours );
+                }
+                if ($t->getRelated() === "hours_self") {
+                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + $hours );
+                }
+                if ($t->getRelated() === "hours_compensed") {
+                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) + $hours );
+                }
+                if ($t->getRelated() === "hours_sindical") {
+                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) + $hours );
+                }
+                $em->persist( $calendar );
+
+            } else { // Mota ezberdinekoak dira, aurrena aurreko motan gehitu, mota berrian kentu ondoren
+
+
+                /** @vat Type $tOld */
+                $tOld = $em->getRepository( 'AppBundle:Type' )->find( $oldType );
+                if ( $tOld->getRelated() === "hours_free" ) {
+                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) + $oldValue );
+                }
+                if ($tOld->getRelated() === "hours_self") {
+                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + $oldValue );
+                }
+                if ($tOld->getRelated() === "hours_compensed") {
+                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) + $oldValue );
+                }
+                if ($tOld->getRelated() === "hours_sindical") {
+                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) + $oldValue );
+                }
+
+                /** @var Type $tNew */
+                $tNew = $event->getType(); // Mota berria
+                if ( $tNew->getRelated() === "hours_free" ) {
+                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) - $newValue );
+                }
+                if ($tNew->getRelated() === "hours_self") {
+                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) - $newValue );
+                }
+                if ($tNew->getRelated() === "hours_compensed") {
+                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) - $newValue );
+                }
+                if ($tNew->getRelated() === "hours_sindical") {
+                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) - $newValue );
+                }
+
+                $em->persist( $calendar );
+
+            }
+
+
+
+            /** @var Log $log */
+            $log = new Log();
+            $log->setName( "Egutegiko egun bat eguneratua izan da" );
+            $log->setCalendar( $calendar );
+            $log->setDescription( $event->getName()." ".$event->getHours(). " ordu ".$event->getType() );
+            $em->persist( $log );
+
+
+
+        }
+        $em->flush();
+
+        $view = View::create();
+        $view->setData($event);
+        header('content-type: application/json; charset=utf-8');
+        header("access-control-allow-origin: *");
+
+        return $view;
+
+    }// "put_event"             [PUT] /events/{id}
 
     /**
      * Save events.
@@ -243,8 +375,8 @@ class ApiController extends FOSRestController {
         $calendar = $em->getRepository('AppBundle:Calendar')->find($jsonData['calendarid']);
 
         // find type
+        /** @var Type $type */
         $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
-
 
         /** @var Event $event */
         $event = new Event();
@@ -259,47 +391,26 @@ class ApiController extends FOSRestController {
         $em->persist($event);
 
 
-        if ( $this->doOperations($event->getType()->getName()) ) {
-            /** @var  $query */
-            $query = $em->createQuery(
-                '
-                        UPDATE AppBundle:Calendar c
-                        SET c.hours_year = c.hours_year - :hoursYear  
-                        , c.hours_free = c.hours_free - :hoursFree  
-                        , c.hours_self = c.hours_self - :hoursSelf
-                        , c.hours_compensed = c.hours_compensed - :hoursCompensed 
-                        WHERE c.id = :calendarid'
-            );
-            $query->setParameter( 'calendarid', $jsonData[ 'calendarid' ] );
+        if ( $type->getRelated() ) {
 
-            if ( $event->getType()->getName() === "Oporrak" ) {
-                $query->setParameter( 'hoursYear', 0 );
-                $query->setParameter( 'hoursFree', $event->getHours() );
-                $query->setParameter( 'hoursSelf', 0 );
-                $query->setParameter( 'hoursCompensed', 0 );
-            } elseif ( $event->getType()->getName() === "Norberarentzako" ) {
-                $query->setParameter( 'hoursYear', 0 );
-                $query->setParameter( 'hoursFree', 0 );
-                $query->setParameter( 'hoursSelf', $event->getHours() );
-                $query->setParameter( 'hoursCompensed', 0 );
-            } elseif ( $event->getType()->getName() === "Konpentsatuak" ) {
-                $query->setParameter( 'hoursYear', 0 );
-                $query->setParameter( 'hoursFree', 0 );
-                $query->setParameter( 'hoursSelf', 0 );
-                $query->setParameter( 'hoursCompensed', $event->getHours() );
+            /** @var Type $t */
+            $t = $event->getType();
+            if ( $t->getRelated() === "hours_free" ) {
+                $calendar->setHoursFree( floatval( $calendar->getHoursFree() ) - floatval($jsonData[ 'hours' ]) );
             }
+            if ( $t->getRelated() === "hours_self" ) {
+                $calendar->setHoursSelf( floatval( $calendar->getHoursSelf() ) - floatval($jsonData[ 'hours' ]) );
+            }
+            if ( $t->getRelated() === "hours_compensed" ) {
+                $calendar->setHoursCompensed( floatval( $calendar->getHoursCompensed() ) - floatval($jsonData[ 'hours' ]) );
+            }
+            if ( $t->getRelated() === "hours_sindical" ) {
+                $calendar->setHoursSindikal( floatval( $calendar->getHoursSindikal() ) - floatval($jsonData[ 'hours' ]) );
+            }
+            $em->persist( $calendar );
 
-            /** @var Log $log */
-            $log = new Log();
-            $log->setName( "Egutegia eguneratua" );
-            $log->setCalendar( $calendar );
-            $log->setDescription( "Egutegian aldaketak grabatu dira " );
-            $log->setQuery( $query->getSql() );
-            $em->persist( $log );
-
-
-            $query->execute();
         }
+
         $em->flush();
 
         $view = View::create();
@@ -311,132 +422,59 @@ class ApiController extends FOSRestController {
 
     }// "post_events"            [POST] /events
 
-
-    public function doOperations($type) {
-        /**
-         * Ordu eragiketak egin soilik mota hauetako Event bat denean
-         */
-        $KalkuluakEgin = ['Oporrak', 'Norberarentzako', 'Konpentsatuak' ];
-        if ( in_array($type, $KalkuluakEgin) ) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     /**
-     * Backup all events of a given calendar
+     * Delete a Event
      *
      * @ApiDoc(
      *   resource = true,
-     *   description = "Save a calendar events to history",
+     *   description = "Delete a event",
      *   statusCodes = {
-     *     200 = "OK response"
+     *     204 = "OK"
      *   }
      * )
      *
-     * @Annotations\View()
-     * @param Request $request
-     * @param $calendarid
-     * @return array|View
-     * @Rest\Post("/backup/{calendarid}")
+     * @param $id
+     *
+     * @Rest\Delete("/events/{id}")
+     * @Rest\View(statusCode=204)
+     * @return array
      */
-    public function backupEventsAction(Request $request, $calendarid)
+    public function deleteEventsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        // find calendar
-        $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
+        $event = $em->getRepository('AppBundle:Event')->find($id);
 
-        // get all events from given calendar
-        $events = $em->getRepository('AppBundle:Event')->findBy(
-            array(
-                'calendar' => $calendarid,
-            )
-        );
-
-        foreach ($events as $e) {
-
-            /** @var EventHistory $eventhistory */
-            $eventhistory = new EventHistory();
-            $eventhistory->setCalendar($calendar);
-            $eventhistory->setName($e->getName());
-            $eventhistory->setStartDate($e->getStartDate());
-            $eventhistory->setEndDate($e->getEndDate());
-            $eventhistory->setHours($e->getHours());
-            $eventhistory->setType($e->getType());
-
-            /** @var $log Log */
-            $log = New Log();
-            $user = $this->get('security.token_storage')->getToken()->getUser();
-            $log->setUser($user);
-            $log->setCalendar($calendar);
-            $log->setEvent($e);
-            $log->setName("Backup");
-            $log->setDescription($e->getCalendar()->getUser()->getDisplayname() . " erabailtzailearen . ".$calendar->getName()." egutegiaren segurtasun kopia");
-
-            $em->persist($eventhistory);
-            $em->persist($log);
-
+        if ($event=== null)
+        {
+            return new View("Event ez da aurkitu", Response::HTTP_NOT_FOUND);
         }
-        $em->flush();
 
-        // Now we can remove calendar events but first we need to update calendar hours
-        foreach ($events as $e) {
+        /** @var Calendar $calendar */
+        $calendar = $event->getCalendar();
 
-            if ( $this->doOperations($e->getType()->getName())) {
-
-                $query = $em->createQuery(
-                    '
-                    UPDATE AppBundle:Calendar c
-                    SET c.hours_year = c.hours_year + :hoursYear  
-                    , c.hours_free = c.hours_free + :hoursFree  
-                    , c.hours_self = c.hours_self + :hoursSelf
-                    , c.hours_compensed = c.hours_compensed +:hoursCompensed 
-                    WHERE c.id = :calendarid'
-                );
-                $query->setParameter( 'calendarid', $calendarid );
-
-                if ( $e->getType()->getName() === "Oporrak" ) {
-                    $query->setParameter( 'hoursYear', 0 );
-                    $query->setParameter( 'hoursFree', $e->getHours() );
-                    $query->setParameter( 'hoursSelf', 0 );
-                    $query->setParameter( 'hoursCompensed', 0 );
-                } elseif ( $e->getType()->getName() === "Norberarentzako" ) {
-                    $query->setParameter( 'hoursYear', 0 );
-                    $query->setParameter( 'hoursFree', 0 );
-                    $query->setParameter( 'hoursSelf', $e->getHours() );
-                    $query->setParameter( 'hoursCompensed', 0 );
-                } elseif ( $e->getType()->getName() === "Konpentsatuak" ) {
-                    $query->setParameter( 'hoursYear', 0 );
-                    $query->setParameter( 'hoursFree', 0 );
-                    $query->setParameter( 'hoursSelf', 0 );
-                    $query->setParameter( 'hoursCompensed', $e->getHours() );
-                }
-
-                /** @var Log $log */
-                $log = new Log();
-                $log->setName( "Update Calendar hours" );
-                $log->setDescription( $query->getSql() );
-                $em->persist( $log );
-                $em->flush();
-
-                $query->execute();
+        /** @var Type $type */
+        $type = $event->getType();
+        if ( $type->getRelated() ) {
+            /** @var Type $t */
+            $t = $event->getType();
+            if ( $t->getRelated() === "hours_free" ) {
+                $calendar->setHoursFree( floatval( $calendar->getHoursFree() ) + $event->getHours() );
             }
+            if ( $t->getRelated() === "hours_self" ) {
+                $calendar->setHoursSelf( floatval( $calendar->getHoursSelf() ) + $event->getHours() );
+            }
+            if ( $t->getRelated() === "hours_compensed" ) {
+                $calendar->setHoursCompensed( floatval( $calendar->getHoursCompensed() ) + $event->getHours() );
+            }
+            if ( $t->getRelated() === "hours_sindical" ) {
+                $calendar->setHoursSindikal( floatval( $calendar->getHoursSindikal() ) + $event->getHours() );
+            }
+            $em->persist( $calendar );
         }
 
-        /** @var $query QueryBuilder */
-        $query = $em->createQuery('DELETE AppBundle:Event e WHERE e.calendar = :calendarid');
-        $query->setParameter('calendarid', $calendarid);
-        $query->execute();
-
-        $view = View::create();
-        $view->setData($calendar);
-        header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
-
-        return $view;
-
+        $em->remove($event);
+        $em->flush();
     }
 
     /**

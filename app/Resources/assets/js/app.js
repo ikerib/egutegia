@@ -11,6 +11,7 @@ $(document).ready(function () {
   })
 
   $('#btnGorde').on('click', function () {
+    
     $('form').submit()
   })
   $('#btnGordeModal').on('click', function () {

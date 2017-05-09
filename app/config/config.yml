@@ -43,7 +43,7 @@ twig:
     form_themes:
         # Bootstrap:
 #        - bootstrap_3_layout.html.twig
-        - bootstrap_3_horizontal_layout.html.twig
+#        - bootstrap_3_horizontal_layout.html.twig
         - 'VichUploaderBundle:Form:fields.html.twig'
 
 # Doctrine Configuration
@@ -122,6 +122,8 @@ fos_js_routing:
         - backup_events
         - get_events
         - post_events
+        - put_event
+        - delete_events
         - post_notes
         - post_usernotes
         - admin_hour_new

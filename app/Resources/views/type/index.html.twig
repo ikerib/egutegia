@@ -50,6 +50,7 @@
                     <th data-halign="center" data-align="right" data-field="hours"  data-sortable="true">{{ 'Orduak' | trans }}</th>
                     <th data-halign="center" data-align="center" >{{ 'Kolorea' | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="erakutsi" data-sortable="true" >{{ 'Erakutsi' | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="related" data-sortable="true">{{ 'Erlazioa' | trans }}</th>
                     <th data-halign="center" data-align="center"></th>
                 </tr>
             </thead>
@@ -67,6 +68,7 @@
                             <span class="label label-danger">{{ 'Ez'|trans }}</span>
                         {% endif %}
                     </td>
+                    <td>{{ type.related }}</td>
                     <td>
                         <ul class="list-unstyled list-inline">
                             <li>
@@ -95,7 +97,7 @@
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
                                 class="sr-only">Close</span></button>
                     <h4 class="modal-title">
-                        Event
+                        {{ 'Mota berria' | trans }}
                     </h4>
                 </div>
                 <div class="modal-body">

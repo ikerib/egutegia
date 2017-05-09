@@ -88,7 +88,7 @@ class Event {
     /**
      * @var \AppBundle\Entity\Type
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="events")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
      */

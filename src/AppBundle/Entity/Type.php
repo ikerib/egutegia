@@ -84,6 +84,12 @@ class Type
      */
     private $erakutsi;
 
+    /**
+     * @var string
+     * @ORM\Column(name="related", type="string", nullable=true)
+     */
+    private $related;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -396,5 +402,29 @@ class Type
     public function getErakutsi()
     {
         return $this->erakutsi;
+    }
+
+    /**
+     * Set related
+     *
+     * @param string $related
+     *
+     * @return Type
+     */
+    public function setRelated($related)
+    {
+        $this->related = $related;
+
+        return $this;
+    }
+
+    /**
+     * Get related
+     *
+     * @return string
+     */
+    public function getRelated()
+    {
+        return $this->related;
     }
 }

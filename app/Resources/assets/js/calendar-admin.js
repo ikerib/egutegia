@@ -3,81 +3,6 @@
  */
 
 $(function () {
-  function findValueInObjectArray (obj, find) {
-    var result = -1
-    $.each(obj, function (k, v) {
-      if (v.id === parseInt(find)) {
-        result = k
-        return k
-      }
-    })
-    return result
-  }
-
-  function hoursCalc (event, ezabatu) {
-    // Types array
-    var arrTypes = []
-    jQuery('.typestype').each(function () {
-      var currentElement = $(this)
-      var t = {}
-      t.id = currentElement.data('id')
-      t.name = currentElement.data('name')
-      t.color = currentElement.data('color')
-      arrTypes.push(t)
-    })
-    // Orduak Birkalkulatzen motaren arabera
-    var typeIndex = findValueInObjectArray(arrTypes, event.type)
-    if (typeIndex === -1) {
-      // Hasieran ez baina gaur egun egon daitezke eragiketarik behar ez duten motako Event-ak
-      // bootbox.alert({
-      //   message: 'Egutegi motak ez daude finkatuak',
-      //   className: 'bb-alternate-modal'
-      // })
-    } else {
-      var tipoa = arrTypes[typeIndex]
-      var hoursYear = parseFloat($('input#appbundle_calendar_hoursYear').val().replace(',', '.'))
-      var hoursFree = parseFloat($('input#appbundle_calendar_hoursFree').val().replace(',', '.'))
-      var hoursSelf = parseFloat($('input#appbundle_calendar_hoursSelf').val().replace(',', '.'))
-      var hoursCompensed = parseFloat($('input#appbundle_calendar_hoursCompensed').val().replace(',', '.'))
-      var oldValue = 0
-
-      if ($('#oldValue').val() !== '') {
-        oldValue = parseFloat($('#oldValue').val().replace(',', '.'))
-      }
-
-      if (tipoa.name === 'Oporrak') {
-        if ((ezabatu === 1) || (ezabatu === true)) {
-          hoursFree = (hoursFree + oldValue).toFixed(2)
-        } else {
-          hoursFree = (hoursFree + oldValue - parseFloat(event.hours)).toFixed(2)
-        }
-
-        $('input#appbundle_calendar_hoursFree').val(hoursFree)
-        $('#hoursFree').html(hoursFree)
-      }
-
-      if (tipoa.name === 'Norberarentzako') {
-        if ((ezabatu === 1) || (ezabatu === true)) {
-          hoursSelf = hoursSelf + oldValue
-        } else {
-          hoursSelf = hoursSelf + oldValue - event.hours
-        }
-        $('input#appbundle_calendar_hoursSelf').val(hoursSelf)
-        $('#hoursSelf').html(hoursSelf)
-      }
-
-      if (tipoa.name === 'Konpentsatuak') {
-        if ((ezabatu === 1) || (ezabatu === true)) {
-          hoursCompensed = hoursCompensed + oldValue
-        } else {
-          hoursCompensed = hoursCompensed + oldValue - event.hours
-        }
-        $('input#appbundle_calendar_hoursCompensed').val(hoursCompensed)
-        $('#hoursCompensed').html(hoursCompensed)
-      }
-
-    }
-  }
 
   function workday_count (fstart, fend) {
     var start = moment(fstart)
@@ -93,12 +18,22 @@ $(function () {
   }
 
   function editEvent (event) {
+    if ( event.istemplate === 1) {
+      bootbox.alert({
+        message: "Txantiloiaren parte da, ezin da eguneratu",
+        size: 'small'
+      });
+      return -1
+    }
+
     $('#event-modal input[name="event-index"]').val(event ? event.id : '')
     $('#event-modal input[name="event-name"]').val(event ? event.name : '')
     $('#event-modal input[name="event-type"]').val(event ? event.type : '')
     $('#event-modal input[name="event-hours"]').val(event ? event.hours : '')
     $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
     $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+    $('#txtOldValue').val(event ? event.hours : '')
+    $('#txtOldType').val(event ? event.type : '')
 
     $('#oldValue').val(event ? event.hours : 0)
 
@@ -128,11 +63,49 @@ $(function () {
     var dataSource = $('#calendar').data('calendar').getDataSource()
 
     for (var i in dataSource) {
-      if (dataSource[i].id == event.id) {
-        dataSource.splice(i, 1)
-        $('#oldValue').val(event ? event.hours : 0)
-        hoursCalc(event, true)
-        break
+      if (dataSource[i].id === event.id) {
+        // dataSource.splice(i, 1)
+        // $('#oldValue').val(event ? event.hours : 0)
+        //
+        // break
+        var deleteCalendarEvents = function () {
+          var url = Routing.generate('delete_events', { 'id': event.id })
+          return $.ajax({
+            url:url,
+            type: 'DELETE',
+            data: JSON.stringify(event),
+            dataType: 'json',
+            success: function(response) {
+              return response
+            },
+            error: function() {
+              console.log ("ERROR!")
+              return -1
+            }
+          })
+        }
+
+        $.when(deleteCalendarEvents()).done(function(a1){
+          location.reload()
+        }). fail(function (error){
+          $('#myAlert').hide()
+
+          $('#alertSpot').append(
+            '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.')
+
+
+          $('#myAlert').alert()
+          $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+            $('#myAlert').slideUp(500)
+          })
+          $('#divTimelineAlert').show()
+        })
+
+
+
+
       }
     }
 
@@ -147,7 +120,9 @@ $(function () {
       hours: $('#event-modal input[name="event-hours"]').val(),
       color: $('#event-modal option:selected').data('color'),
       startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-      endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+      endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate'),
+      oldValue: $('#txtOldValue').val(),
+      oldType: $('#txtOldType').val()
     }
 
     // Data Validation
@@ -186,6 +161,46 @@ $(function () {
           // hoursCalc(event);
         }
       }
+
+      // Aldaketak gorde
+      event.calendarid = $('#calendarid').val()
+
+      var putCalendarEvents = function () {
+        var url = Routing.generate('put_event', { 'id': event.id })
+        return $.ajax({
+          url:url,
+          type: 'PUT',
+          data: JSON.stringify(event),
+          dataType: 'json',
+          success: function(response) {
+            return response
+          },
+          error: function() {
+            console.log ("ERROR!")
+            return -1
+          }
+        })
+      }
+
+      $.when(putCalendarEvents()).done(function(a1){
+        location.reload()
+      }). fail(function (error){
+        $('#myAlert').hide()
+
+        $('#alertSpot').append(
+          '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+          '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+          '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.')
+
+
+        $('#myAlert').alert()
+        $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+          $('#myAlert').slideUp(500)
+        })
+        $('#divTimelineAlert').show()
+      })
+
+
     }
     else {
       var newId = 0
@@ -198,9 +213,46 @@ $(function () {
       newId++
       event.id = newId
 
-      hoursCalc(event)
+      /**
+       * Gore datu basean
+       */
+      event.calendarid = $('#calendarid').val()
 
-      dataSource.push(event)
+      var saveCalendarEvents = function () {
+        var url = Routing.generate('post_events')
+        return $.ajax({
+          url:url,
+          type: 'POST',
+          data: JSON.stringify(event),
+          dataType: 'json',
+          success: function(response) {
+            return response
+          },
+          error: function() {
+            console.log ("ERROR!")
+            return -1
+          }
+        })
+      }
+
+      $.when(saveCalendarEvents()).done(function(a1){
+        location.reload()
+      }). fail(function (error){
+        $('#myAlert').hide()
+
+        $('#alertSpot').append(
+            '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+            '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.')
+
+
+        $('#myAlert').alert()
+        $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
+          $('#myAlert').slideUp(500)
+        })
+        $('#divTimelineAlert').show()
+      })
+
     }
 
     $('#calendar').data('calendar').setDataSource(dataSource)
@@ -215,7 +267,7 @@ $(function () {
     // style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
-    // disabledWeekDays: [6, 0],
+    disabledWeekDays: [6, 0],
     allowOverlap: true,
     enableContextMenu: true,
     enableRangeSelection: true,
@@ -326,6 +378,7 @@ $(function () {
             d.hours = parseFloat(response[i].hours)
             d.startDate = new Date(response[i].start_date)
             d.endDate = new Date(response[i].end_date)
+            d.templateid = response[i].template.id
             data.push(d)
           }
         }

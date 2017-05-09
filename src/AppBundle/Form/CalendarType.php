@@ -26,7 +26,7 @@ class CalendarType extends AbstractType
                 'label' => 'Izena',
                 'required' => true
             ))
-            ->add('year')
+            ->add('year',TextType::class,array('label_attr'=>array('class'=>'')))
             ->add('user')
             ->add('username',TextType::class, array(
                 'mapped' => false,
@@ -55,6 +55,10 @@ class CalendarType extends AbstractType
             ))
             ->add('hoursSelf', NumberType::class, array(
                 'label' => 'Norberarentzako orduak',
+                'required' => true
+            ))
+            ->add('hoursSindikal', NumberType::class, array(
+                'label' => 'Ordu Sindikalak',
                 'required' => true
             ))
             ->add('hoursCompensed', NumberType::class, array(
