@@ -6,14 +6,13 @@ $(function () {
   var currentYear = new Date().getFullYear()
 
   $('#usercalendar').calendar({
-    style: 'background',
+    // style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
-    // disabledWeekDays: [0,7],
+    disabledWeekDays: [6, 0],
     allowOverlap: true,
-    // displayWeekNumber: true,
-    enableContextMenu: true,
-    enableRangeSelection: true,
+    enableContextMenu: false,
+    enableRangeSelection: false,
     mouseOnDay: function (e) {
       if (e.events.length > 0) {
         var content = ''
@@ -21,8 +20,12 @@ $(function () {
         for (var i in e.events) {
           content += '<div class="event-tooltip-content">'
             + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
-            + '<div class="event-type">' + e.events[i].hours + '</div>'
-            + '</div>'
+
+          if ( e.events[i].hours ) {
+            content += '<div class="event-type">' + e.events[i].hours  + '</div>'
+          }
+
+          content += '</div>'
         }
 
         $(e.element).popover({
@@ -42,37 +45,6 @@ $(function () {
     }
   })
 
-  // var url = Routing.generate('get_events', { 'calendarid': $('#calendarid').val()});
-  //
-  // $.ajax({
-  //     url: url,
-  //     type: "GET",
-  //     dataType: "json",
-  //     success: function (response) {
-  //         var data = [];
-  //         if ( response.length > 0 ) {
-  //             for (var i = 0; i < response.length; i++) {
-  //                 var d = {};
-  //                 d.id = response[i].id;
-  //                 d.name = response[i].name;
-  //                 if ( "type" in response[i] ) {
-  //                     if ( "color" in response[i].type ) {
-  //                         d.color = response[i].type.color;
-  //                     }
-  //                 }
-  //                 d.hours =  parseFloat(response[i].hours);
-  //                 d.startDate = new Date(response[i].start_date);
-  //                 d.endDate = new Date(response[i].end_date);
-  //                 data.push(d);
-  //             }
-  //         }
-  //         $('#usercalendar').data('calendar').setDataSource(data);
-  //     },
-  //     error: function() {
-  //         console.log("HORROR!!");
-  //     }
-  //
-  // });
   var getAjaxEvents = function () {
     var url = Routing.generate('get_events', {'calendarid': $('#calendarid').val()})
     return $.ajax({
@@ -144,7 +116,6 @@ $(function () {
       },
       error: function () {
         return -1
-        console.log('HORROR!!')
       }
 
     })
@@ -162,8 +133,8 @@ $(function () {
         d.name = tmpl[i].name
         if ('type' in tmpl[i]) {
           if ('color' in tmpl[i].type) {
-            // d.color = tmpl[i].type.color;
-            d.color = '#3a4d57'
+            d.color = tmpl[i].type.color;
+            // d.color = '#3a4d57'
             d.type = tmpl[i].type.id
           }
         }
