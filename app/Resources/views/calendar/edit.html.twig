@@ -7,16 +7,22 @@
 
 {% block page_header %}
     <div class="page-header hovebutton">
-
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="row">
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <h3 class="panel-title">{{ calendar.name }} - ({{ calendar.percentYear }}%)</h3>
                     </div>
-                    <div class="col-md-1">
-                        <a class="btn btn-xs btn-default btnPageHeaderEdit" href="javascript:void(0)"
-                           style="display: none;">Editatu</a>
+                    <div class="col-md-2">
+                        <ul class="list-inline">
+                            <li><a class="btn btn-xs btn-default btnPageHeaderEdit" href="javascript:void(0)"
+                                   style="display: none;">Editatu</a></li>
+                            <li><a id="btnEzabatu" class="btn btn-xs btn-danger btnEzabatu" href="javascript:void(0)"
+                                   style="display: none;">Egutegia ezabatu</a></li>
+                        </ul>
+
+
+
                     </div>
                 </div>
             </div>

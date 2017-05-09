@@ -6,8 +6,10 @@ $(document).ready(function () {
 
   $(document).on('mouseenter', '.page-header', function () {
     $('.btnPageHeaderEdit').show()
+    $('.btnEzabatu').show()
   }).on('mouseleave', '.page-header', function () {
     $('.btnPageHeaderEdit').hide()
+    $('.btnEzabatu').hide()
   })
 
   $('#btnGorde').on('click', function () {
