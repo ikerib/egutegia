@@ -18,7 +18,7 @@
                             <li><a class="btn btn-xs btn-default btnPageHeaderEdit" href="javascript:void(0)"
                                    style="display: none;">Editatu</a></li>
                             <li><a id="btnEzabatu" class="btn btn-xs btn-danger btnEzabatu" href="javascript:void(0)"
-                                   style="display: none;">Egutegia ezabatu</a></li>
+                                   style="display: none;">Ezabatu</a></li>
                         </ul>
 
 
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-sm-2">
                         <strong>{{ 'Opor orduak: ' | trans }} </strong>
-                        <span id="hoursFree">{{ calendar.hoursFree }}</span>
+                        <span id="hoursFree">{{ calendar.hoursFree }} ({{ calendar.hoursFree / calendar.hoursDay }}) </span>
                     </div>
                     <div class="col-sm-2">
                         <strong>{{ 'Norberarentzako: ' | trans }} </strong>

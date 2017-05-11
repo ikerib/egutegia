@@ -80,6 +80,7 @@ class Hour
 
     public function __construct () {
         $this->date = new \DateTime();
+        $this->factor = 1.75;
     }
 
 
