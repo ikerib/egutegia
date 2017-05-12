@@ -261,14 +261,27 @@
         
         $(document).on('change', '#appbundle_calendar_percentYear', function () {
           var ori = $(this)
-          var des = $('#appbundle_calendar_hoursDay')
-
           var vori = parseFloat($(ori).val())
-          var vdes = parseFloat($(des).val())
 
-          if ((vdes !== 0) && (vori !==0)) {
-            vdes = vdes * vori / 100
-            $(des).val(vdes.toFixed(2))
+          var des1 = $('#appbundle_calendar_hoursFree')
+          var vdes1 = parseFloat($(des1).val()) // Portzentaia
+          if ((vdes1 !== 0) && (vori !==0)) {
+            vdes1 = vdes1 * vori / 100
+            $(des1).val(vdes1.toFixed(2))
+          }
+
+          var des2 = $('#appbundle_calendar_hoursSelf')
+          var vdes2 = parseFloat($(des2).val()) // Portzentaia
+          if ((vdes2 !== 0) && (vori !==0)) {
+            vdes2 = vdes2 * vori / 100
+            $(des2).val(vdes2.toFixed(2))
+          }
+
+          var des3 = $('#appbundle_calendar_hoursDay')
+          var vdes3 = parseFloat($(des3).val()) // Portzentaia
+          if ((vdes3 !== 0) && (vori !==0)) {
+            vdes3 = vdes3 * vori / 100
+            $(des3).val(vdes3.toFixed(2))
           }
 
         })
