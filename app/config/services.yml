@@ -25,3 +25,7 @@ services:
       arguments: ["@request_stack"]
       tags:
           - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
+
+  app.document.directory_namer:
+      class: AppBundle\Service\DirectoryNamer
+      arguments: [%kernel.root_dir%]
