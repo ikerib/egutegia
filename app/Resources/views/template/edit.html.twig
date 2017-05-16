@@ -17,10 +17,10 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-sm-4"><strong>{{ 'Urteko lan orduak: ' | trans }}</strong> {{ template.hoursYear }}</div>
-                    <div class="col-sm-4"><strong>{{ 'Urteko opor orduak: ' | trans }} </strong> {{ template.hoursFree }}</div>
+                    <div class="col-sm-4"><strong>{{ 'msg.urteko.orduak' | trans }}</strong> {{ template.hoursYear }}</div>
+                    <div class="col-sm-4"><strong>{{ 'msg.opor.orduak' | trans }} </strong> {{ template.hoursFree }}</div>
                     <div class="col-sm-4">
-                        <strong>{{ 'Urteko norberarentzako orduak: ' | trans }} </strong> {{ template.hoursSelf }}</div>
+                        <strong>{{ 'msg.norberarentzako' | trans }} </strong> {{ template.hoursSelf }}</div>
                 </div>
             </div>
         </div>
@@ -44,15 +44,15 @@
                     <div class="row">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
+                                <label for="event-name" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
                                 <div class="col-sm-8">
-                                    <input name="event-name" type="text" class="form-control">
+                                    <input name="event-name" type="text" class="form-control" title="event name">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="min-date" class="col-sm-3 control-label">{{ 'Mota'|trans }}</label>
+                                <label for="event-type" class="col-sm-3 control-label">{{ 'Mota'|trans }}</label>
                                 <div class="col-sm-8">
-                                    <select name="event-type" class="form-control">
+                                    <select name="event-type" class="form-control" title="event type">
                                         {% for type in types %}
                                             <option data-color="{{ type.color }}" value="{{ type.id }}">{{ type.name }}</option>
                                         {% endfor %}
@@ -63,9 +63,9 @@
                                 <label for="min-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-daterange" data-provide="datepicker">
-                                        <input name="event-start-date" type="text" class="form-control" value="2012-04-05">
+                                        <input name="event-start-date" type="text" class="form-control" value="2012-04-05" title="range hasi">
                                         <span class="input-group-addon">&nbsp;-&nbsp;</span>
-                                        <input name="event-end-date" type="text" class="form-control" value="2012-04-19">
+                                        <input name="event-end-date" type="text" class="form-control" value="2012-04-19" title="range amaitu">
                                     </div>
                                 </div>
                             </div>

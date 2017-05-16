@@ -1,10 +1,7 @@
-egutegia.dev
+Egutegia
 ============
 
-A Symfony project created on March 12, 2017, 9:47 pm.
+Pasaiako Udaletxeko langileen egutegiak kudeatzeko web aplikazioa.
 
-TODO:
-- User => Ez ditu kargatzen txantiloiko event-ak
-- Type eta Calendar eremuen arteko lotura literalak ez erabiltzeko
-- Log-ak zorroztu eta timeline gehitu
-- Fitxategiak igotzeko aukera eman ( Opor Eskaera eskaneatuak esaterako )
+![alt tag](http://www.bootstrap-year-calendar.com/img/calendar.png)
+
