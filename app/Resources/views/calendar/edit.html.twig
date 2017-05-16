@@ -29,27 +29,48 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-2">
-                        <strong>{{ 'Lan orduak: ' | trans }}</strong>
+                        <strong>{{ 'msg.urteko.orduak' | trans }}</strong>
                         <span id="hoursYear">{{ calendar.hoursYear }}</span>
                     </div>
                     <div class="col-sm-2">
-                        <strong>{{ 'Opor orduak: ' | trans }} </strong>
+                        <strong>{{ 'msg.opor.orduak' | trans }} </strong>
                         <span id="hoursFree">{{ calendar.hoursFree }} ({{ calendar.hoursFree / calendar.hoursDay }}) </span>
                     </div>
                     <div class="col-sm-2">
-                        <strong>{{ 'Norberarentzako: ' | trans }} </strong>
+                        <strong>{{ 'msg.norberarentzako' | trans }} </strong>
                         <span id="hoursSelf"> {{ calendar.hoursSelf }}</span></div>
                     <div class="col-sm-2">
-                        <strong>{{ 'Konpentsatutakoak: ' | trans }} </strong>
+                        <strong>{{ 'msg.konpentsatzeke' | trans }} </strong>
                         <span id="hoursCompensed">{{ calendar.hoursCompensed }}</span>
                     </div>
                     <div class="col-sm-2">
-                        <strong>{{ 'Sindikalak: ' | trans }} </strong>
+                        <strong>{{ 'msg.sindikalak' | trans }} </strong>
                         <span id="hoursCompensed">{{ calendar.hoursSindikal }}</span>
                     </div>
                     <div class="col-sm-2">
-                        <strong>{{ 'Portzentaia: ' | trans }} </strong>
+                        <strong>{{ 'msg.lanaldi' | trans }} </strong>
                         <span id="percentYear">{{ calendar.percentYear }}%</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <strong>{{ 'msg.eguneko.lanaldia' | trans }}</strong>
+                        <span id="hoursYearCalendar">7.36 ordu (7 ordu 21min)</span>
+                    </div>
+                    {#<div class="col-sm-2">#}
+{##}
+                    {#</div>#}
+                    <div class="col-sm-2">
+                        Zatitutatzeke:20 Egun osoak:40
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-2">
+
                     </div>
                 </div>
             </div>
@@ -86,42 +107,42 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Lan orduak' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.urteko.orduak' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Opor orduak' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.opor.orduak' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Norberarentzako' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.norberarentzako' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Konpentsatutakoak' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.konpentsatzeke' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Sindikalak' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.sindikalak' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursSindikal, { 'attr': {'class': 'form-control'} }) }}
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'Portzentaia' | trans }}</label>
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.lanaldi' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.percentYear, { 'attr': {'class': 'form-control'} }) }}
                         </div>
@@ -129,7 +150,6 @@
 
                     <div class="hidden">
                         {{ form_end(edit_form) }}
-
                     </div>
 
                 </div>
