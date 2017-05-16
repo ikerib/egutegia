@@ -180,9 +180,9 @@
                         <form class="form-horizontal">
 
                             <div class="form-group">
-                                <label for="min-date" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
+                                <label for="event-name" class="col-sm-3 control-label">{{ 'Izena' | trans }}</label>
                                 <div class="col-sm-8">
-                                    <input name="event-name" type="text" class="form-control">
+                                    <input name="event-name" type="text" class="form-control" title="event-name">
                                 </div>
                             </div>
 
@@ -217,7 +217,7 @@
 
 
                             <div class="form-group">
-                                <label for="hours" class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
+                                <label for="txtTotalHousSelected" class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <input id="txtTotalHousSelected" data-jornada="{{ calendar.hoursDay }}"
                                            name="event-hours" type="text" class="form-control">
@@ -226,14 +226,14 @@
 
 
                             <div class="form-group">
-                                <label for="min-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
+                                <label for="event-start-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-daterange" data-provide="datepicker">
                                         <input name="event-start-date" type="text" class="form-control"
-                                               value="2012-04-05">
+                                               value="2012-04-05" title="range hasi">
                                         <span class="input-group-addon">&nbsp;-&nbsp;</span>
                                         <input name="event-end-date" type="text" class="form-control"
-                                               value="2012-04-19">
+                                               value="2012-04-19" title="range amaitu">
                                     </div>
                                 </div>
                             </div>
@@ -350,12 +350,14 @@
                     <div class="col-sm-12">
                         <table id="KonpentsatuakTaula" class="table table-hover table-striped table-bordered">
                             <thead>
-                            <th>Eguna</th>
-                            <th>Orduak</th>
-                            <th>Minutuak</th>
-                            <th>Faktorea</th>
-                            <th>Orduak konpentsatzera</th>
-                            <th></th>
+                                <tr>
+                                    <th>Eguna</th>
+                                    <th>Orduak</th>
+                                    <th>Minutuak</th>
+                                    <th>Faktorea</th>
+                                    <th>Orduak konpentsatzera</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
                                 {% for o in orduak %}
@@ -462,9 +464,11 @@
                     <div class="col-sm-12">
                         <table class="table table-bordered table-condensed table-striped table-condensed table-hover">
                             <thead>
-                            <th>{{ "Dokumentua" | trans }}</th>
-                            <th>{{ "Noiz igo da" | trans }}</th>
-                            <th></th>
+                            <tr>
+                                <th>{{ "Dokumentua" | trans }}</th>
+                                <th>{{ "Noiz igo da" | trans }}</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody>
                             {% for f in calendar.documents if calendar.documents %}
