@@ -103,6 +103,14 @@ class Calendar
     private $hours_day=0;
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="hirurtekoa", type="decimal", precision=10, scale=2)
+     * @Expose()
+     */
+    private $hirurtekoa=0;
+
+    /**
      * @var string
      * @Expose
      * @ORM\Column(name="note", type="text", nullable=true)
@@ -694,5 +702,29 @@ class Calendar
     public function getHoursSindikal()
     {
         return $this->hours_sindikal;
+    }
+
+    /**
+     * Set hirurtekoa
+     *
+     * @param string $hirurtekoa
+     *
+     * @return Calendar
+     */
+    public function setHirurtekoa($hirurtekoa)
+    {
+        $this->hirurtekoa = $hirurtekoa;
+
+        return $this;
+    }
+
+    /**
+     * Get hirurtekoa
+     *
+     * @return string
+     */
+    public function getHirurtekoa()
+    {
+        return $this->hirurtekoa;
     }
 }

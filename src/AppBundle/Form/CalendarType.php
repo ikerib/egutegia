@@ -73,6 +73,10 @@ class CalendarType extends AbstractType
                 'label' => 'Portzentaia',
                 'required' => true
             ))
+            ->add('hirurtekoa', NumberType::class, array(
+                'label' => 'Hirurtekoak',
+                'required' => true
+            ))
         ;
     }
     

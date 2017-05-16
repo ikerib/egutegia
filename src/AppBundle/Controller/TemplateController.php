@@ -30,6 +30,7 @@ class TemplateController extends Controller {
 
         $deleteForms = array();
         foreach ($templates as $template) {
+            /** var $template Template */
             $deleteForms[ $template->getId() ] = $this->createDeleteForm($template)->createView();
         }
 
