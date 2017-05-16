@@ -10,4 +10,21 @@ namespace AppBundle\Repository;
  */
 class DocumentRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findCalendarDocuments($calendarid) {
+
+        $em = $this->getEntityManager();
+
+        $dql = '
+            SELECT d
+            FROM AppBundle:Document d
+              INNER Join d.calendar c
+            WHERE c.id LIKE :calendarid
+        ';
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('calendarid', $calendarid);
+
+        return $query->getResult();
+
+    }
 }

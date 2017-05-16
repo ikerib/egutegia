@@ -39,6 +39,29 @@ class DocumentController extends Controller
         );
     }
 
+    /**
+     * Lists all User documents.
+     *
+     * @Route("/list/{calendarid}", name="admin_user_document_list")
+     * @Method("GET")
+     * @param $calendarid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction ($calendarid)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $documents = $em->getRepository( 'AppBundle:Document' )->findCalendarDocuments($calendarid);
+
+        return $this->render(
+            'document/list.html.twig',
+            array(
+                'documents' => $documents,
+            )
+        );
+    }
+
 
     /**
      * Creates a new document entity.
