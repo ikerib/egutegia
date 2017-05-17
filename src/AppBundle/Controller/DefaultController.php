@@ -21,14 +21,7 @@ class DefaultController extends Controller
      */
     public function homepageAction()
     {
-        $user = $this->getUser();
-
-        return $this->render(
-            'default/homepage.html.twig',
-            [
-                'user' => $user,
-            ]
-        );
+        return $this->redirectToRoute( 'user_homepage' );
     }
 
     /**
@@ -36,6 +29,8 @@ class DefaultController extends Controller
      */
     public function userhomepageAction()
     {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+
         //if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
         //    return $this->redirectToRoute('dashboard');
         //}

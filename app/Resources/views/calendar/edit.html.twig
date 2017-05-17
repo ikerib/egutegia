@@ -86,7 +86,6 @@
         {{ form_end(delete_form) }}
     </div>
 
-
     <div class="modal modal-fade" id="edit-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -663,6 +662,10 @@
           var url = Routing.generate('admin_hour_new', {'calendarid': calendarid})
           $('#modal-content-konpentsatuak').load(url, function () {
             $('#modal-konpentsatuak').modal()
+            $('#appbundle_hour_date').datepicker({
+              format: 'yyyy-mm-dd',
+              language: 'eu'
+            });
           });
         })
 
@@ -671,7 +674,6 @@
 
           var miid = $(this).data('id')
           var url = Routing.generate('admin_hour_edit', {'id': miid })
-          console.log(url)
           $('#modal-content-konpentsatuak').load(url, function () {
             $('#modal-konpentsatuak').modal()
           });

@@ -52,13 +52,13 @@ class Builder implements ContainerAwareInterface
                 ->setAttribute('dropdown', true)
                 ->setAttribute('icon', 'glyphicon glyphicon-user');
 
-            if ($checker->isGranted('ROLE_ADMIN')) {
-                $menu['User']->addChild('Egutegia', ['route' => 'dashboard'])
-                    ->setAttribute('icon', 'fa fa-edit');
-            } else {
+            //if ($checker->isGranted('ROLE_ADMIN')) {
+            //    $menu['User']->addChild('Egutegia', ['route' => 'dashboard'])
+            //        ->setAttribute('icon', 'fa fa-edit');
+            //} else {
                 $menu['User']->addChild('Egutegia', ['route' => 'user_homepage'])
                     ->setAttribute('icon', 'fa fa-edit');
-            }
+            //}
 
             $menu['User']->addChild('Irten', ['route' => 'fos_user_security_logout']);
         } else {
