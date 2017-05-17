@@ -51,14 +51,11 @@ class Builder implements ContainerAwareInterface
             $menu->addChild('User', ['label' => $user->getDisplayname()])
                 ->setAttribute('dropdown', true)
                 ->setAttribute('icon', 'glyphicon glyphicon-user');
-
-            //if ($checker->isGranted('ROLE_ADMIN')) {
-            //    $menu['User']->addChild('Egutegia', ['route' => 'dashboard'])
-            //        ->setAttribute('icon', 'fa fa-edit');
-            //} else {
-                $menu['User']->addChild('Egutegia', ['route' => 'user_homepage'])
+            $menu['User']->addChild('Egutegia', ['route' => 'user_homepage'])
                     ->setAttribute('icon', 'fa fa-edit');
-            //}
+
+            $menu['User']->addChild('Fitxategiak', ['route' => 'user_documents'])
+                ->setAttribute('icon', 'fa fa-edit');
 
             $menu['User']->addChild('Irten', ['route' => 'fos_user_security_logout']);
         } else {

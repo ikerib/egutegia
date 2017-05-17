@@ -13,6 +13,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Request;
 
 class DefaultController extends Controller
 {
@@ -54,4 +55,33 @@ class DefaultController extends Controller
             ]
         );
     }
+
+    /**
+     * @Route("/fitxategiak", name="user_documents")
+     */
+    public function userdocumetsAction()
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+
+        $em = $this->getDoctrine()->getManager();
+        /** @var $user User */
+        $user = $this->getUser();
+        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+
+        if ((!$calendar) || (count($calendar) > 1)) {
+            throw new EntityNotFoundException('Ez da egutegirik topatu.');
+        }
+
+        //$documents = $calendar->getDocuments();
+
+        return $this->render(
+            'default/fitxategiak.html.twig',
+            [
+                'user' => $user,
+                'calendar' => $calendar[0],
+                //'documents' => $documents
+            ]
+        );
+    }
+
 }

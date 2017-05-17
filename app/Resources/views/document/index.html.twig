@@ -16,15 +16,13 @@
         <tbody>
         {% for document in documents %}
             <tr>
-                <td><a href="{{ path('admin_document_show', { 'id': document.id }) }}">{{ document.id }}</a></td>
+                <td><a>{{ document.id }}</a></td>
                 <td>{{ document.filename }}</td>
                 <td>{% if document.created %}{{ document.created|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>{% if document.updated %}{{ document.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                     <ul>
-                        <li>
-                            <a href="{{ path('admin_document_show', { 'id': document.id }) }}">show</a>
-                        </li>
+
                         <li>
                             <a href="{{ path('admin_document_edit', { 'id': document.id }) }}">edit</a>
                         </li>
