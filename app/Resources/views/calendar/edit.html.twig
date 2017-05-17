@@ -34,11 +34,11 @@
                     </div>
                     <div class="col-sm-2">
                         <strong>{{ 'msg.opor.orduak' | trans }} </strong>
-                        <span id="hoursFree">{{ calendar.hoursFree }} ({{ calendar.hoursFree / calendar.hoursDay }}) </span>
+                        <span id="hoursFree">{{ calendar.hoursFree }} ordu ({{ (calendar.hoursFree / calendar.hoursDay) | round (2) }} egun) </span>
                     </div>
                     <div class="col-sm-2">
                         <strong>{{ 'msg.norberarentzako' | trans }} </strong>
-                        <span id="hoursSelf"> {{ calendar.hoursSelf }}</span></div>
+                        <span id="hoursSelf"> {{ calendar.hoursSelf }} ordu ({{ (calendar.hoursSelf / calendar.hoursDay) | round (2) }} egun)</span></div>
                     <div class="col-sm-2">
                         <strong>{{ 'msg.konpentsatzeke' | trans }} </strong>
                         <span id="hoursCompensed">{{ calendar.hoursCompensed }}</span>
@@ -55,7 +55,8 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <strong>{{ 'msg.eguneko.lanaldia' | trans }}</strong>
-                        <span id="hoursYearCalendar">7.36 ordu (7 ordu 21min)</span>
+                        <span>{{ calendar.hoursDay }}</span><span id="hourLanaldi"></span>
+                        <input id="numberLanaldi" type="hidden" value="{{ calendar.hoursDay }}">
                     </div>
                     {#<div class="col-sm-2">#}
                         {##}
@@ -565,6 +566,13 @@
     <script src="{{ asset('js/vertical-timeline.js') }}"></script>
     <script>
       $(function () {
+        /*************************************************************************************************************/
+        /** MISC *****************************************************************************************************/
+        /*************************************************************************************************************/
+        var x = parseFloat($('#numberLanaldi').val())
+        var textua = " ( " + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() +  " minutu )"
+        $('#hourLanaldi').text(textua)
+
 
         /*************************************************************************************************************/
         /** HASH funtzioak *******************************************************************************************/
