@@ -1,21 +1,23 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Query\Expr\Base;
-use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
+use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
+use FR3D\LdapBundle\Model\LdapUserInterface;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use FR3D\LdapBundle\Model\LdapUserInterface;
-
 
 /**
- * User
+ * User.
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
@@ -66,14 +68,13 @@ class User extends BaseUser implements LdapUserInterface
     /**
      * @ORM\Column(type="json_array", nullable=true)
      */
-    private $members = array();
+    private $members = [];
 
     ///**
     // * @var members[]
     // * @ORM\Column(type="string")
     // */
     //protected $members;
-
 
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
@@ -87,24 +88,24 @@ class User extends BaseUser implements LdapUserInterface
      */
     private $calendars;
 
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->members = [];
+        $this->calendars = new ArrayCollection();
+        if (empty($this->roles)) {
+            $this->roles[] = 'ROLE_USER';
+        }
+    }
 
     public function __toString()
     {
         return $this->getUsername();
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->members = array();
-        $this->calendars = new ArrayCollection();
-        if (empty($this->roles)) {
-            $this->roles[] = 'ROLE_USER';
-        }
-    }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
@@ -140,13 +141,12 @@ class User extends BaseUser implements LdapUserInterface
         return $this;
     }
 
-
     /**
      * Set Ldap Distinguished Name.
      *
      * @param string $dn Distinguished Name
      */
-    public function setDn ($dn)
+    public function setDn($dn)
     {
         $this->dn = $dn;
     }
@@ -156,13 +156,13 @@ class User extends BaseUser implements LdapUserInterface
      *
      * @return null|string Distinguished Name
      */
-    public function getDn ()
+    public function getDn()
     {
         return $this->dn;
     }
 
     /**
-     * Add calendar
+     * Add calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      *
@@ -176,7 +176,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Remove calendar
+     * Remove calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      */
@@ -186,7 +186,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get calendars
+     * Get calendars.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -196,7 +196,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Set department
+     * Set department.
      *
      * @param string $department
      *
@@ -210,7 +210,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get department
+     * Get department.
      *
      * @return string
      */
@@ -220,7 +220,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Set displayname
+     * Set displayname.
      *
      * @param string $displayname
      *
@@ -234,7 +234,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get displayname
+     * Get displayname.
      *
      * @return string
      */
@@ -243,10 +243,8 @@ class User extends BaseUser implements LdapUserInterface
         return $this->displayname;
     }
 
-
-
     /**
-     * Set nan
+     * Set nan.
      *
      * @param string $nan
      *
@@ -260,7 +258,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get nan
+     * Get nan.
      *
      * @return string
      */
@@ -270,7 +268,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Set lanpostua
+     * Set lanpostua.
      *
      * @param string $lanpostua
      *
@@ -284,7 +282,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get lanpostua
+     * Get lanpostua.
      *
      * @return string
      */
@@ -294,7 +292,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Set notes
+     * Set notes.
      *
      * @param string $notes
      *
@@ -308,7 +306,7 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Get notes
+     * Get notes.
      *
      * @return string
      */

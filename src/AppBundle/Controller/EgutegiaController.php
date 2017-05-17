@@ -1,13 +1,18 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Calendar controller.
@@ -21,15 +26,17 @@ class EgutegiaController extends Controller
      *
      * @Route("/{username}", name="egutegia_user")
      * @Method("GET")
+     *
+     * @param mixed $username
      */
     public function useregutegiaAction($username)
     {
         $em = $this->getDoctrine()->getManager();
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsername($username);
 
-        return $this->render('egutegia/user_egutegia.html.twig', array(
+        return $this->render('egutegia/user_egutegia.html.twig', [
             'calendar' => $calendar,
-            'username' => $username
-        ));
+            'username' => $username,
+        ]);
     }
 }

@@ -1,10 +1,16 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace ApiBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
-use AppBundle\Entity\EventHistory;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Template;
 use AppBundle\Entity\TemplateEvent;
@@ -12,27 +18,27 @@ use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\QueryBuilder;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Put;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use HttpException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\Annotations\Put;
 
-class ApiController extends FOSRestController {
-
+class ApiController extends FOSRestController
+{
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /***** TEMPLATE ****** ********************************************************************************************/
     /******************************************************************************************************************/
     /******************************************************************************************************************/
+
     /**
-     * Get template Info
+     * Get template Info.
      *
      * @ApiDoc(
      *   resource = true,
@@ -43,6 +49,7 @@ class ApiController extends FOSRestController {
      * )
      *
      * @param $id
+     *
      * @return array|View
      * @Annotations\View()
      * @Get("/template/{id}")
@@ -53,22 +60,21 @@ class ApiController extends FOSRestController {
 
         $template = $em->getRepository('AppBundle:Template')->find($id);
 
-        if ($template === null)
-        {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        if ($template === null) {
+            return new View('there are no users exist', Response::HTTP_NOT_FOUND);
         }
 
         return $template;
     }
-
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /***** TEMPLATE EVENTS ********************************************************************************************/
     /******************************************************************************************************************/
     /******************************************************************************************************************/
+
     /**
-     * Get template Events
+     * Get template Events.
      *
      * @ApiDoc(
      *   resource = true,
@@ -79,6 +85,7 @@ class ApiController extends FOSRestController {
      * )
      *
      * @param $templateid
+     *
      * @return array|View
      * @Annotations\View()
      * @Get("/templateevents/{templateid}")
@@ -89,9 +96,8 @@ class ApiController extends FOSRestController {
 
         $tevents = $em->getRepository('AppBundle:TemplateEvent')->getTemplateEvents($templateid);
 
-        if ($tevents === null)
-        {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        if ($tevents === null) {
+            return new View('there are no users exist', Response::HTTP_NOT_FOUND);
         }
 
         return $tevents;
@@ -108,9 +114,11 @@ class ApiController extends FOSRestController {
      *   }
      * )
      *
-     * @var Request $request
+     * @var Request
      * @Annotations\View()
+     *
      * @param Request $request
+     *
      * @return static
      */
     public function postTemplateEventsAction(Request $request)
@@ -140,14 +148,15 @@ class ApiController extends FOSRestController {
         $view = View::create();
         $view->setData($templateevent);
         header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        header('access-control-allow-origin: *');
 
         return $view;
+    }
 
-    }// "post_templateevents"            [POST] /templateevents
+// "post_templateevents"            [POST] /templateevents
 
     /**
-     * Delete template Events
+     * Delete template Events.
      *
      * @ApiDoc(
      *   resource = true,
@@ -161,6 +170,7 @@ class ApiController extends FOSRestController {
      *
      * @Rest\Delete("/templateevents/{templateid}")
      * @Rest\View(statusCode=204)
+     *
      * @return array
      */
     public function deleteTemplateEventsAction($templateid)
@@ -169,9 +179,8 @@ class ApiController extends FOSRestController {
 
         $template = $em->getRepository('AppBundle:Template')->find($templateid);
 
-        if ($template=== null)
-        {
-            return new View("there are no Template events exist", Response::HTTP_NOT_FOUND);
+        if ($template === null) {
+            return new View('there are no Template events exist', Response::HTTP_NOT_FOUND);
         }
 
         $tevents = $template->getTemplateEvents();
@@ -181,14 +190,14 @@ class ApiController extends FOSRestController {
         $em->flush();
     }
 
-
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /***** CALENDAR EVENTS ********************************************************************************************/
     /******************************************************************************************************************/
     /******************************************************************************************************************/
+
     /**
-     * Get calendar Events
+     * Get calendar Events.
      *
      * @ApiDoc(
      *   resource = true,
@@ -199,6 +208,7 @@ class ApiController extends FOSRestController {
      * )
      *
      * @param $calendarid
+     *
      * @return array|View
      * @Annotations\View()
      */
@@ -208,16 +218,15 @@ class ApiController extends FOSRestController {
 
         $events = $em->getRepository('AppBundle:Event')->getEvents($calendarid);
 
-        if ($events === null)
-        {
-            return new View("there are no users exist", Response::HTTP_NOT_FOUND);
+        if ($events === null) {
+            return new View('there are no users exist', Response::HTTP_NOT_FOUND);
         }
 
         return $events;
     }
 
     /**
-     * Update a Event
+     * Update a Event.
      *
      * @ApiDoc(
      *   resource = true,
@@ -227,10 +236,11 @@ class ApiController extends FOSRestController {
      *   }
      * )
      *
-     * @param         $id
+     * @param   $id
+     *
+     * @throws EntityNotFoundException
      *
      * @return static
-     * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/events/{id}")
      */
@@ -241,7 +251,7 @@ class ApiController extends FOSRestController {
         $jsonData = json_decode($request->getContent(), true);
 
         // find event
-        $event = $em->getRepository( 'AppBundle:Event' )->find( $id );
+        $event = $em->getRepository('AppBundle:Event')->find($id);
         if (!$event) {
             throw new EntityNotFoundException();
         }
@@ -254,101 +264,89 @@ class ApiController extends FOSRestController {
         /** @var Type $type */
         $type = $em->getRepository('AppBundle:Type')->find($jsonData['type']);
 
-
         $event->setName($jsonData['name']);
         $tempini = new \DateTime($jsonData['startDate']);
         $event->setStartDate($tempini);
         $tempfin = new \DateTime($jsonData['endDate']);
         $event->setEndDate($tempfin);
-        $event->setHours($jsonData[ 'hours' ]);
+        $event->setHours($jsonData['hours']);
         $event->setType($type);
         $em->persist($event);
 
-        $oldValue = $jsonData[ "oldValue" ];
-        $newValue = $jsonData[ "hours" ];
-        $oldType = $jsonData[ "oldType" ];
-        $hours = floatval($event->getHours()) - floatval( $oldValue );
+        $oldValue = $jsonData['oldValue'];
+        $newValue = $jsonData['hours'];
+        $oldType = $jsonData['oldType'];
+        $hours = (float) ($event->getHours()) - (float) $oldValue;
 
-
-        if ( $type->getRelated() ) {
-
-            if ( $type->getId() === intval($oldType) ) { // Mota berdinekoak badira, zuzenketa
-
+        if ($type->getRelated()) {
+            if ($type->getId() === (int) $oldType) { // Mota berdinekoak badira, zuzenketa
                 /** @var Type $t */
                 $t = $event->getType();
-                if ( $t->getRelated() === "hours_free" ) {
-                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) + $hours );
+                if ($t->getRelated() === 'hours_free') {
+                    $calendar->setHoursFree((float) ($calendar->getHoursFree()) + $hours);
                 }
-                if ($t->getRelated() === "hours_self") {
-                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + $hours );
+                if ($t->getRelated() === 'hours_self') {
+                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $hours);
                 }
-                if ($t->getRelated() === "hours_compensed") {
-                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) + $hours );
+                if ($t->getRelated() === 'hours_compensed') {
+                    $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + $hours);
                 }
-                if ($t->getRelated() === "hours_sindical") {
-                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) + $hours );
+                if ($t->getRelated() === 'hours_sindical') {
+                    $calendar->setHoursSindikal((float) ($calendar->getHoursSindikal()) + $hours);
                 }
-                $em->persist( $calendar );
-
+                $em->persist($calendar);
             } else { // Mota ezberdinekoak dira, aurrena aurreko motan gehitu, mota berrian kentu ondoren
-
-
                 /** @vat Type $tOld */
-                $tOld = $em->getRepository( 'AppBundle:Type' )->find( $oldType );
-                if ( $tOld->getRelated() === "hours_free" ) {
-                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) + $oldValue );
+                $tOld = $em->getRepository('AppBundle:Type')->find($oldType);
+                if ($tOld->getRelated() === 'hours_free') {
+                    $calendar->setHoursFree((float) ($calendar->getHoursFree()) + $oldValue);
                 }
-                if ($tOld->getRelated() === "hours_self") {
-                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + $oldValue );
+                if ($tOld->getRelated() === 'hours_self') {
+                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $oldValue);
                 }
-                if ($tOld->getRelated() === "hours_compensed") {
-                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) + $oldValue );
+                if ($tOld->getRelated() === 'hours_compensed') {
+                    $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + $oldValue);
                 }
-                if ($tOld->getRelated() === "hours_sindical") {
-                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) + $oldValue );
+                if ($tOld->getRelated() === 'hours_sindical') {
+                    $calendar->setHoursSindikal((float) ($calendar->getHoursSindikal()) + $oldValue);
                 }
 
                 /** @var Type $tNew */
                 $tNew = $event->getType(); // Mota berria
-                if ( $tNew->getRelated() === "hours_free" ) {
-                    $calendar->setHoursFree( floatval($calendar->getHoursFree()) - $newValue );
+                if ($tNew->getRelated() === 'hours_free') {
+                    $calendar->setHoursFree((float) ($calendar->getHoursFree()) - $newValue);
                 }
-                if ($tNew->getRelated() === "hours_self") {
-                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) - $newValue );
+                if ($tNew->getRelated() === 'hours_self') {
+                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) - $newValue);
                 }
-                if ($tNew->getRelated() === "hours_compensed") {
-                    $calendar->setHoursCompensed( floatval($calendar->getHoursCompensed()) - $newValue );
+                if ($tNew->getRelated() === 'hours_compensed') {
+                    $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) - $newValue);
                 }
-                if ($tNew->getRelated() === "hours_sindical") {
-                    $calendar->setHoursSindikal( floatval($calendar->getHoursSindikal()) - $newValue );
+                if ($tNew->getRelated() === 'hours_sindical') {
+                    $calendar->setHoursSindikal((float) ($calendar->getHoursSindikal()) - $newValue);
                 }
 
-                $em->persist( $calendar );
-
+                $em->persist($calendar);
             }
-
-
 
             /** @var Log $log */
             $log = new Log();
-            $log->setName( "Egutegiko egun bat eguneratua izan da" );
-            $log->setCalendar( $calendar );
-            $log->setDescription( $event->getName()." ".$event->getHours(). " ordu ".$event->getType() );
-            $em->persist( $log );
-
-
-
+            $log->setName('Egutegiko egun bat eguneratua izan da');
+            $log->setCalendar($calendar);
+            $log->setDescription($event->getName().' '.$event->getHours().' ordu '.$event->getType());
+            $em->persist($log);
         }
         $em->flush();
 
         $view = View::create();
         $view->setData($event);
         header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        header('access-control-allow-origin: *');
 
         return $view;
+    }
 
-    }// "put_event"             [PUT] /events/{id}
+// "put_event"             [PUT] /events/{id}
 
     /**
      * Save events.
@@ -361,9 +359,11 @@ class ApiController extends FOSRestController {
      *   }
      * )
      *
-     * @var Request $request
+     * @var Request
      * @Annotations\View()
+     *
      * @param Request $request
+     *
      * @return static
      */
     public function postEventsAction(Request $request)
@@ -386,29 +386,26 @@ class ApiController extends FOSRestController {
         $event->setStartDate($tempini);
         $tempfin = new \DateTime($jsonData['endDate']);
         $event->setEndDate($tempfin);
-        $event->setHours($jsonData[ 'hours' ]);
+        $event->setHours($jsonData['hours']);
         $event->setType($type);
         $em->persist($event);
 
-
-        if ( $type->getRelated() ) {
-
+        if ($type->getRelated()) {
             /** @var Type $t */
             $t = $event->getType();
-            if ( $t->getRelated() === "hours_free" ) {
-                $calendar->setHoursFree( floatval( $calendar->getHoursFree() ) - floatval($jsonData[ 'hours' ]) );
+            if ($t->getRelated() === 'hours_free') {
+                $calendar->setHoursFree((float) ($calendar->getHoursFree()) - (float) ($jsonData['hours']));
             }
-            if ( $t->getRelated() === "hours_self" ) {
-                $calendar->setHoursSelf( floatval( $calendar->getHoursSelf() ) - floatval($jsonData[ 'hours' ]) );
+            if ($t->getRelated() === 'hours_self') {
+                $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) - (float) ($jsonData['hours']));
             }
-            if ( $t->getRelated() === "hours_compensed" ) {
-                $calendar->setHoursCompensed( floatval( $calendar->getHoursCompensed() ) - floatval($jsonData[ 'hours' ]) );
+            if ($t->getRelated() === 'hours_compensed') {
+                $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) - (float) ($jsonData['hours']));
             }
-            if ( $t->getRelated() === "hours_sindical" ) {
-                $calendar->setHoursSindikal( floatval( $calendar->getHoursSindikal() ) - floatval($jsonData[ 'hours' ]) );
+            if ($t->getRelated() === 'hours_sindical') {
+                $calendar->setHoursSindikal((float) ($calendar->getHoursSindikal()) - (float) ($jsonData['hours']));
             }
-            $em->persist( $calendar );
-
+            $em->persist($calendar);
         }
 
         $em->flush();
@@ -416,14 +413,15 @@ class ApiController extends FOSRestController {
         $view = View::create();
         $view->setData($event);
         header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        header('access-control-allow-origin: *');
 
         return $view;
+    }
 
-    }// "post_events"            [POST] /events
+// "post_events"            [POST] /events
 
     /**
-     * Delete a Event
+     * Delete a Event.
      *
      * @ApiDoc(
      *   resource = true,
@@ -437,6 +435,7 @@ class ApiController extends FOSRestController {
      *
      * @Rest\Delete("/events/{id}")
      * @Rest\View(statusCode=204)
+     *
      * @return array
      */
     public function deleteEventsAction($id)
@@ -445,9 +444,8 @@ class ApiController extends FOSRestController {
 
         $event = $em->getRepository('AppBundle:Event')->find($id);
 
-        if ($event=== null)
-        {
-            return new View("Event ez da aurkitu", Response::HTTP_NOT_FOUND);
+        if ($event === null) {
+            return new View('Event ez da aurkitu', Response::HTTP_NOT_FOUND);
         }
 
         /** @var Calendar $calendar */
@@ -455,22 +453,22 @@ class ApiController extends FOSRestController {
 
         /** @var Type $type */
         $type = $event->getType();
-        if ( $type->getRelated() ) {
+        if ($type->getRelated()) {
             /** @var Type $t */
             $t = $event->getType();
-            if ( $t->getRelated() === "hours_free" ) {
-                $calendar->setHoursFree( floatval( $calendar->getHoursFree() ) + $event->getHours() );
+            if ($t->getRelated() === 'hours_free') {
+                $calendar->setHoursFree((float) ($calendar->getHoursFree()) + $event->getHours());
             }
-            if ( $t->getRelated() === "hours_self" ) {
-                $calendar->setHoursSelf( floatval( $calendar->getHoursSelf() ) + $event->getHours() );
+            if ($t->getRelated() === 'hours_self') {
+                $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $event->getHours());
             }
-            if ( $t->getRelated() === "hours_compensed" ) {
-                $calendar->setHoursCompensed( floatval( $calendar->getHoursCompensed() ) + $event->getHours() );
+            if ($t->getRelated() === 'hours_compensed') {
+                $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + $event->getHours());
             }
-            if ( $t->getRelated() === "hours_sindical" ) {
-                $calendar->setHoursSindikal( floatval( $calendar->getHoursSindikal() ) + $event->getHours() );
+            if ($t->getRelated() === 'hours_sindical') {
+                $calendar->setHoursSindikal((float) ($calendar->getHoursSindikal()) + $event->getHours());
             }
-            $em->persist( $calendar );
+            $em->persist($calendar);
         }
 
         $em->remove($event);
@@ -491,11 +489,12 @@ class ApiController extends FOSRestController {
      * @param Request $request
      * @param         $calendarid
      *
-     * @return static
      * @throws HttpException
+     *
+     * @return static
      * @Annotations\View()
      */
-    public function postNotesAction(Request $request, $calendarid )
+    public function postNotesAction(Request $request, $calendarid)
     {
         $em = $this->getDoctrine()->getManager();
         $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
@@ -504,14 +503,13 @@ class ApiController extends FOSRestController {
             CalendarNoteType::class,
             $calendar
         );
-        $frmnote->handleRequest( $request );
-        if ( $frmnote->isValid( ) ) {
-
+        $frmnote->handleRequest($request);
+        if ($frmnote->isValid()) {
             $em->persist($calendar);
 
             /** @var Log $log */
             $log = new Log();
-            $log->setName("Egutegiaren oharrak eguneratuak");
+            $log->setName('Egutegiaren oharrak eguneratuak');
             $log->setDescription('Testua eguneratua');
             $em->persist($log);
             $em->flush();
@@ -520,22 +518,21 @@ class ApiController extends FOSRestController {
             $view->setData($calendar);
 
             header('content-type: application/json; charset=utf-8');
-            header("access-control-allow-origin: *");
+            header('access-control-allow-origin: *');
 
             return $view;
-        } else {
-            throw new HttpException(400, "ez da topatu.");
         }
+        throw new HttpException(400, 'ez da topatu.');
+    }
 
-
-
-    }// "post_notes"            [POST] /notes/{calendarid}
+// "post_notes"            [POST] /notes/{calendarid}
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /***** USER API        ********************************************************************************************/
     /******************************************************************************************************************/
     /******************************************************************************************************************/
+
     /**
      * Save user notes.
      *
@@ -550,8 +547,9 @@ class ApiController extends FOSRestController {
      * @param Request $request
      * @param         $username
      *
-     * @return static
      * @throws HttpException
+     *
+     * @return static
      * @Annotations\View()
      */
     public function postUsernotesAction(Request $request, $username)
@@ -561,7 +559,7 @@ class ApiController extends FOSRestController {
 
         $jsonData = json_decode($request->getContent(), true);
 
-        $userManager = $this->container->get( 'fos_user.user_manager' );
+        $userManager = $this->container->get('fos_user.user_manager');
 
         if (!$user) {
             $ldap = $this->get('ldap_tools.ldap_manager');
@@ -573,40 +571,35 @@ class ApiController extends FOSRestController {
                 ->getLdapQuery()
                 ->getSingleResult();
 
-
             /** @var $user User */
             $user = $userManager->createUser();
-            $user->setUsername( $username );
-            $user->setEmail( $username . '@pasaia.net' );
-            $user->setPassword( '' );
+            $user->setUsername($username);
+            $user->setEmail($username.'@pasaia.net');
+            $user->setPassword('');
             if ($ldapuser->has('dn')) {
-                $user->setDn( $ldapuser->getDn() );
+                $user->setDn($ldapuser->getDn());
             }
-            $user->setEnabled( true );
+            $user->setEnabled(true);
             if ($ldapuser->has('description')) {
-                $user->setLanpostua( $ldapuser->getDescription() );
+                $user->setLanpostua($ldapuser->getDescription());
             }
             if ($ldapuser->has('department')) {
-                $user->setDepartment( $ldapuser->getDepartment() );
+                $user->setDepartment($ldapuser->getDepartment());
             }
-
-
-
         }
 
         $user->setNotes($jsonData['notes']);
 
-        $userManager->updateUser( $user );
+        $userManager->updateUser($user);
 
         $view = View::create();
         $view->setData($user);
 
         header('content-type: application/json; charset=utf-8');
-        header("access-control-allow-origin: *");
+        header('access-control-allow-origin: *');
 
         return $view;
+    }
 
-
-
-    }// "post_usernotes"            [POST] /usernotes/{userid}
+// "post_usernotes"            [POST] /usernotes/{userid}
 }

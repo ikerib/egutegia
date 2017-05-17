@@ -1,103 +1,96 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: iibarguren
- * Date: 3/13/17
- * Time: 8:35 AM
+
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace AppBundle\Menu;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\User;
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Builder implements ContainerAwareInterface {
-
+class Builder implements ContainerAwareInterface
+{
     use ContainerAwareTrait;
 
-
-    public function mainMenu (FactoryInterface $factory, array $options)
+    public function mainMenu(FactoryInterface $factory, array $options)
     {
-        $menu = $factory->createItem('root',array('navbar' => true,));
+        $menu = $factory->createItem('root', ['navbar' => true]);
 
-        $menu->addChild('Hasiera',array('icon'  => 'home','route' => 'dashboard',));
+        $menu->addChild('Hasiera', ['icon' => 'home', 'route' => 'dashboard']);
 
-        $dropdown = $menu->addChild('Txantiloiak',array('dropdown' => true,'caret'    => true,));
-        $dropdown->addChild('Zerrenda', array( 'route' => 'admin_template_index' ));
-
+        $dropdown = $menu->addChild('Txantiloiak', ['dropdown' => true, 'caret' => true]);
+        $dropdown->addChild('Zerrenda', ['route' => 'admin_template_index']);
 
         $menu->addChild(
             'Motak',
-            array(
+            [
                 'dropdown' => true,
-                'caret'    => true,
-            )
+                'caret' => true,
+            ]
         );
-        $menu[ 'Motak' ]->addChild('Zerrenda', array( 'route' => 'admin_type_index' ));
+        $menu['Motak']->addChild('Zerrenda', ['route' => 'admin_type_index']);
 
         return $menu;
     }
 
-    public function userMenu (FactoryInterface $factory, array $options) {
-
+    public function userMenu(FactoryInterface $factory, array $options)
+    {
         $checker = $this->container->get('security.authorization_checker');
         /** @var $user User */
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
-        $menu = $factory->createItem('root',array('navbar' => true,'icon'=>'glyphicon glyphicon-user'));
+        $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'glyphicon glyphicon-user']);
 
         if ($checker->isGranted('ROLE_USER') || ($checker->isGranted('ROLE_ADMIN'))) {
-            $menu->addChild('User', array( 'label' =>  $user->getDisplayname() ))
+            $menu->addChild('User', ['label' => $user->getDisplayname()])
                 ->setAttribute('dropdown', true)
                 ->setAttribute('icon', 'glyphicon glyphicon-user');
 
             if ($checker->isGranted('ROLE_ADMIN')) {
-                $menu[ 'User' ]->addChild('Egutegia', array( 'route' => 'dashboard' ))
+                $menu['User']->addChild('Egutegia', ['route' => 'dashboard'])
                     ->setAttribute('icon', 'fa fa-edit');
             } else {
-                $menu[ 'User' ]->addChild('Egutegia', array( 'route' => 'user_homepage' ))
+                $menu['User']->addChild('Egutegia', ['route' => 'user_homepage'])
                     ->setAttribute('icon', 'fa fa-edit');
             }
 
-            $menu['User']->addChild('Irten', array('route' => 'fos_user_security_logout'));
+            $menu['User']->addChild('Irten', ['route' => 'fos_user_security_logout']);
         } else {
-            $menu->addChild('login', array('route' => 'fos_user_security_login'));
+            $menu->addChild('login', ['route' => 'fos_user_security_login']);
         }
 
         return $menu;
-
     }
 
-    public function subMenuLeft (FactoryInterface $factory, array $options)
+    public function subMenuLeft(FactoryInterface $factory, array $options)
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $routeName = $request->get('_route');
 
-
-
         $menu = $factory->createItem(
             'root',
-            array(
+            [
                 'navbar' => true,
-            )
+            ]
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
 
         if (strpos($routeName, 'egutegia') !== false) {
-            $menu->addChild('Egutegiak', array( 'uri' => 'javascript:void(0);' ));
+            $menu->addChild('Egutegiak', ['uri' => 'javascript:void(0);']);
         } else {
-            $menu->addChild('Txantiloiak', array( 'uri' => 'javascript:void(0);' ));
+            $menu->addChild('Txantiloiak', ['uri' => 'javascript:void(0);']);
         }
-
 
         return $menu;
     }
 
-    public function subMenuRight (FactoryInterface $factory, array $options)
+    public function subMenuRight(FactoryInterface $factory, array $options)
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
         $routeName = $request->get('_route');
@@ -108,36 +101,33 @@ class Builder implements ContainerAwareInterface {
 
         $menu = $factory->createItem(
             'root',
-            array(
+            [
                 'navbar' => true,
-            )
+            ]
         );
         $menu->setChildrenAttribute('class', 'navbar navbar-default navbar-lower affix-top');
 
-        if (!in_array($routeName , $noToolBarRouteNames)) {
+        if (!in_array($routeName, $noToolBarRouteNames, true)) {
             $menu->addChild(
                 'Egutegia Ezabatu',
-                array(
-                    'attributes' => array(
-                        'id'    => 'btnEzabatu',
+                [
+                    'attributes' => [
+                        'id' => 'btnEzabatu',
                         'class' => 'btn btn-danger navbar-btn',
-                    ),
-                )
+                    ],
+                ]
             );
             $menu->addChild(
                 'Egutegia Grabatu',
-                array(
-                    'attributes' => array(
-                        'id'    => 'btnGrabatu',
+                [
+                    'attributes' => [
+                        'id' => 'btnGrabatu',
                         'class' => 'btn btn-primary navbar-btn',
-                    ),
-                )
+                    ],
+                ]
             );
         }
 
-
-
         return $menu;
     }
-
 }

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
@@ -14,18 +21,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class AdminController extends Controller
 {
-
     /**
      * @Route("/dashboard", name="dashboard")
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @internal param Request $request
      *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @internal param Request $request
      */
-    public function dashboardAction ()
+    public function dashboardAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $ldap = $this->get( 'ldap_tools.ldap_manager' );
+        $ldap = $this->get('ldap_tools.ldap_manager');
         /* OJO ALDATZEN BADA CalendarController newAction ere aldatu */
         $ldapusers = $ldap->buildLdapQuery()
             ->select(
@@ -41,38 +48,37 @@ class AdminController extends Controller
                     'description',
                 ]
             )
-            ->fromUsers()->orderBy( 'username' )->getLdapQuery()->getResult();
-
+            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
 
         $userdata = [];
-        foreach ( $ldapusers as $user ) {
+        foreach ($ldapusers as $user) {
             /** @var $user User */
-            $u               = [];
-            $u[ "user" ]     = $user;
-            $calendar        = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear(
+            $u = [];
+            $u['user'] = $user;
+            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
                 $user->getUsername(),
-                Date( 'Y' )
+                date('Y')
             );
-            $u[ "calendar" ] = $calendar;
+            $u['calendar'] = $calendar;
 
             /** @var $usernotes User */
-            $usernotes = $em->getRepository( 'AppBundle:User' )->getByUsername( $user->getUsername() );
+            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
 
-            if ( $usernotes ) {
-                $user->setNotes( $usernotes->getNotes() );
+            if ($usernotes) {
+                $user->setNotes($usernotes->getNotes());
             }
-            array_push( $userdata, $u );
+            array_push($userdata, $u);
         }
 
-        $user        = new User();
-        $frmusernote = $this->createForm( UserNoteType::class, $user );
+        $user = new User();
+        $frmusernote = $this->createForm(UserNoteType::class, $user);
 
         return $this->render(
             'default/index.html.twig',
-            array(
-                'userdata'    => $userdata,
+            [
+                'userdata' => $userdata,
                 'frmusernote' => $frmusernote->createView(),
-            )
+            ]
         );
     }
 }

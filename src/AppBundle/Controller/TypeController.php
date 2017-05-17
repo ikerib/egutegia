@@ -1,12 +1,20 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Type;
 use AppBundle\Form\TypeType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Type controller.
@@ -27,15 +35,15 @@ class TypeController extends Controller
 
         $types = $em->getRepository('AppBundle:Type')->findAll();
 
-        $deleteForms = array();
+        $deleteForms = [];
         foreach ($types as $type) {
             $deleteForms[$type->getId()] = $this->createDeleteForm($type)->createView();
         }
 
-        return $this->render('type/index.html.twig', array(
+        return $this->render('type/index.html.twig', [
             'types' => $types,
             'deleteforms' => $deleteForms,
-        ));
+        ]);
     }
 
     /**
@@ -43,19 +51,21 @@ class TypeController extends Controller
      *
      * @Route("/list/{calendarid}", name="admin_type_list")
      * @Method("GET")
+     *
+     * @param mixed $calendarid
      */
     public function listAction($calendarid)
     {
         $em = $this->getDoctrine()->getManager();
 
         $typesFromCalendarEvents = $em->getRepository('AppBundle:Type')->findAllByOrder($calendarid);
-        $typesFromTemplateEvents = $em->getRepository('AppBundle:Type' )->findAllTemplateEventsType( $calendarid );
+        $typesFromTemplateEvents = $em->getRepository('AppBundle:Type')->findAllTemplateEventsType($calendarid);
 
-        $types = array_merge( $typesFromTemplateEvents, $typesFromCalendarEvents );
+        $types = array_merge($typesFromTemplateEvents, $typesFromCalendarEvents);
 
-        return $this->render('type/list.html.twig', array(
-            'types' => $types
-        ));
+        return $this->render('type/list.html.twig', [
+            'types' => $types,
+        ]);
     }
 
     /**
@@ -63,16 +73,18 @@ class TypeController extends Controller
      *
      * @Route("/listtemplatetypes/{templateid}", name="admin_type_listtemplates")
      * @Method("GET")
+     *
+     * @param mixed $templateid
      */
     public function listtemplatetypesAction($templateid)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $types = $em->getRepository('AppBundle:Type' )->findAllTypesOfTemplateEvents( $templateid );
+        $types = $em->getRepository('AppBundle:Type')->findAllTypesOfTemplateEvents($templateid);
 
-        return $this->render('type/list.html.twig', array(
-            'types' => $types
-        ));
+        return $this->render('type/list.html.twig', [
+            'types' => $types,
+        ]);
     }
 
     /**
@@ -85,10 +97,10 @@ class TypeController extends Controller
     {
         $type = new Type();
         $form = $this->createForm(
-            TypeType::class, $type, array(
+            TypeType::class, $type, [
             'action' => $this->generateUrl('admin_type_new'),
             'method' => 'POST',
-        ));
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,10 +111,10 @@ class TypeController extends Controller
             return $this->redirectToRoute('admin_type_index');
         }
 
-        return $this->render('type/new.html.twig', array(
+        return $this->render('type/new.html.twig', [
             'type' => $type,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -115,10 +127,10 @@ class TypeController extends Controller
     {
         $deleteForm = $this->createDeleteForm($type);
         $editForm = $this->createForm(
-            TypeType::class, $type, array(
-            'action' => $this->generateUrl('admin_type_edit', array('id' => $type->getId())),
+            TypeType::class, $type, [
+            'action' => $this->generateUrl('admin_type_edit', ['id' => $type->getId()]),
             'method' => 'POST',
-        ));
+        ]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -127,11 +139,11 @@ class TypeController extends Controller
             return $this->redirectToRoute('admin_type_index');
         }
 
-        return $this->render('type/edit.html.twig', array(
+        return $this->render('type/edit.html.twig', [
             'type' => $type,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -164,7 +176,7 @@ class TypeController extends Controller
     private function createDeleteForm(Type $type)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_type_delete', array('id' => $type->getId())))
+            ->setAction($this->generateUrl('admin_type_delete', ['id' => $type->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;

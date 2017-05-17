@@ -1,17 +1,22 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-
 /**
- * Calendar
+ * Calendar.
  *
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CalendarRepository")
@@ -38,7 +43,7 @@ class Calendar
     private $name;
 
     /**
-     * @var integer
+     * @var int
      * @Expose
      *
      * @ORM\Column(name="year", type="integer")
@@ -51,8 +56,7 @@ class Calendar
      *
      * @ORM\Column(name="percent_year", type="decimal", precision=10, scale=2)
      */
-    private $percent_year=0; // Urteko lan orduak
-
+    private $percent_year = 0; // Urteko lan orduak
 
     /**
      * @var decimal
@@ -60,7 +64,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      */
-    private $hours_year=0; // Urteko lan orduak
+    private $hours_year = 0; // Urteko lan orduak
 
     /**
      * @var decimal
@@ -68,7 +72,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
      */
-    private $hours_free=0; // Opor orduak hartuta
+    private $hours_free = 0; // Opor orduak hartuta
 
     /**
      * @var decimal
@@ -76,7 +80,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
      */
-    private $hours_self=0; // Urteko norberarentzako orduak
+    private $hours_self = 0; // Urteko norberarentzako orduak
 
     /**
      * @var decimal
@@ -84,7 +88,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
      */
-    private $hours_compensed=0; // Ordu konpentsatuak
+    private $hours_compensed = 0; // Ordu konpentsatuak
 
     /**
      * @var decimal
@@ -92,7 +96,7 @@ class Calendar
      *
      * @ORM\Column(name="hours_sindikal", type="decimal", precision=10, scale=2)
      */
-    private $hours_sindikal=0; // Ordu Sindikalak
+    private $hours_sindikal = 0; // Ordu Sindikalak
 
     /**
      * @var decimal
@@ -100,7 +104,7 @@ class Calendar
      * @ORM\Column(name="hours_day", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_day=0;
+    private $hours_day = 0;
 
     /**
      * @var decimal
@@ -108,7 +112,7 @@ class Calendar
      * @ORM\Column(name="hirurtekoa", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hirurtekoa=0;
+    private $hirurtekoa = 0;
 
     /**
      * @var string
@@ -137,7 +141,7 @@ class Calendar
     private $updated;
 
     /**
-     * @var string $contentChangedBy
+     * @var string
      *
      * @ORM\Column(nullable=true)
      * @Gedmo\Blameable(on="change", field={"title", "body"})
@@ -187,7 +191,7 @@ class Calendar
     private $hours;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -201,17 +205,15 @@ class Calendar
     {
         return $this->getSlug().$this->getPercentYear();
     }
+
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-
-
-
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -219,7 +221,7 @@ class Calendar
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -233,7 +235,7 @@ class Calendar
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -243,9 +245,9 @@ class Calendar
     }
 
     /**
-     * Set year
+     * Set year.
      *
-     * @param integer $year
+     * @param int $year
      *
      * @return Calendar
      */
@@ -257,9 +259,9 @@ class Calendar
     }
 
     /**
-     * Get year
+     * Get year.
      *
-     * @return integer
+     * @return int
      */
     public function getYear()
     {
@@ -267,7 +269,7 @@ class Calendar
     }
 
     /**
-     * Set hoursYear
+     * Set hoursYear.
      *
      * @param string $hoursYear
      *
@@ -281,7 +283,7 @@ class Calendar
     }
 
     /**
-     * Get hoursYear
+     * Get hoursYear.
      *
      * @return string
      */
@@ -291,7 +293,7 @@ class Calendar
     }
 
     /**
-     * Set hoursFree
+     * Set hoursFree.
      *
      * @param string $hoursFree
      *
@@ -305,7 +307,7 @@ class Calendar
     }
 
     /**
-     * Get hoursFree
+     * Get hoursFree.
      *
      * @return string
      */
@@ -315,7 +317,7 @@ class Calendar
     }
 
     /**
-     * Set hoursSelf
+     * Set hoursSelf.
      *
      * @param string $hoursSelf
      *
@@ -329,7 +331,7 @@ class Calendar
     }
 
     /**
-     * Get hoursSelf
+     * Get hoursSelf.
      *
      * @return string
      */
@@ -339,7 +341,7 @@ class Calendar
     }
 
     /**
-     * Set hoursCompensed
+     * Set hoursCompensed.
      *
      * @param string $hoursCompensed
      *
@@ -353,7 +355,7 @@ class Calendar
     }
 
     /**
-     * Get hoursCompensed
+     * Get hoursCompensed.
      *
      * @return string
      */
@@ -363,7 +365,7 @@ class Calendar
     }
 
     /**
-     * Set hoursDay
+     * Set hoursDay.
      *
      * @param string $hoursDay
      *
@@ -377,7 +379,7 @@ class Calendar
     }
 
     /**
-     * Get hoursDay
+     * Get hoursDay.
      *
      * @return string
      */
@@ -387,7 +389,7 @@ class Calendar
     }
 
     /**
-     * Set note
+     * Set note.
      *
      * @param string $note
      *
@@ -401,7 +403,7 @@ class Calendar
     }
 
     /**
-     * Get note
+     * Get note.
      *
      * @return string
      */
@@ -411,7 +413,7 @@ class Calendar
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -425,7 +427,7 @@ class Calendar
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -435,7 +437,7 @@ class Calendar
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -449,7 +451,7 @@ class Calendar
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -459,7 +461,7 @@ class Calendar
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -473,7 +475,7 @@ class Calendar
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -483,7 +485,7 @@ class Calendar
     }
 
     /**
-     * Set contentChangedBy
+     * Set contentChangedBy.
      *
      * @param string $contentChangedBy
      *
@@ -497,7 +499,7 @@ class Calendar
     }
 
     /**
-     * Get contentChangedBy
+     * Get contentChangedBy.
      *
      * @return string
      */
@@ -507,7 +509,7 @@ class Calendar
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
      *
@@ -521,7 +523,7 @@ class Calendar
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -531,7 +533,7 @@ class Calendar
     }
 
     /**
-     * Set template
+     * Set template.
      *
      * @param \AppBundle\Entity\Template $template
      *
@@ -545,7 +547,7 @@ class Calendar
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @return \AppBundle\Entity\Template
      */
@@ -555,7 +557,7 @@ class Calendar
     }
 
     /**
-     * Add event
+     * Add event.
      *
      * @param \AppBundle\Entity\Event $event
      *
@@ -569,7 +571,7 @@ class Calendar
     }
 
     /**
-     * Remove event
+     * Remove event.
      *
      * @param \AppBundle\Entity\Event $event
      */
@@ -579,7 +581,7 @@ class Calendar
     }
 
     /**
-     * Get events
+     * Get events.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -589,7 +591,7 @@ class Calendar
     }
 
     /**
-     * Add document
+     * Add document.
      *
      * @param \AppBundle\Entity\Document $document
      *
@@ -603,7 +605,7 @@ class Calendar
     }
 
     /**
-     * Remove document
+     * Remove document.
      *
      * @param \AppBundle\Entity\Document $document
      */
@@ -613,7 +615,7 @@ class Calendar
     }
 
     /**
-     * Get documents
+     * Get documents.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -623,7 +625,7 @@ class Calendar
     }
 
     /**
-     * Set percentYear
+     * Set percentYear.
      *
      * @param string $percentYear
      *
@@ -637,7 +639,7 @@ class Calendar
     }
 
     /**
-     * Get percentYear
+     * Get percentYear.
      *
      * @return string
      */
@@ -647,7 +649,7 @@ class Calendar
     }
 
     /**
-     * Add hour
+     * Add hour.
      *
      * @param \AppBundle\Entity\Hour $hour
      *
@@ -661,7 +663,7 @@ class Calendar
     }
 
     /**
-     * Remove hour
+     * Remove hour.
      *
      * @param \AppBundle\Entity\Hour $hour
      */
@@ -671,7 +673,7 @@ class Calendar
     }
 
     /**
-     * Get hours
+     * Get hours.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -681,7 +683,7 @@ class Calendar
     }
 
     /**
-     * Set hoursSindikal
+     * Set hoursSindikal.
      *
      * @param string $hoursSindikal
      *
@@ -695,7 +697,7 @@ class Calendar
     }
 
     /**
-     * Get hoursSindikal
+     * Get hoursSindikal.
      *
      * @return string
      */
@@ -705,7 +707,7 @@ class Calendar
     }
 
     /**
-     * Set hirurtekoa
+     * Set hirurtekoa.
      *
      * @param string $hirurtekoa
      *
@@ -719,7 +721,7 @@ class Calendar
     }
 
     /**
-     * Get hirurtekoa
+     * Get hirurtekoa.
      *
      * @return string
      */

@@ -1,19 +1,22 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
-use AppBundle\Entity\Calendar;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
-
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * Document
+ * Document.
  *
  * @ORM\Table(name="document")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
@@ -47,7 +50,6 @@ class Document
      */
     private $uploadfile;
 
-
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
@@ -72,7 +74,6 @@ class Document
      * @Expose()
      */
     private $calendar;
-
 
     public function __toString()
     {
@@ -135,14 +136,10 @@ class Document
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
-
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -150,7 +147,7 @@ class Document
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -164,7 +161,7 @@ class Document
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -174,7 +171,7 @@ class Document
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -188,7 +185,7 @@ class Document
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -198,7 +195,7 @@ class Document
     }
 
     /**
-     * Set calendar
+     * Set calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      *
@@ -212,7 +209,7 @@ class Document
     }
 
     /**
-     * Get calendar
+     * Get calendar.
      *
      * @return \AppBundle\Entity\Calendar
      */

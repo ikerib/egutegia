@@ -1,16 +1,20 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
 
 /**
- * Log
+ * Log.
  *
  * @ORM\Table(name="log")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LogRepository")
@@ -60,7 +64,7 @@ class Log
     private $updated;
 
     /**
-     * @var string $contentChangedBy
+     * @var string
      *
      * @ORM\Column(nullable=true)
      * @Gedmo\Blameable(on="change", field={"title", "body"})
@@ -95,9 +99,8 @@ class Log
      */
     private $event;
 
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -108,14 +111,15 @@ class Log
     {
         return $this->getDescription();
     }
+
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -123,7 +127,7 @@ class Log
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -137,7 +141,7 @@ class Log
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -147,7 +151,7 @@ class Log
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
      *
@@ -161,7 +165,7 @@ class Log
     }
 
     /**
-     * Get description
+     * Get description.
      *
      * @return string
      */
@@ -171,7 +175,7 @@ class Log
     }
 
     /**
-     * Set query
+     * Set query.
      *
      * @param string $query
      *
@@ -185,7 +189,7 @@ class Log
     }
 
     /**
-     * Get query
+     * Get query.
      *
      * @return string
      */
@@ -195,7 +199,7 @@ class Log
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -209,7 +213,7 @@ class Log
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -219,7 +223,7 @@ class Log
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -233,7 +237,7 @@ class Log
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -243,7 +247,7 @@ class Log
     }
 
     /**
-     * Set contentChangedBy
+     * Set contentChangedBy.
      *
      * @param string $contentChangedBy
      *
@@ -257,7 +261,7 @@ class Log
     }
 
     /**
-     * Get contentChangedBy
+     * Get contentChangedBy.
      *
      * @return string
      */
@@ -267,7 +271,7 @@ class Log
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
      *
@@ -281,7 +285,7 @@ class Log
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -291,7 +295,7 @@ class Log
     }
 
     /**
-     * Set calendar
+     * Set calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      *
@@ -305,7 +309,7 @@ class Log
     }
 
     /**
-     * Get calendar
+     * Get calendar.
      *
      * @return \AppBundle\Entity\Calendar
      */
@@ -315,7 +319,7 @@ class Log
     }
 
     /**
-     * Set event
+     * Set event.
      *
      * @param \AppBundle\Entity\Event $event
      *
@@ -329,7 +333,7 @@ class Log
     }
 
     /**
-     * Get event
+     * Get event.
      *
      * @return \AppBundle\Entity\Event
      */

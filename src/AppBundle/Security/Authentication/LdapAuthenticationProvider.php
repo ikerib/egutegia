@@ -1,12 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: iibarguren
- * Date: 3/29/17
- * Time: 2:39 PM
+
+/*
+ *     Iker Ibarguren <@ikerib>
  *
- * It updates FosUser entity data with data From LDAP
- *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
  */
 
 namespace AppBundle\Security\Authentication;
@@ -26,7 +24,6 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class LdapAuthenticationProvider extends BaseProvider
 {
-
     /**
      * @var UserProviderInterface
      */
@@ -42,7 +39,6 @@ class LdapAuthenticationProvider extends BaseProvider
      */
     private $userManager;
 
-
     /**
      * Constructor.
      *
@@ -53,7 +49,7 @@ class LdapAuthenticationProvider extends BaseProvider
      * @param UserManagerInterface  $userManager
      * @param bool                  $hideUserNotFoundExceptions Whether to hide user not found exception or not
      */
-    public function __construct (
+    public function __construct(
         UserCheckerInterface $userChecker,
         $providerKey,
         UserProviderInterface $userProvider,
@@ -61,69 +57,67 @@ class LdapAuthenticationProvider extends BaseProvider
         UserManagerInterface $userManager,
         $hideUserNotFoundExceptions = true
     ) {
-        parent::__construct( $userChecker, $providerKey, $userProvider, $ldapManager, $hideUserNotFoundExceptions );
+        parent::__construct($userChecker, $providerKey, $userProvider, $ldapManager, $hideUserNotFoundExceptions);
 
         $this->userProvider = $userProvider;
-        $this->ldapManager  = $ldapManager;
-        $this->userManager  = $userManager;
+        $this->ldapManager = $ldapManager;
+        $this->userManager = $userManager;
     }
-
 
     /**
      * {@inheritdoc}
      */
-    protected function retrieveUser ( $username, UsernamePasswordToken $token )
+    protected function retrieveUser($username, UsernamePasswordToken $token)
     {
         $user = $token->getUser();
-        if ( $user instanceof UserInterface ) {
+        if ($user instanceof UserInterface) {
             return $user;
         }
 
         try {
             /** @var User $user */
-            $user = $this->userProvider->loadUserByUsername( $username );
+            $user = $this->userProvider->loadUserByUsername($username);
 
-            if ( $this->userProvider instanceof ChainUserProvider ) {
-
+            if ($this->userProvider instanceof ChainUserProvider) {
                 /** @var ChainUserProvider $userProvider */
                 $userProvider = $this->userProvider;
-                foreach ( $userProvider->getProviders() as $provider ) {
-                    if ( $provider instanceof LdapUserProvider ) {
+                foreach ($userProvider->getProviders() as $provider) {
+                    if ($provider instanceof LdapUserProvider) {
                         /** @var User $ldapUser */
-                        $ldapUser = $provider->loadUserByUsername( $username );
-                        $user->setEmail( $ldapUser->getEmail() );
-                        $user->setRoles( $ldapUser->getRoles() );
+                        $ldapUser = $provider->loadUserByUsername($username);
+                        $user->setEmail($ldapUser->getEmail());
+                        $user->setRoles($ldapUser->getRoles());
                         // Hydrator-eko berdina egiten dugu
-                        if ( $ldapUser->getNan() ) {
-                            $user->setNan( $ldapUser->getNan() );
+                        if ($ldapUser->getNan()) {
+                            $user->setNan($ldapUser->getNan());
                         }
-                        if ( $ldapUser->getLanpostua() ) {
-                            $user->getLanpostua( $ldapUser->getLanpostua() );
+                        if ($ldapUser->getLanpostua()) {
+                            $user->getLanpostua($ldapUser->getLanpostua());
                         }
-                        if ( $ldapUser->getDisplayname() ) {
-                            $user->setDisplayname( $ldapUser->getDisplayname() );
+                        if ($ldapUser->getDisplayname()) {
+                            $user->setDisplayname($ldapUser->getDisplayname());
                         }
-                        if ( $ldapUser->getMembers() ) {
-                            $user->setMembers( $ldapUser->getMembers() );
+                        if ($ldapUser->getMembers()) {
+                            $user->setMembers($ldapUser->getMembers());
                         }
-                        if ( $ldapUser->getDn() ) {
-                            $user->setDn( $ldapUser->getDn() );
+                        if ($ldapUser->getDn()) {
+                            $user->setDn($ldapUser->getDn());
                         }
-                        $this->userManager->updateUser( $user );
+                        $this->userManager->updateUser($user);
                     }
                 }
             }
 
             return $user;
-        } catch ( UsernameNotFoundException $notFound ) {
+        } catch (UsernameNotFoundException $notFound) {
             throw $notFound;
-        } catch ( \Exception $repositoryProblem ) {
+        } catch (\Exception $repositoryProblem) {
             $e = new AuthenticationServiceException(
                 $repositoryProblem->getMessage(),
-                (int)$repositoryProblem->getCode(),
+                (int) $repositoryProblem->getCode(),
                 $repositoryProblem
             );
-            $e->setToken( $token );
+            $e->setToken($token);
 
             throw $e;
         }

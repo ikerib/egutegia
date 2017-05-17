@@ -1,17 +1,22 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-
 /**
- * Template
+ * Template.
  *
  * @ORM\Table(name="template")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateRepository")
@@ -43,7 +48,7 @@ class Template
      * @ORM\Column(name="hours_year", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_year=0;
+    private $hours_year = 0;
 
     /**
      * @var decimal
@@ -51,7 +56,7 @@ class Template
      * @ORM\Column(name="hours_free", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_free=0;
+    private $hours_free = 0;
 
     /**
      * @var decimal
@@ -59,7 +64,7 @@ class Template
      * @ORM\Column(name="hours_self", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_self=0;
+    private $hours_self = 0;
 
     /**
      * @var decimal
@@ -67,7 +72,7 @@ class Template
      * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_compensed=0;
+    private $hours_compensed = 0;
 
     /**
      * @var decimal
@@ -75,7 +80,7 @@ class Template
      * @ORM\Column(name="hours_day", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours_day=0;
+    private $hours_day = 0;
 
     /**
      * @Gedmo\Slug(fields={"name"})
@@ -109,7 +114,7 @@ class Template
     private $template_events;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -120,15 +125,15 @@ class Template
     {
         return $this->getSlug();
     }
-    /*****************************************************************************************************************/
-    /*****************************************************************************************************************/
-    /*****************************************************************************************************************/
 
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
+    /*****************************************************************************************************************/
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -136,7 +141,7 @@ class Template
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -150,7 +155,7 @@ class Template
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -160,7 +165,7 @@ class Template
     }
 
     /**
-     * Set hoursYear
+     * Set hoursYear.
      *
      * @param string $hoursYear
      *
@@ -174,7 +179,7 @@ class Template
     }
 
     /**
-     * Get hoursYear
+     * Get hoursYear.
      *
      * @return string
      */
@@ -184,7 +189,7 @@ class Template
     }
 
     /**
-     * Set hoursFree
+     * Set hoursFree.
      *
      * @param string $hoursFree
      *
@@ -198,7 +203,7 @@ class Template
     }
 
     /**
-     * Get hoursFree
+     * Get hoursFree.
      *
      * @return string
      */
@@ -208,7 +213,7 @@ class Template
     }
 
     /**
-     * Set hoursSelf
+     * Set hoursSelf.
      *
      * @param string $hoursSelf
      *
@@ -222,7 +227,7 @@ class Template
     }
 
     /**
-     * Get hoursSelf
+     * Get hoursSelf.
      *
      * @return string
      */
@@ -232,7 +237,7 @@ class Template
     }
 
     /**
-     * Set hoursCompensed
+     * Set hoursCompensed.
      *
      * @param string $hoursCompensed
      *
@@ -246,7 +251,7 @@ class Template
     }
 
     /**
-     * Get hoursCompensed
+     * Get hoursCompensed.
      *
      * @return string
      */
@@ -256,7 +261,7 @@ class Template
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -270,7 +275,7 @@ class Template
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -280,7 +285,7 @@ class Template
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -294,7 +299,7 @@ class Template
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -304,7 +309,7 @@ class Template
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -318,7 +323,7 @@ class Template
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -327,9 +332,8 @@ class Template
         return $this->updated;
     }
 
-
     /**
-     * Add templateEvent
+     * Add templateEvent.
      *
      * @param \AppBundle\Entity\TemplateEvent $templateEvent
      *
@@ -343,7 +347,7 @@ class Template
     }
 
     /**
-     * Remove templateEvent
+     * Remove templateEvent.
      *
      * @param \AppBundle\Entity\TemplateEvent $templateEvent
      */
@@ -353,7 +357,7 @@ class Template
     }
 
     /**
-     * Get templateEvents
+     * Get templateEvents.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -363,7 +367,7 @@ class Template
     }
 
     /**
-     * Set hoursDay
+     * Set hoursDay.
      *
      * @param string $hoursDay
      *
@@ -377,7 +381,7 @@ class Template
     }
 
     /**
-     * Get hoursDay
+     * Get hoursDay.
      *
      * @return string
      */

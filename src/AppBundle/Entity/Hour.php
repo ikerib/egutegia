@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +14,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
 /**
- * Hour
+ * Hour.
  *
  * @ORM\Table(name="hour")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\HourRepository")
@@ -72,26 +79,25 @@ class Hour
      */
     private $calendar;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+        $this->factor = 1.75;
+    }
 
     public function __toString()
     {
         return $this->getTotal();
     }
 
-    public function __construct () {
-        $this->date = new \DateTime();
-        $this->factor = 1.75;
-    }
-
-
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -99,7 +105,7 @@ class Hour
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
      *
@@ -113,7 +119,7 @@ class Hour
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -123,7 +129,7 @@ class Hour
     }
 
     /**
-     * Set hours
+     * Set hours.
      *
      * @param string $hours
      *
@@ -137,7 +143,7 @@ class Hour
     }
 
     /**
-     * Get hours
+     * Get hours.
      *
      * @return string
      */
@@ -147,7 +153,7 @@ class Hour
     }
 
     /**
-     * Set minutes
+     * Set minutes.
      *
      * @param string $minutes
      *
@@ -161,7 +167,7 @@ class Hour
     }
 
     /**
-     * Get minutes
+     * Get minutes.
      *
      * @return string
      */
@@ -171,7 +177,7 @@ class Hour
     }
 
     /**
-     * Set factor
+     * Set factor.
      *
      * @param string $factor
      *
@@ -185,7 +191,7 @@ class Hour
     }
 
     /**
-     * Get factor
+     * Get factor.
      *
      * @return string
      */
@@ -195,7 +201,7 @@ class Hour
     }
 
     /**
-     * Set total
+     * Set total.
      *
      * @param string $total
      *
@@ -209,7 +215,7 @@ class Hour
     }
 
     /**
-     * Get total
+     * Get total.
      *
      * @return string
      */
@@ -219,7 +225,7 @@ class Hour
     }
 
     /**
-     * Set calendar
+     * Set calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      *
@@ -233,7 +239,7 @@ class Hour
     }
 
     /**
-     * Get calendar
+     * Get calendar.
      *
      * @return \AppBundle\Entity\Calendar
      */

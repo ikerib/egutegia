@@ -1,22 +1,35 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
 //use JMS\Serializer\Annotation\ExclusionPolicy;
 //use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation as JMS;
 
 /**
- * TemplateEvent
+ * TemplateEvent.
  *
  * @ORM\Table(name="template_event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateEventRepository")
  */
 class TemplateEvent
 {
+    /**
+     * @var \AppBundle\Entity\Type
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="template_events")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    protected $type;
     /**
      * @var int
      *
@@ -47,7 +60,7 @@ class TemplateEvent
      * @var \DateTime
      *
      * @ORM\Column(name="end_date", type="datetime", nullable=true)
-     
+
      */
     private $end_date;
 
@@ -63,7 +76,6 @@ class TemplateEvent
      */
     private $updated;
 
-
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -76,15 +88,6 @@ class TemplateEvent
      */
     private $template;
 
-    /**
-     * @var \AppBundle\Entity\Type
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="template_events")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    protected $type;
-
-    
     public function __toString()
     {
         return (string) $this->getSlug();
@@ -93,11 +96,10 @@ class TemplateEvent
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -105,7 +107,7 @@ class TemplateEvent
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -119,7 +121,7 @@ class TemplateEvent
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -129,7 +131,7 @@ class TemplateEvent
     }
 
     /**
-     * Set startDate
+     * Set startDate.
      *
      * @param \DateTime $startDate
      *
@@ -143,7 +145,7 @@ class TemplateEvent
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return \DateTime
      */
@@ -153,7 +155,7 @@ class TemplateEvent
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param \DateTime $endDate
      *
@@ -167,7 +169,7 @@ class TemplateEvent
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return \DateTime
      */
@@ -177,7 +179,7 @@ class TemplateEvent
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -191,7 +193,7 @@ class TemplateEvent
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -201,7 +203,7 @@ class TemplateEvent
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -215,7 +217,7 @@ class TemplateEvent
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -224,9 +226,8 @@ class TemplateEvent
         return $this->updated;
     }
 
-
     /**
-     * Set template
+     * Set template.
      *
      * @param \AppBundle\Entity\Template $template
      *
@@ -240,7 +241,7 @@ class TemplateEvent
     }
 
     /**
-     * Get template
+     * Get template.
      *
      * @return \AppBundle\Entity\Template
      */
@@ -250,7 +251,7 @@ class TemplateEvent
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param \AppBundle\Entity\Type $type
      *
@@ -264,7 +265,7 @@ class TemplateEvent
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return \AppBundle\Entity\Type
      */

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,41 +25,40 @@ class TypeType extends AbstractType
         $builder
             ->add('name')
             ->add('hours')
-            ->add('color', null, array(
-                'label' => 'Kolorea'
-            ))
+            ->add('color', null, [
+                'label' => 'Kolorea',
+            ])
             ->add('orden')
-            /**
+            /*
              * Eremu honen bitartez esaten diogu orduak zehaztean egutegian
              * Zein eremutatik kendu behar dituen orduak
              **/
-            ->add('related',ChoiceType::class, array(
+            ->add('related', ChoiceType::class, [
                 'label' => 'Erlazionatua',
                 'placeholder' => 'Aukeratu bat',
-                'choices' => array(
-                    'Jai Egunak'          => 'hours_free'      ,
-                    'Norberarentzakoak'   => 'hours_self'      ,
-                    'Konpentsatuak'       => 'hours_compensed' ,
-                    'Sindikalak'          => 'hours_sindical'
-                )
-            ))
-            ->add('erakutsi',CheckboxType::class, array(
-                'label'    => 'Erakutsi',
+                'choices' => [
+                    'Jai Egunak' => 'hours_free',
+                    'Norberarentzakoak' => 'hours_self',
+                    'Konpentsatuak' => 'hours_compensed',
+                    'Sindikalak' => 'hours_sindical',
+                ],
+            ])
+            ->add('erakutsi', CheckboxType::class, [
+                'label' => 'Erakutsi',
                 'translation_domain' => 'messages',
-            ))
-
+            ])
 
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Type'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Type',
+        ]);
     }
 
     /**
@@ -62,6 +68,4 @@ class TypeType extends AbstractType
     {
         return 'appbundle_type';
     }
-
-
 }

@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
@@ -24,24 +31,23 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CalendarController extends Controller
 {
-
     /**
      * Lists all calendar entities.
      *
      * @Route("/", name="admin_calendar_index")
      * @Method("GET")
      */
-    public function indexAction ()
+    public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $calendars = $em->getRepository( 'AppBundle:Calendar' )->findAll();
+        $calendars = $em->getRepository('AppBundle:Calendar')->findAll();
 
         return $this->render(
             'calendar/index.html.twig',
-            array(
+            [
                 'calendars' => $calendars,
-            )
+            ]
         );
     }
 
@@ -50,42 +56,44 @@ class CalendarController extends Controller
      *
      * @Route("/new/{username}", name="admin_calendar_new")
      * @Method({"GET", "POST"})
+     *
+     * @param mixed $username
      */
-    public function newAction ( Request $request, $username = "" )
+    public function newAction(Request $request, $username = '')
     {
-        $em       = $this->getDoctrine()->getManager();
-        $year     = Date( "Y" );
+        $em = $this->getDoctrine()->getManager();
+        $year = date('Y');
         $calendar = new Calendar();
-        $calendar->setYear( $year );
+        $calendar->setYear($year);
 
-        if ( $username !== "" ) {
-            $user = $em->getRepository( 'AppBundle:User' )->findOneBy(
-                array(
+        if ($username !== '') {
+            $user = $em->getRepository('AppBundle:User')->findOneBy(
+                [
                     'username' => $username,
-                )
+                ]
             );
-            $calendar->setUser( $user );
+            $calendar->setUser($user);
         }
-        $year = ( new DateTime )->format( "Y" );
-        $calendar->setName( $username . ' - ' . $year );
+        $year = ( new DateTime() )->format('Y');
+        $calendar->setName($username.' - '.$year);
         $form = $this->createForm(
             CalendarType::class,
             $calendar,
-            array(
-                'action'   => $this->generateUrl( 'admin_calendar_new' ),
-                'method'   => 'POST',
+            [
+                'action' => $this->generateUrl('admin_calendar_new'),
+                'method' => 'POST',
                 'username' => $username,
-            )
+            ]
         );
-        $form->handleRequest( $request );
+        $form->handleRequest($request);
 
-        if ( $form->isSubmitted() && $form->isValid() ) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /* Check if User exist in our app */
-            $username = $form->get( 'username' )->getData();
+            $username = $form->get('username')->getData();
 
-            $u = $em->getRepository( 'AppBundle:User' )->getByUsername( $username );
+            $u = $em->getRepository('AppBundle:User')->getByUsername($username);
 
-            if ( ! $u ) {
+            if (!$u) {
                 $ldap = $this->get('ldap_tools.ldap_manager');
                 $ldapuser = $ldap->buildLdapQuery()
                     ->select(['name', 'guid', 'username', 'emailAddress', 'firstName', 'lastName', 'dn', 'department', 'description'])
@@ -95,65 +103,61 @@ class CalendarController extends Controller
                     ->getLdapQuery()
                     ->getSingleResult();
 
-
-
-                $userManager = $this->container->get( 'fos_user.user_manager' );
+                $userManager = $this->container->get('fos_user.user_manager');
                 /** @var $user User */
                 $user = $userManager->createUser();
-                $user->setUsername( $username );
-                $user->setEmail( $username . '@pasaia.net' );
-                $user->setPassword( '' );
+                $user->setUsername($username);
+                $user->setEmail($username.'@pasaia.net');
+                $user->setPassword('');
                 if ($ldapuser->has('dn')) {
-                    $user->setDn( $ldapuser->getDn() );
+                    $user->setDn($ldapuser->getDn());
                 }
-                $user->setEnabled( true );
+                $user->setEnabled(true);
                 if ($ldapuser->has('description')) {
-                    $user->setLanpostua( $ldapuser->getDescription() );
+                    $user->setLanpostua($ldapuser->getDescription());
                 }
                 if ($ldapuser->has('department')) {
-                    $user->setDepartment( $ldapuser->getDepartment() );
+                    $user->setDepartment($ldapuser->getDepartment());
                 }
 
-                $userManager->updateUser( $user );
+                $userManager->updateUser($user);
                 $u = $user;
             }
-            $calendar->setUser( $u );
-            $em->persist( $calendar );
+            $calendar->setUser($u);
+            $em->persist($calendar);
 
             /** @var Log $log */
             $log = new Log();
-            $log->setName( 'Egutegia sortu' );
-            $log->setDescription( $calendar->getName() . " egutegia sortua izan da" );
-            $log->setCalendar( $calendar );
+            $log->setName('Egutegia sortu');
+            $log->setDescription($calendar->getName().' egutegia sortua izan da');
+            $log->setCalendar($calendar);
             //$log->setUser( $this->getUser() );
-            $em->persist( $log );
+            $em->persist($log);
 
-            $em->flush( $calendar );
+            $em->flush($calendar);
 
-            return $this->redirectToRoute( 'admin_calendar_edit', array( 'id' => $calendar->getId() ) );
+            return $this->redirectToRoute('admin_calendar_edit', ['id' => $calendar->getId()]);
         }
 
-        if ( $request->isXmlHttpRequest() ) {
+        if ($request->isXmlHttpRequest()) {
             return $this->render(
                 'calendar/_ajax_new.html.twig',
-                array(
+                [
                     'calendar' => $calendar,
                     'username' => $username,
-                    'form'     => $form->createView(),
-                )
-            );
-        } else {
-            return $this->render(
-                'calendar/new.html.twig',
-                array(
-                    'calendar' => $calendar,
-                    'username' => $username,
-                    'form'     => $form->createView(),
-                )
+                    'form' => $form->createView(),
+                ]
             );
         }
 
-
+        return $this->render(
+                'calendar/new.html.twig',
+                [
+                    'calendar' => $calendar,
+                    'username' => $username,
+                    'form' => $form->createView(),
+                ]
+            );
     }
 
     /**
@@ -162,16 +166,16 @@ class CalendarController extends Controller
      * @Route("/{id}", name="admin_calendar_show")
      * @Method("GET")
      */
-    public function showAction ( Calendar $calendar )
+    public function showAction(Calendar $calendar)
     {
-        $deleteForm = $this->createDeleteForm( $calendar );
+        $deleteForm = $this->createDeleteForm($calendar);
 
         return $this->render(
             'calendar/show.html.twig',
-            array(
-                'calendar'    => $calendar,
+            [
+                'calendar' => $calendar,
                 'delete_form' => $deleteForm->createView(),
-            )
+            ]
         );
     }
 
@@ -181,35 +185,35 @@ class CalendarController extends Controller
      * @Route("/{id}/edit", name="admin_calendar_edit")
      * @Method({"GET", "POST"})
      */
-    public function editAction ( Request $request, Calendar $calendar = null )
+    public function editAction(Request $request, Calendar $calendar = null)
     {
-        if ( empty( $calendar ) ) {
-            $this->addFlash( 'danger', "Ez da egutegia topatu" );
+        if (empty($calendar)) {
+            $this->addFlash('danger', 'Ez da egutegia topatu');
 
-            return $this->redirectToRoute( 'dashboard' );
+            return $this->redirectToRoute('dashboard');
         }
-        $deleteForm = $this->createDeleteForm( $calendar );
-        $editForm   = $this->createForm(
+        $deleteForm = $this->createDeleteForm($calendar);
+        $editForm = $this->createForm(
             CalendarType::class,
             $calendar,
-            array(
-                'action' => $this->generateUrl( 'admin_calendar_edit', array( 'id' => $calendar->getId() ) ),
+            [
+                'action' => $this->generateUrl('admin_calendar_edit', ['id' => $calendar->getId()]),
                 'method' => 'POST',
-            )
+            ]
         );
-        $editForm->handleRequest( $request );
+        $editForm->handleRequest($request);
 
-        if ( $editForm->isSubmitted() && $editForm->isValid() ) {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute( 'admin_calendar_edit', array( 'id' => $calendar->getId() ) );
+            return $this->redirectToRoute('admin_calendar_edit', ['id' => $calendar->getId()]);
         }
 
         $em = $this->getDoctrine()->getManager();
 
-        $logs = $em->getRepository( 'AppBundle:Log' )->findCalendarLogs( $calendar->getId() );
+        $logs = $em->getRepository('AppBundle:Log')->findCalendarLogs($calendar->getId());
 
-        $types = $em->getRepository( 'AppBundle:Type' )->findAll();
+        $types = $em->getRepository('AppBundle:Type')->findAll();
 
         $frmnote = $this->createForm(
             CalendarNoteType::class,
@@ -217,38 +221,38 @@ class CalendarController extends Controller
         );
 
         $doc = new Document();
-        $doc->setCalendar( $calendar );
+        $doc->setCalendar($calendar);
         $frmFile = $this->createForm(
             DocumentType::class,
             $doc
         );
 
         $documents = $calendar->getDocuments();
-        $deleteDocumentForms = array();
+        $deleteDocumentForms = [];
         foreach ($documents as $doc) {
-            $deleteDocumentForms[ $doc->getId() ] = $this->createDocumentDeleteForm($doc)->createView();
+            $deleteDocumentForms[$doc->getId()] = $this->createDocumentDeleteForm($doc)->createView();
         }
 
         $hours = $calendar->getHours();
-        $deleteHoursForms = array();
+        $deleteHoursForms = [];
         foreach ($hours as $h) {
-            $deleteHoursForms[ $h->getId() ] = $this->createHourDeleteForm($h)->createView();
+            $deleteHoursForms[$h->getId()] = $this->createHourDeleteForm($h)->createView();
         }
 
         return $this->render(
             'calendar/edit.html.twig',
-            array(
-                'calendar'    => $calendar,
-                'orduak'      => $calendar->getHours(),
-                'edit_form'   => $editForm->createView(),
+            [
+                'calendar' => $calendar,
+                'orduak' => $calendar->getHours(),
+                'edit_form' => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
-                'frmnote'     => $frmnote->createView(),
-                'frmfile'     => $frmFile->createView(),
-                'logs'        => $logs,
-                'types'       => $types,
+                'frmnote' => $frmnote->createView(),
+                'frmfile' => $frmFile->createView(),
+                'logs' => $logs,
+                'types' => $types,
                 'deletedocumentforms' => $deleteDocumentForms,
-                'deletehourforms' => $deleteHoursForms
-            )
+                'deletehourforms' => $deleteHoursForms,
+            ]
         );
     }
 
@@ -258,18 +262,18 @@ class CalendarController extends Controller
      * @Route("/{id}", name="admin_calendar_delete")
      * @Method("DELETE")
      */
-    public function deleteAction ( Request $request, Calendar $calendar )
+    public function deleteAction(Request $request, Calendar $calendar)
     {
-        $form = $this->createDeleteForm( $calendar );
-        $form->handleRequest( $request );
+        $form = $this->createDeleteForm($calendar);
+        $form->handleRequest($request);
 
-        if ( $form->isSubmitted() && $form->isValid() ) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove( $calendar );
+            $em->remove($calendar);
             $em->flush();
         }
 
-        return $this->redirectToRoute( 'dashboard' );
+        return $this->redirectToRoute('dashboard');
     }
 
     /**
@@ -279,11 +283,11 @@ class CalendarController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm ( Calendar $calendar )
+    private function createDeleteForm(Calendar $calendar)
     {
         return $this->createFormBuilder()
-            ->setAction( $this->generateUrl( 'admin_calendar_delete', array( 'id' => $calendar->getId() ) ) )
-            ->setMethod( 'DELETE' )
+            ->setAction($this->generateUrl('admin_calendar_delete', ['id' => $calendar->getId()]))
+            ->setMethod('DELETE')
             ->getForm();
     }
 
@@ -294,11 +298,11 @@ class CalendarController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDocumentDeleteForm ( Document $doc)
+    private function createDocumentDeleteForm(Document $doc)
     {
         return $this->createFormBuilder()
-            ->setAction( $this->generateUrl( 'admin_document_delete', array( 'id' => $doc->getId() ) ) )
-            ->setMethod( 'DELETE' )
+            ->setAction($this->generateUrl('admin_document_delete', ['id' => $doc->getId()]))
+            ->setMethod('DELETE')
             ->getForm();
     }
 
@@ -309,11 +313,11 @@ class CalendarController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createHourDeleteForm ( Hour $h)
+    private function createHourDeleteForm(Hour $h)
     {
         return $this->createFormBuilder()
-            ->setAction( $this->generateUrl( 'admin_hour_delete', array( 'id' => $h->getId() ) ) )
-            ->setMethod( 'DELETE' )
+            ->setAction($this->generateUrl('admin_hour_delete', ['id' => $h->getId()]))
+            ->setMethod('DELETE')
             ->getForm();
     }
 }

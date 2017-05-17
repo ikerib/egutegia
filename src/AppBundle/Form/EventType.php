@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -20,15 +27,15 @@ class EventType extends AbstractType
             ->add('type')
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Event'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Event',
+        ]);
     }
 
     /**
@@ -38,6 +45,4 @@ class EventType extends AbstractType
     {
         return 'appbundle_event';
     }
-
-
 }

@@ -1,17 +1,22 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-
 /**
- * Type
+ * Type.
  *
  * @ORM\Table(name="type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeRepository")
@@ -50,7 +55,7 @@ class Type
      * @ORM\Column(name="hours", type="decimal", precision=10, scale=2)
      * @Expose()
      */
-    private $hours=0;
+    private $hours = 0;
 
     /**
      * @var string
@@ -58,7 +63,7 @@ class Type
      * @ORM\Column(name="color", type="string", length=255)
      * @Expose()
      */
-    private $color="#e01b1b";
+    private $color = '#e01b1b';
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -73,13 +78,13 @@ class Type
     private $updated;
 
     /**
-     * @var integer
+     * @var int
      * @ORM\Column(name="orden", type="integer", nullable=true)
      */
     private $orden;
 
     /**
-     * @var boolean
+     * @var bool
      * @ORM\Column(name="erakutsi", type="boolean", nullable=true)
      */
     private $erakutsi;
@@ -112,32 +117,30 @@ class Type
      */
     private $template_events;
 
-    public function __toString()
-    {
-        return $this->getSlug();
-    }
-
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->events = new ArrayCollection();
         $this->template_events = new ArrayCollection();
-        $this->color = "#e01b1b";
+        $this->color = '#e01b1b';
         $this->erakutsi = true;
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
     }
 
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -145,7 +148,7 @@ class Type
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -159,7 +162,7 @@ class Type
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -169,7 +172,7 @@ class Type
     }
 
     /**
-     * Set slug
+     * Set slug.
      *
      * @param string $slug
      *
@@ -183,7 +186,7 @@ class Type
     }
 
     /**
-     * Get slug
+     * Get slug.
      *
      * @return string
      */
@@ -193,7 +196,7 @@ class Type
     }
 
     /**
-     * Set hours
+     * Set hours.
      *
      * @param string $hours
      *
@@ -207,7 +210,7 @@ class Type
     }
 
     /**
-     * Get hours
+     * Get hours.
      *
      * @return string
      */
@@ -217,7 +220,7 @@ class Type
     }
 
     /**
-     * Set color
+     * Set color.
      *
      * @param string $color
      *
@@ -231,7 +234,7 @@ class Type
     }
 
     /**
-     * Get color
+     * Get color.
      *
      * @return string
      */
@@ -241,7 +244,7 @@ class Type
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -255,7 +258,7 @@ class Type
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -265,7 +268,7 @@ class Type
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -279,7 +282,7 @@ class Type
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -289,9 +292,9 @@ class Type
     }
 
     /**
-     * Set orden
+     * Set orden.
      *
-     * @param integer $orden
+     * @param int $orden
      *
      * @return Type
      */
@@ -303,9 +306,9 @@ class Type
     }
 
     /**
-     * Get orden
+     * Get orden.
      *
-     * @return integer
+     * @return int
      */
     public function getOrden()
     {
@@ -313,7 +316,7 @@ class Type
     }
 
     /**
-     * Add templateEvent
+     * Add templateEvent.
      *
      * @param \AppBundle\Entity\TemplateEvent $templateEvent
      *
@@ -327,7 +330,7 @@ class Type
     }
 
     /**
-     * Remove templateEvent
+     * Remove templateEvent.
      *
      * @param \AppBundle\Entity\TemplateEvent $templateEvent
      */
@@ -337,7 +340,7 @@ class Type
     }
 
     /**
-     * Get templateEvents
+     * Get templateEvents.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -347,7 +350,7 @@ class Type
     }
 
     /**
-     * Add event
+     * Add event.
      *
      * @param \AppBundle\Entity\Event $event
      *
@@ -361,7 +364,7 @@ class Type
     }
 
     /**
-     * Remove event
+     * Remove event.
      *
      * @param \AppBundle\Entity\Event $event
      */
@@ -371,7 +374,7 @@ class Type
     }
 
     /**
-     * Get events
+     * Get events.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -381,9 +384,9 @@ class Type
     }
 
     /**
-     * Set erakutsi
+     * Set erakutsi.
      *
-     * @param boolean $erakutsi
+     * @param bool $erakutsi
      *
      * @return Type
      */
@@ -395,9 +398,9 @@ class Type
     }
 
     /**
-     * Get erakutsi
+     * Get erakutsi.
      *
-     * @return boolean
+     * @return bool
      */
     public function getErakutsi()
     {
@@ -405,7 +408,7 @@ class Type
     }
 
     /**
-     * Set related
+     * Set related.
      *
      * @param string $related
      *
@@ -419,7 +422,7 @@ class Type
     }
 
     /**
-     * Get related
+     * Get related.
      *
      * @return string
      */

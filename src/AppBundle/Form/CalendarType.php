@@ -1,5 +1,12 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
@@ -7,7 +14,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,21 +24,20 @@ class CalendarType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $username = $options[ 'username' ];
+        $username = $options['username'];
 
         $builder
-            ->add('name', TextType::class, array(
+            ->add('name', TextType::class, [
                 'label' => 'Izena',
-                'required' => true
-            ))
-            ->add('year',TextType::class,array('label_attr'=>array('class'=>'')))
+                'required' => true,
+            ])
+            ->add('year', TextType::class, ['label_attr' => ['class' => '']])
             ->add('user')
-            ->add('username',TextType::class, array(
+            ->add('username', TextType::class, [
                 'mapped' => false,
-                'data' => $username
-            ))
-            ->add('template', EntityType::class, array(
+                'data' => $username,
+            ])
+            ->add('template', EntityType::class, [
                 'required' => true,
                 'class' => 'AppBundle\Entity\Template',
                 'query_builder' => function (EntityRepository $er) {
@@ -40,55 +45,55 @@ class CalendarType extends AbstractType
                         ->orderBy('u.created', 'DESC');
                 },
                 'choice_label' => function ($template) {
-                    /** @var  $template \AppBundle\Entity\Template */
-                    return $template->getName()."(".$template->getHoursYear().")";
-                })
+                    /* @var  $template \AppBundle\Entity\Template */
+                    return $template->getName().'('.$template->getHoursYear().')';
+                }, ]
             )
-            ->add('hoursYear',NumberType::class, array(
-                'label_attr' => array('class'=>'col-sm-4'),
+            ->add('hoursYear', NumberType::class, [
+                'label_attr' => ['class' => 'col-sm-4'],
                 'label' => 'Urteko lan orduak:',
-                'required' => true
-            ))
-            ->add('hoursFree', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hoursFree', NumberType::class, [
                 'label' => 'Opor orduak hartuta',
-                'required' => true
-            ))
-            ->add('hoursSelf', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hoursSelf', NumberType::class, [
                 'label' => 'Norberarentzako orduak',
-                'required' => true
-            ))
-            ->add('hoursSindikal', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hoursSindikal', NumberType::class, [
                 'label' => 'Ordu Sindikalak',
-                'required' => true
-            ))
-            ->add('hoursCompensed', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hoursCompensed', NumberType::class, [
                 'label' => 'Urterako ordu konpentsatuak',
-                'required' => true
-            ))
-            ->add('hoursDay', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hoursDay', NumberType::class, [
                 'label' => 'Jornada',
-                'required' => true
-            ))
-            ->add('percentYear', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('percentYear', NumberType::class, [
                 'label' => 'Portzentaia',
-                'required' => true
-            ))
-            ->add('hirurtekoa', NumberType::class, array(
+                'required' => true,
+            ])
+            ->add('hirurtekoa', NumberType::class, [
                 'label' => 'Hirurtekoak',
-                'required' => true
-            ))
+                'required' => true,
+            ])
         ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\Calendar',
             'username' => null,
-        ));
+        ]);
     }
 
     /**

@@ -1,14 +1,20 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TemplateType extends AbstractType {
-
+class TemplateType extends AbstractType
+{
     /**
      * {@inheritdoc}
      */
@@ -28,9 +34,9 @@ class TemplateType extends AbstractType {
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Template'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'AppBundle\Entity\Template',
+        ]);
     }
 
     /**
@@ -40,6 +46,4 @@ class TemplateType extends AbstractType {
     {
         return 'appbundle_template';
     }
-
-
 }

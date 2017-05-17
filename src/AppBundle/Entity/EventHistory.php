@@ -1,16 +1,20 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use JMS\Serializer\Annotation as Serializer;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
-
 /**
- * EventHistory
+ * EventHistory.
  *
  * @ORM\Table(name="event_history")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventHistoryRepository")
@@ -52,7 +56,7 @@ class EventHistory
      *
      * @ORM\Column(name="hours", type="decimal", precision=10, scale=2)
      */
-    private $hours=0;
+    private $hours = 0;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -96,11 +100,10 @@ class EventHistory
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -108,7 +111,7 @@ class EventHistory
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -122,7 +125,7 @@ class EventHistory
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -132,7 +135,7 @@ class EventHistory
     }
 
     /**
-     * Set startDate
+     * Set startDate.
      *
      * @param \DateTime $startDate
      *
@@ -146,7 +149,7 @@ class EventHistory
     }
 
     /**
-     * Get startDate
+     * Get startDate.
      *
      * @return \DateTime
      */
@@ -156,7 +159,7 @@ class EventHistory
     }
 
     /**
-     * Set endDate
+     * Set endDate.
      *
      * @param \DateTime $endDate
      *
@@ -170,7 +173,7 @@ class EventHistory
     }
 
     /**
-     * Get endDate
+     * Get endDate.
      *
      * @return \DateTime
      */
@@ -180,7 +183,7 @@ class EventHistory
     }
 
     /**
-     * Set hours
+     * Set hours.
      *
      * @param string $hours
      *
@@ -194,7 +197,7 @@ class EventHistory
     }
 
     /**
-     * Get hours
+     * Get hours.
      *
      * @return string
      */
@@ -204,7 +207,7 @@ class EventHistory
     }
 
     /**
-     * Set created
+     * Set created.
      *
      * @param \DateTime $created
      *
@@ -218,7 +221,7 @@ class EventHistory
     }
 
     /**
-     * Get created
+     * Get created.
      *
      * @return \DateTime
      */
@@ -228,7 +231,7 @@ class EventHistory
     }
 
     /**
-     * Set updated
+     * Set updated.
      *
      * @param \DateTime $updated
      *
@@ -242,7 +245,7 @@ class EventHistory
     }
 
     /**
-     * Get updated
+     * Get updated.
      *
      * @return \DateTime
      */
@@ -251,12 +254,8 @@ class EventHistory
         return $this->updated;
     }
 
-
-
-
-
     /**
-     * Set calendar
+     * Set calendar.
      *
      * @param \AppBundle\Entity\Calendar $calendar
      *
@@ -270,7 +269,7 @@ class EventHistory
     }
 
     /**
-     * Get calendar
+     * Get calendar.
      *
      * @return \AppBundle\Entity\Calendar
      */
@@ -280,7 +279,7 @@ class EventHistory
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param \AppBundle\Entity\Type $type
      *
@@ -294,7 +293,7 @@ class EventHistory
     }
 
     /**
-     * Get type
+     * Get type.
      *
      * @return \AppBundle\Entity\Type
      */

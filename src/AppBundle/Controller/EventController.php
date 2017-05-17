@@ -1,11 +1,19 @@
 <?php
 
+/*
+ *     Iker Ibarguren <@ikerib>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Event;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Event controller.
@@ -26,9 +34,9 @@ class EventController extends Controller
 
         $events = $em->getRepository('AppBundle:Event')->findAll();
 
-        return $this->render('event/index.html.twig', array(
+        return $this->render('event/index.html.twig', [
             'events' => $events,
-        ));
+        ]);
     }
 
     /**
@@ -48,13 +56,13 @@ class EventController extends Controller
             $em->persist($event);
             $em->flush();
 
-            return $this->redirectToRoute('admin_event_show', array('id' => $event->getId()));
+            return $this->redirectToRoute('admin_event_show', ['id' => $event->getId()]);
         }
 
-        return $this->render('event/new.html.twig', array(
+        return $this->render('event/new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -67,10 +75,10 @@ class EventController extends Controller
     {
         $deleteForm = $this->createDeleteForm($event);
 
-        return $this->render('event/show.html.twig', array(
+        return $this->render('event/show.html.twig', [
             'event' => $event,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -88,14 +96,14 @@ class EventController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_event_edit', array('id' => $event->getId()));
+            return $this->redirectToRoute('admin_event_edit', ['id' => $event->getId()]);
         }
 
-        return $this->render('event/edit.html.twig', array(
+        return $this->render('event/edit.html.twig', [
             'event' => $event,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -128,7 +136,7 @@ class EventController extends Controller
     private function createDeleteForm(Event $event)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_event_delete', array('id' => $event->getId())))
+            ->setAction($this->generateUrl('admin_event_delete', ['id' => $event->getId()]))
             ->setMethod('DELETE')
             ->getForm()
         ;
