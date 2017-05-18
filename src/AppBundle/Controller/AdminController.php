@@ -81,4 +81,41 @@ class AdminController extends Controller
             ]
         );
     }
+
+    /**
+     * @Route("/dashboard/compare", name="dashboard_compare")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @internal param Request $request
+     */
+    public function dashboardcompareAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ldap = $this->get('ldap_tools.ldap_manager');
+        /* OJO ALDATZEN BADA CalendarController newAction ere aldatu */
+        $ldapusers = $ldap->buildLdapQuery()
+            ->select(
+                [
+                    'name',
+                    'guid',
+                    'username',
+                    'emailAddress',
+                    'firstName',
+                    'lastName',
+                    'dn',
+                    'department',
+                    'description',
+                ]
+            )
+            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+
+        return $this->render(
+            'default/index_compare.html.twig',
+            [
+                'userdata' => $ldapusers
+            ]
+        );
+    }
 }

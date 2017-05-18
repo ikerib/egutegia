@@ -41,6 +41,7 @@
 
         <thead>
         <tr>
+            <th data-checkbox="true"></th>
             <th data-halign="left" data-align="left" data-field="firstName"
                 data-sortable="true">{{ 'Nombre' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="lastName"
@@ -61,6 +62,7 @@
         <tbody>
         {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
             <tr>
+
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
@@ -189,6 +191,7 @@
         $table.bootstrapTable({
           height: getHeight()
         })
+        $table.bootstrapTable('uncheckAll');
       }
       function getHeight () {
         var winh = $(window).height()
@@ -198,7 +201,6 @@
       }
 
       $(function () {
-
         initTable()
         $(document).on('click', '.btnNewCalendar', function () {
           $('#divModalCalendarNew').empty()
