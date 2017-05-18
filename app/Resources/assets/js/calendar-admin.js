@@ -262,11 +262,16 @@ $(function () {
   }
 
   var currentYear = new Date().getFullYear()
+  var minYear = new Date(currentYear,0,1)
+  var maxYear = new Date(currentYear+1,0,7)
+
 
   $('#calendar').calendar({
     // style: 'background',
     language: 'eu',
-    minDate: new Date('2017-01-01'),
+    // minDate: new Date('2017-01-01'),
+    minDate: minYear,
+    maxDate: maxYear,
     disabledWeekDays: [6, 0],
     allowOverlap: true,
     enableContextMenu: true,

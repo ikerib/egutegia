@@ -68,7 +68,7 @@ class HourController extends Controller
         $hour = new Hour();
         $hour->setFactor(1.75);
         $hour->setCalendar($calendar);
-        //$form = $this->createForm('AppBundle\Form\HourType', $hour );
+
         $form = $this->createForm('AppBundle\Form\HourType', $hour, [
             'action' => $this->generateUrl('admin_hour_new', ['calendarid' => $calendarid]),
             'method' => 'POST',
@@ -103,6 +103,10 @@ class HourController extends Controller
             'hour' => $hour,
             'form' => $form->createView(),
         ]);
+    }
+
+    public function ahaldu() {
+
     }
 
     /**
