@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hour;
 use AppBundle\Entity\Log;
@@ -58,6 +59,8 @@ class CalendarController extends Controller
      * @Method({"GET", "POST"})
      *
      * @param mixed $username
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request, $username = '')
     {
@@ -239,6 +242,25 @@ class CalendarController extends Controller
             $deleteHoursForms[$h->getId()] = $this->createHourDeleteForm($h)->createView();
         }
 
+
+        // norberarentzako orduak
+        /** @var Event $selfHours */
+        $selfHours = $em->getRepository( 'AppBundle:Event' )->findCalendarSelfEvents( $calendar->getId() );
+        $selfHoursPartial = 0;
+        $selfHoursComplete = 0;
+
+        foreach ($selfHours as $s) {
+            /** @var Event $s */
+            if ( $s->getHours() < $calendar->getHoursDay()) {
+                $selfHoursPartial += (float)$s->getHours();
+            } else {
+                $selfHoursComplete +=(float)$s->getHours();
+            }
+        }
+
+        $selfHoursPartial = (float)$calendar->getHoursSelfHalf() - $selfHoursPartial;
+        $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
+
         return $this->render(
             'calendar/edit.html.twig',
             [
@@ -252,6 +274,8 @@ class CalendarController extends Controller
                 'types' => $types,
                 'deletedocumentforms' => $deleteDocumentForms,
                 'deletehourforms' => $deleteHoursForms,
+                'selfHoursPartial'=> $selfHoursPartial,
+                'selfHoursComplete'=>$selfHoursComplete
             ]
         );
     }

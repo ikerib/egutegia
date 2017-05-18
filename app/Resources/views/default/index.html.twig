@@ -251,6 +251,8 @@
                 $('#appbundle_calendar_hoursFree').val(result.hours_free)
                 $('#appbundle_calendar_hoursSelf').val(result.hours_self)
                 $('#appbundle_calendar_hoursDay').val(result.hours_day)
+                birkalkulatu()
+                birkalkulatuNorbere()
               },
               error: function () {
                 console.log('HORROR!')
@@ -261,6 +263,7 @@
 
         $(document).on('change', '#appbundle_calendar_percentYear', function () {
             birkalkulatu()
+            birkalkulatuNorbere()
         })
         $(document).on('change', '#appbundle_calendar_hirurtekoa', function () {
             birkalkulatuNorbere()
@@ -313,10 +316,19 @@
           var vdes2 = parseFloat($(des2).val())
           // Gehitu hirurtekoak
           vdes2 = vdes2 + (vdes3 * vhiru)
-//          if ((vdes2 !== 0) && (vori !== 0)) {
-//            vdes2 = vdes2 * vori / 100
-            $(des2).val(vdes2.toFixed(2))
-//          }
+          $(des2).val(vdes2.toFixed(2))
+
+          // Zatituta Max izango da jornada * 2
+          var zatituta = vdes3 * 2;
+          // ezin du izan norbere orduen baino gehiago noski
+          if ( zatituta > vdes2 ) {
+            zatituta = vdes2;
+          }
+
+          $('#appbundle_calendar_hoursSelfHalf').val(zatituta)
+
+
+
         }
 
 

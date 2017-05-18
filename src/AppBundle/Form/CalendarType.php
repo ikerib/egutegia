@@ -62,6 +62,10 @@ class CalendarType extends AbstractType
                 'label' => 'Norberarentzako orduak',
                 'required' => true,
             ])
+            ->add('hoursSelfHalf', NumberType::class, [
+                'label' => 'Norberarentzako orduak zatituta max',
+                'required' => true,
+            ])
             ->add('hoursSindikal', NumberType::class, [
                 'label' => 'Ordu Sindikalak',
                 'required' => true,

@@ -4,6 +4,8 @@
 
 $(function () {
 
+
+
   function workday_count (fstart, fend) {
     var start = moment(fstart)
     var end = moment(fend)
@@ -26,14 +28,30 @@ $(function () {
       return -1
     }
 
+
+
     $('#event-modal input[name="event-index"]').val(event ? event.id : '')
     $('#event-modal input[name="event-name"]').val(event ? event.name : '')
     $('#event-modal input[name="event-type"]').val(event ? event.type : '')
     $('#event-modal input[name="event-hours"]').val(event ? event.hours : '')
-    $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
-    $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+    // $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
+    $('#event-modal input[name="event-start-date"]').datepicker({
+      format: 'yyyy-mm-dd',
+      language: 'eu',
+      autoclose: true
+    }).datepicker('update', event ? event.startDate : '')
+    // $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+    $('#event-modal input[name="event-end-date"]').datepicker({
+      format: 'yyyy-mm-dd',
+      language: 'eu',
+      autoclose: true
+    }).datepicker('update', event ? event.endDate : '')
     $('#txtOldValue').val(event ? event.hours : '')
     $('#txtOldType').val(event ? event.type : '')
+
+
+
+
 
     $('#oldValue').val(event ? event.hours : 0)
 
@@ -53,6 +71,8 @@ $(function () {
     var t = d * parseFloat(j)
 
     $('#txtTotalHousSelected').val(t.toFixed(2))
+
+
     $('#event-modal').modal()
     $('#event-modal').on('shown.bs.modal', function () {
       $('#event-modal input[name="event-name"]').focus()
@@ -119,11 +139,23 @@ $(function () {
       type: $('#event-modal option:selected').val(),
       hours: $('#event-modal input[name="event-hours"]').val(),
       color: $('#event-modal option:selected').data('color'),
-      startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
-      endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate'),
+      startDate: $('#event-modal input[name="event-start-date"]').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'eu',
+        autoclose: true
+      }).datepicker('getDate'),
+      endDate: $('#event-modal input[name="event-end-date"]').datepicker({
+        format: 'yyyy-mm-dd',
+        language: 'eu',
+        autoclose: true
+      }).datepicker('getDate'),
       oldValue: $('#txtOldValue').val(),
       oldType: $('#txtOldType').val()
     }
+
+    // small hack to fix JSON.stringify function changing date to one day before because the hour is 00:00
+    event.startDate.setHours(12)
+    event.endDate.setHours(12)
 
     // Data Validation
     if (event.name.length === 0) {
@@ -146,6 +178,29 @@ $(function () {
       bootbox.alert('Hasiera eta amaiera datak zehaztea beharrezkoa da, edo ez dute formatu egokia.')
       return
     }
+
+    // Mota baldin bada norberarentzako eta jornada orduak baina gutxiago, hau zatituta hartu nahi badu
+    // zatika har ditzakeela konfirmatu
+    // TODO: hardCoded type_id kendu
+    if ( event.type === "5" ) {
+
+      // Egun bat ordutan dira...
+      var vJornada = parseFloat($('#txtHoursFree').val())
+      // Zatika har ditzakedan orduak dira... (geratzen zaizkidanak)
+      var vZatika = parseFloat($('#txtNorbereZatika').val())
+      // Eskatu diren orduak dira..
+      var vHour = parseFloat(event.hours)
+
+      if ( vHour < vJornada ) { // lanaldi bat baina txikiagoa da eskatzen dena, beraz zatikakotik kendu behar du
+
+        // begiratu ea baduen ordu kopuru hori zatika hartzeko, ezezkoa bada ez diogu uzten
+        if ( vHour > vZatika ) {
+          bootbox.alert('Ezin da burutu.Eskatzen duzu ordu kopurua: ' + vHour.toFixed(2) + ', zatika har ditxakezun ordu koputua baina handiagoa da: ' + vZatika.toFixed(2))
+          return
+        }
+      }
+    }
+
 
     var dataSource = $('#calendar').data('calendar').getDataSource()
 

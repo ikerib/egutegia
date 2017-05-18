@@ -86,6 +86,14 @@ class Calendar
      * @var decimal
      * @Expose
      *
+     * @ORM\Column(name="hours_self_half", type="decimal", precision=10, scale=2)
+     */
+    private $hours_self_half = 0; // Urteko norberarentzako orduak zatituta
+
+    /**
+     * @var decimal
+     * @Expose
+     *
      * @ORM\Column(name="hours_compensed", type="decimal", precision=10, scale=2)
      */
     private $hours_compensed = 0; // Ordu konpentsatuak
@@ -729,5 +737,29 @@ class Calendar
     public function getHirurtekoa()
     {
         return $this->hirurtekoa;
+    }
+
+    /**
+     * Set hoursSelfHalf
+     *
+     * @param string $hoursSelfHalf
+     *
+     * @return Calendar
+     */
+    public function setHoursSelfHalf($hoursSelfHalf)
+    {
+        $this->hours_self_half = $hoursSelfHalf;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSelfHalf
+     *
+     * @return string
+     */
+    public function getHoursSelfHalf()
+    {
+        return $this->hours_self_half;
     }
 }

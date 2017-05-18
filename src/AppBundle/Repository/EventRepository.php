@@ -35,4 +35,24 @@ class EventRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findCalendarSelfEvents($calendarid) {
+
+        // TODO: Remove hardcoded type id
+
+        $em = $this->getEntityManager();
+        /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
+        $query = $em->createQuery('
+            SELECT e
+                FROM AppBundle:Event e 
+                  LEFT JOIN e.calendar c
+                WHERE c.id = :calendarid
+                AND e.type = 5
+        ');
+
+        $query->setParameter('calendarid', $calendarid);
+
+        return $query->getResult();
+    }
+
 }
