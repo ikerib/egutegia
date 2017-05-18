@@ -62,6 +62,13 @@ class Document
      */
     private $updated;
 
+    /**
+     * @var integer
+     * @Gedmo\SortablePosition
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -69,6 +76,7 @@ class Document
     /**
      * @var Calendar
      *
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="documents")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
@@ -216,5 +224,29 @@ class Document
     public function getCalendar()
     {
         return $this->calendar;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Document
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 }

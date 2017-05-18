@@ -10,6 +10,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -23,6 +24,7 @@ class DocumentType extends AbstractType
     {
         $builder
             ->add('uploadfile', VichFileType::class)
+            ->add('orden', NumberType::class)
             ->add('calendar');
     }
 

@@ -180,6 +180,7 @@ class Calendar
      * @var documents[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="calendar",cascade={"persist"})
+     * @ORM\OrderBy({"orden"="ASC"})
      */
     private $documents;
 

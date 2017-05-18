@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new FR3D\LdapBundle\FR3DLdapBundle(),
             new FOS\UserBundle\FOSUserBundle(),
 
+
             new AppBundle\AppBundle(),
             new ApiBundle\ApiBundle(),
 

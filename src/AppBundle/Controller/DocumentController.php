@@ -9,6 +9,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
 use AppBundle\Entity\Log;
 use Doctrine\ORM\EntityNotFoundException;
@@ -24,6 +25,82 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DocumentController extends Controller
 {
+
+    /**
+     * Order up
+     *
+     * @Route("/up/{id}", name="admin_document_order_up")
+     * @Method("GET")
+     */
+    public function upAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Document $doc */
+        $doc = $em->getRepository('AppBundle:Document')->find($id);
+
+        if (!$doc) {
+            throw new EntityNotFoundException();
+        }
+
+        /** @var Calendar $calendar */
+        $calendar = $doc->getCalendar();
+
+        $newOrden = $doc->getOrden() - 1;
+
+        if ( $newOrden < 0 ) {
+            $newOrden = 0;
+        }
+        $doc->setOrden( $newOrden );
+        $em->persist( $doc);
+
+        /** @var Log $log */
+        $log = new Log();
+        $log->setName('Fitxategia ordena gora');
+        $log->setDescription($doc->getFilename() . " fitxategiaren ordena orain da: " . $newOrden);
+        $em->persist($log);
+        $em->flush();
+
+        return $this->redirect(
+            $this->generateUrl('admin_calendar_edit', ['id' => $calendar->getId()]).'#files'
+        );
+
+
+    }
+
+    /**
+     * Order down
+     *
+     * @Route("/down/{id}", name="admin_document_order_down")
+     * @Method("GET")
+     */
+    public function downAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Document $doc */
+        $doc = $em->getRepository('AppBundle:Document')->find($id);
+
+        if (!$doc) {
+            throw new EntityNotFoundException();
+        }
+
+        /** @var Calendar $calendar */
+        $calendar = $doc->getCalendar();
+
+        $doc->setOrden( $doc->getOrden() + 1 );
+        $em->persist( $doc);
+
+        /** @var Log $log */
+        $log = new Log();
+        $log->setName('Fitxategia behera gora');
+        $log->setDescription($doc->getFilename() . " fitxategiaren ordena orain da: " . $doc->getOrden());
+        $em->persist($log);
+        $em->flush();
+
+        return $this->redirect(
+            $this->generateUrl('admin_calendar_edit', ['id' => $calendar->getId()]).'#files'
+        );
+    }
+
     /**
      * Lists all document entities.
      *
@@ -74,7 +151,11 @@ class DocumentController extends Controller
      * @Route("/new/{calendarid}", name="admin_document_new")
      * @Method({"GET", "POST"})
      *
+     * @param Request    $request
      * @param null|mixed $calendarid
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws EntityNotFoundException
      */
     public function newAction(Request $request, $calendarid = null)
     {

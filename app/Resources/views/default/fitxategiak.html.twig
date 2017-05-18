@@ -20,7 +20,7 @@
 
         <thead>
         <tr>
-            <th data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>
+            {#<th data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>#}
             <th data-halign="center" data-align="left" data-field="filename" data-sortable="true">Fitxategia</th>
             <th data-halign="center" data-align="center" data-field="created" data-sortable="true">Igoa</th>
             <th></th>
@@ -29,7 +29,7 @@
         <tbody>
         {% for doc in calendar.documents %}
             <tr>
-                <td>{{ doc.id }}</td>
+                {#<td>{{ doc.id }}</td>#}
                 <td><a href="{{ vich_uploader_asset(doc, 'uploadfile') }}" target="_blank">{{ doc.filename }}</a></td>
                 <td>
                     <a class="btn btn-xs btn-primary" href="{{ vich_uploader_asset(doc, 'uploadfile') }}" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>

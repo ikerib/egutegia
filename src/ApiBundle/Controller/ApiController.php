@@ -10,6 +10,7 @@
 namespace ApiBundle\Controller;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Document;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Log;
 use AppBundle\Entity\Template;
@@ -151,9 +152,7 @@ class ApiController extends FOSRestController
         header('access-control-allow-origin: *');
 
         return $view;
-    }
-
-// "post_templateevents"            [POST] /templateevents
+    } // "post_templateevents"            [POST] /templateevents
 
     /**
      * Delete template Events.
@@ -344,9 +343,7 @@ class ApiController extends FOSRestController
         header('access-control-allow-origin: *');
 
         return $view;
-    }
-
-// "put_event"             [PUT] /events/{id}
+    } // "put_event"             [PUT] /events/{id}
 
     /**
      * Save events.
@@ -416,9 +413,7 @@ class ApiController extends FOSRestController
         header('access-control-allow-origin: *');
 
         return $view;
-    }
-
-// "post_events"            [POST] /events
+    } // "post_events"            [POST] /events
 
     /**
      * Delete a Event.
@@ -523,9 +518,7 @@ class ApiController extends FOSRestController
             return $view;
         }
         throw new HttpException(400, 'ez da topatu.');
-    }
-
-// "post_notes"            [POST] /notes/{calendarid}
+    } // "post_notes"            [POST] /notes/{calendarid}
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
@@ -599,7 +592,7 @@ class ApiController extends FOSRestController
         header('access-control-allow-origin: *');
 
         return $view;
-    }
+    } // "post_usernotes"            [POST] /usernotes/{userid}
 
-// "post_usernotes"            [POST] /usernotes/{userid}
+
 }

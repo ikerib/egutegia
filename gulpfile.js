@@ -77,6 +77,7 @@ otherJS = [
     './app/Resources/assets/js/vertical-timeline/vertical-timeline.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.es.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.eu.min.js',
+    './app/Resources/assets/js/libs/jquery-ui.js',
     './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js'
 ];

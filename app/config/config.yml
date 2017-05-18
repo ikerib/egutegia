@@ -86,6 +86,7 @@ stof_doctrine_extensions:
         default:
             sluggable: true
             timestampable: true
+            sortable: true
 
 nelmio_api_doc: ~
 
@@ -128,6 +129,8 @@ fos_js_routing:
         - post_usernotes
         - admin_hour_new
         - admin_hour_edit
+        - admin_document_order_down
+        - admin_document_order_up
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support
