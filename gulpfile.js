@@ -50,6 +50,7 @@ freeJS = [
     './app/Resources/assets/js/calendar-template.js',
     './app/Resources/assets/js/calendar-admin.js',
     './app/Resources/assets/js/calendar-user.js',
+    './app/Resources/assets/js/calendar-compare.js',
     './app/Resources/assets/js/calendar-share.js'
 ];
 

@@ -131,6 +131,7 @@ fos_js_routing:
         - admin_hour_edit
         - admin_document_order_down
         - admin_document_order_up
+        - admin_calendar_compare
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

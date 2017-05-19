@@ -5,7 +5,12 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
-
+    <form id="frmCompare" method="post" action="{{ path('admin_calendar_compare') }}">
+        <input id="txtUsers" type="hidden" name="users" value="" title="Users">
+    </form>
+    <div id="toolbar">
+        <button id="btnCompare" class="btn btn-default">Konparatu</button>
+    </div>
     <table id="table"
 
            data-id-field="id"
@@ -42,6 +47,7 @@
         <thead>
         <tr>
             <th data-checkbox="true"></th>
+            <th data-visible="false" data-switchable="false" data-field="id"></th>
             <th data-halign="left" data-align="left" data-field="firstName"
                 data-sortable="true">{{ 'Nombre' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="lastName"
@@ -62,7 +68,8 @@
         <tbody>
         {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
             <tr>
-
+                <td></td>
+                <td>{% if user.user.has('username') %}{{ user.user.get('username') }}{% endif %}</td>
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
@@ -186,13 +193,16 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
+
       var $table = $('#table'), selections = []
+
       function initTable () {
         $table.bootstrapTable({
           height: getHeight()
         })
         $table.bootstrapTable('uncheckAll');
       }
+
       function getHeight () {
         var winh = $(window).height()
         var h2h = $('h2').outerHeight(true)
@@ -201,7 +211,32 @@
       }
 
       $(function () {
+
         initTable()
+
+        // Compare button click
+        $(document).on('click', '#btnCompare', function () {
+          var tableData = $table.bootstrapTable('getSelections')
+          var selection = []
+
+          if ( tableData.length > 5 ) {
+            bootbox.alert("Ezin dira 5 baina egutegi gehiagi aukeratu.")
+            return -1
+          }
+
+
+          for (index = 0, len = tableData.length; index < len; ++index) {
+            var t1 = tableData[index];
+            selection.push(t1.id)
+          }
+
+          $('#txtUsers').val(selection)
+
+          $('#frmCompare').submit()
+
+        })
+
+        // New Calendar
         $(document).on('click', '.btnNewCalendar', function () {
           $('#divModalCalendarNew').empty()
           var myusername = $(this).data('username')
@@ -212,12 +247,14 @@
           })
         })
 
+        // Edir user notes#
         $(document).on('click', '.btnUserNote', function () {
           $('#txtUserNotes').val($(this).data('usernote'))
           $('#usernoteusername').val($(this).data('username'))
           $('#modal-usernote').modal()
         })
 
+        // Save User Note
         $(document).on('click', '#btn-save-usernote', function () {
           var username = $('#usernoteusername').val()
           var url = Routing.generate('post_usernotes', {'username': username})
@@ -239,6 +276,7 @@
           })
         })
 
+        // get template data
         $(document).on('click', '#appbundle_calendar_template', function () {
           var val = $(this).val()
           if (val !== '-1') {
@@ -267,6 +305,7 @@
             birkalkulatu()
             birkalkulatuNorbere()
         })
+
         $(document).on('change', '#appbundle_calendar_hirurtekoa', function () {
             birkalkulatuNorbere()
         })
@@ -332,7 +371,6 @@
 
 
         }
-
 
       })
     </script>

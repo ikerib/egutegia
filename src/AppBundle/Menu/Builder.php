@@ -36,8 +36,6 @@ class Builder implements ContainerAwareInterface
         );
         $menu['Motak']->addChild('Zerrenda', ['route' => 'admin_type_index']);
 
-        $menu->addChild('Konparatu', ['icon' => 'home', 'route' => 'dashboard_compare']);
-
         return $menu;
     }
 

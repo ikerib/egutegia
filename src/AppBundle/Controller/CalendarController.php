@@ -15,6 +15,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\File;
 use AppBundle\Entity\Hour;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\TemplateEvent;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\CalendarType;
@@ -343,5 +344,92 @@ class CalendarController extends Controller
             ->setAction($this->generateUrl('admin_hour_delete', ['id' => $h->getId()]))
             ->setMethod('DELETE')
             ->getForm();
+    }
+
+    /**
+     * Compare calendars
+     *
+     * @Route("/compare", name="admin_calendar_compare")
+     * @Method("post")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function compareAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $postdata = $request->get( 'users' );
+        $usernames = explode( ",", $postdata );
+        $calendars = [];
+        $data =[];
+        $events=[];
+        $tevents = [];
+        $colors = [ "#41a8f5", "#66627a", "#e89029", "#70ed52", "#382b32" ];
+        $index = -1;
+        $calendarcolors = [];
+
+        foreach ($usernames as $u) {
+            $index +=1;
+            /** @var Calendar $calendar */
+            $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $u, date( "Y" ) );
+            if ( count($calendar) > 0) {
+                /** @var Calendar $calendar */
+                $calendar = $calendar[ 0 ];
+                array_push( $calendars, $calendar->getId() );
+
+                /** @var Event $event */
+                $event = $calendar->getEvents();
+                foreach ($event as $e) {
+                    $temp=[];
+                    /** @var Event $e */
+                    //$temp[ "color" ] = $e->getType()->getColor();
+                    $temp[ "color" ] = $colors[$index];
+                    $temp[ "endDate" ] = $e->getEndDate()->format('Y-m-d');
+                    $temp[ "hours" ] = $e->getHours();
+                    $temp[ "id" ] = $e->getId();
+                    $temp[ "template" ] = $calendar->getTemplate()->getId();
+                    $temp[ "name" ] = $u . " => ".$e->getName();
+                    $temp[ "startDate" ] = $e->getStartDate()->format('Y-m-d');;
+                    $temp[ "type" ] = $e->getType()->getId();
+                    array_push( $events, $temp );
+                }
+
+                /** @var TemplateEvent $tevent */
+                $tevent = $calendar->getTemplate()->getTemplateEvents();
+                foreach ($tevent as $te) {
+                    $temp=[];
+                    /** @var TemplateEvent $te */
+                    //$temp[ "color" ] = $e->getType()->getColor();
+                    $temp[ "color" ] = $colors[$index];
+                    $temp[ "endDate" ] = $te->getEndDate()->format('Y-m-d');
+                    //$temp[ "hours" ] = $te->getHours();
+                    $temp[ "id" ] = $te->getId();
+                    $temp[ "template" ] = $te->getTemplate()->getId();
+                    $temp[ "name" ] = $te->getName();
+                    $temp[ "startDate" ] = $te->getStartDate()->format('Y-m-d');;
+                    $temp[ "type" ] = $te->getType()->getId();
+                    array_push( $events, $temp );
+                }
+
+                array_push(
+                    $calendarcolors,
+                    array(
+                        'username' => $u,
+                        'color'    => $colors[ $index ],
+                    )
+                );
+
+
+            }
+        }
+
+        return $this->render(
+            'calendar/compare.html.twig',
+            [
+                'calendars' => implode(",", $calendars),
+                'events' => $events,
+                'calendarcolors' => $calendarcolors
+            ]
+        );
     }
 }
