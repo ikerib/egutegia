@@ -185,7 +185,7 @@ $(function () {
     if ( event.type === "5" ) {
 
       // Egun bat ordutan dira...
-      var vJornada = parseFloat($('#txtHoursFree').val())
+      var vJornada = parseFloat($('#numberLanaldi').val())
       // Zatika har ditzakedan orduak dira... (geratzen zaizkidanak)
       var vZatika = parseFloat($('#txtNorbereZatika').val())
       // Eskatu diren orduak dira..
