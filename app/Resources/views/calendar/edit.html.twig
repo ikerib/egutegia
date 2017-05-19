@@ -76,12 +76,22 @@
 
                     <div class="col-sm-4">
                         <input id="txtNorbereZatika" type="hidden" value="{{ selfHoursPartial }}">
-                        <dl class="dl-horizontal">
-                            <dt>Zatitu daitezke:</dt>
-                            <dd id="selfHoursPartial">{{ selfHoursPartial }} ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</dd>
-                            <dt>Egun osoak:</dt>
-                            <dd id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</dd>
-                        </dl>
+                        <input id="numberHoursPartial" type="hidden" value="{{ selfHoursPartial }}">
+                        <ul class="list-inline">
+                            <li>Zatitu daitezke:</li>
+                            <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li>Egun osoak:</li>
+                            <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</li>
+                        </ul>
+
+                        {#<dl class="dl-horizontal">#}
+                            {#<dt>Zatitu daitezke:</dt>#}
+                            {#<dd id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</dd>#}
+                            {#<dt>Egun osoak:</dt>#}
+                            {#<dd id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</dd>#}
+                        {#</dl>#}
                     </div>
                 </div>
             </div>
@@ -267,6 +277,7 @@
 
                             <input type="hidden" id="txtOldValue" value="">
                             <input type="hidden" id="txtOldType" value="">
+
 
                         </form>
                     </div>
@@ -598,6 +609,10 @@
         var x = parseFloat($('#numberLanaldi').val())
         var textua = " ( " + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() +  " minutu )"
         $('#hourLanaldi').text(textua)
+
+        var x1 = parseFloat($('#numberHoursPartial').val())
+        var textua1 = " ( " + moment.duration(x1, 'hours').hours() + ' ordu ' + moment.duration(x1, 'hours').minutes() +  " minutu )"
+        $('#selfHoursPartialToHour').text(textua1)
 
         /*************************************************************************************************************/
         /** HASH funtzioak *******************************************************************************************/

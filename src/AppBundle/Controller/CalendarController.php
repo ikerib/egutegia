@@ -188,6 +188,10 @@ class CalendarController extends Controller
      *
      * @Route("/{id}/edit", name="admin_calendar_edit")
      * @Method({"GET", "POST"})
+     * @param Request       $request
+     * @param Calendar|null $calendar
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Calendar $calendar = null)
     {

@@ -269,11 +269,12 @@ class ApiController extends FOSRestController
         $tempfin = new \DateTime($jsonData['endDate']);
         $event->setEndDate($tempfin);
         $event->setHours($jsonData['hours']);
+
         $event->setType($type);
         $em->persist($event);
 
-        $oldValue = $jsonData['oldValue'];
-        $newValue = $jsonData['hours'];
+        $oldValue = (float)$jsonData['oldValue'];
+        $newValue = (float)$jsonData['hours'];
         $oldType = $jsonData['oldType'];
         $hours = (float) ($event->getHours()) - (float) $oldValue;
 
@@ -285,7 +286,14 @@ class ApiController extends FOSRestController
                     $calendar->setHoursFree((float) ($calendar->getHoursFree()) + $hours);
                 }
                 if ($t->getRelated() === 'hours_self') {
-                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $hours);
+                    if ( $oldValue > 0 ){
+                        if ( $oldValue < (float)$calendar->getHoursDay()) {
+                            $calendar->setHoursSelfHalf((float)$calendar->getHoursSelfHalf()  - $hours);
+                        } else {
+                            $calendar->setHoursSelf((float)$calendar->getHoursSelf()  - $hours);
+                        }
+                    }
+                    //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $hours);
                 }
                 if ($t->getRelated() === 'hours_compensed') {
                     $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + $hours);
@@ -301,7 +309,14 @@ class ApiController extends FOSRestController
                     $calendar->setHoursFree((float) ($calendar->getHoursFree()) + $oldValue);
                 }
                 if ($tOld->getRelated() === 'hours_self') {
-                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $oldValue);
+                    if ( $oldValue > 0 ){
+                        if ( $oldValue < (float)$calendar->getHoursDay()) {
+                            $calendar->setHoursSelfHalf((float)$calendar->getHoursSelfHalf() + $oldValue );
+                        } else {
+                            $calendar->setHoursSelf((float)$calendar->getHoursSelf() + $oldValue);
+                        }
+                    }
+                    //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $oldValue);
                 }
                 if ($tOld->getRelated() === 'hours_compensed') {
                     $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + $oldValue);
@@ -316,7 +331,14 @@ class ApiController extends FOSRestController
                     $calendar->setHoursFree((float) ($calendar->getHoursFree()) - $newValue);
                 }
                 if ($tNew->getRelated() === 'hours_self') {
-                    $calendar->setHoursSelf((float) ($calendar->getHoursSelf()) - $newValue);
+                    if ( $oldValue > 0 ){
+                        if ( $oldValue < (float)$calendar->getHoursDay()) {
+                            $calendar->setHoursSelfHalf((float)$calendar->getHoursSelfHalf() - $newValue);
+                        } else {
+                            $calendar->setHoursSelf((float)$calendar->getHoursSelf()- $newValue);
+                        }
+                    }
+                    //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) - $newValue);
                 }
                 if ($tNew->getRelated() === 'hours_compensed') {
                     $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) - $newValue);
