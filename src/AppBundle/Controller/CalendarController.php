@@ -364,7 +364,7 @@ class CalendarController extends Controller
         $data =[];
         $events=[];
         $tevents = [];
-        $colors = [ "#41a8f5", "#ab612b", "#e89029", "#70ed52", "#382b32" ];
+        $colors = [ "#db6cb4", "#e01b1b", "#5c8f4f", "#e87416", "#484cd9" ];
         $index = -1;
         $calendarcolors = [];
 
