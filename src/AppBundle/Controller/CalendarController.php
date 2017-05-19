@@ -364,7 +364,7 @@ class CalendarController extends Controller
         $data =[];
         $events=[];
         $tevents = [];
-        $colors = [ "#41a8f5", "#66627a", "#e89029", "#70ed52", "#382b32" ];
+        $colors = [ "#41a8f5", "#ab612b", "#e89029", "#70ed52", "#382b32" ];
         $index = -1;
         $calendarcolors = [];
 
@@ -394,22 +394,22 @@ class CalendarController extends Controller
                     array_push( $events, $temp );
                 }
 
-                /** @var TemplateEvent $tevent */
-                $tevent = $calendar->getTemplate()->getTemplateEvents();
-                foreach ($tevent as $te) {
-                    $temp=[];
-                    /** @var TemplateEvent $te */
-                    //$temp[ "color" ] = $e->getType()->getColor();
-                    $temp[ "color" ] = $colors[$index];
-                    $temp[ "endDate" ] = $te->getEndDate()->format('Y-m-d');
-                    //$temp[ "hours" ] = $te->getHours();
-                    $temp[ "id" ] = $te->getId();
-                    $temp[ "template" ] = $te->getTemplate()->getId();
-                    $temp[ "name" ] = $te->getName();
-                    $temp[ "startDate" ] = $te->getStartDate()->format('Y-m-d');;
-                    $temp[ "type" ] = $te->getType()->getId();
-                    array_push( $events, $temp );
-                }
+                ///** @var TemplateEvent $tevent */
+                //$tevent = $calendar->getTemplate()->getTemplateEvents();
+                //foreach ($tevent as $te) {
+                //    $temp=[];
+                //    /** @var TemplateEvent $te */
+                //    //$temp[ "color" ] = $e->getType()->getColor();
+                //    $temp[ "color" ] = $colors[$index];
+                //    $temp[ "endDate" ] = $te->getEndDate()->format('Y-m-d');
+                //    //$temp[ "hours" ] = $te->getHours();
+                //    $temp[ "id" ] = $te->getId();
+                //    $temp[ "template" ] = $te->getTemplate()->getId();
+                //    $temp[ "name" ] = $te->getName();
+                //    $temp[ "startDate" ] = $te->getStartDate()->format('Y-m-d');;
+                //    $temp[ "type" ] = $te->getType()->getId();
+                //    array_push( $events, $temp );
+                //}
 
                 array_push(
                     $calendarcolors,
