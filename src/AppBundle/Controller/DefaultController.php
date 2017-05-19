@@ -9,6 +9,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,12 +34,11 @@ class DefaultController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
-        //if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-        //    return $this->redirectToRoute('dashboard');
-        //}
+
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
+
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
         if ((!$calendar) || (count($calendar) > 1)) {
@@ -47,11 +48,34 @@ class DefaultController extends Controller
             throw new EntityNotFoundException('Ez da egutegirik topatu edo egutegi bat baino gehiago ditu');
         }
 
+        /** @var Calendar $calendar */
+        $calendar = $calendar[ 0 ];
+        // norberarentzako orduak
+        /** @var Event $selfHours */
+        $selfHours = $em->getRepository( 'AppBundle:Event' )->findCalendarSelfEvents( $calendar->getId() );
+        $selfHoursPartial = 0;
+        $selfHoursComplete = 0;
+
+        foreach ($selfHours as $s) {
+            /** @var Event $s */
+            if ( $s->getHours() < $calendar->getHoursDay()) {
+                $selfHoursPartial += (float)$s->getHours();
+            } else {
+                $selfHoursComplete +=(float)$s->getHours();
+            }
+        }
+
+        $selfHoursPartial = (float)$calendar->getHoursSelfHalf() - $selfHoursPartial;
+        $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
+
+
         return $this->render(
             'default/user_homepage.html.twig',
             [
                 'user' => $user,
-                'calendar' => $calendar[0],
+                'calendar' => $calendar,
+                'selfHoursPartial'=> $selfHoursPartial,
+                'selfHoursComplete'=>$selfHoursComplete
             ]
         );
     }
