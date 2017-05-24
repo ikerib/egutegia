@@ -53,6 +53,8 @@ class TypeController extends Controller
      * @Method("GET")
      *
      * @param mixed $calendarid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAction($calendarid)
     {
@@ -75,6 +77,8 @@ class TypeController extends Controller
      * @Method("GET")
      *
      * @param mixed $templateid
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listtemplatetypesAction($templateid)
     {

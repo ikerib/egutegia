@@ -47,6 +47,10 @@ class TypeType extends AbstractType
                 'label' => 'Erakutsi',
                 'translation_domain' => 'messages',
             ])
+            ->add('erakutsiEskaera', CheckboxType::class, [
+                'label' => 'Erakutsi eskaeretan',
+                'translation_domain' => 'messages',
+            ])
 
         ;
     }

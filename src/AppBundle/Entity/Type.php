@@ -90,6 +90,12 @@ class Type
     private $erakutsi;
 
     /**
+     * @var bool
+     * @ORM\Column(name="erakutsi_eskaera", type="boolean", nullable=true)
+     */
+    private $erakutsi_eskaera;
+
+    /**
      * @var string
      * @ORM\Column(name="related", type="string", nullable=true)
      */
@@ -429,5 +435,29 @@ class Type
     public function getRelated()
     {
         return $this->related;
+    }
+
+    /**
+     * Set erakutsiEskaera
+     *
+     * @param boolean $erakutsiEskaera
+     *
+     * @return Type
+     */
+    public function setErakutsiEskaera($erakutsiEskaera)
+    {
+        $this->erakutsi_eskaera = $erakutsiEskaera;
+
+        return $this;
+    }
+
+    /**
+     * Get erakutsiEskaera
+     *
+     * @return boolean
+     */
+    public function getErakutsiEskaera()
+    {
+        return $this->erakutsi_eskaera;
     }
 }

@@ -26,6 +26,7 @@ class EskaeraType extends AbstractType
                     'class' => 'AppBundle\Entity\Type',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')
+                            ->where('u.erakutsi_eskaera=true')
                             ->orderBy('u.created', 'DESC');
                     },
                     'choice_label' => function ($template) {
