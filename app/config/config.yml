@@ -132,6 +132,7 @@ fos_js_routing:
         - admin_document_order_down
         - admin_document_order_up
         - admin_calendar_compare
+        - eskaera_index
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

@@ -57,6 +57,9 @@ class Builder implements ContainerAwareInterface
             $menu['User']->addChild('Fitxategiak', ['route' => 'user_documents'])
                 ->setAttribute('icon', 'fa fa-edit');
 
+            $menu['User']->addChild('Eskaerak', ['route' => 'eskaera_index'])
+                ->setAttribute('icon', 'fa fa-telegram');
+
             $menu['User']->addChild('Irten', ['route' => 'fos_user_security_logout']);
         } else {
             $menu->addChild('login', ['route' => 'fos_user_security_login']);

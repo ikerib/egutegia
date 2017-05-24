@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Opor edo baimen eskaera berria' | trans }} {% endblock  %}
+
+{% block content_row %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Langilea' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Mota' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiztik' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.hasi, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz arte' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.amaitu, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat egun edo ordu' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Eskaera data' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.noiz, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <p>Egin klik 'Lortu inprimakia' botoian eta inprimatu dokumentua.</p>
+                    <p>Sinatu eta entregatu.</p>
+                    <p>&nbsp;</p>
+                    <button type="submit" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div style="display: none">
+                {{ form_end(form) }}
+                <input id="txtJornada" type="text" value="{{ calendar.getHoursDay }}">
+            </div>
+
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+      function workday_count (fstart, fend) {
+        var start = moment(fstart)
+        var end = moment(fend)
+        var first = start.clone().endOf('week'); // end of first week
+        var last = end.clone().startOf('week'); // start of last week
+        var days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
+        var wfirst = first.day() - start.day(); // check first week
+        if(start.day() == 0) --wfirst; // -1 if start with sunday
+        var wlast = end.day() - last.day(); // check last week
+        if(end.day() == 6) --wlast; // -1 if end with saturday
+        return wfirst + days + wlast; // get the total
+      }
+
+      $(function () {
+
+        $('#appbundle_eskaera_hasi').datepicker({
+          format: 'yyyy-mm-dd',
+          language: 'eu'
+        });
+
+        $('#appbundle_eskaera_amaitu').datepicker({
+          format: 'yyyy-mm-dd',
+          language: 'eu'
+        });
+
+        $('.cmbFetxaKalc').change( function () {
+          var hasi = $('#appbundle_eskaera_hasi').val()
+          var amaitu = $('#appbundle_eskaera_amaitu').val()
+
+          var d = workday_count(hasi, amaitu)
+          $('#appbundle_eskaera_orduak').val(d.toFixed(2))
+//          var j = $('#txtTotalHousSelected').data('jornada')
+//
+//          var t = d * parseFloat(j)
+//
+//          $('#txtTotalHousSelected').val(t.toFixed(2))
+
+        });
+
+      });
+    </script>
+{% endblock %}

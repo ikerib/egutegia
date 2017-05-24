@@ -1,4 +1,7 @@
-{{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+{{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}$('#appbundle_hour_date').datepicker({
+              format: 'yyyy-mm-dd',
+              language: 'eu'
+            });
     <div class="form-group">
         <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
         <div class="col-sm-7">

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock  %}
+
+{% block content_row %}
+
+    <div class="row">
+        <div class="col-md-2">
+            <a class="btn btn-primary" href="{{ path('eskaera_new') }}">Eskaera berria</a>
+        </div>
+        <div class="col-md-10"></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Izaera</th>
+                    <th>Hasi</th>
+                    <th>Amaitu</th>
+                    <th>Orduak</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for eskaera in eskaeras %}
+                    <tr>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d H:i:s') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d H:i:s') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">Ikusi</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6"> Ez dago daturik</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

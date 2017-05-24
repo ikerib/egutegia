@@ -45,7 +45,7 @@ class UserHydrator implements HydratorInterface
             $rol = 'ROLE_USER';
             foreach ($members as $key => $value) {
                 $sp = ldap_explode_dn($value, 1);
-                if ($sp[0] === 'APP-Egutegia') {
+                if ($sp[0] === 'APP-Web_Egutegia') {
                     $rol = 'ROLE_ADMIN';
                     $user->addRole('ROLE_ADMIN');
                 }
