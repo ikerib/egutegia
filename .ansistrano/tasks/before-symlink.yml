@@ -4,7 +4,7 @@
   npm:
     path: "{{ ansistrano_release_path.stdout }}"
 #    executable: /root/.nvm/versions/node/v6.10.1/bin/npm
-    executable: /usr/local/bin/npm
+    executable: /usr/bin/npm
     state: present
 
 - name: Run gulp
