@@ -62,3 +62,4 @@ web/vendor/
 /web/css/
 /web/fonts/
 /web/css/app.css
+/web/app_dev.php
