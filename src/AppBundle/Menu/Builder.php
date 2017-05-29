@@ -26,6 +26,7 @@ class Builder implements ContainerAwareInterface
         $menu->addChild(' Txantiloia', ['icon' => 'bookmark', 'route' => 'admin_template_index']);
         $menu->addChild(' Mota', ['icon' => 'tag', 'route' => 'admin_type_index']);
         $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
+        $menu->addChild(' Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index']);
 
         return $menu;
     }

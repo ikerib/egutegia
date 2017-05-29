@@ -2,9 +2,8 @@
 
 {% block head_style %}
     {{ parent() }}
-    <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
 {% endblock %}
-{% block headline %}{{ 'Gutxieneko zerbitzuaen zerrenda' | trans }} {% endblock  %}
+{% block headline %}{{ 'Sinatzaileen zerrenda' | trans }} {% endblock  %}
 
 
 {% block content_row %}
@@ -18,7 +17,7 @@
                     <h4 class="modal-title" id="myModalLabel">Zerrenda berria</h4>
                 </div>
                 <div class="modal-body">
-                    {{ render(controller('AppBundle:Gutxienekoak:new')) }}
+                    {{ render(controller('AppBundle:Sinatzaileak:new')) }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
@@ -67,28 +66,26 @@
         <thead>
         <tr>
             <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>
-            <th data-halign="center" data-align="right" data-field="portzentaia"  data-sortable="true">{{ 'Portzentaia' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="gutxienekoakdet"  data-sortable="true">{{ 'Erabiltzaileak' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="sinatzaileakdet"  data-sortable="true">{{ 'Erabiltzaileak' | trans }}</th>
             <th data-halign="center" data-align="center"></th>
         </tr>
         </thead>
         <tbody>
-        {% for gutxienekoak in gutxienekoaks %}
+        {% for sinatzaileak in sinatzaileaks %}
             <tr>
-                <td><a href="{{ path('admin_gutxienekoak_show', { 'id': gutxienekoak.id }) }}">{{ gutxienekoak.name }}</a></td>
-                <td><a href="{{ path('admin_gutxienekoak_show', { 'id': gutxienekoak.id }) }}">{{ gutxienekoak.portzentaia }}</a></td>
+                <td><a href="{{ path('admin_sinatzaileak_show', { 'id': sinatzaileak.id }) }}">{{ sinatzaileak.name }}</a></td>
                 <td>
-                    {% for d in gutxienekoak.gutxienekoakdet %}
-                        <span class="label label-default">{{ d.user.displayname }}</span>&nbsp;
+                    {% for d in sinatzaileak.sinatzaileakdet %}
+                        <span class="label label-default">{{ d.user.username }}</span>&nbsp;
                     {% endfor %}
                 </td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('admin_gutxienekoak_show', { 'id': gutxienekoak.id }) }}">show</a>
+                            <a href="{{ path('admin_sinatzaileak_show', { 'id': sinatzaileak.id }) }}">show</a>
                         </li>
                         <li>
-                            <a href="{{ path('admin_gutxienekoak_edit', { 'id': gutxienekoak.id }) }}">edit</a>
+                            <a href="{{ path('admin_sinatzaileak_edit', { 'id': sinatzaileak.id }) }}">edit</a>
                         </li>
                     </ul>
                 </td>
@@ -104,7 +101,7 @@
     <script >
       $( document ).ready(function() {
         $('#btnNewZerrenda').on('click', function () {
-          if ( $('#appbundle_gutxienekoak_name').val().length > 0 ) {
+          if ( $('#appbundle_sinatzaileak_name').val().length > 0 ) {
             $('form').submit()
           } else {
             bootbox.alert("Izena ezartzea beharrezkoa da")

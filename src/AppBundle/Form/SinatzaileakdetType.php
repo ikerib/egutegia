@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class GutxienekoakdetType extends AbstractType
+class SinatzaileakdetType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,14 +16,14 @@ class GutxienekoakdetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gutxienekoak')
+            ->add('sinatzaileak')
             ->add('user',EntityType::class, [
                 'required'=>true,
                 'label' => 'Langilea',
                 'placeholder'=>'Aukeratu bat...',
                 'class' => 'AppBundle\Entity\User',
                 'attr' => array(
-                    'class'=>'select2'
+                  'class'=>'select2'
                 ),
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
@@ -43,7 +43,7 @@ class GutxienekoakdetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Gutxienekoakdet'
+            'data_class' => 'AppBundle\Entity\Sinatzaileakdet'
         ));
     }
 
@@ -52,7 +52,7 @@ class GutxienekoakdetType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_gutxienekoakdet';
+        return 'appbundle_sinatzaileakdet';
     }
 
 

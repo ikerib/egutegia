@@ -78,6 +78,9 @@ otherJS = [
     './app/Resources/assets/js/vertical-timeline/vertical-timeline.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.es.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.eu.min.js',
+    './app/Resources/assets/js/libs/select2.min.js',
+    './app/Resources/assets/js/libs/select2-locale/es.js',
+    './app/Resources/assets/js/libs/select2-locale/eu.js',
     './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js'
 ];
@@ -89,6 +92,7 @@ otherCSS = [
     './app/Resources/assets/js/bootstrap-table/dist/bootstrap-table.css',
     './app/Resources/assets/js/vertical-timeline/vertical-timeline.css',
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.css',
+    './app/Resources/assets/js/libs/select2.min.css',
     './app/Resources/assets/'
 ];
 

@@ -106,7 +106,8 @@ class GutxienekoakController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_gutxienekoak_edit', array('id' => $gutxienekoak->getId()));
+            //return $this->redirectToRoute('admin_gutxienekoak_edit', array('id' => $gutxienekoak->getId()));
+            return $this->redirectToRoute('admin_gutxienekoak_index');
         }
 
         return $this->render('gutxienekoak/edit.html.twig', array(
@@ -155,9 +156,11 @@ class GutxienekoakController extends Controller
     /**
      * Creates a form to delete a gutxienekoak entity.
      *
-     * @param Gutxienekoak $gutxienekoak The gutxienekoak entity
+     * @param Gutxienekoakdet $gd
      *
      * @return \Symfony\Component\Form\Form The form
+     * @internal param Gutxienekoak $gutxienekoak The gutxienekoak entity
+     *
      */
     private function createDeleteFormGutxienekoakDet(Gutxienekoakdet $gd)
     {
