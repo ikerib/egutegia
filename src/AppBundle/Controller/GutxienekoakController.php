@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Gutxienekoak;
+use AppBundle\Entity\Gutxienekoakdet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,7 @@ class GutxienekoakController extends Controller
         $gutxienekoak = new Gutxienekoak();
         $form = $this->createForm('AppBundle\Form\GutxienekoakType', $gutxienekoak,[
             'action' => $this->generateUrl('admin_gutxienekoak_new'),
-            'method' => 'POST'
+            'method' => 'POST',
         ]);
         $form->handleRequest($request);
 
@@ -76,9 +77,17 @@ class GutxienekoakController extends Controller
     {
         $deleteForm = $this->createDeleteForm($gutxienekoak);
 
+        $deleteForms = [];
+        /** @var Gutxienekoakdet $gd */
+        $gd = $gutxienekoak->getGutxienekoakdet();
+        foreach ($gd as $g ) {
+            /** @var Gutxienekoakdet $g */
+            $deleteForms[$g->getId()] = $this->createDeleteFormGutxienekoakDet($g)->createView();
+        }
         return $this->render('gutxienekoak/show.html.twig', array(
             'gutxienekoak' => $gutxienekoak,
             'delete_form' => $deleteForm->createView(),
+            'deleteForms' => $deleteForms,
         ));
     }
 
@@ -141,5 +150,21 @@ class GutxienekoakController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to delete a gutxienekoak entity.
+     *
+     * @param Gutxienekoak $gutxienekoak The gutxienekoak entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteFormGutxienekoakDet(Gutxienekoakdet $gd)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('admin_gutxienekoakdet_delete', array('id' => $gd->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+            ;
     }
 }

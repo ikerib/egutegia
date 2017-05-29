@@ -42,7 +42,13 @@
             {% for u in gutxienekoak.gutxienekoakdet %}
                 <tr>
                     <td>{{ u.user.displayname }}</td>
-                    <td><a href="javascript:void(0);">ezabatu</a></td>
+                    <td>
+                        {{ form_start(deleteForms[u.id],{'attr': {'id': u.id}}) }}
+                        <a class="btnRemoveRow" data-id="{{ u.id }}" href="javascript:void(0);">
+                            <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                        </a>
+                        {{ form_end(deleteForms[u.id]) }}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -53,17 +59,36 @@
     {{ parent() }}
     <script>
         $(document).ready(function(){
+
           $('#btnNewZerrendaUser').on('click', function(){
-            console.log($('#appbundle_gutxienekoakdet_user').val())
             const u = $('#appbundle_gutxienekoakdet_user').val()
-
-            if ( u.length > 0) {
+              if ( u.length > 0)
                 $('#frmNewZerrendaUser').submit()
-            } else {
-              bootbox.alert("Langile bat aukeratu behar duzu.")
-            }
-
+              else
+                bootbox.alert("Langile bat aukeratu behar duzu.")
           })
+
+          $('.btnRemoveRow').on('click', function () {
+            const that = $(this);
+            bootbox.confirm({
+              title: "{{ 'Adi!' | trans }}",
+              message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+              buttons: {
+                cancel: {
+                  label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                },
+                confirm: {
+                  label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                }
+              },
+              callback: function (result) {
+                if ( result === true ) {
+                  $(that).closest('form').submit();
+                }
+              }
+            });
+          });
+
         })
 
     </script>

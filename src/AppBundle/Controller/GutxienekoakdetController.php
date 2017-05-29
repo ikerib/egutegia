@@ -120,11 +120,17 @@ class GutxienekoakdetController extends Controller
      *
      * @Route("/{id}", name="admin_gutxienekoakdet_delete")
      * @Method("DELETE")
+     * @param Request         $request
+     * @param Gutxienekoakdet $gutxienekoakdet
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
     {
         $form = $this->createDeleteForm($gutxienekoakdet);
         $form->handleRequest($request);
+
+        $miid = $gutxienekoakdet->getGutxienekoak()->getId();
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -132,7 +138,7 @@ class GutxienekoakdetController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_gutxienekoakdet_index');
+        return $this->redirectToRoute('admin_gutxienekoak_show', array('id'=>$miid));
     }
 
     /**

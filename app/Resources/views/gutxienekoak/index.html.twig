@@ -79,7 +79,7 @@
                 <td><a href="{{ path('admin_gutxienekoak_show', { 'id': gutxienekoak.id }) }}">{{ gutxienekoak.portzentaia }}</a></td>
                 <td>
                     {% for d in gutxienekoak.gutxienekoakdet %}
-                        {{ dump(d) }}
+                        <span class="label label-default">{{ d.user.displayname }}</span>&nbsp;
                     {% endfor %}
                 </td>
                 <td>

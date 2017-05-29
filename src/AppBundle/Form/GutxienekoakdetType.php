@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,10 +17,19 @@ class GutxienekoakdetType extends AbstractType
     {
         $builder
             ->add('gutxienekoak')
-            ->add('user',null,[
+            ->add('user',EntityType::class, [
                 'required'=>true,
                 'label' => 'Langilea',
-                'placeholder'=>'Aukeratu bat...'
+                'placeholder'=>'Aukeratu bat...',
+                'class' => 'AppBundle\Entity\User',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.displayname', 'ASC');
+                },
+                'choice_label' => function ($u) {
+                    /* @var  $u \AppBundle\Entity\User */
+                    return $u->getUsername() . ' ('.$u->getDisplayname().')';
+                },
             ])
         ;
     }
