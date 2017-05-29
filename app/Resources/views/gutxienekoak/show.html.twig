@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block head_style %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
+{% endblock %}
+{% block headline %}{{ 'Gutxieneko zerbitzuak: ' | trans }}{{ gutxienekoak.name }} {% endblock  %}
+
+
+{% block content_row %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Gehitu Erabiktzailea berria</h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('AppBundle:Gutxienekoakdet:new', {'gutxiid': gutxienekoak.id})) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                    <button type="button" class="btn btn-primary" id="btnNewZerrendaUser">Sortu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Gehitu langilea</button>
+    </div>
+    <div>&nbsp;</div>
+
+    <table class="table table-condensed table-hover table-striped table-bordered">
+        <thead>
+            <th>Langilea</th>
+            <th></th>
+        </thead>
+        <tbody>
+            {% for u in gutxienekoak.gutxienekoakdet %}
+                <tr>
+                    <td>{{ u.user.displayname }}</td>
+                    <td><a href="javascript:void(0);">ezabatu</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+          $('#btnNewZerrendaUser').on('click', function(){
+            console.log($('#appbundle_gutxienekoakdet_user').val())
+            const u = $('#appbundle_gutxienekoakdet_user').val()
+
+            if ( u.length > 0) {
+                $('#frmNewZerrendaUser').submit()
+            } else {
+              bootbox.alert("Langile bat aukeratu behar duzu.")
+            }
+
+          })
+        })
+
+    </script>
+{% endblock %}

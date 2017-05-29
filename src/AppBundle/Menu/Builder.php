@@ -22,19 +22,10 @@ class Builder implements ContainerAwareInterface
     {
         $menu = $factory->createItem('root', ['navbar' => true]);
 
-        $menu->addChild('Hasiera', ['icon' => 'home', 'route' => 'dashboard']);
-
-        $dropdown = $menu->addChild('Txantiloiak', ['dropdown' => true, 'caret' => true]);
-        $dropdown->addChild('Zerrenda', ['route' => 'admin_template_index']);
-
-        $menu->addChild(
-            'Motak',
-            [
-                'dropdown' => true,
-                'caret' => true,
-            ]
-        );
-        $menu['Motak']->addChild('Zerrenda', ['route' => 'admin_type_index']);
+        $menu->addChild(' Hasiera', ['icon' => 'home', 'route' => 'dashboard']);
+        $menu->addChild(' Txantiloia', ['icon' => 'bookmark', 'route' => 'admin_template_index']);
+        $menu->addChild(' Mota', ['icon' => 'tag', 'route' => 'admin_type_index']);
+        $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
 
         return $menu;
     }
