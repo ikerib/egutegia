@@ -80,12 +80,14 @@
                     {% endfor %}
                 </td>
                 <td>
-                    <ul>
+                    <ul class="list-inline">
                         <li>
-                            <a href="{{ path('admin_sinatzaileak_show', { 'id': sinatzaileak.id }) }}">show</a>
+                            <a href="{{ path('admin_sinatzaileak_show', { 'id': sinatzaileak.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ path('admin_sinatzaileak_edit', { 'id': sinatzaileak.id }) }}">edit</a>
+                            <a href="{{ path('admin_sinatzaileak_edit', { 'id': sinatzaileak.id }) }}"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
                         </li>
                     </ul>
                 </td>
