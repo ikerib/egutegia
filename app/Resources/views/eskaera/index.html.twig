@@ -21,6 +21,8 @@
                     <th>Hasi</th>
                     <th>Amaitu</th>
                     <th>Orduak</th>
+                    <th>Bideratua</th>
+                    <th>Gauzatua</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -29,9 +31,27 @@
                     <tr>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d H:i:s') }}{% endif %}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d H:i:s') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></td>
+                        <td>
+                            <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
+                                {% if eskaera.abiatua == true %}
+                                    <label class="label label-success">Bai</label>
+                                {% else %}
+                                    <label class="label label-danger">Ez</label>
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
+                                {% if eskaera.amaitua == true %}
+                                    <label class="label label-success">Bai</label>
+                                {% else %}
+                                    <label class="label label-danger">Ez</label>
+                                {% endif %}
+                            </a>
+                        </td>
                         <td>
                             <ul>
                                 <li>

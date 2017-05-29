@@ -73,44 +73,49 @@
 
 {% block foot_script %}
     {{ parent() }}
-    <script>
+    <script language="JavaScript">
       function workday_count (fstart, fend) {
-        var start = moment(fstart)
-        var end = moment(fend)
-        var first = start.clone().endOf('week'); // end of first week
-        var last = end.clone().startOf('week'); // start of last week
-        var days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
-        var wfirst = first.day() - start.day(); // check first week
-        if(start.day() == 0) --wfirst; // -1 if start with sunday
-        var wlast = end.day() - last.day(); // check last week
-        if(end.day() == 6) --wlast; // -1 if end with saturday
+        const start = moment(fstart)
+        const end = moment(fend)
+        const first = start.clone().endOf('week'); // end of first week
+        const last = end.clone().startOf('week'); // start of last week
+        const days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
+
+        let wfirst = first.day() - start.day(); // check first week
+        if(start.day() === 0) --wfirst; // -1 if start with sunday
+
+        let wlast = end.day() - last.day(); // check last week
+        if(end.day() === 6) --wlast; // -1 if end with saturday
+
         return wfirst + days + wlast; // get the total
       }
 
       $(function () {
 
         $('#appbundle_eskaera_hasi').datepicker({
+          autoclose: true,
           format: 'yyyy-mm-dd',
           language: 'eu'
         });
 
         $('#appbundle_eskaera_amaitu').datepicker({
+          autoclose: true,
+          format: 'yyyy-mm-dd',
+          language: 'eu'
+        });
+
+        $('#appbundle_eskaera_noiz').datepicker({
+          autoclose: true,
           format: 'yyyy-mm-dd',
           language: 'eu'
         });
 
         $('.cmbFetxaKalc').change( function () {
-          var hasi = $('#appbundle_eskaera_hasi').val()
-          var amaitu = $('#appbundle_eskaera_amaitu').val()
+          const hasi = $('#appbundle_eskaera_hasi').val()
+          const amaitu = $('#appbundle_eskaera_amaitu').val()
+          const d = workday_count(hasi, amaitu)
 
-          var d = workday_count(hasi, amaitu)
           $('#appbundle_eskaera_orduak').val(d.toFixed(2))
-//          var j = $('#txtTotalHousSelected').data('jornada')
-//
-//          var t = d * parseFloat(j)
-//
-//          $('#txtTotalHousSelected').val(t.toFixed(2))
-
         });
 
       });

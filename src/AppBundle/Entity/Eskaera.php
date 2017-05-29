@@ -80,6 +80,18 @@ class Eskaera
      */
     private $contentChangedBy;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="abiatua", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $abiatua=false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="amaitua", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $amaitua=false;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -114,6 +126,8 @@ class Eskaera
     public function __construct()
     {
         $this->noiz = New \DateTime();
+        $this->abiatua = false;
+        $this->amaitua = false;
     }
 
     public function __toString()
@@ -399,5 +413,53 @@ class Eskaera
     public function getCalendar()
     {
         return $this->calendar;
+    }
+
+    /**
+     * Set abiatua
+     *
+     * @param boolean $abiatua
+     *
+     * @return Eskaera
+     */
+    public function setAbiatua($abiatua)
+    {
+        $this->abiatua = $abiatua;
+
+        return $this;
+    }
+
+    /**
+     * Get abiatua
+     *
+     * @return boolean
+     */
+    public function getAbiatua()
+    {
+        return $this->abiatua;
+    }
+
+    /**
+     * Set amaitua
+     *
+     * @param boolean $amaitua
+     *
+     * @return Eskaera
+     */
+    public function setAmaitua($amaitua)
+    {
+        $this->amaitua = $amaitua;
+
+        return $this;
+    }
+
+    /**
+     * Get amaitua
+     *
+     * @return boolean
+     */
+    public function getAmaitua()
+    {
+        return $this->amaitua;
     }
 }

@@ -10,6 +10,7 @@
 namespace AppBundle\Menu;
 
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -27,6 +28,29 @@ class Builder implements ContainerAwareInterface
         $menu->addChild(' Mota', ['icon' => 'tag', 'route' => 'admin_type_index']);
         $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
         $menu->addChild(' Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index']);
+
+        /** @var EntityManager $em */
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
+
+        if (count($eskaerak) > 0) {
+            //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
+            $menu->addChild(
+                'Eskaerak',
+                array(
+                    'route'      => 'admin_eskaera_list',
+                    'icon' => 'inbox',
+                    'label' => "Eskaera <span class='badge badge-error'>".count($eskaerak) . "</span>",
+                    'extras' => array('safe_label' => true),
+                )
+            );
+        } else {
+            $menu->addChild(' Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
+                ->setLinkAttribute('class', 'childClass');
+
+        }
+
+
 
         return $menu;
     }

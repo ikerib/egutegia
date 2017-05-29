@@ -27,4 +27,16 @@ class EskaeraRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findBideratugabeak() {
+        $em = $this->getEntityManager();
+        $dql = "
+            SELECT e
+            FROM AppBundle:Eskaera e
+            WHERE e.abiatua = false AND e.amaitua = false
+        ";
+        $query = $em->createQuery($dql);
+
+        return $query->getResult();
+    }
 }

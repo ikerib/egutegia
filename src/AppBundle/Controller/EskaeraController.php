@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -38,10 +39,29 @@ class EskaeraController extends Controller
     }
 
     /**
+     * @Route("/", name="admin_eskaera_list")
+     * @Method("GET")
+     */
+    public function listAction()
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
+        $em = $this->getDoctrine()->getManager();
+
+        $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
+
+        return $this->render('eskaera/index.html.twig', array(
+            'eskaeras' => $eskaeras,
+        ));
+    }
+
+    /**
      * Creates a new eskaera entity.
      *
      * @Route("/new", name="eskaera_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -64,10 +84,14 @@ class EskaeraController extends Controller
         $eskaera->setUser( $user );
         $eskaera->setName( $user->getDisplayname() );
         $eskaera->setCalendar( $calendar );
-        $form = $this->createForm('AppBundle\Form\EskaeraType', $eskaera);
+        $form = $this->createForm('AppBundle\Form\EskaeraType', $eskaera, array(
+            'action' => $this->generateUrl('eskaera_new'),
+            'method' => 'POST'
+        ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($eskaera);
             $em->flush();
