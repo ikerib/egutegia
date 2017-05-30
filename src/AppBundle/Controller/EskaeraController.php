@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -39,7 +40,7 @@ class EskaeraController extends Controller
     }
 
     /**
-     * @Route("/", name="admin_eskaera_list")
+     * @Route("/lista", name="admin_eskaera_list")
      * @Method("GET")
      */
     public function listAction()
@@ -49,8 +50,15 @@ class EskaeraController extends Controller
 
         $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
 
-        return $this->render('eskaera/index.html.twig', array(
+        $deleteForms = [];
+        foreach ($eskaeras as $e) {
+            /** @var Eskaera $e */
+            $deleteForms[$e->getId()] = $this->createDeleteForm($e)->createView();
+        }
+
+        return $this->render('eskaera/list.html.twig', array(
             'eskaeras' => $eskaeras,
+            'deleteForms' => $deleteForms,
         ));
     }
 
@@ -86,13 +94,38 @@ class EskaeraController extends Controller
         $eskaera->setCalendar( $calendar );
         $form = $this->createForm('AppBundle\Form\EskaeraType', $eskaera, array(
             'action' => $this->generateUrl('eskaera_new'),
-            'method' => 'POST'
+            'method' => 'POST',
         ));
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
+            $data = $form->getData();
+
+
+            /**
+             * 1-. Begiratu ea bateraezinik duen
+             */
+            $gutxienekoakdet = $em->getRepository( 'AppBundle:Eskaera' )->checkErabiltzaileaBateraezinZerrendan($data->getUser()->getId());
+            /**
+             * 2-. Bateraezinik badu, begiratu ea koinzidentziarik dagoen
+             */
+            if ($gutxienekoakdet > 0 ) {
+                $fini = $data->getHasi();
+                $fini = $data->getAmaitu();
+
+                /** @var Gutxienekoakdet $gd */
+                foreach ($gutxienekoakdet as $gd) {
+
+                }
+
+            }
+
+            /**
+             * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
+             *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
+             */
+
             $em->persist($eskaera);
             $em->flush();
 
@@ -138,7 +171,7 @@ class EskaeraController extends Controller
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
         return $this->render('eskaera/print.html.twig', array(
-            'eskaera' => $eskaera
+            'eskaera' => $eskaera,
         ));
     }
 
@@ -186,7 +219,7 @@ class EskaeraController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('eskaera_index');
+        return $this->redirectToRoute('admin_eskaera_list');
     }
 
     /**

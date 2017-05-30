@@ -39,4 +39,33 @@ class EskaeraRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function checkErabiltzaileaBateraezinZerrendan($userid) {
+        $em = $this->getEntityManager();
+
+        $dql = '
+            SELECT gd
+            FROM AppBundle:Gutxienekoakdet gd
+              INNER JOIN e.user u
+            WHERE u.id = :id
+        ';
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('id', $userid);
+
+        return $query->getResult();
+    }
+
+    public function checkCollision($gdid, $fini, $ffin) {
+        $em = $this->getEntityManager();
+
+        $dql = '
+            
+        ';
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('id', $userid);
+
+        return $query->getResult();
+    }
 }

@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock  %}
+
+{% block content_row %}
+
+    <div class="row">
+        <div class="col-md-2">
+            <a class="btn btn-primary" href="{{ path('eskaera_new') }}">Eskaera berria</a>
+        </div>
+        <div class="col-md-10"></div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Izaera</th>
+                    <th>Hasi</th>
+                    <th>Amaitu</th>
+                    <th>Orduak</th>
+                    <th>Bideratua</th>
+                    <th>Gauzatua</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for eskaera in eskaeras %}
+                    <tr>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></td>
+                        <td>
+                            <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
+                                {% if eskaera.abiatua == true %}
+                                    <label class="label label-success">Bai</label>
+                                {% else %}
+                                    <label class="label label-danger">Ez</label>
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
+                                {% if eskaera.amaitua == true %}
+                                    <label class="label label-success">Bai</label>
+                                {% else %}
+                                    <label class="label label-danger">Ez</label>
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td>
+                            <ul>
+                                <li>
+                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">Ikusi</a>
+                                </li>
+                                <li>
+                                    {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
+                                    <a class="btnRemoveRow" data-id="{{ eskaera.id }}" href="javascript:void(0);">
+                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                    </a>
+                                    {{ form_end(deleteForms[eskaera.id]) }}
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr><td colspan="6"> Ez dago daturik</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script >
+      $( document ).ready(function() {
+        $('.btnRemoveRow').on('click', function () {
+          const that = $(this);
+          bootbox.confirm({
+            title: "{{ 'Adi!' | trans }}",
+            message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+            buttons: {
+              cancel: {
+                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+              },
+              confirm: {
+                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+              }
+            },
+            callback: function (result) {
+              if ( result === true ) {
+                $(that).closest('form').submit();
+              }
+            }
+          });
+        });
+
+      });
+    </script>
+
+{% endblock %}
