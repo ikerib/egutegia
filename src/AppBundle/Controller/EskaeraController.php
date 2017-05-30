@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\Event;
+use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -102,21 +104,28 @@ class EskaeraController extends Controller
             $em = $this->getDoctrine()->getManager();
             $data = $form->getData();
 
+            $user = $data->getUser();
+            $fini = $data->getHasi();
+            $ffin = $data->getAmaitu();
 
             /**
              * 1-. Begiratu ea bateraezinik duen
              */
-            $gutxienekoakdet = $em->getRepository( 'AppBundle:Eskaera' )->checkErabiltzaileaBateraezinZerrendan($data->getUser()->getId());
+            $gutxienekoak = $em->getRepository( 'AppBundle:Eskaera' )->checkErabiltzaileaBateraezinZerrendan($data->getUser()->getId());
             /**
              * 2-. Bateraezinik badu, begiratu ea koinzidentziarik dagoen
              */
-            if ($gutxienekoakdet > 0 ) {
-                $fini = $data->getHasi();
-                $fini = $data->getAmaitu();
+            if ($gutxienekoak > 0 ) {
 
-                /** @var Gutxienekoakdet $gd */
-                foreach ($gutxienekoakdet as $gd) {
-
+                /** @var Gutxienekoak $g */
+                foreach ($gutxienekoak as $g) {
+                    $gutxienekoakdet = $g->getGutxienekoakdet();
+                    foreach ($gutxienekoakdet as $gd) {
+                        /** @var Gutxienekoakdet $gd */
+                        if ( $gd->getUser() !== $user){
+                            $collision = $em->getRepository( 'AppBundle:Event' )->checkCollision($gd->getUser()->getId(), $fini, $ffin);
+                        }
+                    }
                 }
 
             }
@@ -125,6 +134,14 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
+            if ( count($collision) > 0 ) {
+                $txt="";
+                /** @var Event $e */
+                foreach ($collision as $e) {
+                    $txt = $txt . " - " .  $e->getCalendar()->getUser();
+                }
+                $eskaera->setOharra( $txt . " langileekin koinzidentziak ditu");
+            }
 
             $em->persist($eskaera);
             $em->flush();

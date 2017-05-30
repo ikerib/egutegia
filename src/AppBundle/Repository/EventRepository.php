@@ -55,4 +55,19 @@ class EventRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function checkCollision($userid, $fini, $ffin) {
+        $qb = $this->createQueryBuilder( 'e' );
+
+            $qb->innerJoin('e.calendar','c')
+            ->innerJoin('c.user', 'u')
+            ->where('u.id=:userid')
+            //->andWhere($qb->expr()->between(':fini', 'e.start_date', 'e.end_date'))
+            ->andWhere('(:fini BETWEEN e.start_date AND e.end_date) OR (:ffin BETWEEN e.start_date AND e.end_date)')
+            ->setParameter('userid',$userid)
+            ->setParameter('fini',$fini)
+            ->setParameter('ffin',$ffin)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

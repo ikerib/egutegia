@@ -41,31 +41,20 @@ class EskaeraRepository extends EntityRepository
     }
 
     public function checkErabiltzaileaBateraezinZerrendan($userid) {
-        $em = $this->getEntityManager();
+        $qb = $this->_em->createQueryBuilder()
+            ->select( 'g' )
 
-        $dql = '
-            SELECT gd
-            FROM AppBundle:Gutxienekoakdet gd
-              INNER JOIN e.user u
-            WHERE u.id = :id
-        ';
+            ->from( 'AppBundle:Gutxienekoak', 'g' )
+            ->innerJoin('g.gutxienekoakdet', 'gd')
+            ->innerJoin( 'gd.user', 'u' )
 
-        $query = $em->createQuery($dql);
-        $query->setParameter('id', $userid);
+            ->where('u.id = :userid')
 
-        return $query->getResult();
+            ->setParameter('userid',$userid)
+            ;
+
+        return $qb->getQuery()->getResult();
     }
 
-    public function checkCollision($gdid, $fini, $ffin) {
-        $em = $this->getEntityManager();
 
-        $dql = '
-            
-        ';
-
-        $query = $em->createQuery($dql);
-        $query->setParameter('id', $userid);
-
-        return $query->getResult();
-    }
 }

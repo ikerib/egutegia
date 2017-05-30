@@ -92,6 +92,12 @@ class Eskaera
      */
     private $amaitua=false;
 
+    /**
+     * @var string
+     * @ORM\Column(name="oharra", type="string", nullable=true)
+     */
+    private $oharra;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -461,5 +467,29 @@ class Eskaera
     public function getAmaitua()
     {
         return $this->amaitua;
+    }
+
+    /**
+     * Set oharra
+     *
+     * @param string $oharra
+     *
+     * @return Eskaera
+     */
+    public function setOharra($oharra)
+    {
+        $this->oharra = $oharra;
+
+        return $this;
+    }
+
+    /**
+     * Get oharra
+     *
+     * @return string
+     */
+    public function getOharra()
+    {
+        return $this->oharra;
     }
 }
