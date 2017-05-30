@@ -54,6 +54,21 @@ class EskaeraType extends AbstractType
 
             ->add('user')
             ->add('calendar')
+            ->add('sinatzaileak', EntityType::class, [
+                    'label' => 'Sinatzaile zerrenda',
+                    'placeholder'=> 'Aukeratu bat...',
+                    'required' => false,
+                    'class' => 'AppBundle\Entity\Sinatzaileak',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                    'choice_label' => function ($template) {
+                        /* @var  $template \AppBundle\Entity\Template */
+                        return $template->getName();
+                    }, ]
+            )
+            ->add('oharra')
         ;
     }
     

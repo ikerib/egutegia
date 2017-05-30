@@ -127,6 +127,14 @@ class Eskaera
     private $calendar;
 
     /**
+     * @var \AppBundle\Entity\Sinatzaileak
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="sinatzaileak")
+     * @ORM\JoinColumn(name="sinatzaileak_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $sinatzaileak;
+
+    /**
     * Constructor.
     */
     public function __construct()
@@ -491,5 +499,29 @@ class Eskaera
     public function getOharra()
     {
         return $this->oharra;
+    }
+
+    /**
+     * Set sinatzaileak
+     *
+     * @param \AppBundle\Entity\Sinatzaileak $sinatzaileak
+     *
+     * @return Eskaera
+     */
+    public function setSinatzaileak(\AppBundle\Entity\Sinatzaileak $sinatzaileak = null)
+    {
+        $this->sinatzaileak = $sinatzaileak;
+
+        return $this;
+    }
+
+    /**
+     * Get sinatzaileak
+     *
+     * @return \AppBundle\Entity\Sinatzaileak
+     */
+    public function getSinatzaileak()
+    {
+        return $this->sinatzaileak;
     }
 }

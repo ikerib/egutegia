@@ -1,21 +1,46 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h1>Eskaera edit</h1>
-
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    {{ form_start(edit_form,{'attr': {'id': 'frmEditEskaera' ~ eskaera.id}}) }}
+        {{ form_errors(edit_form) }}
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('eskaera_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-{% endblock %}
+
+    {#{{ form_start(edit_form,{'attr': {'id': 'frmaddkonpentsatua'}}) }}#}
+
+    {#{{ form_errors(edit_form) }}#}
+
+    {#<div class="form-group">#}
+        {#<label for="min-date" class="col-sm-4 control-label">{{ 'Fetxa' | trans }}</label>#}
+        {#<div class="col-sm-7">#}
+            {#{{ form_widget(edit_form.date, { 'attr': {'class': 'form-control'} }) }}#}
+        {#</div>#}
+    {#</div>#}
+    {#<div class="form-group">#}
+        {#<label for="min-date" class="col-sm-4 control-label">{{ 'Orduak' | trans }}</label>#}
+        {#<div class="col-sm-7">#}
+            {#{{ form_widget(edit_form.hours, { 'attr': {'class': 'form-control birkalk'} }) }}#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<div class="form-group">#}
+        {#<label for="min-date" class="col-sm-4 control-label">{{ 'Minutuak' | trans }}</label>#}
+        {#<div class="col-sm-7">#}
+            {#{{ form_widget(edit_form.minutes, { 'attr': {'class': 'form-control birkalk'} }) }}#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<div class="form-group">#}
+        {#<label for="min-date" class="col-sm-4 control-label">{{ 'Faktorea' | trans }}</label>#}
+        {#<div class="col-sm-7">#}
+            {#{{ form_widget(edit_form.factor, { 'attr': {'class': 'form-control birkalk'} }) }}#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<div class="form-group">#}
+        {#<label for="min-date" class="col-sm-4 control-label">{{ 'Orduak konpentsatzera' | trans }}</label>#}
+        {#<div class="col-sm-7">#}
+            {#{{ form_widget(edit_form.total, { 'attr': {'class': 'form-control'} }) }}#}
+        {#</div>#}
+    {#</div>#}
+
+    {#<div style="display: none">#}
+        {#{{ form_end(edit_form) }}#}
+    {#</div>#}

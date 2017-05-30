@@ -2,20 +2,20 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
 /**
- * Gutxienekoak
+ * Firma
  *
- * @ORM\Table(name="gutxienekoak")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\GutxienekoakRepository")
+ * @ORM\Table(name="firma")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\FirmaRepository")
  * @ExclusionPolicy("all")
  */
-class Gutxienekoak
+class Firma
 {
     /**
      * @var int
@@ -34,11 +34,18 @@ class Gutxienekoak
     private $name;
 
     /**
-     * @var string
+     * @var bool
      *
-     * @ORM\Column(name="portzentaia", type="decimal", precision=10, scale=2, nullable=true)
+     * @ORM\Column(name="completed", type="boolean")
      */
-    private $portzentaia;
+    private $completed;
+
+    /**
+     * @var integer
+     * @Gedmo\SortablePosition
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -57,11 +64,20 @@ class Gutxienekoak
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Gutxienekoakdet
+     * @var \AppBundle\Entity\Firmadet
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Gutxienekoakdet", mappedBy="gutxienekoak")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firmak")
      */
-    protected $gutxienekoakdet;
+    protected $firmadet;
+
+    /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="firmak")
+     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $eskaera;
+
 
     public function __toString()
     {
@@ -73,12 +89,13 @@ class Gutxienekoak
      */
     public function __construct()
     {
-        $this->gutxienekoakdet = new ArrayCollection();
+        $this->firmadet = new ArrayCollection();
     }
 
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
 
 
 
@@ -97,7 +114,7 @@ class Gutxienekoak
      *
      * @param string $name
      *
-     * @return Gutxienekoak
+     * @return Firma
      */
     public function setName($name)
     {
@@ -117,27 +134,51 @@ class Gutxienekoak
     }
 
     /**
-     * Set portzentaia
+     * Set completed
      *
-     * @param string $portzentaia
+     * @param boolean $completed
      *
-     * @return Gutxienekoak
+     * @return Firma
      */
-    public function setPortzentaia($portzentaia)
+    public function setCompleted($completed)
     {
-        $this->portzentaia = $portzentaia;
+        $this->completed = $completed;
 
         return $this;
     }
 
     /**
-     * Get portzentaia
+     * Get completed
      *
-     * @return string
+     * @return boolean
      */
-    public function getPortzentaia()
+    public function getCompleted()
     {
-        return $this->portzentaia;
+        return $this->completed;
+    }
+
+    /**
+     * Set orden
+     *
+     * @param integer $orden
+     *
+     * @return Firma
+     */
+    public function setOrden($orden)
+    {
+        $this->orden = $orden;
+
+        return $this;
+    }
+
+    /**
+     * Get orden
+     *
+     * @return integer
+     */
+    public function getOrden()
+    {
+        return $this->orden;
     }
 
     /**
@@ -145,7 +186,7 @@ class Gutxienekoak
      *
      * @param \DateTime $created
      *
-     * @return Gutxienekoak
+     * @return Firma
      */
     public function setCreated($created)
     {
@@ -169,7 +210,7 @@ class Gutxienekoak
      *
      * @param \DateTime $updated
      *
-     * @return Gutxienekoak
+     * @return Firma
      */
     public function setUpdated($updated)
     {
@@ -189,36 +230,60 @@ class Gutxienekoak
     }
 
     /**
-     * Add gutxienekoakdet
+     * Add firmadet
      *
-     * @param \AppBundle\Entity\Gutxienekoakdet $gutxienekoakdet
+     * @param \AppBundle\Entity\Firmadet $firmadet
      *
-     * @return Gutxienekoak
+     * @return Firma
      */
-    public function addGutxienekoakdet(\AppBundle\Entity\Gutxienekoakdet $gutxienekoakdet)
+    public function addFirmadet(\AppBundle\Entity\Firmadet $firmadet)
     {
-        $this->gutxienekoakdet[] = $gutxienekoakdet;
+        $this->firmadet[] = $firmadet;
 
         return $this;
     }
 
     /**
-     * Remove gutxienekoakdet
+     * Remove firmadet
      *
-     * @param \AppBundle\Entity\Gutxienekoakdet $gutxienekoakdet
+     * @param \AppBundle\Entity\Firmadet $firmadet
      */
-    public function removeGutxienekoakdet(\AppBundle\Entity\Gutxienekoakdet $gutxienekoakdet)
+    public function removeFirmadet(\AppBundle\Entity\Firmadet $firmadet)
     {
-        $this->gutxienekoakdet->removeElement($gutxienekoakdet);
+        $this->firmadet->removeElement($firmadet);
     }
 
     /**
-     * Get gutxienekoakdet
+     * Get firmadet
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getGutxienekoakdet()
+    public function getFirmadet()
     {
-        return $this->gutxienekoakdet;
+        return $this->firmadet;
+    }
+
+    /**
+     * Set eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Firma
+     */
+    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    {
+        $this->eskaera = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \AppBundle\Entity\Eskaera
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
     }
 }

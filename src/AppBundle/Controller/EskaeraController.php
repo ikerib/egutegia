@@ -195,20 +195,32 @@ class EskaeraController extends Controller
     /**
      * Displays a form to edit an existing eskaera entity.
      *
-     * @Route("/{id}/edit", name="eskaera_edit")
+     * @Route("/{id}/edit", name="admin_eskaera_edit")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Eskaera $eskaera)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $deleteForm = $this->createDeleteForm($eskaera);
-        $editForm = $this->createForm('AppBundle\Form\EskaeraType', $eskaera);
+        $editForm = $this->createForm('AppBundle\Form\EskaeraType', $eskaera, array(
+            'action' => $this->generateUrl('admin_eskaera_edit', array('id'=>$eskaera->getId())),
+            'method' => 'POST'
+        ));
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            if ( $eskaera->getSinatzaileak() ) {
+                $eskaera->setAbiatua( 1 );
+                $em->persist( $eskaera );
+            }
+            $em->flush();
 
-            return $this->redirectToRoute('eskaera_edit', array('id' => $eskaera->getId()));
+            return $this->redirectToRoute('admin_eskaera_list');
         }
 
         return $this->render('eskaera/edit.html.twig', array(
