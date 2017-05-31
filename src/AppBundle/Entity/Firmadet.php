@@ -86,9 +86,9 @@ class Firmadet
      * @var \AppBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="firmadet")
-     * @ORM\JoinColumn(name="sinatzaile_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\JoinColumn(name="firmatzaile_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    private $sinatzailea;
+    private $firmatzailea;
 
 
     /*****************************************************************************************************************/
@@ -297,5 +297,29 @@ class Firmadet
     public function getSinatzailea()
     {
         return $this->sinatzailea;
+    }
+
+    /**
+     * Set firmatzailea
+     *
+     * @param \AppBundle\Entity\User $firmatzailea
+     *
+     * @return Firmadet
+     */
+    public function setFirmatzailea(\AppBundle\Entity\User $firmatzailea = null)
+    {
+        $this->firmatzailea = $firmatzailea;
+
+        return $this;
+    }
+
+    /**
+     * Get firmatzailea
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getFirmatzailea()
+    {
+        return $this->firmatzailea;
     }
 }

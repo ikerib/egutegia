@@ -3,19 +3,18 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 
 /**
- * Firma
+ * Notification
  *
- * @ORM\Table(name="firma")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\FirmaRepository")
+ * @ORM\Table(name="notification")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\NotificationRepository")
  * @ExclusionPolicy("all")
  */
-class Firma
+class Notification
 {
     /**
      * @var int
@@ -34,18 +33,18 @@ class Firma
     private $name;
 
     /**
-     * @var bool
+     * @var string
      *
-     * @ORM\Column(name="completed", type="boolean")
+     * @ORM\Column(name="description", type="string", length=255)
      */
-    private $completed;
+    private $description;
 
     /**
-     * @var integer
-     * @Gedmo\SortablePosition
-     * @ORM\Column(name="orden", type="integer", nullable=true)
+     * @var bool
+     *
+     * @ORM\Column(name="readed", type="boolean")
      */
-    private $orden;
+    private $readed;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -59,51 +58,49 @@ class Firma
      */
     private $updated;
 
+    /**
+     * @var integer
+     * @Gedmo\SortablePosition
+     * @ORM\Column(name="orden", type="integer", nullable=true)
+     */
+    private $orden;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Firmadet
+     * @var \AppBundle\Entity\Firma
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firmak")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Firma", inversedBy="notifications")
+     * @ORM\JoinColumn(name="firma_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    protected $firmadet;
+    private $firma;
 
     /**
      * @var \AppBundle\Entity\Eskaera
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="firmak")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="notifications")
      * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $eskaera;
 
     /**
-     * @var \AppBundle\Entity\Sinatzaileak
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="firmak")
-     * @ORM\JoinColumn(name="sinatzaile_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="notifications")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    private $sinatzaileak;
-
+    private $user;
 
     public function __toString()
     {
         return (string) $this->getName().'';
     }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->firmadet = new ArrayCollection();
-    }
-
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-
 
 
 
@@ -122,7 +119,7 @@ class Firma
      *
      * @param string $name
      *
-     * @return Firma
+     * @return Notification
      */
     public function setName($name)
     {
@@ -142,51 +139,51 @@ class Firma
     }
 
     /**
-     * Set completed
+     * Set description
      *
-     * @param boolean $completed
+     * @param string $description
      *
-     * @return Firma
+     * @return Notification
      */
-    public function setCompleted($completed)
+    public function setDescription($description)
     {
-        $this->completed = $completed;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get completed
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set readed
+     *
+     * @param boolean $readed
+     *
+     * @return Notification
+     */
+    public function setReaded($readed)
+    {
+        $this->readed = $readed;
+
+        return $this;
+    }
+
+    /**
+     * Get readed
      *
      * @return boolean
      */
-    public function getCompleted()
+    public function getReaded()
     {
-        return $this->completed;
-    }
-
-    /**
-     * Set orden
-     *
-     * @param integer $orden
-     *
-     * @return Firma
-     */
-    public function setOrden($orden)
-    {
-        $this->orden = $orden;
-
-        return $this;
-    }
-
-    /**
-     * Get orden
-     *
-     * @return integer
-     */
-    public function getOrden()
-    {
-        return $this->orden;
+        return $this->readed;
     }
 
     /**
@@ -194,7 +191,7 @@ class Firma
      *
      * @param \DateTime $created
      *
-     * @return Firma
+     * @return Notification
      */
     public function setCreated($created)
     {
@@ -218,7 +215,7 @@ class Firma
      *
      * @param \DateTime $updated
      *
-     * @return Firma
+     * @return Notification
      */
     public function setUpdated($updated)
     {
@@ -238,37 +235,51 @@ class Firma
     }
 
     /**
-     * Add firmadet
+     * Set orden
      *
-     * @param \AppBundle\Entity\Firmadet $firmadet
+     * @param integer $orden
      *
-     * @return Firma
+     * @return Notification
      */
-    public function addFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    public function setOrden($orden)
     {
-        $this->firmadet[] = $firmadet;
+        $this->orden = $orden;
 
         return $this;
     }
 
     /**
-     * Remove firmadet
+     * Get orden
      *
-     * @param \AppBundle\Entity\Firmadet $firmadet
+     * @return integer
      */
-    public function removeFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    public function getOrden()
     {
-        $this->firmadet->removeElement($firmadet);
+        return $this->orden;
     }
 
     /**
-     * Get firmadet
+     * Set firma
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @param \AppBundle\Entity\Firma $firma
+     *
+     * @return Notification
      */
-    public function getFirmadet()
+    public function setFirma(\AppBundle\Entity\Firma $firma = null)
     {
-        return $this->firmadet;
+        $this->firma = $firma;
+
+        return $this;
+    }
+
+    /**
+     * Get firma
+     *
+     * @return \AppBundle\Entity\Firma
+     */
+    public function getFirma()
+    {
+        return $this->firma;
     }
 
     /**
@@ -276,7 +287,7 @@ class Firma
      *
      * @param \AppBundle\Entity\Eskaera $eskaera
      *
-     * @return Firma
+     * @return Notification
      */
     public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
     {
@@ -296,26 +307,26 @@ class Firma
     }
 
     /**
-     * Set sinatzaileak
+     * Set user
      *
-     * @param \AppBundle\Entity\Sinatzaileak $sinatzaileak
+     * @param \AppBundle\Entity\User $user
      *
-     * @return Firma
+     * @return Notification
      */
-    public function setSinatzaileak(\AppBundle\Entity\Sinatzaileak $sinatzaileak = null)
+    public function setUser(\AppBundle\Entity\User $user = null)
     {
-        $this->sinatzaileak = $sinatzaileak;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get sinatzaileak
+     * Get user
      *
-     * @return \AppBundle\Entity\Sinatzaileak
+     * @return \AppBundle\Entity\User
      */
-    public function getSinatzaileak()
+    public function getUser()
     {
-        return $this->sinatzaileak;
+        return $this->user;
     }
 }

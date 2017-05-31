@@ -29,3 +29,9 @@ services:
   app.document.directory_namer:
       class: AppBundle\Service\DirectoryNamer
       arguments: [%kernel.root_dir%]
+
+  app.sinatzeke:
+        class: AppBundle\Service\NotificationService
+#        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+

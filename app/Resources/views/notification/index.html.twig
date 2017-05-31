@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Notifications list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Readed</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Orden</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for notification in notifications %}
+            <tr>
+                <td><a href="{{ path('notification_show', { 'id': notification.id }) }}">{{ notification.id }}</a></td>
+                <td>{{ notification.name }}</td>
+                <td>{{ notification.description }}</td>
+                <td>{% if notification.readed %}Yes{% else %}No{% endif %}</td>
+                <td>{% if notification.created %}{{ notification.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if notification.updated %}{{ notification.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ notification.orden }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('notification_show', { 'id': notification.id }) }}">show</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

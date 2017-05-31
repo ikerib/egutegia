@@ -5,12 +5,15 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Firma;
 use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Gutxienekoakdet;
+use AppBundle\Entity\Notification;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Eskaera controller.
@@ -107,7 +110,7 @@ class EskaeraController extends Controller
             $user = $data->getUser();
             $fini = $data->getHasi();
             $ffin = $data->getAmaitu();
-
+            $collision="";
             /**
              * 1-. Begiratu ea bateraezinik duen
              */
@@ -162,6 +165,9 @@ class EskaeraController extends Controller
      *
      * @Route("/{id}", name="eskaera_show")
      * @Method("GET")
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Eskaera $eskaera)
     {
@@ -215,8 +221,45 @@ class EskaeraController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
             if ( $eskaera->getSinatzaileak() ) {
-                $eskaera->setAbiatua( 1 );
-                $em->persist( $eskaera );
+
+                /*
+                 * 2-. Begiratu firma entitaterik ez duela (abiatua = false) eta firma entitatea bete
+                 */
+                if ( $eskaera->getAbiatua() == false) {
+
+                    $firma = New Firma();
+                    $firma->setName( $eskaera->getName() );
+                    $firma->setSinatzaileak( $eskaera->getSinatzaileak() );
+                    $firma->setEskaera( $eskaera );
+                    $firma->setCompleted( 0 );
+                    $em->persist( $firma );
+
+                    $eskaera->setAbiatua( true );
+                    $em->persist( $eskaera );
+
+                    $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
+                    foreach ($sinatzaileusers as $s) {
+                        $notify = New Notification();
+                        $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
+                        $notify->setDescription(
+                            $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
+                            "Egutegia: " . $eskaera->getCalendar()->getName()."\n".
+                            "Hasi: " . $eskaera->getHasi()->format('Y-m-d')."\n".
+                            "Amaitu: ". $eskaera->getAmaitu()->format('Y-m-d')
+
+                        );
+                        $notify->setEskaera( $eskaera );
+                        $notify->setFirma( $firma );
+                        $notify->setReaded( false );
+                        $notify->setUser( $s->getUser() );
+                        $em->persist( $notify );
+                    }
+
+                } else if ($eskaera->getAmaitua() === false) {
+
+                }
+
+
             }
             $em->flush();
 
@@ -235,6 +278,10 @@ class EskaeraController extends Controller
      *
      * @Route("/{id}", name="eskaera_delete")
      * @Method("DELETE")
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Eskaera $eskaera)
     {

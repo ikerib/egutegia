@@ -10,4 +10,7 @@ namespace AppBundle\Repository;
  */
 class FirmaRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function Sinatzeke() {
+
+    }
 }
