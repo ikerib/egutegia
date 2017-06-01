@@ -63,6 +63,21 @@ class Sinatzaileak
      */
     protected $sinatzaileakdet;
 
+    /**
+     * @var \AppBundle\Entity\Firma
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firma", mappedBy="sinatzaileak")
+     */
+    protected $firma;
+
+    /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="sinatzaileak")
+     */
+    protected $eskaera;
+
+
     public function __toString()
     {
         return (string) $this->getName().'';
@@ -219,5 +234,73 @@ class Sinatzaileak
     public function getSinatzaileakdet()
     {
         return $this->sinatzaileakdet;
+    }
+
+    /**
+     * Add firma
+     *
+     * @param \AppBundle\Entity\Firma $firma
+     *
+     * @return Sinatzaileak
+     */
+    public function addFirma(\AppBundle\Entity\Firma $firma)
+    {
+        $this->firma[] = $firma;
+
+        return $this;
+    }
+
+    /**
+     * Remove firma
+     *
+     * @param \AppBundle\Entity\Firma $firma
+     */
+    public function removeFirma(\AppBundle\Entity\Firma $firma)
+    {
+        $this->firma->removeElement($firma);
+    }
+
+    /**
+     * Get firma
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFirma()
+    {
+        return $this->firma;
+    }
+
+    /**
+     * Add eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Sinatzaileak
+     */
+    public function addEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera[] = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Remove eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     */
+    public function removeEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera->removeElement($eskaera);
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
     }
 }

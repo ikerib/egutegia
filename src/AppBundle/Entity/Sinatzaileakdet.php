@@ -65,6 +65,13 @@ class Sinatzaileakdet
      */
     private $user;
 
+    /**
+     * @var \AppBundle\Entity\Firmadet
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firmadet", mappedBy="sinatzaileakdet")
+     */
+    protected $firmadet;
+
     public function __toString()
     {
         return (string) $this->getId().'';
@@ -204,5 +211,29 @@ class Sinatzaileakdet
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set firmadet
+     *
+     * @param \AppBundle\Entity\Firmadet $firmadet
+     *
+     * @return Sinatzaileakdet
+     */
+    public function setFirmadet(\AppBundle\Entity\Firmadet $firmadet = null)
+    {
+        $this->firmadet = $firmadet;
+
+        return $this;
+    }
+
+    /**
+     * Get firmadet
+     *
+     * @return \AppBundle\Entity\Firmadet
+     */
+    public function getFirmadet()
+    {
+        return $this->firmadet;
     }
 }

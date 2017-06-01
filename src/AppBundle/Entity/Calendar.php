@@ -200,6 +200,13 @@ class Calendar
     private $hours;
 
     /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="calendar")
+     */
+    protected $eskaeras;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -761,5 +768,39 @@ class Calendar
     public function getHoursSelfHalf()
     {
         return $this->hours_self_half;
+    }
+
+    /**
+     * Add eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Calendar
+     */
+    public function addEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaeras[] = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Remove eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     */
+    public function removeEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaeras->removeElement($eskaera);
+    }
+
+    /**
+     * Get eskaeras
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEskaeras()
+    {
+        return $this->eskaeras;
     }
 }

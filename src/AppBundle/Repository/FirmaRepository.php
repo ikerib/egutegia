@@ -10,7 +10,36 @@ namespace AppBundle\Repository;
  */
 class FirmaRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function Sinatzeke() {
+    public function ErabiltzaileakEskaeraFirmatzekeDu($userid, $firmaid) {
 
+        $qm = $this->createQueryBuilder( 'f' )
+            ->innerJoin( 'f.firmadet', 'fd' )
+            ->innerJoin( 'fd.firmatzailea', 'u' )
+            ->where( 'u.id = :userid' )
+            ->andWhere('f.id=:firmaid')
+            ->setParameter('userid',$userid)
+            ->setParameter('firmaid', $firmaid)
+        ;
+
+
+        return $qm->getQuery()->getResult();
+
+    }
+
+    public function firmaGuztiakDitu($firmaid) {
+        $SQL ="
+            SELECT *
+            FROM sinatzaileak s
+            LEFT JOIN firmadet f
+            ON s.id = f.sinatzaileak_id
+            WHERE f.id IS NULL
+            AND f.id = :firmaid
+        ";
+
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($SQL);
+        $stmt->bindValue( 1, $firmaid );
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

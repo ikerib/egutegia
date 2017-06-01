@@ -23,8 +23,9 @@ class NotificationController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
 
-        $notifications = $em->getRepository('AppBundle:Notification')->findAll();
+        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId());
 
         return $this->render('notification/index.html.twig', array(
             'notifications' => $notifications,
@@ -36,6 +37,9 @@ class NotificationController extends Controller
      *
      * @Route("/{id}", name="notification_show")
      * @Method("GET")
+     * @param Notification $notification
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Notification $notification)
     {

@@ -24,4 +24,14 @@ class NotificationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getCurrentUserNotifications($userid) {
+        $qb = $this->createQueryBuilder( 'n' )
+            ->innerJoin( 'n.user', 'u' )
+            ->where( 'u.id=:userid' )
+            ->setParameter( 'userid', $userid );
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

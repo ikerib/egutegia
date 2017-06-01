@@ -1,42 +1,169 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Notifications list</h1>
+{% block head_style %}
+    {{ parent() }}
+{% endblock %}
+{% block headline %}{{ 'Jakinarazpenak' | trans }} {% endblock %}
 
-    <table>
+
+{% block content_row %}
+
+
+    <table data-toggle="table"
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
+
+           data-pagination="true"
+           data-page-size="25"
+           data-search="true"
+            {#data-height="300"#}
+
+           data-sort-name="name"
+           data-sort-order="asc"
+
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+
+           data-toolbar="#toolbar"
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Readed</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Orden</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th data-halign="center" data-align="center" data-field="readed"
+                data-sortable="true">{{ 'Irakurria' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Gaia' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.hasi"
+                data-sortable="true">{{ 'Hasi' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.amaitu"
+                data-sortable="true">{{ 'Amaitu' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.orduak"
+                data-sortable="true">{{ 'Orduak' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
+                data-sortable="true">{{ 'Oharra' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="created"
+                data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
         {% for notification in notifications %}
             <tr>
-                <td><a href="{{ path('notification_show', { 'id': notification.id }) }}">{{ notification.id }}</a></td>
+                <td>{% if notification.readed %}<span class="label label-success"> Bai</span>{% else %}<span
+                            class="label label-danger"> Ez</span> {% endif %}</td>
                 <td>{{ notification.name }}</td>
-                <td>{{ notification.description }}</td>
-                <td>{% if notification.readed %}Yes{% else %}No{% endif %}</td>
-                <td>{% if notification.created %}{{ notification.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if notification.updated %}{{ notification.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ notification.orden }}</td>
+                <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
+                <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
+                <td>{{ notification.eskaera.orduak }}</td>
+                <td>{% if notification.eskaera.oharra | length > 0 %}
+                    <button data-toggle="modal" data-target="#frmEskaeraModalAccept{{ notification.id }}">
+                            Bai</button>{% endif %}</td>
+                <td>{{ notification.created | date('Y-m-d') }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('notification_show', { 'id': notification.id }) }}">show</a>
-                        </li>
-                    </ul>
+                    {#<div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog" aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">#}
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Eskaera</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-10">
+                                        <ul class="list-inline">
+                                            <li><strong>Nork:</strong></li>
+                                            <li>{{ notification.eskaera.user.displayname }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-10">
+                                        <ul class="list-inline">
+                                            <li><strong>Fetxak:</strong></li>
+                                            <li>{{ notification.eskaera.hasi | date('Y-m-d') }}</li>
+                                            <li>/</li>
+                                            <li>{{ notification.eskaera.amaitu | date('Y-m-d') }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2"></div>
+                                    <div class="col-md-10">
+                                        <ul class="list-inline">
+                                            <li><strong>Egunak:</strong></li>
+                                            <li>{{ notification.eskaera.orduak }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                {% if notification.eskaera.oharra | length > 0 %}
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-10">
+                                            <ul class="list-inline">
+                                                <li><strong>Oharrak:</strong></li>
+                                                <li>{{ notification.eskaera.oharra }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                                <button type="button" class="btn btn-danger btnEskaeraEzOnartu"
+                                        data-firmaid="{{ notification.firma.id }}">Eskaera EZ onartu
+                                </button>
+                                <button type="button" class="btn btn-primary btnEskaeraOnartu"
+                                        data-firmaid="{{ notification.firma.id }}">Eskaera Onartu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {#</div>#}
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+      $(document).ready(function () {
+
+        $('.btnEskaeraOnartu').on('click', function () {
+          const firmaid = $(this).data('firmaid')
+          const url = Routing.generate('put_firma', {'id': firmaid})
+          $.ajax({
+            url: url,
+            method: 'PUT'
+          })
+            .done(function (data) {
+              console.log('success', data)
+            })
+            .fail(function (xhr) {
+              console.log('error', xhr)
+            })
+        })
+
+      })
+    </script>
+
 {% endblock %}

@@ -105,7 +105,7 @@ class Eskaera
     /**
      * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="eskaera")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $user;
@@ -113,7 +113,7 @@ class Eskaera
     /**
      * @var \AppBundle\Entity\Type
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="types")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="eskaera")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $type;
@@ -121,7 +121,7 @@ class Eskaera
     /**
      * @var \AppBundle\Entity\Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="calendars")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="eskaeras")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $calendar;
@@ -129,10 +129,25 @@ class Eskaera
     /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="sinatzaileak")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="eskaera")
      * @ORM\JoinColumn(name="sinatzaileak_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $sinatzaileak;
+
+    /**
+     * @var \AppBundle\Entity\Notification
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="eskaera")
+     */
+    protected $notifications;
+
+
+    /**
+     * @var \AppBundle\Entity\Firma
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="eskaera")
+     */
+    protected $firma;
 
     /**
     * Constructor.
@@ -523,5 +538,87 @@ class Eskaera
     public function getSinatzaileak()
     {
         return $this->sinatzaileak;
+    }
+
+    /**
+     * Add firma
+     *
+     * @param \AppBundle\Entity\Firma $firma
+     *
+     * @return Eskaera
+     */
+    public function addFirma(\AppBundle\Entity\Firma $firma)
+    {
+        $this->firma[] = $firma;
+
+        return $this;
+    }
+
+    /**
+     * Remove firma
+     *
+     * @param \AppBundle\Entity\Firma $firma
+     */
+    public function removeFirma(\AppBundle\Entity\Firma $firma)
+    {
+        $this->firma->removeElement($firma);
+    }
+
+    /**
+     * Get firma
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFirma()
+    {
+        return $this->firma;
+    }
+
+    /**
+     * Set firma
+     *
+     * @param \AppBundle\Entity\Firma $firma
+     *
+     * @return Eskaera
+     */
+    public function setFirma(\AppBundle\Entity\Firma $firma = null)
+    {
+        $this->firma = $firma;
+
+        return $this;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     *
+     * @return Eskaera
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }

@@ -66,14 +66,21 @@ class Firma
     /**
      * @var \AppBundle\Entity\Firmadet
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firmak")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firma")
      */
     protected $firmadet;
 
     /**
+     * @var \AppBundle\Entity\Notification
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="firma")
+     */
+    protected $notifications;
+
+    /**
      * @var \AppBundle\Entity\Eskaera
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="firmak")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="firma")
      * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $eskaera;
@@ -81,7 +88,7 @@ class Firma
     /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="firmak")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="firma")
      * @ORM\JoinColumn(name="sinatzaile_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $sinatzaileak;
@@ -317,5 +324,39 @@ class Firma
     public function getSinatzaileak()
     {
         return $this->sinatzaileak;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     *
+     * @return Firma
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
     }
 }

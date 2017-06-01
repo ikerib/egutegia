@@ -124,6 +124,13 @@ class Type
     private $template_events;
 
     /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="type")
+     */
+    protected $eskaera;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -459,5 +466,39 @@ class Type
     public function getErakutsiEskaera()
     {
         return $this->erakutsi_eskaera;
+    }
+
+    /**
+     * Add eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Type
+     */
+    public function addEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera[] = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Remove eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     */
+    public function removeEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera->removeElement($eskaera);
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
     }
 }

@@ -89,6 +89,27 @@ class User extends BaseUser implements LdapUserInterface
     private $calendars;
 
     /**
+     * @var \AppBundle\Entity\Notification
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="user")
+     */
+    protected $notifications;
+
+    /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="user")
+     */
+    protected $eskaera;
+
+    /**
+     * @var \AppBundle\Entity\Firmadet
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firmatzailea")
+     */
+    protected $firmadet;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -313,5 +334,107 @@ class User extends BaseUser implements LdapUserInterface
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Add notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     *
+     * @return User
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * Add eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return User
+     */
+    public function addEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera[] = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Remove eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     */
+    public function removeEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaera->removeElement($eskaera);
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
+    }
+
+    /**
+     * Add firmadet
+     *
+     * @param \AppBundle\Entity\Firmadet $firmadet
+     *
+     * @return User
+     */
+    public function addFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    {
+        $this->firmadet[] = $firmadet;
+
+        return $this;
+    }
+
+    /**
+     * Remove firmadet
+     *
+     * @param \AppBundle\Entity\Firmadet $firmadet
+     */
+    public function removeFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    {
+        $this->firmadet->removeElement($firmadet);
+    }
+
+    /**
+     * Get firmadet
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFirmadet()
+    {
+        return $this->firmadet;
     }
 }
