@@ -126,10 +126,10 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
                                 <button type="button" class="btn btn-danger btnEskaeraEzOnartu"
-                                        data-firmaid="{{ notification.firma.id }}">Eskaera EZ onartu
+                                        data-firmaid="{{ notification.firma.id }}" data-notifyid="{{ notification.id }}">Eskaera EZ onartu
                                 </button>
                                 <button type="button" class="btn btn-primary btnEskaeraOnartu"
-                                        data-firmaid="{{ notification.firma.id }}">Eskaera Onartu
+                                        data-firmaid="{{ notification.firma.id }}" data-notifyid="{{ notification.id }}">Eskaera Onartu
                                 </button>
                             </div>
                         </div>
@@ -150,16 +150,29 @@
 
         $('.btnEskaeraOnartu').on('click', function () {
           const firmaid = $(this).data('firmaid')
+          const jakinarazpenaid = $(this).data('notifyid')
           const url = Routing.generate('put_firma', {'id': firmaid})
           $.ajax({
             url: url,
             method: 'PUT'
           })
             .done(function (data) {
-              console.log('success', data)
+              const url2 = Routing.generate('put_jakinarazpena', {'id':jakinarazpenaid})
+console.log(url2)
+              $.ajax({
+                url: url2,
+                method: 'PUT'
+              }).done(function (data) {
+                console.log(data)
+                location.reload();
+              }).fail(function (xhr) {
+                console.log('error', xhr)
+                bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.")
+              })
             })
             .fail(function (xhr) {
               console.log('error', xhr)
+              bootbox.alert("Akats bat gertatu da firmatzerakoan.")
             })
         })
 

@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class FirmadetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getFirmatuaDutenErabiltzaileak($firmaid) {
+        $qm = $this->createQueryBuilder( 'fd' )
+            ->innerJoin( 'fd.firma','f')
+            ->where( 'f.id = :firmaid' )
+            ->setParameter('firmaid', $firmaid)
+        ;
+
+
+        return $qm->getQuery()->getResult();
+    }
 }

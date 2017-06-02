@@ -14,6 +14,7 @@ use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\TemplateEvent;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
@@ -695,8 +696,11 @@ class ApiController extends FOSRestController
                 $fd->setNoiz( New \DateTime() );
                 $em->persist( $fd );
             }
-            $firmak = $em->getRepository( 'AppBundle:Firma' )->firmaGuztiakDitu( $firma->getId() );
-            if ( count( $firmak ) > 0 ) { // firmak falta dira
+            /** @var Eskaera $eskaera */
+            $eskaera = $firma->getEskaera();
+            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak($eskaera->getSinatzaileak()->getId());
+            $firmadet = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak( $firma->getId() );
+            if ( $this->guztiekFirmatuDute($sinatzaileakdet, $firmadet) == false ) { // firmak falta dira
 
             } else {
                 $firma->setCompleted( true );
@@ -713,7 +717,7 @@ class ApiController extends FOSRestController
                 $em->persist( $eskaera );
             }
         }
-
+        $em->flush();
 
         $view = View::create();
         $view->setData( $firma );
@@ -722,4 +726,89 @@ class ApiController extends FOSRestController
 
         return $view;
     } // "put_firma"             [PUT] /firma/{id}
+
+    /**
+     * Sinatzaileakdet eta Firmatzaileak det hartu eta begiratu ea biek
+     * USER berdina daukaten
+     *
+     * @param $sinatzaileakdet
+     * @param $firmadet
+     *
+     * @return bool
+     */
+    function guztiekFirmatuDute ($sinatzaileakdet,$firmadet) {
+        if ( count($sinatzaileakdet) != count($firmadet)) {
+            return false;
+        }
+
+        $aurkitua = false;
+
+        /** @var Sinatzaileakdet $s */
+        foreach ($sinatzaileakdet as $s) {
+            /** @var Firmadet $f */
+            foreach ($firmadet as $f) {
+
+                if ($f->getFirmatzailea() == $s->getUser()) {
+                    $aurkitua = true;
+                    break 2;
+                }
+            }
+
+        }
+
+        return $aurkitua;
+
+    }
+
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** JAKINARAZPENA API     ********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /**
+     * Firmatu.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Jakinarazpena irakurria / irakurri gabe gisa markatu",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return static
+     * @throws EntityNotFoundException
+     * @Rest\View(statusCode=200)
+     * @Rest\Put("/jakinarazpena/{id}")
+     */
+    public function putJakinarazpenaAction ( Request $request, $id )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $jsonData = json_decode( $request->getContent(), true );
+
+        // find jakinarazpena
+        $notify = $em->getRepository( 'AppBundle:Notification' )->find( $id );
+        if ( ! $notify ) {
+            throw new EntityNotFoundException();
+        }
+
+        if ( $notify->getReaded() == false ) {
+            $notify->setReaded( true );
+        } else {
+            $notify->setReaded( false );
+        }
+        $em->persist( $notify );
+        $em->flush();
+
+        $view = View::create();
+        $view->setData( $notify );
+        header( 'content-type: application/json; charset=utf-8' );
+        header( 'access-control-allow-origin: *' );
+
+        return $view;
+    } // "put_jakinarazpena"             [PUT] /jakinarazpena/{id}
 }

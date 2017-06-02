@@ -134,6 +134,7 @@ fos_js_routing:
         - admin_calendar_compare
         - eskaera_index
         - put_firma
+        - put_jakinarazpena
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

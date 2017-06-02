@@ -123,8 +123,10 @@ class Builder implements ContainerAwareInterface
             $menu[ 'User' ]->addChild(
                 ' Jakinarazpenak',
                 array(
+                    'label'    => " Jakinarazpenak <span class='badge badge-error'>" . count($notifications) . "</span>",
                     'route' => 'notification_index',
                     'icon'  => 'bullhorn',
+                    'extras'   => array( 'safe_label' => true ),
                 )
             );
             $menu[ 'User' ]->addChild('divider2', ['divider' => true]);

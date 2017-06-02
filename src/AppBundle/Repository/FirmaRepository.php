@@ -26,20 +26,4 @@ class FirmaRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
-    public function firmaGuztiakDitu($firmaid) {
-        $SQL ="
-            SELECT *
-            FROM sinatzaileak s
-            LEFT JOIN firmadet f
-            ON s.id = f.sinatzaileak_id
-            WHERE f.id IS NULL
-            AND f.id = :firmaid
-        ";
-
-        $conn = $this->getEntityManager()->getConnection();
-        $stmt = $conn->prepare($SQL);
-        $stmt->bindValue( 1, $firmaid );
-        $stmt->execute();
-        return $stmt->fetchAll();
-    }
 }

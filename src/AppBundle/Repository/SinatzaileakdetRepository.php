@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class SinatzaileakdetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getSinatuBeharDutenErabiltzaileak ( $sinatzaileakid )
+    {
+        $qm = $this->createQueryBuilder( 'sd' )
+            ->where( 'sd.sinatzaileak=:sinatzaileakid' )
+            ->setParameter( 'sinatzaileakid', $sinatzaileakid );
+
+        return $qm->getQuery()->getResult();
+    }
 }
