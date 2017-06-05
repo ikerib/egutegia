@@ -80,15 +80,11 @@
                         </ul>
                         <ul class="list-inline">
                             <li>Egun osoak:</li>
-                            <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</li>
+                            {% set egunOsoak = (selfHoursComplete / calendar.hoursDay) | round (2) %}
+                            <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ egunOsoak }} egun)</li>
                         </ul>
 
-                        {#<dl class="dl-horizontal">#}
-                            {#<dt>Zatitu daitezke:</dt>#}
-                            {#<dd id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</dd>#}
-                            {#<dt>Egun osoak:</dt>#}
-                            {#<dd id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</dd>#}
-                        {#</dl>#}
+
                     </div>
                 </div>
 
@@ -576,9 +572,6 @@
 
     </div>
 
-
-
-
     {% if calendar.template is not null %}
         {% set templateid =  calendar.template.id %}
     {% else %}
@@ -586,7 +579,6 @@
     {% endif %}
     <input type="hidden" id="templateid" value="{{ templateid }}">
     <input type="hidden" id="calendarid" value="{{ calendar.id }}">
-
 
 {% endblock %}
 
