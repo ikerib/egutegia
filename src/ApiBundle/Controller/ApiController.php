@@ -296,8 +296,9 @@ class ApiController extends FOSRestController
                     }
                     //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $hours);
                 }
-                if ( $t->getRelated() === 'hours_compensed' ) {
-                    $calendar->setHoursCompensed( (float)( $calendar->getHoursCompensed() ) + $hours );
+
+                if ($t->getRelated() === 'hours_compensed') {
+                    $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + (float) $oldValue - (float) $event->getHours());
                 }
                 if ( $t->getRelated() === 'hours_sindical' ) {
                     $calendar->setHoursSindikal( (float)( $calendar->getHoursSindikal() ) + $hours );

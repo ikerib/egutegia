@@ -604,18 +604,18 @@
         /*************************************************************************************************************/
         /** MISC *****************************************************************************************************/
         /*************************************************************************************************************/
-        var x = parseFloat($('#numberLanaldi').val())
-        var textua = " ( " + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() +  " minutu )"
+        let x = parseFloat($('#numberLanaldi').val())
+        let textua = ' ( ' + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() + ' minutu )'
         $('#hourLanaldi').text(textua)
 
-        var x1 = parseFloat($('#numberHoursPartial').val())
-        var textua1 = " ( " + moment.duration(x1, 'hours').hours() + ' ordu ' + moment.duration(x1, 'hours').minutes() +  " minutu )"
+        let x1 = parseFloat($('#numberHoursPartial').val())
+        let textua1 = " ( " + moment.duration(x1, 'hours').hours() + ' ordu ' + moment.duration(x1, 'hours').minutes() +  " minutu )"
         $('#selfHoursPartialToHour').text(textua1)
 
         /*************************************************************************************************************/
         /** HASH funtzioak *******************************************************************************************/
         /*************************************************************************************************************/
-        var url = document.location.toString()
+        let url = document.location.toString()
         if (url.match('#')) {
           $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show')
         }
@@ -628,7 +628,7 @@
         })
 
         // show specific tab
-        var hash = window.location.hash
+        let hash = window.location.hash
         hash = window.location.hash.replace(/^#!/, '')
         $('#myTab a[href="' + hash + '"]').tab('show')
 
@@ -637,10 +637,10 @@
         /** Egutegia Tab *********************************************************************************************/
         /*************************************************************************************************************/
         $('#save-calendar-note').on('click', function () {
-          var calendarid = $('#calendarid').val()
-          var url = Routing.generate('post_notes', {'calendarid': calendarid})
+          let calendarid = $('#calendarid').val()
+          let url = Routing.generate('post_notes', {'calendarid': calendarid})
 
-          var values = {}
+          let values = {}
           $.each($('#frmNotes').serializeArray(), function (i, field) {
             values[field.name] = field.value
           })
@@ -673,7 +673,7 @@
         /** Fitxategiak Tab ******************************************************************************************/
         /*************************************************************************************************************/
         $('.btnRemoveRow').on('click', function () {
-          var that = $(this)
+          let that = $(this)
           bootbox.confirm({
             title: '{{ 'Adi!' | trans }}',
             message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
@@ -704,8 +704,8 @@
         $('#btnAddKonpentsatua').click(function () {
           $('#modal-content-konpentsatuak').empty()
 
-          var calendarid = $('#calendarid').val()
-          var url = Routing.generate('admin_hour_new', {'calendarid': calendarid})
+          let calendarid = $('#calendarid').val()
+          let url = Routing.generate('admin_hour_new', {'calendarid': calendarid})
           $('#modal-content-konpentsatuak').load(url, function () {
             $('#modal-konpentsatuak').modal()
             $('#appbundle_hour_date').datepicker({
@@ -718,8 +718,8 @@
         $('.btn-edit-konpentsatua').click(function () {
           $('#modal-content-konpentsatuak').empty()
 
-          var miid = $(this).data('id')
-          var url = Routing.generate('admin_hour_edit', {'id': miid })
+          let miid = $(this).data('id')
+          let url = Routing.generate('admin_hour_edit', {'id': miid })
           $('#modal-content-konpentsatuak').load(url, function () {
             $('#modal-konpentsatuak').modal()
           });
@@ -734,7 +734,7 @@
         });
 
         $(document).on('click', '.btnRemoveHourwRow', function () {
-          var that = $(this)
+          let that = $(this)
           bootbox.confirm({
             title: '{{ 'Adi!' | trans }}',
             message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
@@ -759,24 +759,24 @@
         })
 
         function birKalkulatu() {
-          var iHour = $('#appbundle_hour_hours').val().replace(/\,/g, '.')
+          let iHour = $('#appbundle_hour_hours').val().replace(/\,/g, '.')
           if (iHour.length === 0) { iHour = 0 }
           if (!$.isNumeric(iHour)) { iHour = 0 }
-          var fHour = parseFloat( iHour)
+          let fHour = parseFloat( iHour)
 
-          var iMinu = $('#appbundle_hour_minutes').val().replace(/\,/g, '.')
+          let iMinu = $('#appbundle_hour_minutes').val().replace(/\,/g, '.')
           if (iMinu.length === 0) { iMinu = 0 }
           if (!$.isNumeric(iMinu)) { iMinu = 0 }
-          var fMinu = parseFloat(iMinu)
+          let fMinu = parseFloat(iMinu)
 
-          var iFact = $('#appbundle_hour_factor').val().replace(/\,/g, '.')
+          let iFact = $('#appbundle_hour_factor').val().replace(/\,/g, '.')
           if (iFact.length === 0) { iFact = 0 }
           if (!$.isNumeric(iFact)) { iFact = 0 }
-          var fFact = parseFloat(iFact)
+          let fFact = parseFloat(iFact)
 
-          var dest  = $('#appbundle_hour_total');
+          let dest  = $('#appbundle_hour_total');
 
-          var tempOrduak = fHour + parseFloat( fMinu / 60)
+          let tempOrduak = fHour + parseFloat( fMinu / 60)
           dest.val( parseFloat(tempOrduak * fFact).toFixed(2) )
 
         }
