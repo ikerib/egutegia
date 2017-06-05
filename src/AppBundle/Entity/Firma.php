@@ -30,6 +30,7 @@ class Firma
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Expose()
      */
     private $name;
 
@@ -37,6 +38,7 @@ class Firma
      * @var bool
      *
      * @ORM\Column(name="completed", type="boolean")
+     * @Expose()
      */
     private $completed;
 
@@ -44,6 +46,7 @@ class Firma
      * @var integer
      * @Gedmo\SortablePosition
      * @ORM\Column(name="orden", type="integer", nullable=true)
+     * @Expose()
      */
     private $orden;
 
@@ -82,6 +85,7 @@ class Firma
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="firma")
      * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $eskaera;
 

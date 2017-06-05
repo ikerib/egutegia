@@ -811,4 +811,48 @@ class ApiController extends FOSRestController
 
         return $view;
     } // "put_jakinarazpena"             [PUT] /jakinarazpena/{id}
+
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+    /***** FIRMADET API ***********************************************************************************************/
+    /******************************************************************************************************************/
+    /******************************************************************************************************************/
+
+    /**
+     * Get firmadet of a eskaera.
+     *
+     * @param $eskaeraid
+     *
+     * @return array|View
+     * @Annotations\View()
+     */
+    public function getFirmatzaileakAction ( $eskaeraid ) {
+        $em = $this->getDoctrine()->getManager();
+
+        $fd = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatzaileak( $eskaeraid );
+
+        if ( $fd === null ) {
+            return new View( 'there are no users exist', Response::HTTP_NOT_FOUND );
+        }
+
+        /** Soilik User-ak behar ditugu */
+        $users = [];
+        /** @var Firmadet $f */
+        foreach ($fd as $f){
+            $user = $f->getSinatzaileakdet()->getUser();
+            $firma = false;
+            if ($f->getFirmatua()) {
+                $firma = true;
+            }
+            $r = array(
+                'user'=>$user,
+                'firmatua' => $firma
+            );
+
+            array_push( $users, $r );
+        }
+
+
+        return $users;
+    }// "get_firmatzaileak"             [GET] /firmatzaileak/{eskaeraid}
 }

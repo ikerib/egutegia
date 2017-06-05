@@ -20,4 +20,17 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
 
         return $qm->getQuery()->getResult();
     }
+
+    public function getFirmatzaileak ( $eskaeraid ) {
+        $qb = $this->createQueryBuilder( 'fd' )
+            ->select('fd','sd','u')
+            ->innerJoin( 'fd.firma', 'f' )
+            ->innerJoin( 'f.eskaera', 'e' )
+            ->innerJoin('fd.sinatzaileakdet','sd')
+            ->innerJoin('sd.user','u')
+            ->where( 'e.id=:id' )
+            ->setParameter( 'id', $eskaeraid );
+
+        return $qb->getQuery()->getResult();
+    }
 }

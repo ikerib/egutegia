@@ -13,10 +13,16 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-md-12">
-            <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed">
+            <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed"
+                   data-toggle="table"
+                   data-toolbar="#toolbar"
+                   data-height="460"
+                   data-detail-view="true"
+                   data-detail-formatter="detailFormatter"
+            >
                 <thead>
                 <tr>
-                    <th>Id</th>
+                    <th data-field="id">ID</th>
                     <th>Izaera</th>
                     <th>Egutegia</th>
                     <th>Hasi</th>
@@ -32,7 +38,7 @@
                 <tbody>
                 {% for eskaera in eskaeras %}
                     <tr {% if eskaera.oharra | length > 0 %} class="danger" {% endif %}>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.id }}</a></td>
+                        <td>{{ eskaera.id }}</td>
                         <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.name }}</a></td>
                         <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" target="_blank">{{ eskaera.calendar.name }}</a></td>
                         <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
@@ -116,7 +122,52 @@
 {% block foot_script %}
     {{ parent() }}
     <script >
+      const $table = $('#tableEskaerak');
+
       $( document ).ready(function() {
+
+        $table.bootstrapTable();
+        $table.on('expand-row.bs.table', function (e,index, row, $detail) {
+          const miid = row.id
+          const url = Routing.generate('get_firmatzaileak', {'eskaeraid':miid})
+
+          $detail.html('toc toc...' + url + ' helbideari deika');
+
+          $.get(url, function (data) {
+            console.log(data)
+//            let html="<ul class='list-group'>";
+            let html="<div class='row'>" +
+              "<div class='col-md-2'></div>" +
+              "<div class='col-md-8'>" +
+              "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th></tr></thead><tbody>";
+            $.each(data, function(i, obj)
+            {
+
+//              html =html+"<ul class='list-inline'><li>" + obj.user.username + "</li>";
+              html =html+"<tr'><td>" + obj.user.username + "</td>";
+
+
+              if ( obj.firmatua === false ) {
+//                html = html + "<li class='label-danger'>Firmatzeke</li></ul>";
+                html = html + "<td>Firmatzeke</td></tr>";
+              } else {
+//                html = html + "<li class='label-success'>Firmatua</li></ul>";
+                html = html + "<td>Firmatua</td></tr>";
+              }
+
+
+            })
+
+//            html = html + "</ul>";
+            html = html + "</tbody></table>" +
+              "<div class='col-md-2'></div>" +
+              "</div>";
+
+
+            $detail.html(html);
+          });
+        });
+
 
         $('.saveEditModal').on('click', function() {
           const miid = $(this).data('id')

@@ -1,36 +1,91 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Firmas list</h1>
+{% block head_style %}
+    {{ parent() }}
+{% endblock %}
+{% block headline %}{{ 'Firma zerrenda' | trans }} {% endblock  %}
 
-    <table>
+
+{% block content_row %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Zerrenda berria</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                    <button type="button" class="btn btn-primary" id="btnNewZerrenda">Sortu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Zerrenda berria</button>
+    </div>
+
+    <table data-toggle="table"
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
+
+           data-pagination="true"
+           data-page-size="25"
+           data-search="true"
+            {#data-height="300"#}
+
+           data-sort-name="name"
+           data-sort-order="asc"
+
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+
+           data-toolbar="#toolbar"
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Completed</th>
-                <th>Orden</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th data-halign="center" data-align="left" data-field="firma.eskaera.user.displayname" data-sortable="true">{{ 'Nork' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="sinatzaileakdet"  data-sortable="true">{{ 'Erabiltzaileak' | trans }}</th>
+            <th data-halign="center" data-align="center"></th>
+        </tr>
         </thead>
         <tbody>
-        {% for firma in firmas %}
+        {% for sinatzaileak in sinatzaileaks %}
             <tr>
-                <td><a href="{{ path('admin_firm_show', { 'id': firma.id }) }}">{{ firma.id }}</a></td>
-                <td>{{ firma.name }}</td>
-                <td>{% if firma.completed %}Yes{% else %}No{% endif %}</td>
-                <td>{{ firma.orden }}</td>
-                <td>{% if firma.created %}{{ firma.created|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{% if firma.updated %}{{ firma.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td></td>
                 <td>
-                    <ul>
+
+                </td>
+                <td>
+                    <ul class="list-inline">
                         <li>
-                            <a href="{{ path('admin_firm_show', { 'id': firma.id }) }}">show</a>
+                            <a href="{{ path('admin_sinatzaileak_show', { 'id': sinatzaileak.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ path('admin_firm_edit', { 'id': firma.id }) }}">edit</a>
+                            <a href="{{ path('admin_sinatzaileak_edit', { 'id': sinatzaileak.id }) }}"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
                         </li>
                     </ul>
                 </td>
@@ -39,9 +94,14 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_firm_new') }}">Create a new firma</a>
-        </li>
-    </ul>
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script >
+      $( document ).ready(function() {
+
+      });
+    </script>
+
 {% endblock %}

@@ -17,7 +17,7 @@ class FirmaController extends Controller
     /**
      * Lists all firma entities.
      *
-     * @Route("/", name="admin_firm_index")
+     * @Route("/", name="admin_firma_index")
      * @Method("GET")
      */
     public function indexAction()
@@ -34,7 +34,7 @@ class FirmaController extends Controller
     /**
      * Creates a new firma entity.
      *
-     * @Route("/new", name="admin_firm_new")
+     * @Route("/new", name="admina_firm_new")
      * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
@@ -60,7 +60,7 @@ class FirmaController extends Controller
     /**
      * Finds and displays a firma entity.
      *
-     * @Route("/{id}", name="admin_firm_show")
+     * @Route("/{id}", name="admin_firma_show")
      * @Method("GET")
      */
     public function showAction(Firma $firma)
@@ -76,7 +76,7 @@ class FirmaController extends Controller
     /**
      * Displays a form to edit an existing firma entity.
      *
-     * @Route("/{id}/edit", name="admin_firm_edit")
+     * @Route("/{id}/edit", name="admin_firma_edit")
      * @Method({"GET", "POST"})
      */
     public function editAction(Request $request, Firma $firma)
@@ -101,7 +101,7 @@ class FirmaController extends Controller
     /**
      * Deletes a firma entity.
      *
-     * @Route("/{id}", name="admin_firm_delete")
+     * @Route("/{id}", name="admin_firma_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, Firma $firma)

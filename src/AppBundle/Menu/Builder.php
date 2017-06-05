@@ -30,6 +30,7 @@ class Builder implements ContainerAwareInterface
         $menu->addChild( ' Hasiera', [ 'icon' => 'home', 'route' => 'dashboard' ] );
         $menu->addChild( ' Txantiloia', [ 'icon' => 'bookmark', 'route' => 'admin_template_index' ] );
         $menu->addChild( ' Mota', [ 'icon' => 'tag', 'route' => 'admin_type_index' ] );
+        $menu->addChild('divider2', ['divider' => true]);
         $menu->addChild( ' Bateraezinak', [ 'icon' => 'lock', 'route' => 'admin_gutxienekoak_index' ] );
         $menu->addChild( ' Sinatzaileak', [ 'icon' => 'pencil', 'route' => 'admin_sinatzaileak_index' ] );
 

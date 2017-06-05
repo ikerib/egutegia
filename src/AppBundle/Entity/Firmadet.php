@@ -30,14 +30,16 @@ class Firmadet
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="noiz", type="datetime")
+     * @ORM\Column(name="noiz", type="datetime", nullable=true)
+     * @Expose()
      */
     private $noiz;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="firmatua", type="boolean")
+     * @ORM\Column(name="firmatua", type="boolean", nullable=true)
+     * @Expose()
      */
     private $firmatua;
 
@@ -45,6 +47,7 @@ class Firmadet
      * @var integer
      * @Gedmo\SortablePosition
      * @ORM\Column(name="orden", type="integer", nullable=true)
+     * @Expose()
      */
     private $orden;
 
@@ -70,6 +73,7 @@ class Firmadet
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Firma", inversedBy="firmadet")
      * @ORM\JoinColumn(name="firma_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $firma;
 
@@ -78,6 +82,7 @@ class Firmadet
      *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Sinatzaileakdet", inversedBy="firmadet")
      * @ORM\JoinColumn(name="sinatzaileakdet_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $sinatzaileakdet;
 
@@ -87,6 +92,7 @@ class Firmadet
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="firmadet")
      * @ORM\JoinColumn(name="firmatzaile_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
      */
     private $firmatzailea;
 

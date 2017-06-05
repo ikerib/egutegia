@@ -6,6 +6,7 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Firma;
+use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\Notification;
@@ -253,6 +254,12 @@ class EskaeraController extends Controller
                         $notify->setReaded( false );
                         $notify->setUser( $s->getUser() );
                         $em->persist( $notify );
+
+                        $fd = new Firmadet();
+                        $fd->setFirma( $firma );
+                        $fd->setSinatzaileakdet( $s );
+                        $em->persist( $fd );
+
                     }
 
                 } else if ($eskaera->getAmaitua() === false) {

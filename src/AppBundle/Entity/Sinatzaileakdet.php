@@ -41,6 +41,7 @@ class Sinatzaileakdet
      * @var integer
      * @Gedmo\SortablePosition
      * @ORM\Column(name="orden", type="integer", nullable=true)
+     * @Expose()
      */
     private $orden;
 

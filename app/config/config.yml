@@ -135,6 +135,7 @@ fos_js_routing:
         - eskaera_index
         - put_firma
         - put_jakinarazpena
+        - get_firmatzaileak
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support
