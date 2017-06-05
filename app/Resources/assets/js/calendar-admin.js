@@ -64,13 +64,18 @@ $(function () {
     }
 
     // Number of working days selected
-    var d = workday_count(event.startDate, event.endDate)
+    let d = workday_count(event.startDate, event.endDate)
     $('#txtWorkingDaysSelected').val(d.toFixed(2))
-    var j = $('#txtTotalHousSelected').data('jornada')
+    let j = $('#txtTotalHousSelected').data('jornada')
 
-    var t = d * parseFloat(j)
+    /** editatzen ari badan event obketutik ekarri behar du */
+    if (event.hours === undefined) {
+      let t = d * parseFloat(j)
+      $('#txtTotalHousSelected').val(t.toFixed(2))
+    }    else {
+      $('#txtTotalHousSelected').val(event.hours.toFixed(2))
+    }
 
-    $('#txtTotalHousSelected').val(t.toFixed(2))
 
 
     $('#event-modal').modal()
