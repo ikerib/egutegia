@@ -26,4 +26,15 @@ class FirmaRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    public function checkFirmaComplete($id) {
+        $qb = $this->createQueryBuilder( 'f' )
+            ->innerJoin('f.firmadet', 'fd')
+            ->where('fd.firmatua=false OR fd.firmatua is NULL')
+            ->andWhere('f.id=:id')
+            ->setParameter('id',$id)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

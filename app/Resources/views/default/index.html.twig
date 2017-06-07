@@ -5,6 +5,7 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
+
     <form id="frmCompare" method="post" action="{{ path('admin_calendar_compare') }}">
         <input id="txtUsers" type="hidden" name="users" value="" title="Users">
     </form>

@@ -297,8 +297,10 @@ class ApiController extends FOSRestController
                     //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $hours);
                 }
 
-                if ($t->getRelated() === 'hours_compensed') {
-                    $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) + (float) $oldValue - (float) $event->getHours());
+                if ( $t->getRelated() === 'hours_compensed' ) {
+                    $calendar->setHoursCompensed(
+                        (float)( $calendar->getHoursCompensed() ) + (float)$oldValue - (float)$event->getHours()
+                    );
                 }
                 if ( $t->getRelated() === 'hours_sindical' ) {
                     $calendar->setHoursSindikal( (float)( $calendar->getHoursSindikal() ) + $hours );
@@ -690,20 +692,38 @@ class ApiController extends FOSRestController
              */
             if ( count( $firmatudu ) == 0 ) { // ez du firmatu
                 //Firmatu
-                $fd = New Firmadet();
-                $fd->setFirma( $firma );
-                $fd->setFirmatua( true );
-                $fd->setFirmatzailea( $user );
-                $fd->setNoiz( New \DateTime() );
-                $em->persist( $fd );
+                /** @var Firmadet $firmadets */
+                $firmadets = $firma->getFirmadet();
+                /** @var Firmadet $fd */
+                foreach ( $firmadets as $fd ) {
+                    /** @var Sinatzaileakdet $sd */
+                    $sd = $fd->getSinatzaileakdet();
+
+                    /** @var User $su */
+                    $su = $sd->getUser();
+
+                    if ( $user->getId() == $su->getId() ) {
+                        $fd->setFirmatua( true );
+                        $fd->setFirmatzailea( $user );
+                        $fd->setNoiz( New \DateTime() );
+                        $em->persist( $fd );
+                        $em->flush();
+                        break;
+                    }
+                }
             }
             /** @var Eskaera $eskaera */
-            $eskaera = $firma->getEskaera();
-            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak($eskaera->getSinatzaileak()->getId());
-            $firmadet = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak( $firma->getId() );
-            if ( $this->guztiekFirmatuDute($sinatzaileakdet, $firmadet) == false ) { // firmak falta dira
+            $eskaera         = $firma->getEskaera();
+            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak(
+                $eskaera->getSinatzaileak()->getId()
+            );
+            $firmadet        = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak(
+                $firma->getId()
+            );
 
-            } else {
+            $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
+
+            if ( count($zenbatFirmaFaltaDira) == 0 ) { // firma guztiak lortu dira
                 $firma->setCompleted( true );
                 $em->persist( $firma );
             }
@@ -711,7 +731,7 @@ class ApiController extends FOSRestController
             /**
              * 3-. firma guztiak baditu, orduan eskaera onartzen da erabat.
              */
-            if ($firma->getCompleted() == true) {
+            if ( $firma->getCompleted() == true ) {
                 /** @var Eskaera $eskaera */
                 $eskaera = $firma->getEskaera();
                 $eskaera->setAmaitua( true );
@@ -727,39 +747,6 @@ class ApiController extends FOSRestController
 
         return $view;
     } // "put_firma"             [PUT] /firma/{id}
-
-    /**
-     * Sinatzaileakdet eta Firmatzaileak det hartu eta begiratu ea biek
-     * USER berdina daukaten
-     *
-     * @param $sinatzaileakdet
-     * @param $firmadet
-     *
-     * @return bool
-     */
-    function guztiekFirmatuDute ($sinatzaileakdet,$firmadet) {
-        if ( count($sinatzaileakdet) != count($firmadet)) {
-            return false;
-        }
-
-        $aurkitua = false;
-
-        /** @var Sinatzaileakdet $s */
-        foreach ($sinatzaileakdet as $s) {
-            /** @var Firmadet $f */
-            foreach ($firmadet as $f) {
-
-                if ($f->getFirmatzailea() == $s->getUser()) {
-                    $aurkitua = true;
-                    break 2;
-                }
-            }
-
-        }
-
-        return $aurkitua;
-
-    }
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
@@ -799,10 +786,10 @@ class ApiController extends FOSRestController
 
         if ( $notify->getReaded() == false ) {
             $notify->setReaded( true );
-        } else {
-            $notify->setReaded( false );
+            $em->persist( $notify );
         }
-        $em->persist( $notify );
+
+
         $em->flush();
 
         $view = View::create();
@@ -812,6 +799,7 @@ class ApiController extends FOSRestController
 
         return $view;
     } // "put_jakinarazpena"             [PUT] /jakinarazpena/{id}
+
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
@@ -827,7 +815,8 @@ class ApiController extends FOSRestController
      * @return array|View
      * @Annotations\View()
      */
-    public function getFirmatzaileakAction ( $eskaeraid ) {
+    public function getFirmatzaileakAction ( $eskaeraid )
+    {
         $em = $this->getDoctrine()->getManager();
 
         $fd = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatzaileak( $eskaeraid );
@@ -839,15 +828,15 @@ class ApiController extends FOSRestController
         /** Soilik User-ak behar ditugu */
         $users = [];
         /** @var Firmadet $f */
-        foreach ($fd as $f){
-            $user = $f->getSinatzaileakdet()->getUser();
+        foreach ( $fd as $f ) {
+            $user  = $f->getSinatzaileakdet()->getUser();
             $firma = false;
-            if ($f->getFirmatua()) {
+            if ( $f->getFirmatua() ) {
                 $firma = true;
             }
             $r = array(
-                'user'=>$user,
-                'firmatua' => $firma
+                'user'     => $user,
+                'firmatua' => $firma,
             );
 
             array_push( $users, $r );
