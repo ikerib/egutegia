@@ -62,8 +62,15 @@
         <tbody>
         {% for notification in notifications %}
             <tr>
-                <td>{% if notification.readed %}<span class="label label-success"> Bai</span>{% else %}<span
-                            class="label label-danger"> Ez</span> {% endif %}</td>
+                <td>
+                    <a href="javascript:;" class="btnReaded" data-id="{{ notification.id }}">
+                        {% if notification.readed %}
+                            <span class="label label-success"> Bai</span>
+                        {% else %}
+                            <span class="label label-danger"> Ez</span>
+                        {% endif %}
+                    </a>
+                </td>
                 <td>{{ notification.name }}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
@@ -73,68 +80,71 @@
                             Bai</button>{% endif %}</td>
                 <td>{{ notification.created | date('Y-m-d') }}</td>
                 <td>
-                    {#<div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog" aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">#}
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                            aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Eskaera</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-10">
-                                        <ul class="list-inline">
-                                            <li><strong>Nork:</strong></li>
-                                            <li>{{ notification.eskaera.user.displayname }}</li>
-                                        </ul>
-                                    </div>
+                    <div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog"
+                         aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Eskaera</h4>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-10">
-                                        <ul class="list-inline">
-                                            <li><strong>Fetxak:</strong></li>
-                                            <li>{{ notification.eskaera.hasi | date('Y-m-d') }}</li>
-                                            <li>/</li>
-                                            <li>{{ notification.eskaera.amaitu | date('Y-m-d') }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-10">
-                                        <ul class="list-inline">
-                                            <li><strong>Egunak:</strong></li>
-                                            <li>{{ notification.eskaera.orduak }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                {% if notification.eskaera.oharra | length > 0 %}
+                                <div class="modal-body">
                                     <div class="row">
                                         <div class="col-md-2"></div>
                                         <div class="col-md-10">
                                             <ul class="list-inline">
-                                                <li><strong>Oharrak:</strong></li>
-                                                <li>{{ notification.eskaera.oharra }}</li>
+                                                <li><strong>Nork:</strong></li>
+                                                <li>{{ notification.eskaera.user.displayname }}</li>
                                             </ul>
                                         </div>
                                     </div>
-                                {% endif %}
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
-                                <button type="button" class="btn btn-danger btnEskaeraEzOnartu"
-                                        data-firmaid="{{ notification.firma.id }}" data-notifyid="{{ notification.id }}">Eskaera EZ onartu
-                                </button>
-                                <button type="button" class="btn btn-primary btnEskaeraOnartu"
-                                        data-firmaid="{{ notification.firma.id }}" data-notifyid="{{ notification.id }}">Eskaera Onartu
-                                </button>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-10">
+                                            <ul class="list-inline">
+                                                <li><strong>Fetxak:</strong></li>
+                                                <li>{{ notification.eskaera.hasi | date('Y-m-d') }}</li>
+                                                <li>/</li>
+                                                <li>{{ notification.eskaera.amaitu | date('Y-m-d') }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-10">
+                                            <ul class="list-inline">
+                                                <li><strong>Egunak:</strong></li>
+                                                <li>{{ notification.eskaera.orduak }}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    {% if notification.eskaera.oharra | length > 0 %}
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-10">
+                                                <ul class="list-inline">
+                                                    <li><strong>Oharrak:</strong></li>
+                                                    <li>{{ notification.eskaera.oharra }}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                                    <button type="button" class="btn btn-danger btnEskaeraEzOnartu"
+                                            data-firmaid="{{ notification.firma.id }}"
+                                            data-notifyid="{{ notification.id }}">Eskaera EZ onartu
+                                    </button>
+                                    <button type="button" class="btn btn-primary btnEskaeraOnartu"
+                                            data-firmaid="{{ notification.firma.id }}"
+                                            data-notifyid="{{ notification.id }}">Eskaera Onartu
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {#</div>#}
                 </td>
             </tr>
         {% endfor %}
@@ -148,6 +158,26 @@
     <script>
       $(document).ready(function () {
 
+        $('.btnReaded').on('click', function () {
+          const that = this;
+          const miid = $(this).data('id')
+          const url = Routing.generate('put_jakinarazpena_readed', {'id': miid})
+          $.ajax({
+            url: url,
+            method: 'PUT'
+          })
+            .done(function (data) {
+              if ( $(that).children().hasClass('label-danger') ) {
+                  $(that).html(' <span class="label label-success"> Bai</span>')
+                } else {
+                  $(that).html(' <span class="label label-danger"> Ez</span>')
+                }
+            })
+            .fail(function (xhr) {
+              bootbox.alert('Akats bat gertatu da.')
+            })
+        })
+
         $('.btnEskaeraOnartu').on('click', function () {
           const firmaid = $(this).data('firmaid')
           const jakinarazpenaid = $(this).data('notifyid')
@@ -157,22 +187,18 @@
             method: 'PUT'
           })
             .done(function (data) {
-              const url2 = Routing.generate('put_jakinarazpena', {'id':jakinarazpenaid})
-console.log(url2)
+              const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
               $.ajax({
                 url: url2,
                 method: 'PUT'
               }).done(function (data) {
-                console.log(data)
-                location.reload();
+                location.reload()
               }).fail(function (xhr) {
-                console.log('error', xhr)
-                bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.")
+                bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
               })
             })
             .fail(function (xhr) {
-              console.log('error', xhr)
-              bootbox.alert("Akats bat gertatu da firmatzerakoan.")
+              bootbox.alert('Akats bat gertatu da firmatzerakoan.')
             })
         })
 

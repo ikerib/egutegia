@@ -134,7 +134,7 @@ fos_js_routing:
         - admin_calendar_compare
         - eskaera_index
         - put_firma
-        - put_jakinarazpena
+        - put_jakinarazpena_readed
         - get_firmatzaileak
 
 mopa_bootstrap:

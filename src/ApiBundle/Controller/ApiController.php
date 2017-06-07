@@ -772,7 +772,7 @@ class ApiController extends FOSRestController
      * @Rest\View(statusCode=200)
      * @Rest\Put("/jakinarazpena/{id}")
      */
-    public function putJakinarazpenaAction ( Request $request, $id )
+    public function putJakinarazpenaReadedAction ( Request $request, $id )
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -786,8 +786,10 @@ class ApiController extends FOSRestController
 
         if ( $notify->getReaded() == false ) {
             $notify->setReaded( true );
-            $em->persist( $notify );
+        } else {
+            $notify->setReaded( false );
         }
+        $em->persist( $notify );
 
 
         $em->flush();
@@ -798,7 +800,7 @@ class ApiController extends FOSRestController
         header( 'access-control-allow-origin: *' );
 
         return $view;
-    } // "put_jakinarazpena"             [PUT] /jakinarazpena/{id}
+    } // "put_jakinarazpena_readed"             [PUT] /jakinarazpena/{id}
 
 
     /******************************************************************************************************************/
