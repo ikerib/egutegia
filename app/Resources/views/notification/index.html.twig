@@ -9,6 +9,19 @@
 {% block content_row %}
 
 
+    <div id="toolbar">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filtratu <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="{{ path('notification_index', {'readed':0}) }}">Guztiak</a></li>
+                <li><a href="{{ path('notification_index', {'readed':-1}) }}">Irakurri gabeak</a></li>
+                <li><a href="{{ path('notification_index', {'readed':1}) }}">Irakurritakoak</a></li>
+            </ul>
+        </div>
+
+    </div>
     <table data-toggle="table"
            data-classes="table table-hover table-condensed"
            data-striped="true"

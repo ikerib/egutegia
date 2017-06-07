@@ -6,6 +6,8 @@ use AppBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * Notification controller.
@@ -14,18 +16,31 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class NotificationController extends Controller
 {
+
     /**
      * Lists all notification entities.
      *
      * @Route("/", name="notification_index")
      * @Method("GET")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        /**
+         * Parametroak baditu hauek izan daitezke:
+         * -1 Irakurri gabe
+         * 0 Guztiak
+         * 1 Irakurritakoak
+         */
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
-        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId());
+        $readed = $request->query->get('readed');
+
+        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId(), $readed);
+
 
         return $this->render('notification/index.html.twig', array(
             'notifications' => $notifications,
