@@ -18,7 +18,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     notify = require("gulp-notify"),
     minify = require('gulp-minify'),
-    bower = require('gulp-bower');
+    bower = require('gulp-bower'),
+    babel = require('gulp-babel');
 
 var config = {
     sassPath: './app/Resources/assets/scss',
@@ -49,6 +50,7 @@ freeJS = [
     './app/Resources/assets/js/vertical-timeline/vertical-timeline.js',
     './app/Resources/assets/js/calendar-template.js',
     './app/Resources/assets/js/calendar-admin.js',
+    './app/Resources/assets/js/calendar-edit-admin.js',
     './app/Resources/assets/js/calendar-user.js',
     './app/Resources/assets/js/calendar-compare.js',
     './app/Resources/assets/js/calendar-share.js'
@@ -191,18 +193,20 @@ gulp.task('sass:prod', function () {
 // JS
 gulp.task('js:dev', function () {
     gulp.src(freeJS)
-        .pipe(gulp.dest('web/js/'));
+      .pipe(babel({presets: ['es2015']}))
+      .pipe(gulp.dest('web/js/'));
     return gulp.src(otherJS)
         .pipe(gulp.dest('web/js/'));
 });
 
 gulp.task('js:prod', function () {
-    gulp.src(freeJS).pipe(minify())
-        .pipe(gulp.dest('web/js/'));
+    gulp.src(freeJS)
+      .pipe(babel({presets: ['es2015']}))
+      .pipe(minify())
+      .pipe(gulp.dest('web/js/'));
     return gulp.src(otherJS)
         .pipe(minify())
         .pipe(concat('app.min.js'))
-
         .pipe(gulp.dest('web/js/'));
 });
 

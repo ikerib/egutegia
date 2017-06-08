@@ -22,7 +22,6 @@
                         </ul>
 
 
-
                     </div>
                 </div>
             </div>
@@ -39,7 +38,8 @@
                     </div>
                     <div class="col-sm-4">
                         <strong>{{ 'msg.opor.orduak' | trans }} </strong>
-                        <span id="hoursFree">{{ calendar.hoursFree }} ({{ (calendar.hoursFree / calendar.hoursDay) | round (2) }} egun) </span>
+                        <span id="hoursFree">{{ calendar.hoursFree }}
+                            ({{ (calendar.hoursFree / calendar.hoursDay) | round (2) }} egun) </span>
                         <input id="txtHoursFree" type="hidden" value="{{ calendar.hoursFree }}">
                     </div>
                 </div>
@@ -55,7 +55,8 @@
                     </div>
                     <div class="col-sm-4">
                         <strong>{{ 'msg.norberarentzako' | trans }} </strong>
-                        <span id="hoursSelf"> {{ calendar.hoursSelf }} ordu ({{ (calendar.hoursSelf / calendar.hoursDay) | round (2) }} egun)</span>
+                        <span id="hoursSelf"> {{ calendar.hoursSelf }}
+                            ordu ({{ (calendar.hoursSelf / calendar.hoursDay) | round (2) }} egun)</span>
                     </div>
                 </div>
 
@@ -76,7 +77,9 @@
                         <input id="numberHoursPartial" type="hidden" value="{{ selfHoursPartial }}">
                         <ul class="list-inline">
                             <li>Zatitu daitezke:</li>
-                            <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</li>
+                            <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span>
+                                ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)
+                            </li>
                         </ul>
                         <ul class="list-inline">
                             <li>Egun osoak:</li>
@@ -142,7 +145,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.norberarentzakozati' | trans }}</label>
+                        <label for="min-date"
+                               class="col-sm-3 control-label">{{ 'msg.norberarentzakozati' | trans }}</label>
                         <div class="col-sm-7">
                             {{ form_widget(edit_form.hoursSelfHalf, { 'attr': {'class': 'form-control'} }) }}
                         </div>
@@ -232,13 +236,15 @@
                             <div class="form-group">
                                 <label for="txtJornada" class="col-sm-3 control-label">Jornada orduak: </label>
                                 <div class="col-sm-9">
-                                    <input name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}">
+                                    <input name="txtJornada" id="txtJornada" type="text"
+                                           value="{{ calendar.hoursDay }}">
                                 </div>
                             </div>
 
 
                             <div class="form-group">
-                                <label for="txtTotalHousSelected" class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
+                                <label for="txtTotalHousSelected"
+                                       class="col-sm-3 control-label">{{ 'Orduak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <input id="txtTotalHousSelected" data-jornada="{{ calendar.hoursDay }}"
                                            name="event-hours" type="text" class="form-control">
@@ -247,7 +253,8 @@
 
 
                             <div class="form-group">
-                                <label for="event-start-date" class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
+                                <label for="event-start-date"
+                                       class="col-sm-3 control-label">{{ 'Fetxak' | trans }}</label>
                                 <div class="col-sm-8">
                                     <div class="input-group input-daterange" data-provide="datepicker">
                                         <input name="event-start-date" type="text" class="form-control"
@@ -296,7 +303,8 @@
             </li>
             <li role="presentation">
                 <a href="#notes" aria-controls="profile" role="tab" data-toggle="tab">
-                    {{ "Oharrak" | trans }}{% if calendar.note | length > 0 %} &nbsp;<i class="fa fa-commenting text-danger" aria-hidden="true"></i>{% endif %}
+                    {{ "Oharrak" | trans }}{% if calendar.note | length > 0 %} &nbsp;<i
+                            class="fa fa-commenting text-danger" aria-hidden="true"></i>{% endif %}
                 </a>
             </li>
             <li role="presentation">
@@ -363,7 +371,8 @@
                     <div class="col-sm-11">
                     </div>
                     <div class="col-sm-1">
-                        <a id="btnAddKonpentsatua" href="javascript:void(0);"><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                        <a id="btnAddKonpentsatua" href="javascript:void(0);"><i class="fa fa-plus-circle"
+                                                                                 aria-hidden="true"></i></a>
                     </div>
                 </div>
 
@@ -372,39 +381,42 @@
                     <div class="col-sm-12">
                         <table id="KonpentsatuakTaula" class="table table-hover table-striped table-bordered">
                             <thead>
-                                <tr>
-                                    <th>Eguna</th>
-                                    <th>Orduak</th>
-                                    <th>Minutuak</th>
-                                    <th>Faktorea</th>
-                                    <th>Orduak konpentsatzera</th>
-                                    <th></th>
-                                </tr>
+                            <tr>
+                                <th>Eguna</th>
+                                <th>Orduak</th>
+                                <th>Minutuak</th>
+                                <th>Faktorea</th>
+                                <th>Orduak konpentsatzera</th>
+                                <th></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {% for o in orduak %}
-                                    <tr>
-                                        <td>{{ o.date | date('Y/m/d') }}</td>
-                                        <td>{{ o.hours }}</td>
-                                        <td>{{ o.minutes }}</td>
-                                        <td>{{ o.factor }}</td>
-                                        <td>{{ o.total }}</td>
-                                        <td class="text-center">
-                                            <ul class="list-inline">
-                                                <li>
-                                                    <a data-id="{{ o.id }}" class="btn-edit-konpentsatua" href="javascript:void(0);"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                                </li>
-                                                <li>
-                                                    {{ form_start(deletehourforms[o.id],{'attr': {'id': o.id}}) }}
-                                                    <a class="btnRemoveHourwRow" data-id="{{ o.id }}" href="javascript:void(0);">
-                                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                                    </a>
-                                                    {{ form_end(deletehourforms[o.id]) }}
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                            {% for o in orduak %}
+                                <tr>
+                                    <td>{{ o.date | date('Y/m/d') }}</td>
+                                    <td>{{ o.hours }}</td>
+                                    <td>{{ o.minutes }}</td>
+                                    <td>{{ o.factor }}</td>
+                                    <td>{{ o.total }}</td>
+                                    <td class="text-center">
+                                        <ul class="list-inline">
+                                            <li>
+                                                <a data-id="{{ o.id }}" class="btn-edit-konpentsatua"
+                                                   href="javascript:void(0);"><i class="fa fa-pencil-square-o"
+                                                                                 aria-hidden="true"></i></a>
+                                            </li>
+                                            <li>
+                                                {{ form_start(deletehourforms[o.id],{'attr': {'id': o.id}}) }}
+                                                <a class="btnRemoveHourwRow" data-id="{{ o.id }}"
+                                                   href="javascript:void(0);">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                                {{ form_end(deletehourforms[o.id]) }}
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -484,7 +496,8 @@
                 <div class="row">&nbsp;</div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <table class="table table-bordered table-condensed table-striped table-condensed table-hover"  id="fitxategi_list">
+                        <table class="table table-bordered table-condensed table-striped table-condensed table-hover"
+                               id="fitxategi_list">
                             <thead>
                             <tr>
                                 {#<th></th>#}
@@ -515,10 +528,14 @@
                                                 {{ form_end(deletedocumentforms[f.id]) }}
                                             </li>
                                             <li>
-                                                <a class="btnFitxategiUp" href="{{ path('admin_document_order_up', {'id': f.id}) }}"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+                                                <a class="btnFitxategiUp"
+                                                   href="{{ path('admin_document_order_up', {'id': f.id}) }}"><i
+                                                            class="fa fa-arrow-up" aria-hidden="true"></i></a>
                                             </li>
                                             <li>
-                                                <a class="btnFitxategiDown" href="{{ path('admin_document_order_down', {'id': f.id}) }}"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                                                <a class="btnFitxategiDown"
+                                                   href="{{ path('admin_document_order_down', {'id': f.id}) }}"><i
+                                                            class="fa fa-arrow-down" aria-hidden="true"></i></a>
                                             </li>
                                         </ul>
                                     </td>
@@ -590,189 +607,5 @@
     {{ parent() }}
     <script src="{{ asset('js/calendar-admin.js') }}"></script>
     <script src="{{ asset('js/vertical-timeline.js') }}"></script>
-    <script>
-      $(function () {
-
-        /*************************************************************************************************************/
-        /** MISC *****************************************************************************************************/
-        /*************************************************************************************************************/
-        let x = parseFloat($('#numberLanaldi').val())
-        let textua = ' ( ' + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() + ' minutu )'
-        $('#hourLanaldi').text(textua)
-
-        let x1 = parseFloat($('#numberHoursPartial').val())
-        let textua1 = " ( " + moment.duration(x1, 'hours').hours() + ' ordu ' + moment.duration(x1, 'hours').minutes() +  " minutu )"
-        $('#selfHoursPartialToHour').text(textua1)
-
-        /*************************************************************************************************************/
-        /** HASH funtzioak *******************************************************************************************/
-        /*************************************************************************************************************/
-        let url = document.location.toString()
-        if (url.match('#')) {
-          $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show')
-        }
-
-        // Change hash for page-reload
-        $('.nav-tabs a').on('shown.bs.tab', function (e) {
-          e.preventDefault()
-          window.location.hash = '!' + e.target.hash
-          return false
-        })
-
-        // show specific tab
-        let hash = window.location.hash
-        hash = window.location.hash.replace(/^#!/, '')
-        $('#myTab a[href="' + hash + '"]').tab('show')
-
-
-        /*************************************************************************************************************/
-        /** Egutegia Tab *********************************************************************************************/
-        /*************************************************************************************************************/
-        $('#save-calendar-note').on('click', function () {
-          let calendarid = $('#calendarid').val()
-          let url = Routing.generate('post_notes', {'calendarid': calendarid})
-
-          let values = {}
-          $.each($('#frmNotes').serializeArray(), function (i, field) {
-            values[field.name] = field.value
-          })
-
-          $.ajax({
-            url: url,
-            data: values,
-            type: 'POST',
-            success: function () {
-              $('#myAlert').hide()
-              $('#alertSpot').empty()
-              $('#alertSpot').append(
-                '<div id="myAlert" class="alert alert-success alert-dismissible" role="alert">' +
-                '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                'Datuak <strong>ongi</strong> grabatuak izan dira.')
-
-              $('#myAlert').alert()
-              $('#myAlert').fadeTo(2000, 500).slideUp(500, function () {
-                $('#myAlert').slideUp(500)
-              })
-            }
-          })
-        })
-
-        $('#saveCalendarEditModal').on('click', function () {
-          $('#frmEditCalendar').submit()
-        })
-
-        /*************************************************************************************************************/
-        /** Fitxategiak Tab ******************************************************************************************/
-        /*************************************************************************************************************/
-        $('.btnRemoveRow').on('click', function () {
-          let that = $(this)
-          bootbox.confirm({
-            title: '{{ 'Adi!' | trans }}',
-            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
-            buttons: {
-              cancel: {
-                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
-              },
-              confirm: {
-                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
-              }
-            },
-            callback: function (result) {
-              if (result === true) {
-                $(that).closest('form').submit()
-              }
-            }
-          })
-        })
-
-        $('#save-upload-file').on('click', function () {
-          $('#frmFile').submit()
-        })
-
-
-        /*************************************************************************************************************/
-        /** Konpentsatuak Tab ******************************************************************************************/
-        /*************************************************************************************************************/
-        $('#btnAddKonpentsatua').click(function () {
-          $('#modal-content-konpentsatuak').empty()
-
-          let calendarid = $('#calendarid').val()
-          let url = Routing.generate('admin_hour_new', {'calendarid': calendarid})
-          $('#modal-content-konpentsatuak').load(url, function () {
-            $('#modal-konpentsatuak').modal()
-            $('#appbundle_hour_date').datepicker({
-              format: 'yyyy-mm-dd',
-              language: 'eu'
-            });
-          });
-        })
-
-        $('.btn-edit-konpentsatua').click(function () {
-          $('#modal-content-konpentsatuak').empty()
-
-          let miid = $(this).data('id')
-          let url = Routing.generate('admin_hour_edit', {'id': miid })
-          $('#modal-content-konpentsatuak').load(url, function () {
-            $('#modal-konpentsatuak').modal()
-          });
-        })
-
-        $(document).on('click', '#save-konpentsatua', function () {
-          $('#frmaddkonpentsatua').submit()
-        })
-
-        $('#btnModalOpenFile').on('click', function() {
-          $('#modal-files-open').modal('show');
-        });
-
-        $(document).on('click', '.btnRemoveHourwRow', function () {
-          let that = $(this)
-          bootbox.confirm({
-            title: '{{ 'Adi!' | trans }}',
-            message: '{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}',
-            buttons: {
-              cancel: {
-                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
-              },
-              confirm: {
-                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
-              }
-            },
-            callback: function (result) {
-              if (result === true) {
-                $(that).closest('form').submit()
-              }
-            }
-          })
-        })
-
-        $(document).on('change', '.birkalk', function () {
-          birKalkulatu()
-        })
-
-        function birKalkulatu() {
-          let iHour = $('#appbundle_hour_hours').val().replace(/\,/g, '.')
-          if (iHour.length === 0) { iHour = 0 }
-          if (!$.isNumeric(iHour)) { iHour = 0 }
-          let fHour = parseFloat( iHour)
-
-          let iMinu = $('#appbundle_hour_minutes').val().replace(/\,/g, '.')
-          if (iMinu.length === 0) { iMinu = 0 }
-          if (!$.isNumeric(iMinu)) { iMinu = 0 }
-          let fMinu = parseFloat(iMinu)
-
-          let iFact = $('#appbundle_hour_factor').val().replace(/\,/g, '.')
-          if (iFact.length === 0) { iFact = 0 }
-          if (!$.isNumeric(iFact)) { iFact = 0 }
-          let fFact = parseFloat(iFact)
-
-          let dest  = $('#appbundle_hour_total');
-
-          let tempOrduak = fHour + parseFloat( fMinu / 60)
-          dest.val( parseFloat(tempOrduak * fFact).toFixed(2) )
-
-        }
-
-      })
-    </script>
+    <script src="{{ asset('js/calendar-edit-admin.js') }}"></script>
 {% endblock %}
