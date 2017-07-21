@@ -32,7 +32,6 @@
                     <th>Gauzatua</th>
                     <th>Sinatzaileak</th>
                     <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,7 +64,7 @@
                         <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.sinatzaileak }}</a></td>
 
                         <td>
-                            <ul class="list-inline">
+                            <ul class="list-inline text-center">
                                 <li>
                                     <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                 </li>
@@ -76,9 +75,10 @@
                                     </a>
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
+                                <li>
+                                    <a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                </li>
                             </ul>
-                        </td>
-                        <td>
                             <div class="modal modal-fade" id="eskaeraEditModal{{ eskaera.id }}">
                                 <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">

@@ -12,8 +12,10 @@ namespace ApiBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
+use AppBundle\Entity\Firma;
 use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\TemplateEvent;
 use AppBundle\Entity\Type;
@@ -236,11 +238,11 @@ class ApiController extends FOSRestController
      *   }
      * )
      *
-     * @param   $id
-     *
-     * @throws EntityNotFoundException
+     * @param Request $request
+     * @param         $id
      *
      * @return static
+     * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/events/{id}")
      */
@@ -420,7 +422,29 @@ class ApiController extends FOSRestController
                 $calendar->setHoursFree( (float)( $calendar->getHoursFree() ) - (float)( $jsonData[ 'hours' ] ) );
             }
             if ( $t->getRelated() === 'hours_self' ) {
-                $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] ) );
+
+                /**
+                 * 1-. Begiratu eskatuta orduak jornada bat baino gehiago direla edo berdin,
+                 * horrela bada hours_self-etik kendu bestela ordueta hours_self_half
+                 */
+                $jornada = floatval($calendar->getHoursDay());
+                $orduak = floatval( $jsonData[ 'hours' ]);
+
+                $osoa = 0;
+                $partziala=0;
+
+                if ( $orduak < $jornada ) {
+                    $osoa =$orduak;
+                    $partziala = $orduak;
+                } else {
+                    $zenbatEgun =  $orduak / $jornada ;
+
+                    $orduOsoak = $jornada * $zenbatEgun;
+                    $osoa = $orduak;
+                    $partziala = $orduak - $orduOsoak;
+                }
+                $calendar->setHoursSelf( $osoa );
+                $calendar->setHoursSelfHalf( $partziala );
             }
             if ( $t->getRelated() === 'hours_compensed' ) {
                 $calendar->setHoursCompensed(
@@ -666,6 +690,10 @@ class ApiController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode( $request->getContent(), true );
+        $onartua = false;
+        if ($request->request->get("onartua") == 1 ) {
+            $onartua = true;
+        }
 
         // find eskaera
         $firma = $em->getRepository( 'AppBundle:Firma' )->find( $id );
@@ -703,7 +731,7 @@ class ApiController extends FOSRestController
                     $su = $sd->getUser();
 
                     if ( $user->getId() == $su->getId() ) {
-                        $fd->setFirmatua( true );
+                        $fd->setFirmatua( $onartua );
                         $fd->setFirmatzailea( $user );
                         $fd->setNoiz( New \DateTime() );
                         $em->persist( $fd );
@@ -711,6 +739,31 @@ class ApiController extends FOSRestController
                         break;
                     }
                 }
+            } else {
+                if ($onartua == false) {
+                    $firma->setCompleted( false );
+                    $em->persist( $firma );
+                }
+
+                /** @var Firmadet $firmadets */
+                $firmadets = $firma->getFirmadet();
+                /** @var Firmadet $fd */
+                foreach ( $firmadets as $fd ) {
+                    /** @var Sinatzaileakdet $sd */
+                    $sd = $fd->getSinatzaileakdet();
+
+                    /** @var User $su */
+                    $su = $sd->getUser();
+
+                    if ( $user->getId() == $su->getId() ) {
+                        $fd->setFirmatua( $onartua );
+                        $fd->setFirmatzailea( $user );
+                        $fd->setNoiz( New \DateTime() );
+                        $em->persist( $fd );
+                    }
+                }
+                $em->flush();
+
             }
             /** @var Eskaera $eskaera */
             $eskaera         = $firma->getEskaera();
@@ -754,7 +807,7 @@ class ApiController extends FOSRestController
     /******************************************************************************************************************/
     /******************************************************************************************************************/
     /**
-     * Firmatu.
+     * Jakinarazpena irakurria/irakurri gabe gisa markatu
      *
      * @ApiDoc(
      *   resource = true,
@@ -770,7 +823,7 @@ class ApiController extends FOSRestController
      * @return static
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
-     * @Rest\Put("/jakinarazpena/{id}")
+     * @Rest\Put("/jakinarazpenareaded/{id}")
      */
     public function putJakinarazpenaReadedAction ( Request $request, $id )
     {
@@ -800,8 +853,84 @@ class ApiController extends FOSRestController
         header( 'access-control-allow-origin: *' );
 
         return $view;
-    } // "put_jakinarazpena_readed"             [PUT] /jakinarazpena/{id}
+    } // "put_jakinarazpena_readed"             [PUT] /jakinarazpenareaded/{id}
 
+
+    /**
+     * Onartu / Ez onartu eskaera.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Onartu / Ez onartu eskaera",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return static
+     * @throws EntityNotFoundException
+     * @Rest\View(statusCode=200)
+     * @Rest\Put("/jakinarazpena/{id}")
+     */
+    public function putJakinarazpenaAction ( Request $request, $id )
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $jsonData = json_decode( $request->getContent(), true );
+
+        // find jakinarazpena
+        $notify = $em->getRepository( 'AppBundle:Notification' )->find( $id );
+        if ( ! $notify ) {
+            throw new EntityNotFoundException();
+        }
+
+        $user = $this->getUser();
+
+        //1-. Eskaera lortu
+        /** @var Eskaera $eskaera */
+        $eskaera = $notify->getEskaera();
+        /** @var Sinatzaileak $sinatzaileak */
+        $sinatzaileak = $eskaera->getSinatzaileak();
+        //2-. Eskuratu firma
+        /** @var Firma $firma */
+        $firma = $eskaera->getFirma();
+
+        //3-. Sinatzaileetan bilatu user
+        $aldezaurretikFirmatua = false;
+        /** @var Firmadet $fd */
+        foreach ($firma->getFirmadet() as $fd) {
+            //4-. Begiratu ez dagoela aldez aurretik firmatua
+            if ($fd->getFirmatzailea()){
+                if ( $fd->getFirmatzailea() == $user ) {
+                    $aldezaurretikFirmatua = true;
+                }
+            }
+        }
+        if ($aldezaurretikFirmatua == false ) {
+            /** @var Firmadet $fd */
+            $fd = new Firmadet();
+            $fd->setFirma( $firma );
+            $fd->setFirmatua( true );
+            $fd->setFirmatzailea( $user );
+            $em->persist( $fd );
+        }
+
+        $notify->setReaded( true );
+        $notify->setCompleted( true );
+        $em->persist( $notify );
+        $em->flush();
+
+
+        $view = View::create();
+        $view->setData( $notify );
+        header( 'content-type: application/json; charset=utf-8' );
+        header( 'access-control-allow-origin: *' );
+
+        return $view;
+    } // "put_jakinarazpena"             [PUT] /jakinarazpena/{id}
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/

@@ -47,6 +47,13 @@ class Notification
     private $readed;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="completed", type="boolean")
+     */
+    private $completed;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -68,6 +75,15 @@ class Notification
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->completed = false;
+        $this->readed = false;
+    }
 
     /**
      * @var \AppBundle\Entity\Firma
@@ -328,5 +344,29 @@ class Notification
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set completed
+     *
+     * @param boolean $completed
+     *
+     * @return Notification
+     */
+    public function setCompleted($completed)
+    {
+        $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * Get completed
+     *
+     * @return boolean
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
     }
 }
