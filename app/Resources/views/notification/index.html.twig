@@ -59,7 +59,9 @@
             <th data-halign="center" data-align="center" data-field="readed"
                 data-sortable="true">{{ 'Irakurria' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="completed"
-                data-sortable="true">{{ 'Completed' | trans }}</th>
+                data-sortable="true">{{ 'Erantzunda' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="result"
+                data-sortable="true">{{ 'Erantzuna' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Gaia' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="eskaera.hasi"
                 data-sortable="true">{{ 'Hasi' | trans }}</th>
@@ -67,11 +69,10 @@
                 data-sortable="true">{{ 'Amaitu' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="eskaera.orduak"
                 data-sortable="true">{{ 'Orduak' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
-                data-sortable="true">{{ 'Oharra' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="created"
                 data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
-            <th></th>
+            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
+                data-sortable="true">{{ 'Oharra' | trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -95,15 +96,21 @@
                         {% endif %}
                     </a>
                 </td>
+                <td>
+                    <a href="javascript:;" class="btnComplete" data-id="{{ notification.id }}">
+                        {% if notification.result %}
+                            <span class="label label-success"> Bai</span>
+                        {% else %}
+                            <span class="label label-danger"> Ez</span>
+                        {% endif %}
+                    </a>
+                </td>
                 <td>{{ notification.name }}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.orduak }}</td>
-                <td>{% if notification.eskaera.oharra | length > 0 %}
-                    <button data-toggle="modal" data-target="#frmEskaeraModalAccept{{ notification.id }}">
-                            Bai</button>{% endif %}</td>
-                <td>{{ notification.created | date('Y-m-d') }}</td>
-                <td>
+                <td>{{ notification.created | date('Y-m-d') }}
+
                     <div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog"
                          aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">
                         <div class="modal-dialog" role="document">
@@ -170,6 +177,11 @@
                         </div>
                     </div>
                 </td>
+                <td>
+                    {#{% if notification.eskaera.oharra | length > 0 %}#}
+                    <button data-toggle="modal" data-target="#frmEskaeraModalAccept{{ notification.id }}">Erantzun</button>
+                    {#{% endif %}#}
+                </td>
             </tr>
         {% endfor %}
         </tbody>
@@ -215,7 +227,8 @@
               const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
               $.ajax({
                 url: url2,
-                method: 'PUT'
+                method: 'PUT',
+                data: {onartua:1}
               }).done(function (data) {
                 location.reload()
               }).fail(function (xhr) {
@@ -240,7 +253,8 @@
               const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
               $.ajax({
                 url: url2,
-                method: 'PUT'
+                method: 'PUT',
+                data: {onartua:0}
               }).done(function (data) {
                 location.reload()
               }).fail(function (xhr) {

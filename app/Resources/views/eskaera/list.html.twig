@@ -30,7 +30,7 @@
                     <th>Orduak/Egunak</th>
                     <th>Bideratua</th>
                     <th>Gauzatua</th>
-                    <th>Sinatzaileak</th>
+                    <th>Sinatzaile taldea</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -61,7 +61,14 @@
                                 {% endif %}
                             </a>
                         </td>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.sinatzaileak }}</a></td>
+                        <td>
+                            {% if eskaera.sinatzaileak %}
+                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}" target="_blank" >{{ eskaera.sinatzaileak }}</a>
+                            {% else %}
+                                Eskaera bideratu gabe dago
+                            {% endif %}
+
+                        </td>
 
                         <td>
                             <ul class="list-inline text-center">

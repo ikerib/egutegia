@@ -80,7 +80,7 @@ class Firmadet
     /**
      * @var \AppBundle\Entity\Sinatzaileakdet
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Sinatzaileakdet", inversedBy="firmadet")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileakdet", inversedBy="firmadet")
      * @ORM\JoinColumn(name="sinatzaileakdet_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
      */

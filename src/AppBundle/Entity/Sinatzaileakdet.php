@@ -69,9 +69,10 @@ class Sinatzaileakdet
     /**
      * @var \AppBundle\Entity\Firmadet
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firmadet", mappedBy="sinatzaileakdet")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="sinatzaileakdet")
      */
     protected $firmadet;
+
 
     public function __toString()
     {
@@ -236,5 +237,36 @@ class Sinatzaileakdet
     public function getFirmadet()
     {
         return $this->firmadet;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->firmadet = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add firmadet
+     *
+     * @param \AppBundle\Entity\Firmadet $firmadet
+     *
+     * @return Sinatzaileakdet
+     */
+    public function addFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    {
+        $this->firmadet[] = $firmadet;
+
+        return $this;
+    }
+
+    /**
+     * Remove firmadet
+     *
+     * @param \AppBundle\Entity\Firmadet $firmadet
+     */
+    public function removeFirmadet(\AppBundle\Entity\Firmadet $firmadet)
+    {
+        $this->firmadet->removeElement($firmadet);
     }
 }

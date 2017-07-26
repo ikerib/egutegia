@@ -880,6 +880,10 @@ class ApiController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode( $request->getContent(), true );
+        $onartua = false;
+        if ($request->request->get("onartua") == 1 ) {
+            $onartua = true;
+        }
 
         // find jakinarazpena
         $notify = $em->getRepository( 'AppBundle:Notification' )->find( $id );
@@ -920,6 +924,7 @@ class ApiController extends FOSRestController
 
         $notify->setReaded( true );
         $notify->setCompleted( true );
+        $notify->setResult( $onartua );
         $em->persist( $notify );
         $em->flush();
 

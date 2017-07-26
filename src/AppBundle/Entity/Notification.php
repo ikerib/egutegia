@@ -54,6 +54,13 @@ class Notification
     private $completed;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="result", type="boolean")
+     */
+    private $result;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -83,6 +90,7 @@ class Notification
     {
         $this->completed = false;
         $this->readed = false;
+        $this->result = false;
     }
 
     /**
@@ -368,5 +376,29 @@ class Notification
     public function getCompleted()
     {
         return $this->completed;
+    }
+
+    /**
+     * Set result
+     *
+     * @param boolean $result
+     *
+     * @return Notification
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * Get result
+     *
+     * @return boolean
+     */
+    public function getResult()
+    {
+        return $this->result;
     }
 }
