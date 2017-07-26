@@ -7,28 +7,8 @@
 
 
 {% block content_row %}
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Zerrenda berria</h4>
-                </div>
-                <div class="modal-body">
-                    {{ render(controller('AppBundle:Sinatzaileak:new')) }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
-                    <button type="button" class="btn btn-primary" id="btnNewZerrenda">Sortu</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="toolbar">
-        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Zerrenda berria</button>
+        <button id="btnBerria" class="btn btn-default">Zerrenda berria</button>
     </div>
 
     <table data-toggle="table"
@@ -96,12 +76,37 @@
         </tbody>
     </table>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Zerrenda berria</h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('AppBundle:Sinatzaileak:new')) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                    <button type="button" class="btn btn-primary" id="btnNewZerrenda">Sortu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block foot_script %}
     {{ parent() }}
     <script >
       $( document ).ready(function() {
+
+        $('#btnBerria').on('click', function () {
+          $('#myModal').modal()
+        })
+
         $('#btnNewZerrenda').on('click', function () {
           if ( $('#appbundle_sinatzaileak_name').val().length > 0 ) {
             $('form').submit()
@@ -109,6 +114,7 @@
             bootbox.alert("Izena ezartzea beharrezkoa da")
           }
         })
+
       });
     </script>
 

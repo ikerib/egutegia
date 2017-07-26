@@ -38,13 +38,13 @@
                 {% for eskaera in eskaeras %}
                     <tr {% if eskaera.oharra | length > 0 %} class="danger" {% endif %}>
                         <td>{{ eskaera.id }}</td>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.name }}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
                         <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" target="_blank">{{ eskaera.calendar.name }}</a></td>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">{{ eskaera.orduak }}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{{ eskaera.orduak }}</a></td>
                         <td>
-                            <a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">
+                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
                                 {% if eskaera.abiatua == true %}
                                     <label class="label label-success">Bai</label>
                                 {% else %}
@@ -53,7 +53,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}">
+                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
                                 {% if eskaera.amaitua == true %}
                                     <label class="label label-success">Bai</label>
                                 {% else %}
@@ -83,7 +83,7 @@
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
                                 <li>
-                                    <a href="#eskaeraEditModal{{ eskaera.id }}" data-toggle="modal" data-target="#eskaeraEditModal{{ eskaera.id }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
                                 </li>
                             </ul>
                             <div class="modal modal-fade" id="eskaeraEditModal{{ eskaera.id }}">
@@ -133,6 +133,11 @@
 
       $( document ).ready(function() {
 
+        $('.btnEskaera').on('click', function  () {
+          const miid = $(this).data("id")
+          $('#eskaeraEditModal'+miid).modal()
+        })
+
         $table.bootstrapTable();
         $table.on('expand-row.bs.table', function (e,index, row, $detail) {
           const miid = row.id
@@ -141,8 +146,6 @@
           $detail.html('toc toc...' + url + ' helbideari deika');
 
           $.get(url, function (data) {
-            console.log(data)
-//            let html="<ul class='list-group'>";
             let html="<div class='row'>" +
               "<div class='col-md-2'></div>" +
               "<div class='col-md-8'>" +
@@ -150,22 +153,18 @@
             $.each(data, function(i, obj)
             {
 
-//              html =html+"<ul class='list-inline'><li>" + obj.user.username + "</li>";
               html =html+"<tr'><td>" + obj.user.username + "</td>";
 
 
               if ( obj.firmatua === false ) {
-//                html = html + "<li class='label-danger'>Firmatzeke</li></ul>";
                 html = html + "<td>Firmatzeke</td></tr>";
               } else {
-//                html = html + "<li class='label-success'>Firmatua</li></ul>";
                 html = html + "<td>Firmatua</td></tr>";
               }
 
 
             })
 
-//            html = html + "</ul>";
             html = html + "</tbody></table>" +
               "<div class='col-md-2'></div>" +
               "</div>";
