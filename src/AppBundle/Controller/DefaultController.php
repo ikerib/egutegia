@@ -28,7 +28,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/egutegia", name="user_homepage")
+     * @Route("/mycalendar", name="user_homepage")
      */
     public function userhomepageAction()
     {
