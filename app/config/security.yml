@@ -36,7 +36,7 @@ security:
             fr3d_ldap:  ~
             form_login:
                 always_use_default_target_path: true
-                default_target_path: /egutegia
+                default_target_path: /mycalendar
             logout:       true
             anonymous:    true
 
