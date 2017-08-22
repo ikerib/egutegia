@@ -13,6 +13,18 @@ use Doctrine\ORM\QueryBuilder;
  */
 class NotificationRepository extends EntityRepository
 {
+
+    public function getAllUnreadSortedByUser() {
+        /** @var QueryBuilder $qb */
+        $qb = $this->createQueryBuilder('n')
+            ->innerJoin('n.user', 'u')
+            ->andWhere('n.readed=false')
+            ->orderBy('n.user')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getAllUnread($userid) {
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('n')
