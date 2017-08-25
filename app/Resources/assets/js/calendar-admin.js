@@ -33,6 +33,7 @@ $(function () {
     $('#event-modal input[name="event-index"]').val(event ? event.id : '')
     $('#event-modal input[name="event-name"]').val(event ? event.name : '')
     $('#event-modal input[name="event-type"]').val(event ? event.type : '')
+
     $('#event-modal input[name="event-hours"]').val(event ? event.hours : '')
     // $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
     $('#event-modal input[name="event-start-date"]').datepicker({
@@ -76,12 +77,18 @@ $(function () {
       $('#txtTotalHousSelected').val(event.hours.toFixed(2))
     }
 
-
-
-    $('#event-modal').modal()
     $('#event-modal').on('shown.bs.modal', function () {
+      const egunOrdu = $('#cmbTypeSelect option:selected').val()
+      if (egunOrdu === "5") {
+        $('#divEgunOrduak').show("slow")
+      } else {
+        $('#divEgunOrduak').hide("slow")
+        $('#cmbEgunOrduak').val("-1")
+      }
       $('#event-modal input[name="event-name"]').focus()
     })
+
+    $('#event-modal').modal()
   }
 
   function deleteEvent (event) {
@@ -141,7 +148,8 @@ $(function () {
     var event = {
       id: $('#event-modal input[name="event-index"]').val(),
       name: $('#event-modal input[name="event-name"]').val(),
-      type: $('#event-modal option:selected').val(),
+      type: $('#cmbTypeSelect option:selected').val(),
+      egunorduak: $('#cmbEgunOrduak option:selected').val(),
       hours: $('#event-modal input[name="event-hours"]').val(),
       color: $('#event-modal option:selected').data('color'),
       startDate: $('#event-modal input[name="event-start-date"]').datepicker({
@@ -189,6 +197,11 @@ $(function () {
     // TODO: hardCoded type_id kendu
     if ( event.type === "5" ) {
 
+      if ($('#cmbEgunOrduak').val() === "-1") {
+        bootbox.alert('Orduak edo Egunak aukeraketa egin behar dfuzu')
+        return
+      }
+
       // Egun bat ordutan dira...
       var vJornada = parseFloat($('#numberLanaldi').val())
       // Zatika har ditzakedan orduak dira... (geratzen zaizkidanak)
@@ -214,6 +227,7 @@ $(function () {
         if (dataSource[i].id == event.id) {
           dataSource[i].name = event.name
           dataSource[i].type = event.type
+          dataSource[i].egunorduak = event.egunorduak
           dataSource[i].hours = parseFloat(event.hours)
           dataSource[i].color = event.color
           dataSource[i].startDate = event.startDate
@@ -611,4 +625,16 @@ $(function () {
     })
   })
 
-})
+  $('#cmbTypeSelect').on('change', function(){
+
+    const selType = $(this).val()
+    if (selType === "5") {
+      $('#divEgunOrduak').show("slow")
+    } else {
+      $('#divEgunOrduak').hide("slow")
+      $('#cmbEgunOrduak').val("-1")
+    }
+
+  })
+
+ })

@@ -42,6 +42,14 @@ class Event
     private $name;
 
     /**
+     * @var string
+     * @Expose
+     *
+     * @ORM\Column(name="egunorduak", type="string", length=255, nullable=true)
+     */
+    private $egunorduak;
+
+    /**
      * @var \DateTime
      * @Expose
      *
@@ -308,5 +316,29 @@ class Event
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set egunorduak
+     *
+     * @param string $egunorduak
+     *
+     * @return Event
+     */
+    public function setEgunorduak($egunorduak)
+    {
+        $this->egunorduak = $egunorduak;
+
+        return $this;
+    }
+
+    /**
+     * Get egunorduak
+     *
+     * @return string
+     */
+    public function getEgunorduak()
+    {
+        return $this->egunorduak;
     }
 }
