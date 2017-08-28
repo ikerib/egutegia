@@ -263,8 +263,10 @@ class CalendarController extends Controller
             }
         }
 
-        $selfHoursPartial = round((float)$calendar->getHoursSelfHalf() - $selfHoursPartial,2);
-        $selfHoursComplete = round((float)$calendar->getHoursSelf() - (float) $selfHoursPartial,2);
+        //$selfHoursPartial = round((float)$calendar->getHoursSelfHalf() - $selfHoursPartial,2);
+        $selfHoursPartial = (float)$calendar->getHoursSelfHalf() ;
+        //$selfHoursComplete = round((float)$calendar->getHoursSelf() - (float) $selfHoursPartial,2);
+        $selfHoursComplete = (float)$calendar->getHoursSelf();
 
         return $this->render(
             'calendar/edit.html.twig',

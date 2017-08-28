@@ -22,10 +22,11 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
-use HttpException;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class ApiController extends FOSRestController
 {
@@ -417,6 +418,7 @@ class ApiController extends FOSRestController
         }
         $em->persist( $event );
 
+
         if ( $type->getRelated() ) {
             /** @var Type $t */
             $t = $event->getType();
@@ -424,10 +426,27 @@ class ApiController extends FOSRestController
                 $calendar->setHoursFree( (float)( $calendar->getHoursFree() ) - (float)( $jsonData[ 'hours' ] ) );
             }
             if ( $t->getRelated() === 'hours_self' ) {
-                if ($egunOrdu === 'Egunak') {
+                if ( $calendar->getHoursSelf() === $calendar->getHoursSelfHalf()) {
                     $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] ) );
-                } else {
                     $calendar->setHoursSelfHalf( (float)( $calendar->getHoursSelfHalf() ) - (float)( $jsonData[ 'hours' ] ) );
+                } else {
+                    if ($egunOrdu === 'Egunak') {
+                        // Begiratu egunetan ordu nahikoak dauden
+                        if ( $calendar->getHoursSelf() >= $jsonData[ 'hours' ]) {
+                            $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] ) );
+                        } else {
+                            // ez badaude egunetatik + zatitu daitezkeenetatik kendu
+                            // aurrena begiratu nahikoa ordu badauden
+                            if ( $calendar->getHoursSelf() >= $jsonData['hours']) {
+
+                            } else {
+                                throw new HttpException(400, "Ez dago ordu nahiko.");
+                            }
+                        }
+
+                    } else {
+                        $calendar->setHoursSelfHalf( (float)( $calendar->getHoursSelfHalf() ) - (float)( $jsonData[ 'hours' ] ) );
+                    }
                 }
             }
             if ( $t->getRelated() === 'hours_compensed' ) {

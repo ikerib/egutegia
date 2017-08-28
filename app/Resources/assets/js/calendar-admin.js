@@ -257,7 +257,9 @@ $(function () {
       }
 
       $.when(putCalendarEvents()).done(function(a1){
-        location.reload()
+        console.log("location reload")
+
+        // location.reload()
       }). fail(function (error){
         $('#myAlert').hide()
 
@@ -303,21 +305,32 @@ $(function () {
             return response
           },
           error: function() {
-            console.log ("ERROR!")
+            console.log ("ERROR2!")
             return -1
           }
         })
       }
 
       $.when(saveCalendarEvents()).done(function(a1){
-        location.reload()
-      }). fail(function (error){
+        //location.reload()
+        console.log("Location reload")
+      }). fail(function (xhr, textStatus, errorThrown){
+        let mezua = '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.'
+        if (xhr.responseJSON.error.exception[0].message === "Ez dago ordu nahiko.") {
+          mezua = '<strong>Ez dago ordu nahiko!!</strong>'
+        }
         $('#myAlert').hide()
 
         $('#alertSpot').append(
-            '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
+          '<div class="col-md-3"></div>' +
+          '<div class="col-md-6">' +
+          '<div id="myAlert" class="alert alert-danger alert-dismissible" role="alert">' +
             '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-            '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.')
+            mezua +
+          '</div>' +
+          '<div class="col-md-3"></div>'
+          )
+
 
 
         $('#myAlert').alert()

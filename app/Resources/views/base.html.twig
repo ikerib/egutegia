@@ -46,64 +46,64 @@
 {% endblock body_start %}
 
 {% block body %}
-    {% block navbar %}
-        {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true , 'fluid': true } %}
-            {% block brand %}
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
-                {% else %}
-                    <a class="navbar-brand" href="{{ path('user_homepage') }}">
-                        {% if is_granted('ROLE_USER') %}
-                            {% if app.user.displayname %}
-                                {{ app.user.displayname }}{% else %}{{ app.user.username }}
-                            {% endif %}
-                        {% endif %}
-                    </a>
-                {% endif %}
-            {% endblock %}
+{% block navbar %}
+    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true , 'fluid': true } %}
+{% block brand %}
+    {% if is_granted('ROLE_ADMIN') %}
+    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
+    {% else %}
+    <a class="navbar-brand" href="{{ path('user_homepage') }}">
+        {% if is_granted('ROLE_USER') %}
+            {% if app.user.displayname %}
+                {{ app.user.displayname }}{% else %}{{ app.user.username }}
+            {% endif %}
+        {% endif %}
+    </a>
+    {% endif %}
+{% endblock %}
 
-            {% block menu %}
-                {% if is_granted('ROLE_ADMIN') %}
-                    {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
-                {% endif %}
-                <div class="pull-right">
-                    {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
-                </div>
-            {% endblock %}
-        {% endembed %}
-    {% endblock navbar %}
+{% block menu %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+    {% endif %}
+    <div class="pull-right">
+        {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+    </div>
+{% endblock %}
+    {% endembed %}
+{% endblock navbar %}
 
     {#{% if is_granted('ROLE_ADMIN') %}#}
-        {#{% block subnav %}#}
-            {#{% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false, 'fluid': true } %}#}
-                {#{% block brand %}#}
+    {#{% block subnav %}#}
+    {#{% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false, 'fluid': true } %}#}
+    {#{% block brand %}#}
 
-                {#{% endblock %}#}
+    {#{% endblock %}#}
 
-                {#{% block menu %}#}
-                    {#<div class="row">#}
-                        {#<div class="col-md-3">#}
-                            {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}#}
-                        {#</div>#}
-                        {#<div class="col-md-6" id="alertSpot">#}
-                            {#{% for type, flashes in app.session.flashbag.all %}#}
-                                {#{% for flash in flashes %}#}
-                                    {#<div class="alert alert-{{ type }} fade in alert-dismissible" role="alert">#}
-                                        {#<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
-                                        {#{{ flash }}#}
-                                    {#</div>#}
-                                {#{% endfor %}#}
-                            {#{% endfor %}#}
-                        {#</div>#}
-                        {#<div class="col-md-3">#}
-                            {#<div class="pull-right">#}
-                                {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}#}
-                            {#</div>#}
-                        {#</div>#}
-                    {#</div>#}
-                {#{% endblock %}#}
-            {#{% endembed %}#}
-        {#{% endblock %}#}
+    {#{% block menu %}#}
+    {#<div class="row">#}
+    {#<div class="col-md-3">#}
+    {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}#}
+    {#</div>#}
+    {#<div class="col-md-6" id="alertSpot">#}
+    {#{% for type, flashes in app.session.flashbag.all %}#}
+    {#{% for flash in flashes %}#}
+    {#<div class="alert alert-{{ type }} fade in alert-dismissible" role="alert">#}
+    {#<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
+    {#{{ flash }}#}
+    {#</div>#}
+    {#{% endfor %}#}
+    {#{% endfor %}#}
+    {#</div>#}
+    {#<div class="col-md-3">#}
+    {#<div class="pull-right">#}
+    {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}#}
+    {#</div>#}
+    {#</div>#}
+    {#</div>#}
+    {#{% endblock %}#}
+    {#{% endembed %}#}
+    {#{% endblock %}#}
     {#{% endif %}#}
 
 {% block container %}
@@ -111,7 +111,8 @@
     {% block header %}
     {% endblock header %}
 
-{% block content_div_start %}<div class="content">{% endblock content_div_start %}
+{% block content_div_start %}
+    <div class="content">{% endblock content_div_start %}
     {% block page_header %}
         <div class="page-header">
             <h2>{% block headline %}HEADLIKE{% endblock headline %}</h2>
@@ -121,6 +122,21 @@
     {% endblock page_header %}
 
     {% block content_row %}
+        <div id="alertSpot">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                {% for type, flashes in app.session.flashbag.all %}
+                    {% for flash in flashes %}
+                        <div class="alert alert-{{ type }} fade in alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            {{ flash }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <div class="col-md-3"></div>
+        </div>
         <div class="row">
             {% block content %}
                 <div class="col-sm-9">
