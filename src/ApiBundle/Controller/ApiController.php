@@ -433,7 +433,13 @@ class ApiController extends FOSRestController
                     if ($egunOrdu === 'Egunak') {
                         // Begiratu egunetan ordu nahikoak dauden
                         if ( $calendar->getHoursSelf() >= $jsonData[ 'hours' ]) {
-                            $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] ) );
+                            $zenbat = (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] );
+                            $calendar->setHoursSelf( $zenbat );
+
+                            if ( $calendar->getHoursSelfHalf() > $zenbat) {
+                                $calendar->setHoursSelfHalf( $zenbat );
+                            }
+
                         } else {
                             // ez badaude egunetatik + zatitu daitezkeenetatik kendu
                             // aurrena begiratu nahikoa ordu badauden
