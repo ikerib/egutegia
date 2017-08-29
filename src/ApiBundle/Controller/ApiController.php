@@ -446,6 +446,7 @@ class ApiController extends FOSRestController
 
                     } else {
                         $calendar->setHoursSelfHalf( (float)( $calendar->getHoursSelfHalf() ) - (float)( $jsonData[ 'hours' ] ) );
+                        $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) - (float)( $jsonData[ 'hours' ] ) );
                     }
                 }
             }
@@ -513,6 +514,9 @@ class ApiController extends FOSRestController
             }
             if ( $t->getRelated() === 'hours_self' ) {
                 $calendar->setHoursSelf( (float)( $calendar->getHoursSelf() ) + $event->getHours() );
+                if ( $event->getEgunorduak() === 'Orduak') {
+                    $calendar->setHoursSelfHalf( (float)( $calendar->getHoursSelfHalf() ) + $event->getHours() );
+                }
             }
             if ( $t->getRelated() === 'hours_compensed' ) {
                 $calendar->setHoursCompensed( (float)( $calendar->getHoursCompensed() ) + $event->getHours() );

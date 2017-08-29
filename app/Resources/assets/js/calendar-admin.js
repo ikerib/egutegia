@@ -257,9 +257,7 @@ $(function () {
       }
 
       $.when(putCalendarEvents()).done(function(a1){
-        console.log("location reload")
-
-        // location.reload()
+        location.reload()
       }). fail(function (error){
         $('#myAlert').hide()
 
@@ -312,8 +310,7 @@ $(function () {
       }
 
       $.when(saveCalendarEvents()).done(function(a1){
-        //location.reload()
-        console.log("Location reload")
+        location.reload()
       }). fail(function (xhr, textStatus, errorThrown){
         let mezua = '<strong>Arazo</strong> bat egon da eta datuak ezin izan dira grabatu.'
         if (xhr.responseJSON.error.exception[0].message === "Ez dago ordu nahiko.") {
