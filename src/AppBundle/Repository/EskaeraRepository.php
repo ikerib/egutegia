@@ -13,6 +13,43 @@ use Doctrine\ORM\QueryBuilder;
  */
 class EskaeraRepository extends EntityRepository
 {
+    public function list($q) {
+        $em = $this->getEntityManager();
+        $dql = '';
+
+        switch ($q) {
+            case 'no-way':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                      WHERE e.abiatua = 0
+                ';
+                break;
+            case 'unsigned':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                      WHERE e.amaitua = 0
+                ';
+                break;
+            case 'unadded':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                      WHERE e.egutegian = 0
+                ';
+                break;
+            default:
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                ';
+        }
+
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+    }
+
     public function findAllByUser($id) {
         $em = $this->getEntityManager();
 

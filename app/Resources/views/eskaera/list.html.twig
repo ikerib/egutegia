@@ -8,7 +8,15 @@
         <div class="col-md-2">
             <a class="btn btn-primary" href="{{ path('eskaera_new') }}">Eskaera berria</a>
         </div>
-        <div class="col-md-10"></div>
+        <div class="col-md-10">
+            <div class="btn-group" role="group" aria-label="...">
+                <a class="btn {% if app.request.get('q') == 'all' %}        btn-info {% else %} btn-default {% endif %}" href="{{ path('admin_eskaera_list', { 'q': 'all'}) }}">Guztiak</a>
+                <a class="btn {% if app.request.get('q') == 'no-way' %}     btn-info {% else %} btn-default {% endif %}" href="{{ path('admin_eskaera_list', { 'q': 'no-way'}) }}">Bideratu gabeak</a>
+                <a class="btn {% if app.request.get('q') == 'unsigned' %}   btn-info {% else %} btn-default {% endif %}" href="{{ path('admin_eskaera_list', { 'q': 'unsigned'}) }}">Gauzatu gabeak</a>
+                <a class="btn {% if app.request.get('q') == 'unadded' %}    btn-info {% else %} btn-default {% endif %}" href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">Egutean sartu gabe</a>
+            </div>
+
+        </div>
     </div>
     <div class="row">
         <div class="col-md-4"></div>

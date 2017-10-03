@@ -48,13 +48,22 @@ class EskaeraController extends Controller
     /**
      * @Route("/lista", name="admin_eskaera_list")
      * @Method("GET")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
 
-        $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
+        $q = $request->query->get('q');
+
+
+        if ( ($q == null) || ($q == 'all' )) {
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list('all');
+        } else  {
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list($q);
+        }
 
         $deleteForms = [];
         foreach ($eskaeras as $e) {
