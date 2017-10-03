@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock  %}
+{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
 
@@ -10,7 +10,23 @@
         </div>
         <div class="col-md-10"></div>
     </div>
-    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div id="flash">
+                {% if app.session.started %}
+                    {% for label, flashes in app.session.flashbag.all %}
+                        {% for flash in flashes %}
+                            <div class="alert alert-{{ label }}">
+                                {{ flash }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed"
@@ -30,6 +46,7 @@
                     <th>Orduak/Egunak</th>
                     <th>Bideratua</th>
                     <th>Gauzatua</th>
+                    <th>Egutegian</th>
                     <th>Sinatzaile taldea</th>
                     <th></th>
                 </tr>
@@ -38,11 +55,18 @@
                 {% for eskaera in eskaeras %}
                     <tr {% if eskaera.oharra | length > 0 %} class="danger" {% endif %}>
                         <td>{{ eskaera.id }}</td>
-                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
-                        <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" target="_blank">{{ eskaera.calendar.name }}</a></td>
-                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">{{ eskaera.orduak }}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera"
+                               data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
+                        <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}"
+                               target="_blank">{{ eskaera.calendar.name }}</a></td>
+                        <td><a href="javascript:void(0);" class="btnEskaera"
+                               data-id="{{ eskaera.id }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a>
+                        </td>
+                        <td><a href="javascript:void(0);" class="btnEskaera"
+                               data-id="{{ eskaera.id }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a>
+                        </td>
+                        <td><a href="javascript:void(0);" class="btnEskaera"
+                               data-id="{{ eskaera.id }}">{{ eskaera.orduak }}</a></td>
                         <td>
                             <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
                                 {% if eskaera.abiatua == true %}
@@ -62,59 +86,98 @@
                             </a>
                         </td>
                         <td>
+                            {% if eskaera.amaitua == true %}
+                                <a href="javascript:void(0);" class="btnEskaeraEgutegira" data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                    {% if eskaera.egutegian == true %}
+                                        <label class="label label-success">Bai</label>
+                                    {% else %}
+                                        <label class="label label-danger">Ez</label>
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>
                             {% if eskaera.sinatzaileak %}
-                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}" target="_blank" >{{ eskaera.sinatzaileak }}</a>
+                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
+                                   target="_blank">{{ eskaera.sinatzaileak }}</a>
                             {% else %}
                                 Eskaera bideratu gabe dago
                             {% endif %}
 
                         </td>
 
+
                         <td>
-                            <ul class="list-inline text-center">
+                            <ul class="list-inline text-left">
                                 <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}"><i class="fa fa-eye"
+                                                                                                  aria-hidden="true"></i></a>
                                 </li>
                                 <li>
                                     {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
-                                    <a class="btnRemoveRow" data-id="{{ eskaera.id }}" href="#eskaeraEditModal{{ eskaera.id }}">
+                                    <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
+                                       href="#eskaeraEditModal{{ eskaera.id }}">
                                         <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                                     </a>
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"><i class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"><i
+                                                class="fa fa-paper-plane" aria-hidden="true"></i></a>
                                 </li>
+
+                                {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
+
+                                {% if eskaera.amaitua %}
+
+                                    <li>
+                                        <a href="javascript:void(0);" class="btnEskaeraEgutegira"
+                                           data-id="{{ eskaera.id }}"  data-egutegian="{{ eskaera.egutegian }}">
+                                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+
+
+                                {% endif %}
+
+
                             </ul>
                             <div class="modal modal-fade" id="eskaeraEditModal{{ eskaera.id }}">
                                 <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
+                                    <div class="modal-content">
 
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
-                                                    class="sr-only">{{ 'Itxi' | trans }}</span></button>
-                                        <h4 class="modal-title">
-                                            <strong>{{ eskaera.name }}</strong> eskaera aldatzen
-                                        </h4>
-                                    </div>
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">×</span><span
+                                                        class="sr-only">{{ 'Itxi' | trans }}</span></button>
+                                            <h4 class="modal-title">
+                                                <strong>{{ eskaera.name }}</strong> eskaera aldatzen
+                                            </h4>
+                                        </div>
 
-                                    <div class="modal-body">
-                                        {{ render(controller('AppBundle:Eskaera:edit', {'id': eskaera.id})) }}
+                                        <div class="modal-body">
+                                            {{ render(controller('AppBundle:Eskaera:edit', {'id': eskaera.id})) }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
+                                            <button type="button" class="btn btn-primary saveEditModal"
+                                                    data-id="{{ eskaera.id }}">
+                                                {{ 'Gorde' | trans }}
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'Ezeztatu' | trans }}</button>
-                                        <button type="button" class="btn btn-primary saveEditModal" data-id="{{ eskaera.id }}">
-                                            {{ 'Gorde' | trans }}
-                                        </button>
-                                    </div>
-                                </div>
                                 </div>
                             </div>
 
                         </td>
                     </tr>
                 {% else %}
-                    <tr><td colspan="6"> Ez dago daturik</td></tr>
+                    <tr>
+                        <td colspan="6"> Ez dago daturik</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
@@ -128,82 +191,116 @@
 
 {% block foot_script %}
     {{ parent() }}
-    <script >
-      const $table = $('#tableEskaerak');
+    <script>
+        const $table = $('#tableEskaerak');
 
-      $( document ).ready(function() {
+        $(document).ready(function () {
 
-        $('.btnEskaera').on('click', function  () {
-          const miid = $(this).data("id")
-          $('#eskaeraEditModal'+miid).modal()
-        })
+            $('#flash').delay(500).fadeIn('normal', function() {
+                $(this).delay(2500).fadeOut();
+            });
 
-        $table.bootstrapTable();
-        $table.on('expand-row.bs.table', function (e,index, row, $detail) {
-          const miid = row.id
-          const url = Routing.generate('get_firmatzaileak', {'eskaeraid':miid})
+            $('.btnEskaeraEgutegira').on('click', function () {
 
-          $detail.html('toc toc...' + url + ' helbideari deika');
+                var egutegian = $(this).data('egutegian');
 
-          $.get(url, function (data) {
-            let html="<div class='row'>" +
-              "<div class='col-md-2'></div>" +
-              "<div class='col-md-8'>" +
-              "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th></tr></thead><tbody>";
-            $.each(data, function(i, obj)
-            {
+                if (egutegian === 1 ) {
+                    return bootbox.alert({message: "Iadanik egutegian grabatua daude datu hauek.", className: 'bb-alternate-modal'});
+                }
 
-              html =html+"<tr'><td>" + obj.user.username + "</td>";
+                var miid = $(this).data('id');
+
+                bootbox.confirm({
+                    title: "Seguru zuaude?",
+                    message: "Onartu botoian klik egin ondoren eskaera hau langilearen egutegian gehituko da. Ados?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Ezeztatu'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Onartu'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result===true) {
+                            var url = Routing.generate('eskaera_add_to_calendar', {'id': miid}, true);
+                            window.location.href = url;
+                        }
+
+                    }
+                });
+            });
+
+            $('.btnEskaera').on('click', function () {
+                const miid = $(this).data("id")
+                $('#eskaeraEditModal' + miid).modal()
+            });
+
+            $table.bootstrapTable();
+            $table.on('expand-row.bs.table', function (e, index, row, $detail) {
+                const miid = row.id
+                const url = Routing.generate('get_firmatzaileak', {'eskaeraid': miid})
+
+                $detail.html('toc toc...' + url + ' helbideari deika');
+
+                $.get(url, function (data) {
+                    let html = "<div class='row'>" +
+                        "<div class='col-md-2'></div>" +
+                        "<div class='col-md-8'>" +
+                        "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th></tr></thead><tbody>";
+                    $.each(data, function (i, obj) {
+
+                        html = html + "<tr'><td>" + obj.user.username + "</td>";
 
 
-              if ( obj.firmatua === false ) {
-                html = html + "<td>Firmatzeke</td></tr>";
-              } else {
-                html = html + "<td>Firmatua</td></tr>";
-              }
+                        if (obj.firmatua === false) {
+                            html = html + "<td>Firmatzeke</td></tr>";
+                        } else {
+                            html = html + "<td>Firmatua</td></tr>";
+                        }
 
 
+                    })
+
+                    html = html + "</tbody></table>" +
+                        "<div class='col-md-2'></div>" +
+                        "</div>";
+
+
+                    $detail.html(html);
+                });
+            });
+
+
+            $('.saveEditModal').on('click', function () {
+                const miid = $(this).data('id')
+                const mifrm = $('#frmEditEskaera' + miid);
+                $(mifrm).submit()
             })
 
-            html = html + "</tbody></table>" +
-              "<div class='col-md-2'></div>" +
-              "</div>";
 
+            $('.btnRemoveRow').on('click', function () {
+                const that = $(this);
+                bootbox.confirm({
+                    title: "{{ 'Adi!' | trans }}",
+                    message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result === true) {
+                            $(that).closest('form').submit();
+                        }
+                    }
+                });
+            });
 
-            $detail.html(html);
-          });
         });
-
-
-        $('.saveEditModal').on('click', function() {
-          const miid = $(this).data('id')
-          const mifrm = $('#frmEditEskaera' + miid)
-          $(mifrm).submit()
-        })
-
-
-        $('.btnRemoveRow').on('click', function () {
-          const that = $(this);
-          bootbox.confirm({
-            title: "{{ 'Adi!' | trans }}",
-            message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
-            buttons: {
-              cancel: {
-                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
-              },
-              confirm: {
-                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
-              }
-            },
-            callback: function (result) {
-              if ( result === true ) {
-                $(that).closest('form').submit();
-              }
-            }
-          });
-        });
-
-      });
     </script>
 
 {% endblock %}

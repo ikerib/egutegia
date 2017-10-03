@@ -137,6 +137,7 @@ fos_js_routing:
         - put_jakinarazpena_readed
         - put_jakinarazpena
         - get_firmatzaileak
+        - eskaera_add_to_calendar
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

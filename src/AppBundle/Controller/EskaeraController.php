@@ -69,6 +69,47 @@ class EskaeraController extends Controller
     }
 
     /**
+     * Eskaera gehitu langilearen egutegira.
+     *
+     * @Route("/addToCalendar/{id}", name="eskaera_add_to_calendar")
+     * @Method({"GET"})
+     * @param Request $request
+     *
+     * @param Eskaera $eskaera
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addToCalendarAction(Request $request, Eskaera $eskaera)
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+
+        $em = $this->getDoctrine()->getManager();
+
+        // Eskuratu langilearen egutegia
+
+        /** @var Calendar $calendar */
+        $calendar = $em->getRepository('AppBundle:Calendar')->find($eskaera->getCalendar()->getId());
+
+        $ev = new Event();
+        $ev->setCalendar($calendar);
+        $ev->setName("Eskaeratik: ".$eskaera->getName());
+        $ev->setStartDate($eskaera->getHasi());
+        $ev->setEndDate($eskaera->getAmaitu());
+        $ev->setHours($eskaera->getOrduak());
+        $ev->setType($eskaera->getType());
+        $em->persist($ev);
+
+        $eskaera->setEgutegian(true);
+        $em->persist($eskaera);
+
+        $em->flush();
+
+        $this->addFlash('success', 'Datuak ongi gordeak izan dira.');
+        return $this->redirectToRoute('admin_eskaera_list');
+
+    }
+
+
+    /**
      * Creates a new eskaera entity.
      *
      * @Route("/new", name="eskaera_new")

@@ -397,6 +397,7 @@ class ApiController extends FOSRestController
         $jsonData = json_decode( $request->getContent(), true );
 
         // find calendar
+        /** @var Calendar $calendar */
         $calendar = $em->getRepository( 'AppBundle:Calendar' )->find( $jsonData[ 'calendarid' ] );
 
         // find type

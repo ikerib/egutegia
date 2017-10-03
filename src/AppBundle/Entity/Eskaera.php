@@ -93,6 +93,12 @@ class Eskaera
     private $amaitua=false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="egutegian", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $egutegian=false;
+
+    /**
      * @var string
      * @ORM\Column(name="oharra", type="string", nullable=true)
      */
@@ -620,5 +626,29 @@ class Eskaera
     public function getNotifications()
     {
         return $this->notifications;
+    }
+
+    /**
+     * Set egutegian
+     *
+     * @param boolean $egutegian
+     *
+     * @return Eskaera
+     */
+    public function setEgutegian($egutegian)
+    {
+        $this->egutegian = $egutegian;
+
+        return $this;
+    }
+
+    /**
+     * Get egutegian
+     *
+     * @return boolean
+     */
+    public function getEgutegian()
+    {
+        return $this->egutegian;
     }
 }
