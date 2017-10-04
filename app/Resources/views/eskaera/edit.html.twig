@@ -7,6 +7,12 @@
 
     {{ form_errors(edit_form) }}
 
+    <style>
+        .fixed-table-container input[type=radio] {
+            margin-left: -20px !important;
+        }
+    </style>
+
     <div class="form-group">
         <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
         <div class="col-sm-7">
@@ -42,26 +48,33 @@
     </div>
 
     <div class="form-group">
+        <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
+        <div class="col-sm-7">
+            {{ form_widget(edit_form.oharra, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    </div>
+
+    <div class="form-group">
         <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz' | trans }}</label>
         <div class="col-sm-7">
             {{ form_widget(edit_form.noiz, { 'attr': {'class': 'form-control'} }) }}
         </div>
     </div>
 
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Sinatzaileak' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.sinatzaileak, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
+    <hr>
+    <div class="panel panel-primary">
+        <div class="panel-body">
 
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Oharrak' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.oharra, { 'attr': {'class': 'form-control'} }) }}
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Sinatzaileak' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(edit_form.sinatzaileak, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
         </div>
     </div>
 
     <div style="display: none">
         {{ form_end(edit_form) }}
     </div>
+

@@ -46,6 +46,7 @@ class EskaeraType extends AbstractType
                 'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
             ->add('orduak')
+            ->add('oharra')
             ->add('noiz', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
@@ -69,7 +70,7 @@ class EskaeraType extends AbstractType
                         return $template->getName();
                     }, ]
             )
-            ->add('oharra')
+
         ;
     }
     

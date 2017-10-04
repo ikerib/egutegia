@@ -44,6 +44,15 @@
             </div>
 
             <div class="form-group">
+                <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.oharra, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Eskaera data' | trans }}</label>
                 <div class="col-sm-7">
                     {{ form_widget(form.noiz, { 'attr': {'class': 'form-control'} }) }}
