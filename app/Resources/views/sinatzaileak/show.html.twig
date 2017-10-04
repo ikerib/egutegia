@@ -4,7 +4,7 @@
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
 {% endblock %}
-{% block headline %}{{ 'Sinatzaileen zerrenda: ' | trans }}{{ sinatzaileak.name }} {% endblock  %}
+{% block headline %}{{ 'Sinatzaileen zerrenda: ' | trans }}{{ sinatzaileak.name }} {% endblock %}
 
 
 {% block content_row %}
@@ -14,7 +14,8 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel">Gehitu Erabiltzailea berria</h4>
                 </div>
                 <div class="modal-body">
@@ -29,7 +30,8 @@
     </div>
 
     <div id="toolbar">
-        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Gehitu langilea</button>
+        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Gehitu langilea
+        </button>
     </div>
     <div>&nbsp;</div>
 
@@ -60,43 +62,43 @@
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/eu.js') }}"></script>
     <script>
-      $(document).ready(function(){
+        $(document).ready(function () {
 
-        $('.select2').select2({
+            $('.select2').select2({
 //          theme: "classic",
-          width: '80%'
-        });
+                width: '80%'
+            });
 
-        $('#btnNewZerrendaUser').on('click', function(){
-          const u = $('#appbundle_sinatzaileakdet_user').val()
-          if ( u.length > 0)
-            $('#frmNewZerrendaUser').submit()
-          else
-            bootbox.alert("Langile bat aukeratu behar duzu.")
+            $('#btnNewZerrendaUser').on('click', function () {
+                var u = $('#appbundle_sinatzaileakdet_user').val()
+                if (u.length > 0)
+                    $('#frmNewZerrendaUser').submit()
+                else
+                    bootbox.alert("Langile bat aukeratu behar duzu.")
+            });
+
+            $('.btnRemoveRow').on('click', function () {
+                var that = $(this);
+                bootbox.confirm({
+                    title: "{{ 'Adi!' | trans }}",
+                    message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result === true) {
+                            $(that).closest('form').submit();
+                        }
+                    }
+                });
+            });
+
         })
-
-        $('.btnRemoveRow').on('click', function () {
-          const that = $(this);
-          bootbox.confirm({
-            title: "{{ 'Adi!' | trans }}",
-            message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
-            buttons: {
-              cancel: {
-                label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
-              },
-              confirm: {
-                label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
-              }
-            },
-            callback: function (result) {
-              if ( result === true ) {
-                $(that).closest('form').submit();
-              }
-            }
-          });
-        });
-
-      })
 
     </script>
 {% endblock %}

@@ -194,77 +194,7 @@
     <script>
       $(document).ready(function () {
 
-        $('.btnReaded').on('click', function () {
-          const that = this;
-          const miid = $(this).data('id')
-          const url = Routing.generate('put_jakinarazpena_readed', {'id': miid})
-          $.ajax({
-            url: url,
-            method: 'PUT'
-          })
-            .done(function (data) {
-              if ( $(that).children().hasClass('label-danger') ) {
-                  $(that).html(' <span class="label label-success"> Bai</span>')
-                } else {
-                  $(that).html(' <span class="label label-danger"> Ez</span>')
-                }
-            })
-            .fail(function (xhr) {
-              bootbox.alert('Akats bat gertatu da.')
-            })
-        })
 
-        $('.btnEskaeraOnartu').on('click', function () {
-          const firmaid = $(this).data('firmaid')
-          const jakinarazpenaid = $(this).data('notifyid')
-          const url = Routing.generate('put_firma', {'id': firmaid})
-          $.ajax({
-            url: url,
-            method: 'PUT',
-            data: {onartua:1}
-          })
-            .done(function (data) {
-              const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
-              $.ajax({
-                url: url2,
-                method: 'PUT',
-                data: {onartua:1}
-              }).done(function (data) {
-                location.reload()
-              }).fail(function (xhr) {
-                bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-              })
-            })
-            .fail(function (xhr) {
-              bootbox.alert('Akats bat gertatu da firmatzerakoan.')
-            })
-        })
-
-        $('.btnEskaeraEzOnartu').on('click', function () {
-          const firmaid = $(this).data('firmaid')
-          const jakinarazpenaid = $(this).data('notifyid')
-          const url = Routing.generate('put_firma', {'id': firmaid})
-          $.ajax({
-            url: url,
-            method: 'PUT',
-            data: {onartua:0}
-          })
-            .done(function (data) {
-              const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
-              $.ajax({
-                url: url2,
-                method: 'PUT',
-                data: {onartua:0}
-              }).done(function (data) {
-                location.reload()
-              }).fail(function (xhr) {
-                bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-              })
-            })
-            .fail(function (xhr) {
-              bootbox.alert('Akats bat gertatu da firmatzerakoan.')
-            })
-        })
 
       })
     </script>

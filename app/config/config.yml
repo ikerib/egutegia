@@ -152,6 +152,8 @@ ldap_tools:
             base_dn: %ldap_base_dn%
             servers: %ldap_server%
 
+
+
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
     firewall_name: main

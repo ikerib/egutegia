@@ -74,50 +74,6 @@
 {% block foot_script %}
     {{ parent() }}
     <script language="JavaScript">
-      function workday_count (fstart, fend) {
-        const start = moment(fstart)
-        const end = moment(fend)
-        const first = start.clone().endOf('week'); // end of first week
-        const last = end.clone().startOf('week'); // start of last week
-        const days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
 
-        let wfirst = first.day() - start.day(); // check first week
-        if(start.day() === 0) --wfirst; // -1 if start with sunday
-
-        let wlast = end.day() - last.day(); // check last week
-        if(end.day() === 6) --wlast; // -1 if end with saturday
-
-        return wfirst + days + wlast; // get the total
-      }
-
-      $(function () {
-
-        $('#appbundle_eskaera_hasi').datepicker({
-          autoclose: true,
-          format: 'yyyy-mm-dd',
-          language: 'eu'
-        });
-
-        $('#appbundle_eskaera_amaitu').datepicker({
-          autoclose: true,
-          format: 'yyyy-mm-dd',
-          language: 'eu'
-        });
-
-        $('#appbundle_eskaera_noiz').datepicker({
-          autoclose: true,
-          format: 'yyyy-mm-dd',
-          language: 'eu'
-        });
-
-        $('.cmbFetxaKalc').change( function () {
-          const hasi = $('#appbundle_eskaera_hasi').val()
-          const amaitu = $('#appbundle_eskaera_amaitu').val()
-          const d = workday_count(hasi, amaitu)
-
-          $('#appbundle_eskaera_orduak').val(d.toFixed(2))
-        });
-
-      });
     </script>
 {% endblock %}

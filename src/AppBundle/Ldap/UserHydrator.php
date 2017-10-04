@@ -49,6 +49,14 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_ADMIN';
                     $user->addRole('ROLE_ADMIN');
                 }
+                if ($sp[0] === 'ROL-Antolakuntza_GGBB-Administraria'){
+                    $rol = 'ROLE_BIDERATZAILEA';
+                    $user->addRole($rol);
+                }
+                if ($sp[0] === 'InformatikaSaila'){
+                    $rol = 'ROLE_BIDERATZAILEA';
+                    $user->addRole($rol);
+                }
             }
             $user->setMembers($ldapEntry['memberof']);
         }

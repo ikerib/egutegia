@@ -31,28 +31,34 @@ class Builder implements ContainerAwareInterface
         $menu->addChild( ' Txantiloia', [ 'icon' => 'bookmark', 'route' => 'admin_template_index' ] );
         $menu->addChild( ' Mota', [ 'icon' => 'tag', 'route' => 'admin_type_index' ] );
         $menu->addChild('divider2', ['divider' => true]);
-        $menu->addChild( ' Bateraezinak', [ 'icon' => 'lock', 'route' => 'admin_gutxienekoak_index' ] );
-        $menu->addChild( ' Sinatzaileak', [ 'icon' => 'pencil', 'route' => 'admin_sinatzaileak_index' ] );
 
-        /** @var EntityManager $em */
-        $em       = $this->container->get( 'doctrine.orm.entity_manager' );
-        $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
+        $checker = $this->container->get( 'security.authorization_checker' );
+        if ( $checker->isGranted( 'ROLE_USER' ) && ( $checker->isGranted( 'ROLE_BIDERATZAILEA' ) ) ) {
+            $menu->addChild( ' Bateraezinak', [ 'icon' => 'lock', 'route' => 'admin_gutxienekoak_index' ] );
+            $menu->addChild( ' Sinatzaileak', [ 'icon' => 'pencil', 'route' => 'admin_sinatzaileak_index' ] );
+            /** @var EntityManager $em */
+            $em       = $this->container->get( 'doctrine.orm.entity_manager' );
+            $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
 
-        if ( count( $eskaerak ) > 0 ) {
-            //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
-            $menu->addChild(
-                'Eskaerak',
-                array(
-                    'route'  => 'admin_eskaera_list',
-                    'icon'   => 'inbox',
-                    'label'  => "Eskaera <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
-                    'extras' => array( 'safe_label' => true ),
-                )
-            );
-        } else {
-            $menu->addChild( ' Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
-                ->setLinkAttribute( 'class', 'childClass' );
+            if ( count( $eskaerak ) > 0 ) {
+                //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
+                $menu->addChild(
+                    'Eskaerak',
+                    array(
+                        'route'  => 'admin_eskaera_list',
+                        'icon'   => 'inbox',
+                        'label'  => "Eskaera <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
+                        'extras' => array( 'safe_label' => true ),
+                    )
+                );
+            } else {
+                $menu->addChild( ' Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
+                    ->setLinkAttribute( 'class', 'childClass' );
+            }
         }
+
+
+
 
         return $menu;
     }
