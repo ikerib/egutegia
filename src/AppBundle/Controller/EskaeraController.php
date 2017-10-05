@@ -207,7 +207,7 @@ class EskaeraController extends Controller
              */
             $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
                 ->setFrom('informatika@pasaia.net')
-                ->setTo('iibarguren@pasaia.net')
+                ->setTo('rgonzalez@pasaia.net')
                 ->setBody(
                     $this->renderView(
                     // app/Resources/views/Emails/registration.html.twig

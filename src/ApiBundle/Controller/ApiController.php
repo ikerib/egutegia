@@ -790,6 +790,21 @@ class ApiController extends FOSRestController
                 $eskaera = $firma->getEskaera();
                 $eskaera->setAmaitua( true );
                 $em->persist( $eskaera );
+
+                $message = (new \Swift_Message('[Egutegia][Janirazpen berria] :'.$eskaera->getUser()->getDisplayname()))
+                    ->setFrom('informatika@pasaia.net')
+                    ->setTo('rgonzalez@pasaia.net')
+                    ->setBody(
+                        $this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'Emails/eskaera_onartua.html.twig',
+                            array('eskaera' => $eskaera)
+                        ),
+                        'text/html'
+                    );
+
+                $this->get('mailer')->send($message);
+
             }
         }
         $em->flush();
