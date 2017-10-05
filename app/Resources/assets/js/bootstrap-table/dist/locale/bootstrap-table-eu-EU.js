@@ -1,4 +1,5 @@
 /**
+ * Egutegia16
  * Bootstrap Table Basque (Basque Country) translation
  * Author: Iker Ibarguren Berasaluze<ikerib@gmail.com>
  */

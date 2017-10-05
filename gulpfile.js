@@ -1,4 +1,5 @@
 /**
+ * egutegia31
  * Created by iibarguren on 3/13/17.
  */
 
@@ -62,8 +63,8 @@ freeCSS = [
 
 otherJS = [
     './app/Resources/assets/js/libs/respond.min.js',
-    './app/Resources/assets/js/jquery/dist/jquery.js',
-    './app/Resources/assets/js/bootstrap/dist/js/bootstrap.js',
+    './app/Resources/assets/js/jquery/dist/jquery.min.js',
+    './app/Resources/assets/js/bootstrap/dist/js/bootstrap.min.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/bootstrap-year-calendar.min.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.eu.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.es.js',
@@ -76,14 +77,12 @@ otherJS = [
     './app/Resources/assets/js/libs/bootstrap-datepicker.min.js',
     './app/Resources/assets/js/libs/bootstrap-popover.js',
     './app/Resources/assets/js/bootbox/bootbox.min.js',
-    './app/Resources/assets/js/moment/min/moment-with-locales.js',
-    './app/Resources/assets/js/vertical-timeline/vertical-timeline.js',
+    './app/Resources/assets/js/moment/min/moment-with-locales.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.es.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.eu.min.js',
     './app/Resources/assets/js/libs/select2.min.js',
     './app/Resources/assets/js/libs/select2-locale/es.js',
     './app/Resources/assets/js/libs/select2-locale/eu.js',
-    './app/Resources/assets/js/example.js',
     './app/Resources/assets/js/app.js'
 ];
 otherCSS = [
@@ -188,7 +187,6 @@ gulp.task('sass:prod', function () {
 
     // return merge(niresass, besteCss).pipe(concat('app.min.css')).pipe(gulp.dest(paths.buildCss));
 });
-
 
 // JS
 gulp.task('js:dev', function () {
