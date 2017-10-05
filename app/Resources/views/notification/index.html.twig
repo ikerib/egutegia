@@ -63,15 +63,15 @@
             <th data-halign="center" data-align="center" data-field="result"
                 data-sortable="true">{{ 'Erantzuna' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Gaia' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.hasi"
+            <th data-halign="center" data-align="left" data-field="hasi"
                 data-sortable="true">{{ 'Hasi' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.amaitu"
+            <th data-halign="center" data-align="left" data-field="amaitu"
                 data-sortable="true">{{ 'Amaitu' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.orduak"
+            <th data-halign="center" data-align="left" data-field="orduak"
                 data-sortable="true">{{ 'Orduak' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="created"
                 data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
+            <th data-halign="center" data-align="left" data-field="oharra"
                 data-sortable="true">{{ 'Erantzuna' | trans }}</th>
         </tr>
         </thead>
@@ -79,7 +79,7 @@
         {% for notification in notifications %}
             <tr>
                 <td>
-                    <a href="javascript:;" class="btnReaded" data-id="{{ notification.id }}">
+                    <a href="javascript:void(0);" class="btnReaded" data-id="{{ notification.id }}">
                         {% if notification.readed %}
                             <span class="label label-success"> Bai</span>
                         {% else %}
@@ -88,7 +88,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="javascript:;" class="btnComplete" data-id="{{ notification.id }}">
+                    <a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">
                         {% if notification.completed %}
                             <span class="label label-success"> Bai</span>
                         {% else %}
@@ -97,7 +97,7 @@
                     </a>
                 </td>
                 <td>
-                    <a href="javascript:;" class="btnComplete" data-id="{{ notification.id }}">
+                    <a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">
                         {% if notification.result %}
                             <span class="label label-success"> Bai</span>
                         {% else %}
