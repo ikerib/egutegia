@@ -30,7 +30,7 @@
     </div>
 
     <div id="toolbar">
-        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Gehitu langilea
+        <button id="btnBerria" class="btn btn-default">Gehitu langilea
         </button>
     </div>
     <div>&nbsp;</div>
@@ -61,6 +61,10 @@
     {{ parent() }}
     <script>
         $(document).ready(function () {
+
+            $('#btnBerria').on('click', function () {
+                $('#myModal').modal();
+            });
 
             $('#btnNewZerrendaUser').on('click', function () {
                 var u = $('#appbundle_gutxienekoakdet_user').val();

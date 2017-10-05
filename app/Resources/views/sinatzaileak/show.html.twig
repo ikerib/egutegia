@@ -30,7 +30,7 @@
     </div>
 
     <div id="toolbar">
-        <button id="btnBerria" class="btn btn-default" data-toggle="modal" data-target="#myModal">Gehitu langilea
+        <button id="btnBerria" class="btn btn-default">Gehitu langilea
         </button>
     </div>
     <div>&nbsp;</div>
@@ -67,6 +67,10 @@
             $('.select2').select2({
 //          theme: "classic",
                 width: '80%'
+            });
+
+            $('#btnBerria').on('click', function () {
+                $('#myModal').modal();
             });
 
             $('#btnNewZerrendaUser').on('click', function () {
