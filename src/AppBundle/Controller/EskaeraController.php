@@ -195,7 +195,7 @@ class EskaeraController extends Controller
                 foreach ($collision as $e) {
                     $txt = $txt . " - " .  $e->getCalendar()->getUser();
                 }
-                $txtOharra = $eskaera->getOharra() . "<br> ADI!!  " . $txt . " langileekin koinzidentziak ditu";
+                $txtOharra = $eskaera->getOharra() . " ADI!!  " . $txt . " langileekin koinzidentziak ditu";
                 $eskaera->setOharra($txtOharra);
             }
 
