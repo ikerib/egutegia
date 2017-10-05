@@ -35,29 +35,38 @@ Denboralerroa: Denboralerroa
 Nombre: Nombre
 Abizenak: Abizenak
 'Urteko orduak': 'Urteko orduak'
-'Opor orduak:': 'Opor orduak'
 'Konpentsatutako orduak': 'Konpentsatutako orduak'
 'Udal Langileen egutegi kudeatzailea': 'Udal Langileen egutegi kudeatzailea'
 Sartu: Sartu
 'Txantiloi berria': 'Txantiloi berria'
 'Egun bat zenbat ordu dira': 'Egun bat zenbat ordu dira'
-'Lan orduak:': 'Lan orduak'
-'Norberarentzako:': 'Norberarentzako'
-'Konpentsatutakoak:': 'Konpentsatuak'
-Hasiera: 'Hasiera'
-'Txantiloiak': 'Txantiloiak'
-'Motak': 'Motak'
-'Egutegia': 'Egutegia'
-'Itxi': 'Itxi'
-'Izena': 'Izena'
-'Lan orduak guztira': 'Lan orduak guztira'
-'Opor orduak guztira': 'Opor orduak guztira'
-'Opor orduak hartuta': 'Opor orduak hartuta'
-'Ezeztatu': 'Ezeztatu'
-'Gorde': 'Gorde'
-'Mota': 'Mota'
-'Orduak': 'Orduak'
-'Fetxak': 'Fetxak'
-'Oharrak': 'Oharrak'
-'Fitxategiak': 'Fitxategiak'
-'Denboralerroa': 'Denboralerroa'
+'Portzentaia:': '__Portzentaia:'
+'Jornada:': 'Jornada:'
+Portzentaia: Portzentaia
+Konpentsatuak: Konpentsatuak
+'Ordu konpentsatuak': 'Ordu konpentsatuak'
+'Dokumentua gehitu': 'Dokumentua gehitu'
+'Dokumentu berria': 'Dokumentu berria'
+Dokumentua: Dokumentua
+'Noiz igo da': 'Noiz igo da'
+Fetxa: Fetxa
+Minutuak: Minutuak
+Faktorea: Faktorea
+'Orduak konpentsatzera': 'Orduak konpentsatzera'
+Saila: Saila
+'Opor orduak': 'Opor orduak'
+Ordena: Ordena
+Erakutsi: Erakutsi
+Bai: Bai
+Ez: Ez
+'Aukeratu Dokumentua': 'Aukeratu Dokumentua'
+'msg.sindikalak': 'Sindikalak '
+'msg.lanaldi': 'Lanaldia '
+'msg.eguneko.lanaldia': 'Eguneko lanaldia :'
+'msg.konpentsatzeke': 'Konpentsatzeke '
+'msg.norberarentzako': 'Norberaren arazoetarako egunak: '
+'msg.opor.orduak': 'Opor orduak: '
+'msg.urteko.orduak': 'Urteko lan orduak: '
+'msg.portzentaia': 'Portzentaia: '
+'msg.egutegi.berria': 'Egutegi berria'
+Sinatzaileen zerrenda: 'messages'

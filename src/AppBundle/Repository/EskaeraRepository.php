@@ -44,6 +44,7 @@ class EskaeraRepository extends EntityRepository
                       SELECT e
                       FROM AppBundle:Eskaera e
                 ';
+                break;
         }
 
         $query = $em->createQuery($dql);

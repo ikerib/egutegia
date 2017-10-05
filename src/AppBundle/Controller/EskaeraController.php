@@ -60,7 +60,7 @@ class EskaeraController extends Controller
 
 
         if ( ($q == null) || ($q == 'all' )) {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list('all');
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
         } else  {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->list($q);
         }
@@ -194,11 +194,31 @@ class EskaeraController extends Controller
                 foreach ($collision as $e) {
                     $txt = $txt . " - " .  $e->getCalendar()->getUser();
                 }
-                $eskaera->setOharra( $txt . " langileekin koinzidentziak ditu");
+                $txtOharra = $eskaera->getOharra() . "<br> ADI!!  " . $txt . " langileekin koinzidentziak ditu";
+                $eskaera->setOharra($txtOharra);
             }
 
             $em->persist($eskaera);
             $em->flush();
+
+            /**
+             * Behin grabatuta bidali jakinarazpen emaila Ruth-i
+             */
+            $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
+                ->setFrom('informatika@pasaia.net')
+                ->setTo('iibarguren@pasaia.net')
+                ->setBody(
+                    $this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'Emails/eskaera_berria.html.twig',
+                        array('eskaera' => $eskaera)
+                    ),
+                    'text/html'
+                );
+
+            $this->get('mailer')->send($message);
+
+
 
             return $this->redirectToRoute('eskaera_show', array('id' => $eskaera->getId()));
 
@@ -210,6 +230,7 @@ class EskaeraController extends Controller
             'form' => $form->createView(),
         ));
     }
+
 
     /**
      * Finds and displays a eskaera entity.
