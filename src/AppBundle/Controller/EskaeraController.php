@@ -10,6 +10,7 @@ use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\Notification;
+use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -310,6 +311,7 @@ class EskaeraController extends Controller
                     $em->persist( $eskaera );
 
                     $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
+                    /** @var Sinatzaileakdet $s */
                     foreach ($sinatzaileusers as $s) {
                         $notify = New Notification();
                         $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
@@ -325,6 +327,29 @@ class EskaeraController extends Controller
                         $notify->setReaded( false );
                         $notify->setUser( $s->getUser() );
                         $em->persist( $notify );
+
+                        /**
+                         * bidali emaila notifikatzen firmatu beharreko eskaerak dituela
+                         */
+                        if (strlen($s->getUser()->getEmail())>0){
+
+                            $message = (new \Swift_Message('[Egutegia][Janirazpen berria] :'.$eskaera->getUser()->getDisplayname()))
+                                ->setFrom('informatika@pasaia.net')
+                                ->setTo($s->getUser()->getEmail())
+                                ->setBody(
+                                    $this->renderView(
+                                    // app/Resources/views/Emails/registration.html.twig
+                                        'Emails/eskaera_berria.html.twig',
+                                        array('eskaera' => $eskaera)
+                                    ),
+                                    'text/html'
+                                );
+
+                            $this->get('mailer')->send($message);
+
+                        }
+
+
 
                         $fd = new Firmadet();
                         $fd->setFirma( $firma );
