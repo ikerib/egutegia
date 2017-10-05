@@ -339,7 +339,7 @@ class EskaeraController extends Controller
                                 ->setBody(
                                     $this->renderView(
                                     // app/Resources/views/Emails/registration.html.twig
-                                        'Emails/eskaera_berria.html.twig',
+                                        'Emails/jakinarazpen_berria.html.twig',
                                         array('eskaera' => $eskaera)
                                     ),
                                     'text/html'
