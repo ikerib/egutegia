@@ -72,7 +72,7 @@
             <th data-halign="center" data-align="left" data-field="created"
                 data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="eskaera.oharra"
-                data-sortable="true">{{ 'Oharra' | trans }}</th>
+                data-sortable="true">{{ 'Erantzuna' | trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -176,10 +176,11 @@
                             </div>
                         </div>
                     </div>
+
                 </td>
                 <td>
                     {#{% if notification.eskaera.oharra | length > 0 %}#}
-                    <button data-toggle="modal" data-target="#frmEskaeraModalAccept{{ notification.id }}">Erantzun</button>
+                    <button class="btnIrekiModal" data-target="#frmEskaeraModalAccept{{ notification.id }}">Erantzun</button>
                     {#{% endif %}#}
                 </td>
             </tr>
@@ -189,11 +190,14 @@
 
 {% endblock %}
 
-{#{% block foot_script %}#}
-    {#{{ parent() }}#}
-    {#<script>#}
-      {#$(document).ready(function () {#}
-
-      {#})#}
-    {#</script>#}
-{#{% endblock %}#}
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+      $(document).ready(function () {
+          $('.btnIrekiModal').on('click', function () {
+              var fr = $(this).data('target');
+              $(fr).modal();
+          });
+      })
+    </script>
+{% endblock %}
