@@ -37,10 +37,13 @@ class NotificationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
-        $readed = $request->query->get('readed');
+        $q = $request->query->get('q');
 
-        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId(), $readed);
+        if ( is_null($q) ) {
+            $q = null;
+        }
 
+        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId(), $q);
 
         return $this->render('notification/index.html.twig', array(
             'notifications' => $notifications,

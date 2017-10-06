@@ -8,19 +8,17 @@
 
 {% block content_row %}
 
-
     <div id="toolbar">
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Filtratu <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="{{ path('notification_index', {'readed':0}) }}">Guztiak</a></li>
-                <li><a href="{{ path('notification_index', {'readed':-1}) }}">Irakurri gabeak</a></li>
-                <li><a href="{{ path('notification_index', {'readed':1}) }}">Irakurritakoak</a></li>
-            </ul>
+        <div class="btn-group" role="group" aria-label="...">
+            <a class="btn {% if (app.request.get('q') == 'all') or (app.request.get('q') is not defined) or (app.request.get('q') is null) %}        btn-info {% else %} btn-default {% endif %}"
+               href="{{ path('notification_index', { 'q': 'all'}) }}">Guztiak</a>
+            <a class="btn {% if app.request.get('q') == 'unread' %}     btn-info {% else %} btn-default {% endif %}"
+               href="{{ path('notification_index', { 'q': 'unread'}) }}">Irakurri gabeak</a>
+            <a class="btn {% if app.request.get('q') == 'readed' %}   btn-info {% else %} btn-default {% endif %}"
+               href="{{ path('notification_index', { 'q': 'readed'}) }}">Irakurritakoak</a>
+            <a class="btn {% if app.request.get('q') == 'unanswered' %}    btn-info {% else %} btn-default {% endif %}"
+               href="{{ path('notification_index', { 'q': 'unanswered'}) }}">Erantzun gabeak</a>
         </div>
-
     </div>
     <table data-toggle="table"
            data-classes="table table-hover table-condensed"
@@ -71,7 +69,7 @@
                 data-sortable="true">{{ 'Orduak' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="created"
                 data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="oharra"
+            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
                 data-sortable="true">{{ 'Erantzuna' | trans }}</th>
         </tr>
         </thead>

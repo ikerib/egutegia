@@ -37,19 +37,21 @@ class NotificationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getCurrentUserNotifications($userid, $readed) {
+    public function getCurrentUserNotifications($userid, $q) {
 
         $qb = $this->createQueryBuilder( 'n' )
             ->innerJoin( 'n.user', 'u' )
             ->where( 'u.id=:userid' )
             ->setParameter( 'userid', $userid );
 
-        if ($readed) {
+        if ($q) {
 
-            if ($readed == -1 ) {
+            if ($q == 'unread' ) {
                 $qb->andWhere( 'n.readed=false' );
-            } elseif ($readed == 1) {
+            } elseif ($q == 'readed') {
                 $qb->andWhere( 'n.readed=true' );
+            } elseif ($q == 'unanswered') {
+                $qb->andWhere( 'n.result=false' );
             }
 
         }
