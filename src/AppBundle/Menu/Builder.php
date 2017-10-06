@@ -81,7 +81,7 @@ function userMenu(FactoryInterface $factory, array $options)
 
     $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
 
-    if ($checker->isGranted('ROLE_USER') || ($checker->isGranted('ROLE_ADMIN'))) {
+    if ($checker->isGranted('ROLE_USER')) {
         if (count($notifications) == 0) {
             $menu->addChild(
                 'User',
@@ -129,16 +129,20 @@ function userMenu(FactoryInterface $factory, array $options)
             )
         );
         $menu['User']->addChild('divider', ['divider' => true]);
-        $menu['User']->addChild(
-            ' Jakinarazpenak',
-            array(
-                'label' => " Jakinarazpenak <span class='badge badge-error'>" . count($notifications) . "</span>",
-                'route' => 'notification_index',
-                'icon' => 'bullhorn',
-                'extras' => array('safe_label' => true),
-            )
-        );
-        $menu['User']->addChild('divider2', ['divider' => true]);
+
+        if ( (! $checker->isGranted('ROLE_BIDERATZAILEA')) && (($checker->isGranted('ROLE_ADMIN')) )) {
+            $menu['User']->addChild(
+                ' Jakinarazpenak',
+                array(
+                    'label' => " Jakinarazpenak <span class='badge badge-error'>" . count($notifications) . "</span>",
+                    'route' => 'notification_index',
+                    'icon' => 'bullhorn',
+                    'extras' => array('safe_label' => true),
+                )
+            );
+            $menu['User']->addChild('divider2', ['divider' => true]);
+        }
+
 
 
         $menu['User']->addChild(
