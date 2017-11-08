@@ -52,6 +52,7 @@ class Sinatzaileakdet
     /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="sinatzaileakdet")
      * @ORM\JoinColumn(name="sinatzaileak_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()

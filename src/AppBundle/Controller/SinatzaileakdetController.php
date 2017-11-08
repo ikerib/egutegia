@@ -47,14 +47,14 @@ class SinatzaileakdetController extends Controller
     public function newAction(Request $request, $sinatzaileid)
     {
         $em = $this->getDoctrine()->getManager();
-        $sina = $em->getRepository( 'AppBundle:Sinatzaileak' )->find( $sinatzaileid );
+        $sina = $em->getRepository('AppBundle:Sinatzaileak')->find($sinatzaileid);
         if (!$sina) {
-            throw New EntityNotFoundException( 'Ez da sinatzaile zerrenda topatu' );
+            throw New EntityNotFoundException('Ez da sinatzaile zerrenda topatu');
         }
         $sinatzaileakdet = new Sinatzaileakdet();
-        $sinatzaileakdet->setSinatzaileak( $sina );
+        $sinatzaileakdet->setSinatzaileak($sina);
         $form = $this->createForm('AppBundle\Form\SinatzaileakdetType', $sinatzaileakdet, [
-            'action' => $this->generateUrl('admin_sinatzaileakdet_new', array('sinatzaileid'=>$sina->getId())),
+            'action' => $this->generateUrl('admin_sinatzaileakdet_new', array('sinatzaileid' => $sina->getId())),
             'method' => 'POST'
         ]);
         $form->handleRequest($request);
@@ -139,7 +139,7 @@ class SinatzaileakdetController extends Controller
         }
 
         //return $this->redirectToRoute('admin_sinatzaileakdet_index');
-        return $this->redirectToRoute('admin_sinatzaileak_show', array('id'=>$miid));
+        return $this->redirectToRoute('admin_sinatzaileak_show', array('id' => $miid));
     }
 
     /**
@@ -154,7 +154,44 @@ class SinatzaileakdetController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('admin_sinatzaileakdet_delete', array('id' => $sinatzaileakdet->getId())))
             ->setMethod('DELETE')
-            ->getForm()
-        ;
+            ->getForm();
+    }
+
+    /**
+     * Orden up
+     *
+     * @Route("/{id}/up", options={"expose"=true}, name="admin_sinatzaileakdet_up")
+     * @Method({"GET"})
+     * @param Sinatzaileakdet $sinatzaileakdet
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function upAction(Sinatzaileakdet $sinatzaileakdet) {
+        $em = $this->getDoctrine()->getManager();
+        $sinatzaileakdet->setOrden(
+            $sinatzaileakdet->getOrden() - 1
+        );
+        $em->persist($sinatzaileakdet);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_sinatzaileak_show', array('id' => $sinatzaileakdet->getSinatzaileak()->getId()));
+    }
+
+    /**
+     * Orden down
+     *
+     * @Route("/{id}/down", options={"expose"=true}, name="admin_sinatzaileakdet_down")
+     * @Method({"GET"})
+     * @param Sinatzaileakdet $sinatzaileakdet
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function downAction(Sinatzaileakdet $sinatzaileakdet) {
+        $em = $this->getDoctrine()->getManager();
+        $sinatzaileakdet->setOrden(
+            $sinatzaileakdet->getOrden() + 1
+        );
+        $em->persist($sinatzaileakdet);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_sinatzaileak_show', array('id' => $sinatzaileakdet->getSinatzaileak()->getId()));
     }
 }
