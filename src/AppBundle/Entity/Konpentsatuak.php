@@ -7,14 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+;
 
 /**
- * Eskaera
+ * Konpentsatuak
  *
- * @ORM\Table(name="eskaera")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EskaeraRepository")
+ * @ORM\Table(name="konpentsatuak")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\KonpentsatuakRepository")
  */
-class Eskaera
+class Konpentsatuak
 {
     /**
      * @var int
@@ -28,44 +29,45 @@ class Eskaera
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
     private $name;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="noiz", type="datetime")
+     * @ORM\Column(name="noiz", type="datetime", nullable=true)
      */
     private $noiz;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="hasi", type="datetime")
+     * @ORM\Column(name="hasi", type="datetime", nullable=true)
      */
     private $hasi;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="amaitu", type="datetime")
-     */
-    private $amaitu;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="egunak", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="egunak", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $egunak;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="orduak", type="decimal", precision=10, scale=2)
+     * @ORM\Column(name="orduak", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $orduak;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="deskribapena", type="string", length=255, nullable=true)
+     */
+    private $deskribapena;
+
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -91,19 +93,19 @@ class Eskaera
      * @var bool
      * @ORM\Column(name="abiatua", type="boolean", nullable=true, options={"default"=false})
      */
-    private $abiatua=false;
+    private $abiatua = false;
 
     /**
      * @var bool
      * @ORM\Column(name="amaitua", type="boolean", nullable=true, options={"default"=false})
      */
-    private $amaitua=false;
+    private $amaitua = false;
 
     /**
      * @var bool
      * @ORM\Column(name="egutegian", type="boolean", nullable=true, options={"default"=false})
      */
-    private $egutegian=false;
+    private $egutegian = false;
 
     /**
      * @var string
@@ -163,8 +165,8 @@ class Eskaera
     protected $firma;
 
     /**
-    * Constructor.
-    */
+     * Constructor.
+     */
     public function __construct()
     {
         $this->noiz = New \DateTime();
@@ -182,6 +184,7 @@ class Eskaera
     /*****************************************************************************************************************/
 
 
+    
 
     /**
      * Get id
@@ -198,7 +201,7 @@ class Eskaera
      *
      * @param string $name
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setName($name)
     {
@@ -218,11 +221,35 @@ class Eskaera
     }
 
     /**
+     * Set noiz
+     *
+     * @param \DateTime $noiz
+     *
+     * @return Konpentsatuak
+     */
+    public function setNoiz($noiz)
+    {
+        $this->noiz = $noiz;
+
+        return $this;
+    }
+
+    /**
+     * Get noiz
+     *
+     * @return \DateTime
+     */
+    public function getNoiz()
+    {
+        return $this->noiz;
+    }
+
+    /**
      * Set hasi
      *
      * @param \DateTime $hasi
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setHasi($hasi)
     {
@@ -242,27 +269,27 @@ class Eskaera
     }
 
     /**
-     * Set amaitu
+     * Set egunak
      *
-     * @param \DateTime $amaitu
+     * @param string $egunak
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
-    public function setAmaitu($amaitu)
+    public function setEgunak($egunak)
     {
-        $this->amaitu = $amaitu;
+        $this->egunak = $egunak;
 
         return $this;
     }
 
     /**
-     * Get amaitu
+     * Get egunak
      *
-     * @return \DateTime
+     * @return string
      */
-    public function getAmaitu()
+    public function getEgunak()
     {
-        return $this->amaitu;
+        return $this->egunak;
     }
 
     /**
@@ -270,7 +297,7 @@ class Eskaera
      *
      * @param string $orduak
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setOrduak($orduak)
     {
@@ -290,11 +317,35 @@ class Eskaera
     }
 
     /**
+     * Set deskribapena
+     *
+     * @param string $deskribapena
+     *
+     * @return Konpentsatuak
+     */
+    public function setDeskribapena($deskribapena)
+    {
+        $this->deskribapena = $deskribapena;
+
+        return $this;
+    }
+
+    /**
+     * Get deskribapena
+     *
+     * @return string
+     */
+    public function getDeskribapena()
+    {
+        return $this->deskribapena;
+    }
+
+    /**
      * Set created
      *
      * @param \DateTime $created
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setCreated($created)
     {
@@ -318,7 +369,7 @@ class Eskaera
      *
      * @param \DateTime $updated
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setUpdated($updated)
     {
@@ -342,7 +393,7 @@ class Eskaera
      *
      * @param string $contentChangedBy
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setContentChangedBy($contentChangedBy)
     {
@@ -362,107 +413,11 @@ class Eskaera
     }
 
     /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\User $user
-     *
-     * @return Eskaera
-     */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set noiz
-     *
-     * @param \DateTime $noiz
-     *
-     * @return Eskaera
-     */
-    public function setNoiz($noiz)
-    {
-        $this->noiz = $noiz;
-
-        return $this;
-    }
-
-    /**
-     * Get noiz
-     *
-     * @return \DateTime
-     */
-    public function getNoiz()
-    {
-        return $this->noiz;
-    }
-
-    /**
-     * Set type
-     *
-     * @param \AppBundle\Entity\Type $type
-     *
-     * @return Eskaera
-     */
-    public function setType(\AppBundle\Entity\Type $type = null)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return \AppBundle\Entity\Type
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set calendar
-     *
-     * @param \AppBundle\Entity\Calendar $calendar
-     *
-     * @return Eskaera
-     */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
-    {
-        $this->calendar = $calendar;
-
-        return $this;
-    }
-
-    /**
-     * Get calendar
-     *
-     * @return \AppBundle\Entity\Calendar
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
      * Set abiatua
      *
      * @param boolean $abiatua
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setAbiatua($abiatua)
     {
@@ -486,7 +441,7 @@ class Eskaera
      *
      * @param boolean $amaitua
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setAmaitua($amaitua)
     {
@@ -506,11 +461,35 @@ class Eskaera
     }
 
     /**
+     * Set egutegian
+     *
+     * @param boolean $egutegian
+     *
+     * @return Konpentsatuak
+     */
+    public function setEgutegian($egutegian)
+    {
+        $this->egutegian = $egutegian;
+
+        return $this;
+    }
+
+    /**
+     * Get egutegian
+     *
+     * @return boolean
+     */
+    public function getEgutegian()
+    {
+        return $this->egutegian;
+    }
+
+    /**
      * Set oharra
      *
      * @param string $oharra
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setOharra($oharra)
     {
@@ -530,11 +509,83 @@ class Eskaera
     }
 
     /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Konpentsatuak
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set type
+     *
+     * @param \AppBundle\Entity\Type $type
+     *
+     * @return Konpentsatuak
+     */
+    public function setType(\AppBundle\Entity\Type $type = null)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return \AppBundle\Entity\Type
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set calendar
+     *
+     * @param \AppBundle\Entity\Calendar $calendar
+     *
+     * @return Konpentsatuak
+     */
+    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    {
+        $this->calendar = $calendar;
+
+        return $this;
+    }
+
+    /**
+     * Get calendar
+     *
+     * @return \AppBundle\Entity\Calendar
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
      * Set sinatzaileak
      *
      * @param \AppBundle\Entity\Sinatzaileak $sinatzaileak
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function setSinatzaileak(\AppBundle\Entity\Sinatzaileak $sinatzaileak = null)
     {
@@ -554,59 +605,11 @@ class Eskaera
     }
 
     /**
-     * Add firma
-     *
-     * @param \AppBundle\Entity\Firma $firma
-     *
-     * @return Eskaera
-     */
-    public function addFirma(\AppBundle\Entity\Firma $firma)
-    {
-        $this->firma[] = $firma;
-
-        return $this;
-    }
-
-    /**
-     * Remove firma
-     *
-     * @param \AppBundle\Entity\Firma $firma
-     */
-    public function removeFirma(\AppBundle\Entity\Firma $firma)
-    {
-        $this->firma->removeElement($firma);
-    }
-
-    /**
-     * Get firma
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getFirma()
-    {
-        return $this->firma;
-    }
-
-    /**
-     * Set firma
-     *
-     * @param \AppBundle\Entity\Firma $firma
-     *
-     * @return Eskaera
-     */
-    public function setFirma(\AppBundle\Entity\Firma $firma = null)
-    {
-        $this->firma = $firma;
-
-        return $this;
-    }
-
-    /**
      * Add notification
      *
      * @param \AppBundle\Entity\Notification $notification
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
     public function addNotification(\AppBundle\Entity\Notification $notification)
     {
@@ -636,50 +639,26 @@ class Eskaera
     }
 
     /**
-     * Set egutegian
+     * Set firma
      *
-     * @param boolean $egutegian
+     * @param \AppBundle\Entity\Firma $firma
      *
-     * @return Eskaera
+     * @return Konpentsatuak
      */
-    public function setEgutegian($egutegian)
+    public function setFirma(\AppBundle\Entity\Firma $firma = null)
     {
-        $this->egutegian = $egutegian;
+        $this->firma = $firma;
 
         return $this;
     }
 
     /**
-     * Get egutegian
+     * Get firma
      *
-     * @return boolean
+     * @return \AppBundle\Entity\Firma
      */
-    public function getEgutegian()
+    public function getFirma()
     {
-        return $this->egutegian;
-    }
-
-    /**
-     * Set egunak
-     *
-     * @param string $egunak
-     *
-     * @return Eskaera
-     */
-    public function setEgunak($egunak)
-    {
-        $this->egunak = $egunak;
-
-        return $this;
-    }
-
-    /**
-     * Get egunak
-     *
-     * @return string
-     */
-    public function getEgunak()
-    {
-        return $this->egunak;
+        return $this->firma;
     }
 }

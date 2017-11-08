@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Konpentsatuak</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ konpentsatuak.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ konpentsatuak.name }}</td>
+            </tr>
+            <tr>
+                <th>Noiz</th>
+                <td>{% if konpentsatuak.noiz %}{{ konpentsatuak.noiz|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Hasi</th>
+                <td>{% if konpentsatuak.hasi %}{{ konpentsatuak.hasi|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Egunak</th>
+                <td>{{ konpentsatuak.egunak }}</td>
+            </tr>
+            <tr>
+                <th>Orduak</th>
+                <td>{{ konpentsatuak.orduak }}</td>
+            </tr>
+            <tr>
+                <th>Deskribapena</th>
+                <td>{{ konpentsatuak.deskribapena }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{% if konpentsatuak.created %}{{ konpentsatuak.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updated</th>
+                <td>{% if konpentsatuak.updated %}{{ konpentsatuak.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Contentchangedby</th>
+                <td>{{ konpentsatuak.contentChangedBy }}</td>
+            </tr>
+            <tr>
+                <th>Abiatua</th>
+                <td>{% if konpentsatuak.abiatua %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Amaitua</th>
+                <td>{% if konpentsatuak.amaitua %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Egutegian</th>
+                <td>{% if konpentsatuak.egutegian %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Oharra</th>
+                <td>{{ konpentsatuak.oharra }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('konpentsatuak_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('konpentsatuak_edit', { 'id': konpentsatuak.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

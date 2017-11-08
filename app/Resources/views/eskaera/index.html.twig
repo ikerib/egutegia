@@ -6,7 +6,18 @@
 
     <div class="row">
         <div class="col-md-2">
-            <a class="btn btn-primary" href="{{ path('eskaera_new') }}">Eskaera berria</a>
+
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Eskaera berria <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="{{ path('eskaera_new') }}">Opor eskaera</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{{ path('konpentsatuak_new') }}">Ordu Konpentsatuak</a></li>
+                </ul>
+            </div>
         </div>
         <div class="col-md-10"></div>
     </div>

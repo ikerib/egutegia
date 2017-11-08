@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -10,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EskaeraType extends AbstractType
+class KonpentsatuakType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -40,23 +41,11 @@ class EskaeraType extends AbstractType
                 'html5' => false,
                 'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
-            ->add('amaitu', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => false,
-                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
-            ])
+
             ->add('egunak')
             ->add('orduak')
             ->add('oharra')
-            ->add('noiz', DateType::class, [
-                'widget' => 'single_text',
-                'html5' => false,
-                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
-            ])
 
-
-            ->add('user')
-            ->add('calendar')
             ->add('sinatzaileak', EntityType::class, [
                     'label' => 'Sinatzaile zerrenda',
                     'placeholder'=> 'Aukeratu bat...',
@@ -71,7 +60,15 @@ class EskaeraType extends AbstractType
                         return $template->getName();
                     }, ]
             )
+//
+//            ->add('noiz', DateType::class, [
+//                'widget' => 'single_text',
+//                'html5' => false,
+//                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
+//            ])
 
+            ->add('user')
+            ->add('calendar')
         ;
     }
     
@@ -81,7 +78,7 @@ class EskaeraType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Eskaera'
+            'data_class' => 'AppBundle\Entity\Konpentsatuak'
         ));
     }
 
@@ -90,7 +87,7 @@ class EskaeraType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_eskaera';
+        return 'appbundle_konpentsatuak';
     }
 
 
