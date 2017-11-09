@@ -236,12 +236,20 @@ class EskaeraController extends Controller
 
             $em->flush();
 
+
+            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
+            $bideratzaileak = [];
+            foreach ($bideratzaileakfind as $b){
+                array_push($bideratzaileak, $b->getEmail());
+            }
+            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+
             /**
              * Behin grabatuta bidali jakinarazpen emaila Ruth-i
              */
             $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
-                ->setFrom('informatika@pasaia.net')
-                ->setTo('rgonzalez@pasaia.net')
+                ->setFrom($bailtzailea)
+                ->setTo($bideratzaileak)
                 ->setBody(
                     $this->renderView(
                     // app/Resources/views/Emails/registration.html.twig

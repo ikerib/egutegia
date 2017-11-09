@@ -167,6 +167,8 @@ class Eskaera
     */
     public function __construct()
     {
+        $this->orduak = 0;
+        $this->egunak = 0;
         $this->noiz = New \DateTime();
         $this->abiatua = false;
         $this->amaitua = false;
