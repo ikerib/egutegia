@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Document;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Firma;
@@ -203,7 +204,36 @@ class EskaeraController extends Controller
                 $eskaera->setOharra($txtOharra);
             }
 
+            /** PDF Fitxategia sortu */
+
+            $user = $this->getUser();
+
+            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format('Y-m-d') .'-' . $eskaera->getAmaitu()->format('Y-m-d') . '.pdf';
+
+            $nirepath = $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
+
+            $filename = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/' . $nirepath . $name;
+            $filename = preg_replace("/app..../i", "", $filename);
+
+            if (!file_exists($filename)) {
+                $this->get('knp_snappy.pdf')->generateFromHtml(
+                    $this->renderView(
+                        'eskaera/print.html.twig',
+                        array(
+                            'eskaera' => $eskaera,
+                        )
+                    ),$filename
+                );
+            }
+
             $em->persist($eskaera);
+
+            $doc = new Document();
+            $doc->setFilename($name);
+            $doc->setFilenamepath($filename);
+            $doc->setCalendar($eskaera->getCalendar());
+            $em->persist($doc);
+
             $em->flush();
 
             /**

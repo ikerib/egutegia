@@ -36,6 +36,14 @@ class Document
     /**
      * @var string
      *
+     * @ORM\Column(name="filenamepath", type="string", length=255)
+     * @Expose()
+     */
+    private $filenamepath;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="filename", type="string", length=255)
      * @Expose()
      */
@@ -248,5 +256,29 @@ class Document
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set filenamepath
+     *
+     * @param string $filenamepath
+     *
+     * @return Document
+     */
+    public function setFilenamepath($filenamepath)
+    {
+        $this->filenamepath = $filenamepath;
+
+        return $this;
+    }
+
+    /**
+     * Get filenamepath
+     *
+     * @return string
+     */
+    public function getFilenamepath()
+    {
+        return $this->filenamepath;
     }
 }

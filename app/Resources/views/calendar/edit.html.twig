@@ -510,8 +510,15 @@
                             {% for f in calendar.documents if calendar.documents %}
                                 <tr>
                                     {#<td data-id="{{ f.id }}" class='priority'>{{ f.orden }}</td>#}
-                                    <td><a href="{{ vich_uploader_asset(f, 'uploadfile') }}"
-                                           target="_blank">{{ f.filename }}</a></td>
+                                    {% if f.filenamepath is defined %}
+                                        <td>
+                                            <a href="{{ f.filenamepath }}" target="_blank">{{ f.filename }}</a>
+                                        </td>
+                                    {% else %}
+                                        <td>
+                                            <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">{{ f.filename }}</a>
+                                        </td>
+                                    {% endif %}
                                     <td>{{ f.created | date('Y-m-d H:i:s') }}</td>
                                     <td>
                                         <ul class="list-inline text-center">
