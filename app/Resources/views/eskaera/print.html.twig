@@ -1,156 +1,128 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" media="all" href="/css/bootstrap.css">
+{#<link rel="stylesheet" media="all" href="/css/bootstrap.css">#}
+<link rel="stylesheet" type="text/css" href="{{ absolute_url('/css/bootstrap.css') }}">
+{#<link rel="stylesheet" type="text/css" href="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ asset('/css/bootstrap.css') }}">#}
+
 <head>
     <meta charset=utf-8/>
     <style>
-        body {
-            background: rgb(204, 204, 204);
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            font: 12pt "Tahoma";
-        }
 
-        * {
-            box-sizing: border-box;
-            -moz-box-sizing: border-box;
-        }
+        /*@media print {*/
+            /*html, body {*/
+                /*background: white;*/
+                /*margin: 25mm 25mm 25mm 10mm;*/
+                /*font-size: 26px;*/
+                /*!*font-family: "Times New Roman", Georgia, Serif, sans-serif;*!*/
+                /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;;*/
+            /*}*/
 
-        .page {
-            display: block;
-            width: 210mm;
-            min-height: 297mm;
-            padding: 20mm;
-            margin: 10mm auto;
-            border: 1px #D3D3D3 solid;
-            border-radius: 5px;
-            background: white;
+            /*.page {*/
+                /*background: white;*/
+                /*margin: 0;*/
+                /*border: initial;*/
+                /*border-radius: initial;*/
+                /*width: initial;*/
+                /*min-height: initial;*/
+                /*box-shadow: 0;*/
+                /*page-break-after: always;*/
+            /*}*/
 
-            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
-        }
+            /**,*/
+            /**:before, enter code here*/
+            /**:after {*/
+                /*color: #000 !important;*/
+                /*text-shadow: none !important;*/
+                /*background: transparent !important;*/
+                /*-webkit-box-shadow: none !important;*/
+                /*box-shadow: none !important;*/
+            /*}*/
 
-        @page {
-            size: A4;
-            margin: 0;
-        }
+            /*a,*/
+            /*a:visited {*/
+                /*text-decoration: underline;*/
+            /*}*/
 
-        @media print {
-            html, body {
-                background: white;
-                margin: 25mm 25mm 25mm 10mm;
-                font-size: 26px;
-                /*font-family: "Times New Roman", Georgia, Serif, sans-serif;*/
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;;
-            }
+            /*a[href]:after {*/
+                /*content: " (" attr(href) ")";*/
+            /*}*/
 
-            .page {
-                background: white;
-                margin: 0;
-                border: initial;
-                border-radius: initial;
-                width: initial;
-                min-height: initial;
-                box-shadow: 0;
-                page-break-after: always;
-            }
+            /*abbr[title]:after {*/
+                /*content: " (" attr(title) ")";*/
+            /*}*/
 
-            *,
-            *:before, enter code here
-            *:after {
-                color: #000 !important;
-                text-shadow: none !important;
-                background: transparent !important;
-                -webkit-box-shadow: none !important;
-                box-shadow: none !important;
-            }
+            /*a[href^="#"]:after,*/
+            /*a[href^="javascript:"]:after {*/
+                /*content: "";*/
+            /*}*/
 
-            a,
-            a:visited {
-                text-decoration: underline;
-            }
+            /*pre,*/
+            /*blockquote {*/
+                /*border: 1px solid #999;*/
 
-            a[href]:after {
-                content: " (" attr(href) ")";
-            }
+                /*page-break-inside: avoid;*/
+            /*}*/
 
-            abbr[title]:after {
-                content: " (" attr(title) ")";
-            }
+            /*thead {*/
+                /*display: table-header-group;*/
+            /*}*/
 
-            a[href^="#"]:after,
-            a[href^="javascript:"]:after {
-                content: "";
-            }
+            /*tr,*/
+            /*img {*/
+                /*page-break-inside: avoid;*/
+            /*}*/
 
-            pre,
-            blockquote {
-                border: 1px solid #999;
+            /*img {*/
+                /*max-width: 100% !important;*/
+            /*}*/
 
-                page-break-inside: avoid;
-            }
+            /*p,*/
+            /*h2,*/
+            /*h3 {*/
+                /*orphans: 3;*/
+                /*widows: 3;*/
+            /*}*/
 
-            thead {
-                display: table-header-group;
-            }
+            /*h2,*/
+            /*h3 {*/
+                /*page-break-after: avoid;*/
+            /*}*/
 
-            tr,
-            img {
-                page-break-inside: avoid;
-            }
+            /*select {*/
+                /*background: #fff !important;*/
+            /*}*/
 
-            img {
-                max-width: 100% !important;
-            }
+            /*.navbar {*/
+                /*display: none;*/
+            /*}*/
 
-            p,
-            h2,
-            h3 {
-                orphans: 3;
-                widows: 3;
-            }
+            /*.btn > .caret,*/
+            /*.dropup > .btn > .caret {*/
+                /*border-top-color: #000 !important;*/
+            /*}*/
 
-            h2,
-            h3 {
-                page-break-after: avoid;
-            }
+            /*.label {*/
+                /*border: 1px solid #000;*/
+            /*}*/
 
-            select {
-                background: #fff !important;
-            }
+            /*.table {*/
+                /*border-collapse: collapse !important;*/
+            /*}*/
 
-            .navbar {
-                display: none;
-            }
+            /*.table td,*/
+            /*.table th {*/
+                /*background-color: #fff !important;*/
+            /*}*/
 
-            .btn > .caret,
-            .dropup > .btn > .caret {
-                border-top-color: #000 !important;
-            }
+            /*.table-bordered th,*/
+            /*.table-bordered td {*/
+                /*border: 1px solid #ddd !important;*/
+            /*}*/
 
-            .label {
-                border: 1px solid #000;
-            }
-
-            .table {
-                border-collapse: collapse !important;
-            }
-
-            .table td,
-            .table th {
-                background-color: #fff !important;
-            }
-
-            .table-bordered th,
-            .table-bordered td {
-                border: 1px solid #ddd !important;
-            }
-
-            .ttiki {
-                font-size: 12px;
-            }
-        }
+            /*.ttiki {*/
+                /*font-size: 12px;*/
+            /*}*/
+        /*}*/
 
 
     </style>
@@ -161,13 +133,13 @@
 
     <div class="row">
         <div class="col-xs-2">
-            <img src="/img/armarria.jpg" alt="Pasiako Udaleko armarria">
+            <img src="{{ absolute_url('/img/armarria.jpg')}}" alt="Pasiako Udaleko armarria">
         </div>
         <div class="col-xs-8">
             <h1 class="text-center">OPOR EDO BAIMEN ESKAERA</h1>
         </div>
         <div class="col-xs-2">
-            <p class="ttiki">
+            <p class="small">
                 IFK/CIF P2006900A
                 Tel. 943 344034
                 Donibane kalea, 19
@@ -184,17 +156,17 @@
     <div class="row">&nbsp;</div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4">&nbsp;</div>
         <div class="col-xs-8">
             <strong>Langilea &nbsp;&nbsp;</strong>{{ eskaera.user.displayname }}
         </div>
-        <div class="col-xs-2"></div>
+        <div class="col-xs-2">&nbsp;</div>
     </div>
 
     <div class="row">&nbsp;</div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4"></div>
         <div class="col-xs-8">
             <strong>Baimen mota &nbsp;&nbsp;</strong>{{ eskaera.type.name }}
         </div>
@@ -204,7 +176,7 @@
     <div class="row">&nbsp;</div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4"></div>
         <div class="col-xs-8">
             <strong>Noiztik &nbsp;&nbsp;</strong>{{ eskaera.hasi | date('Y-m-d') }}
         </div>
@@ -212,7 +184,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4"></div>
         <div class="col-xs-8">
             <strong>Noiz arte &nbsp;&nbsp;</strong>{{ eskaera.amaitu | date('Y-m-d') }}
         </div>
@@ -220,7 +192,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4"></div>
         <div class="col-xs-8">
             <span>Guztira zenbat egun edo ordu &nbsp;&nbsp;</span>{{ eskaera.orduak }}
         </div>
@@ -231,20 +203,21 @@
     <div class="row">&nbsp;</div>
 
     <div class="row">
-        <div class="col-xs-2"></div>
+        <div class="col-xs-4"></div>
         <div class="col-xs-8">
             <p>Pasaian, {{ eskaera.noiz | date('Y-m-d') }}</p>
-            <div class="row">&nbsp;</div>
-            <div class="row">&nbsp;</div>
+
             <div class="row">&nbsp;</div>
             <p class="text-center">ESKATZAILEAREN SINDATURA</p>
+            <div class="row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
         </div>
         <div class="col-xs-2"></div>
     </div>
 
     <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-
+    <hr>
     <div class="row">
         <div class="col-xs-6">
             <p>SAILEKO ARDURADUNAREN IRITZIA</p>
@@ -264,24 +237,21 @@
             <p>SAILEKO ZINEGOTZI DELEGATUA</p>
         </div>
     </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
 
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
+    <hr>
     <div class="row">
         <div class="col-xs-12">
             <p class="text-center">ANTOLAKUNTZA ETA GIZA BALIABIDEEN TEKNIKARIA</p>
             <p class="text-center">Ados</p>
         </div>
     </div>
-
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
+    <hr>
 
     <div class="row">
         <div class="col-xs-12">
@@ -290,10 +260,14 @@
             <p class="text-center">Ados</p>
         </div>
     </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <hr>
 </div>
 
 <script>
-    window.print()
+//    window.print()
 </script>
 
 </body>

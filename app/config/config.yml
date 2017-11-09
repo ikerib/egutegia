@@ -208,3 +208,13 @@ vich_uploader:
             inject_on_load:     true # should the file be injected into the uploadable entity when it is loaded from the data store.
             delete_on_update:   true # should the file be deleted when a new file is uploaded
             delete_on_remove:   true # should the file be deleted when the entity is removed
+
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltopdf
+        options:
+            - { name: 'viewport-size', value: ‘1024x768’ }
+            - { name: 'page-size', value: 'A4' }
+            - { name: 'encoding', value: 'UTF-8' }

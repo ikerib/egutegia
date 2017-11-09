@@ -15,7 +15,9 @@ use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 
 /**
  * Eskaera controller.
@@ -253,6 +255,49 @@ class EskaeraController extends Controller
             'eskaera' => $eskaera,
             'delete_form' => $deleteForm->createView(),
         ));
+    }
+
+    /**
+     * Get PDF Document.
+     *
+     * @Route("/{id}/pdf", name="eskaera_pdf")
+     * @Method("GET")
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function pdfAction(Eskaera $eskaera)
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $user = $this->getUser();
+        $html = $this->renderView('eskaera/print.html.twig', array(
+            'eskaera' => $eskaera,
+        ));
+
+        $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format('Y-m-d') . '.pdf';
+
+        $filename = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/' . $name;
+        $filename = preg_replace("/app..../i", "", $filename);
+
+        if (!file_exists($filename)) {
+            $this->get('knp_snappy.pdf')->generateFromHtml(
+                $this->renderView(
+                    'eskaera/print.html.twig',
+                    array(
+                        'eskaera' => $eskaera,
+                    )
+                ),$filename
+            );
+            return new PdfResponse(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                $filename
+            );
+        } else {
+            return new BinaryFileResponse($filename);
+
+        }
+
+
     }
 
     /**
