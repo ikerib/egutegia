@@ -19,12 +19,13 @@ class EskaeraType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type')
+//            ->add('type')
             ->add('type', EntityType::class, [
                     'label' => 'Mota',
                     'required' => true,
                     'expanded' => true,
                     'class' => 'AppBundle\Entity\Type',
+                    'attr' => array('class' =>'type_label'),
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')
                             ->where('u.erakutsi_eskaera=true')
@@ -32,8 +33,13 @@ class EskaeraType extends AbstractType
                     },
                     'choice_label' => function ($template) {
                         /* @var  $template \AppBundle\Entity\Template */
-                        return $template->getName();
-                    }, ]
+                        return trim($template->getName());
+                    },
+                    'choice_attr' => function($val, $key, $index) {
+                        // adds a class like attending_yes, attending_no, etc
+                        return ['class' => 'attending_'.strtolower($key)];
+                    },
+                    ]
             )
             ->add('hasi', DateType::class, [
                 'widget' => 'single_text',
@@ -68,8 +74,9 @@ class EskaeraType extends AbstractType
                     },
                     'choice_label' => function ($template) {
                         /* @var  $template \AppBundle\Entity\Template */
-                        return $template->getName();
-                    }, ]
+                        return trim($template->getName());
+                    }
+                    ]
             )
 
         ;

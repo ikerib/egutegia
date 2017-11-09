@@ -163,6 +163,8 @@ class EskaeraController extends Controller
             $fini = $data->getHasi();
             $ffin = $data->getAmaitu();
             $collision="";
+
+
             /**
              * 1-. Begiratu ea bateraezinik duen
              */
