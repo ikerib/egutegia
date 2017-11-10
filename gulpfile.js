@@ -54,6 +54,9 @@ freeJS = [
     './app/Resources/assets/js/calendar-edit-admin.js',
     './app/Resources/assets/js/calendar-user.js',
     './app/Resources/assets/js/calendar-compare.js',
+    './app/Resources/assets/js/libs/select2.min.js',
+    './app/Resources/assets/js/libs/select2-locale/es.js',
+    './app/Resources/assets/js/libs/select2-locale/eu.js',
     './app/Resources/assets/js/calendar-share.js'
 ];
 
@@ -80,9 +83,6 @@ otherJS = [
     './app/Resources/assets/js/moment/min/moment-with-locales.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.es.min.js',
     './app/Resources/assets/js/libs/bootstrap-datepicker.eu.min.js',
-    './app/Resources/assets/js/libs/select2.min.js',
-    './app/Resources/assets/js/libs/select2-locale/es.js',
-    './app/Resources/assets/js/libs/select2-locale/eu.js',
     './app/Resources/assets/js/app.js'
 ];
 otherCSS = [
