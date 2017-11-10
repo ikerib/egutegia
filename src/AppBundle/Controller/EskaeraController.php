@@ -121,7 +121,6 @@ class EskaeraController extends Controller
 
     }
 
-
     /**
      * Creates a new eskaera entity.
      *
@@ -273,7 +272,6 @@ class EskaeraController extends Controller
             'form' => $form->createView(),
         ));
     }
-
 
     /**
      * Finds and displays a eskaera entity.

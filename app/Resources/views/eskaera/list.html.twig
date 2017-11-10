@@ -169,8 +169,9 @@
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
                                 <li>
-                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"><i
-                                                class="fa fa-paper-plane" aria-hidden="true"></i></a>
+                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}" data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    </a>
                                 </li>
 
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
@@ -201,8 +202,14 @@
         </div>
     </div>
 
+    {#<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
+        {#<div id="modal-dialog" class="modal-dialog" role="document">#}
+        {#</div>#}
+    {#</div>#}
 
-
+    <div class="my-modal-base">
+        <div class="my-modal-cont"></div>
+    </div>
 
 {% endblock %}
 
@@ -227,7 +234,6 @@
 
                 return wfirst + days + wlast; // get the total
             }
-
 
             $("input[name*='appbundle_eskaera[hasi]']").datepicker({
                 autoclose: true,
@@ -284,8 +290,12 @@
             });
 
             $('.btnEskaera').on('click', function () {
-                var miid = $(this).data("id")
-                $('#eskaeraEditModal' + miid).modal()
+                var miid = $(this).data("id");
+                var url = $(this).data('myurl');
+                $('.my-modal-cont').load(url,function(result){
+                    $('#myModal').modal({show:true});
+                });
+
             });
 
             $table.bootstrapTable();

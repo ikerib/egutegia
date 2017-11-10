@@ -29,7 +29,9 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
             ->innerJoin('fd.sinatzaileakdet','sd')
             ->innerJoin('sd.user','u')
             ->where( 'e.id=:id' )
+            ->orderBy('sd.orden')
             ->setParameter( 'id', $eskaeraid );
+
 
         return $qb->getQuery()->getResult();
     }

@@ -1,80 +1,106 @@
-    {{ form_start(edit_form,{'attr': {'id': 'frmEditEskaera' ~ eskaera.id}}) }}
-        {#{{ form_errors(edit_form) }}#}
-    {#{{ form_end(edit_form) }}#}
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Modal header</h3>
+            </div>
+            <div class="modal-body">
+
+                {{ form_start(edit_form,{'attr': {'id': 'frmEditEskaera'}}) }}
+                {#{{ form_errors(edit_form) }}#}
+                {#{{ form_end(edit_form) }}#}
 
 
-    {{ form_start(edit_form,{'attr': {'id': 'frmaddkonpentsatua'}}) }}
+                {{ form_start(edit_form,{'attr': {'id': 'frmaddkonpentsatua'}}) }}
 
-    {{ form_errors(edit_form) }}
+                {{ form_errors(edit_form) }}
 
-    <style>
-        .fixed-table-container input[type=radio] {
-            margin-left: -20px !important;
-        }
-    </style>
+                <style>
+                    .fixed-table-container input[type=radio] {
+                        margin-left: -20px !important;
+                    }
+                </style>
 
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Mota' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Hasi' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.hasi, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Amaitu' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.amaitu, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Orduak' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.orduak, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.oharra, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz' | trans }}</label>
-        <div class="col-sm-7">
-            {{ form_widget(edit_form.noiz, { 'attr': {'class': 'form-control'} }) }}
-        </div>
-    </div>
-
-    <hr>
-    <div class="panel panel-primary">
-        <div class="panel-body">
-
-            <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Sinatzaileak' | trans }}</label>
-                <div class="col-sm-7">
-                    {{ form_widget(edit_form.sinatzaileak, { 'attr': {'class': 'form-control'} }) }}
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.name, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
                 </div>
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Mota' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.type, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Hasi' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.hasi, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Amaitu' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.amaitu, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Orduak' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.orduak, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="appbundle_eskaera_oharra"
+                           class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.oharra, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(edit_form.noiz, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <hr>
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+
+                        <div class="form-group">
+                            <label for="min-date" class="col-sm-4 control-label">{{ 'Sinatzaileak' | trans }}</label>
+                            <div class="col-sm-7">
+                                {{ form_widget(edit_form.sinatzaileak, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: none">
+                    {{ form_end(edit_form) }}
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Close</button>
+                <button id='btnSend' class="btn btn-primary" data-dismiss="modal">Gorde</button>
             </div>
         </div>
     </div>
+</div>
 
-    <div style="display: none">
-        {{ form_end(edit_form) }}
-    </div>
-
+<script>
+    $(document).ready(function(){
+        $('#btnSend').on('click', function(){
+            $('#frmEditEskaera').submit()
+        })
+    })
+</script>

@@ -997,4 +997,45 @@ class ApiController extends FOSRestController
 
         return $users;
     }// "get_firmatzaileak"             [GET] /firmatzaileak/{eskaeraid}
+
+    /**
+     * Get firmadet of a Jakinarazèma.
+     *
+     * @param jakinarazpenaid
+     *
+     * @return array|View
+     * @Annotations\View()
+     */
+    public function getFirmatzaileakfromjakinarazpenaAction($jakinarazpenaid)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $jak = $em->getRepository('AppBundle:Notification')->find($jakinarazpenaid);
+
+        $fd = $em->getRepository('AppBundle:Firmadet')->getFirmatzaileak($jak->getEskaera()->getId());
+
+        if ($fd === null) {
+            return new View('there are no users exist', Response::HTTP_NOT_FOUND);
+        }
+
+        /** Soilik User-ak behar ditugu */
+        $users = [];
+        /** @var Firmadet $f */
+        foreach ($fd as $f) {
+            $user = $f->getSinatzaileakdet()->getUser();
+            $firma = false;
+            if ($f->getFirmatua()) {
+                $firma = true;
+            }
+            $r = array(
+                'user' => $user,
+                'firmatua' => $firma,
+            );
+
+            array_push($users, $r);
+        }
+
+
+        return $users;
+    }// "get_firmatzaileakfromjakinarazpena"             [GET] /firmatzaileakfromjakinarazpena/{jakinarazpenaid}
 }

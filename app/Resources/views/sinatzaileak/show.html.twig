@@ -10,7 +10,7 @@
 {% block content_row %}
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="myModal" tabindex="false" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -55,12 +55,14 @@
                             {{ form_end(deleteForms[u.id]) }}
                         </li>
                         <li>
-                            <a class="btnUp" data-id="{{ u.id }}" href="{{ path('admin_sinatzaileakdet_up', {id: u.id}) }}">
+                            <a class="btnUp" data-id="{{ u.id }}"
+                               href="{{ path('admin_sinatzaileakdet_up', {id: u.id}) }}">
                                 <i class="fa fa-arrow-up" aria-hidden="true"></i>
                             </a>
                         </li>
                         <li>
-                            <a class="btnDown" data-id="{{ u.id }}"  href="{{ path('admin_sinatzaileakdet_down', {id: u.id}) }}">
+                            <a class="btnDown" data-id="{{ u.id }}"
+                               href="{{ path('admin_sinatzaileakdet_down', {id: u.id}) }}">
                                 <i class="fa fa-arrow-down" aria-hidden="true"></i>
                             </a>
                         </li>
@@ -82,7 +84,9 @@
 
             $('.select2').select2({width: '80%'});
 
-            $('#btnBerria').on('click', function () {$('#myModal').modal();});
+            $('#btnBerria').on('click', function () {
+                $('#myModal').modal();
+            });
 
             $('#btnNewZerrendaUser').on('click', function () {
                 var u = $('#appbundle_sinatzaileakdet_user').val();
@@ -112,29 +116,6 @@
                     }
                 });
             });
-
-//            $('.btnUp').on('click', function () {
-//                var miid = $(this).data('id');
-//                var url = Routing.generate('admin_sinatzaileakdet_up', {'id': miid});
-//
-//                $.ajax({
-//                    url: url,
-//                    type: 'GET',
-//                    contentType: 'application/json',
-//                    success: function () {
-//                        location.reload()
-//                    },
-//                    error: function () {
-//                        alert('Datuak ez dira gorde, akats bar gertatu da.')
-//                    }
-//                })
-//
-//            });
-//
-//            $('.btnDown').on('click', function () {
-//
-//            });
-
         })
 
     </script>
