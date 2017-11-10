@@ -43,10 +43,39 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-md-12">
-            <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed"
+            <table id="tableEskaerak"
+
+                   data-id-field="id"
+                   data-classes="table table-hover table-condensed"
+                   data-striped="true"
+
+                   data-pagination="true"
+                   data-page-size="15"
+                   data-search="true"
+
+                   data-sort-name="id"
+                   data-sort-order="desc"
+
+                   data-icon-size="sm"
+                   data-show-refresh="true"
+                   data-show-toggle="true"
+
                    data-toggle="table"
                    data-toolbar="#toolbar"
-                   data-height="460"
+                   data-show-export="true"
+                   data-export-types="['csv','excel', 'pdf']"
+                   data-export-options='{
+                     "fileName": "export",
+                     "worksheetName": "export",
+                     "jspdf": {
+                       "autotable": {
+                         "styles": { "rowHeight": 20, "fontSize": 10 },
+                         "headerStyles": { "fillColor": 255, "textColor": 0 },
+                         "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                       }
+                     }
+                   }'
+                   {#data-height="460"#}
                    data-detail-view="true"
                    data-detail-formatter="detailFormatter"
             >
