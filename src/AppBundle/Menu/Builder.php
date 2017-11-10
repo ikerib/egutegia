@@ -33,7 +33,7 @@ class Builder implements ContainerAwareInterface
         $menu->addChild('divider2', ['divider' => true]);
 
         $checker = $this->container->get('security.authorization_checker');
-        if ($checker->isGranted('ROLE_USER') && ($checker->isGranted('ROLE_BIDERATZAILEA'))) {
+        if (($checker->isGranted('ROLE_USER') && ($checker->isGranted('ROLE_BIDERATZAILEA'))) || ($checker->isGranted('ROLE_SUPER_ADMIN')))  {
             $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
             $menu->addChild(' Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index']);
             /** @var EntityManager $em */
@@ -59,106 +59,103 @@ class Builder implements ContainerAwareInterface
         }
 
 
-
-
         return $menu;
     }
 
-public
-function userMenu(FactoryInterface $factory, array $options)
-{
-    /*
-    * Sinatze ditu eskaerak??
-    */
-    /** @var NotificationService $zerbitzua */
-    $zerbitzua = $this->container->get('app.sinatzeke');
-    $notifications = $zerbitzua->GetNotifications();
+    public
+    function userMenu(FactoryInterface $factory, array $options)
+    {
+        /*
+        * Sinatze ditu eskaerak??
+        */
+        /** @var NotificationService $zerbitzua */
+        $zerbitzua = $this->container->get('app.sinatzeke');
+        $notifications = $zerbitzua->GetNotifications();
 
-    $checker = $this->container->get('security.authorization_checker');
-    /** @var $user User */
-    $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $checker = $this->container->get('security.authorization_checker');
+        /** @var $user User */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
 
-    $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
+        $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
 
-    if ($checker->isGranted('ROLE_USER')) {
-        if (count($notifications) == 0) {
-            $menu->addChild(
-                'User',
-                array(
-                    'label' => $user->getDisplayname(),
-                    'dropdown' => true,
-                    'icon' => 'user',
-                )
-            );
-        } else {
-            $menu->addChild(
-                'User',
-                array(
-                    'label' => $user->getDisplayname() . " <span class='badge badge-error'>" . count(
-                            $notifications
-                        ) . "</span>",
-                    'dropdown' => true,
-                    'icon' => 'user',
-                    'extras' => array('safe_label' => true),
-                )
-            );
-        }
+        if ($checker->isGranted('ROLE_USER')) {
+            if (count($notifications) == 0) {
+                $menu->addChild(
+                    'User',
+                    array(
+                        'label' => $user->getDisplayname(),
+                        'dropdown' => true,
+                        'icon' => 'user',
+                    )
+                );
+            } else {
+                $menu->addChild(
+                    'User',
+                    array(
+                        'label' => $user->getDisplayname() . " <span class='badge badge-error'>" . count(
+                                $notifications
+                            ) . "</span>",
+                        'dropdown' => true,
+                        'icon' => 'user',
+                        'extras' => array('safe_label' => true),
+                    )
+                );
+            }
 
-        $menu['User']->addChild(
-            ' Egutegia',
-            array(
-                'route' => 'user_homepage',
-                'icon' => 'calendar',
-            )
-        );
-
-        $menu['User']->addChild(
-            ' Fitxategiak',
-            array(
-                'route' => 'user_documents',
-                'icon' => 'folder-open',
-            )
-        );
-
-        $menu['User']->addChild(
-            ' Eskaerak',
-            array(
-                'route' => 'eskaera_index',
-                'icon' => 'send',
-            )
-        );
-        $menu['User']->addChild('divider', ['divider' => true]);
-
-        if ( (! $checker->isGranted('ROLE_BIDERATZAILEA')) && (($checker->isGranted('ROLE_ADMIN')) )) {
             $menu['User']->addChild(
-                ' Jakinarazpenak',
+                ' Egutegia',
                 array(
-                    'label' => " Jakinarazpenak <span class='badge badge-error'>" . count($notifications) . "</span>",
-                    'route' => 'notification_index',
-                    'icon' => 'bullhorn',
-                    'extras' => array('safe_label' => true),
+                    'route' => 'user_homepage',
+                    'icon' => 'calendar',
                 )
             );
-            $menu['User']->addChild('divider2', ['divider' => true]);
-        }
+
+            $menu['User']->addChild(
+                ' Fitxategiak',
+                array(
+                    'route' => 'user_documents',
+                    'icon' => 'folder-open',
+                )
+            );
+
+            $menu['User']->addChild(
+                ' Eskaerak',
+                array(
+                    'route' => 'eskaera_index',
+                    'icon' => 'send',
+                )
+            );
+            $menu['User']->addChild('divider', ['divider' => true]);
+
+            if ((!$checker->isGranted('ROLE_BIDERATZAILEA')) && (($checker->isGranted('ROLE_ADMIN')))) {
+                $menu['User']->addChild(
+                    ' Jakinarazpenak',
+                    array(
+                        'label' => " Jakinarazpenak <span class='badge badge-error'>" . count($notifications) . "</span>",
+                        'route' => 'notification_index',
+                        'icon' => 'bullhorn',
+                        'extras' => array('safe_label' => true),
+                    )
+                );
+                $menu['User']->addChild('divider2', ['divider' => true]);
+            }
 
 
+            $menu['User']->addChild(
+                ' Irten',
+                array(
+                    'route' => 'fos_user_security_logout',
+                    'icon' => 'log-out',
+                )
+            );
 
-        $menu['User']->addChild(
-            ' Irten',
-            array(
-                'route' => 'fos_user_security_logout',
-                'icon' => 'log-out',
-            )
-        );
-
-    } else {
+        } else {
         $menu->addChild('login', ['route' => 'fos_user_security_login']);
     }
 
 
-    return $menu;
+return $menu;
 }
 
 public

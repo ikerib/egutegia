@@ -54,7 +54,7 @@ class UserHydrator implements HydratorInterface
                     $user->addRole($rol);
                 }
                 if ($sp[0] === 'InformatikaSaila'){
-                    $rol = 'ROLE_BIDERATZAILEA';
+                    $rol = 'ROLE_SUPER_ADMIN';
                     $user->addRole($rol);
                 }
             }
