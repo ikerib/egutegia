@@ -791,9 +791,16 @@ class ApiController extends FOSRestController
                 $eskaera->setAmaitua(true);
                 $em->persist($eskaera);
 
-                $message = (new \Swift_Message('[Egutegia][Janirazpen berria] :' . $eskaera->getUser()->getDisplayname()))
-                    ->setFrom('informatika@pasaia.net')
-                    ->setTo('rgonzalez@pasaia.net')
+                $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
+                $bideratzaileak = [];
+                foreach ($bideratzaileakfind as $b){
+                    array_push($bideratzaileak, $b->getEmail());
+                }
+                $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+
+                $message = (new \Swift_Message('[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname()))
+                    ->setFrom($bailtzailea)
+                    ->setTo($bideratzaileak)
                     ->setBody(
                         $this->renderView(
                         // app/Resources/views/Emails/registration.html.twig

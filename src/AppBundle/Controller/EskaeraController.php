@@ -415,9 +415,10 @@ class EskaeraController extends Controller
                          * bidali emaila notifikatzen firmatu beharreko eskaerak dituela
                          */
                         if (strlen($s->getUser()->getEmail())>0){
+                            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
                             $message = (new \Swift_Message('[Egutegia][Janirazpen berria] :'.$eskaera->getUser()->getDisplayname()))
-                                ->setFrom('informatika@pasaia.net')
+                                ->setFrom($bailtzailea)
                                 ->setTo($s->getUser()->getEmail())
                                 ->setBody(
                                     $this->renderView(

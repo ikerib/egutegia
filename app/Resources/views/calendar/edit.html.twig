@@ -173,6 +173,13 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label for="min-date" class="col-sm-3 control-label">{{ 'msg.eguneko.lanaldia' | trans }}</label>
+                        <div class="col-sm-7">
+                            {{ form_widget(edit_form.hoursDay, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+
                     <div class="hidden">
                         {{ form_end(edit_form) }}
                     </div>
