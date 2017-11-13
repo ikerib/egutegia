@@ -12,6 +12,7 @@ services:
           - '@fr3d_ldap.ldap_manager'
           - '@fos_user.user_manager'
           - "%security.authentication.hide_user_not_found%"
+          - "@doctrine.orm.entity_manager"
   app.ldap.user_hydrator:
       class: AppBundle\Ldap\UserHydrator
 
