@@ -36,10 +36,10 @@ class KonpentsatuakType extends AbstractType
                         return $template->getName();
                     }, ]
             )
-            ->add('hasi', DateType::class, [
+            ->add('fetxa', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
+                'attr' => ['class' => 'form-control', 'data-provide' => 'datepicker', 'data-date-orientation' => 'top auto'],
             ])
 
             ->add('egunak')

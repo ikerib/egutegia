@@ -59,6 +59,13 @@ class KonpentsatuakController extends Controller
         $calendar = $calendar[ 0 ];
 
         $konpentsatuak = new Konpentsatuak();
+        $konpentsatuak->setUser($user);
+        $konpentsatuak->setName( $user->getDisplayname() );
+        $mota = $em->getRepository('AppBundle:Type')->findOneBy(array('name' => 'Konpentsatuak',
+        ));
+
+        $konpentsatuak->setType($mota);
+
         $form = $this->createForm('AppBundle\Form\KonpentsatuakType', $konpentsatuak);
         $form->handleRequest($request);
 

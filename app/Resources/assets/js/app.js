@@ -45,6 +45,20 @@ $(document).ready(function () {
         return wfirst + days + wlast; // get the total
     }
 
+    $('#fetxa-inline').datepicker({
+        format: "yyyy-mm-dd",
+        language: "eu"
+    }).on('changeDate', function(event) {
+        $('#appbundle_konpentsatuak_fetxa').val(event.format('yyyy-mm-dd'));
+    });
+
+    $('#appbundle_konpentsatuak_fetxa').datepicker({
+        format: "yyyy-mm-dd",
+        language: "eu",
+        orientation: "bottom left",
+        todayHighlight: true,
+        autoclose: true
+    });
 
     $('#appbundle_eskaera_hasi').datepicker({
         autoclose: true,
@@ -65,12 +79,21 @@ $(document).ready(function () {
     });
 
     $('.cmbFetxaKalc').change(function () {
-        const hasi = $('#appbundle_eskaera_hasi').val();
-        const amaitu = $('#appbundle_eskaera_amaitu').val();
-        let d = workday_count(hasi, amaitu);
-        if ( isNaN(d)) {
-            d = 0;
+        $('#appbundle_eskaera_total').val(0);
+        const txtEgunak = $('#appbundle_eskaera_egunak').val();
+        let d;
+        if ( txtEgunak === "0" ) {
+            d=0;
+            // return
+        } else {
+            const hasi = $('#appbundle_eskaera_hasi').val();
+            const amaitu = $('#appbundle_eskaera_amaitu').val();
+            d = workday_count(hasi, amaitu);
+            if ( isNaN(d)) {
+                d = 0;
+            }
         }
+
         const orduak = $('#appbundle_eskaera_orduak').val();
         const egunOrduak = $('#txtJornada').val();
 

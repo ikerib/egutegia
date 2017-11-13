@@ -43,9 +43,9 @@ class Konpentsatuak
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="hasi", type="datetime", nullable=true)
+     * @ORM\Column(name="fetxa", type="datetime", nullable=true)
      */
-    private $hasi;
+    private $fetxa;
 
     /**
      * @var string
@@ -183,7 +183,6 @@ class Konpentsatuak
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
     
 
     /**
@@ -245,27 +244,27 @@ class Konpentsatuak
     }
 
     /**
-     * Set hasi
+     * Set fetxa
      *
-     * @param \DateTime $hasi
+     * @param \DateTime $fetxa
      *
      * @return Konpentsatuak
      */
-    public function setHasi($hasi)
+    public function setFetxa($fetxa)
     {
-        $this->hasi = $hasi;
+        $this->fetxa = $fetxa;
 
         return $this;
     }
 
     /**
-     * Get hasi
+     * Get fetxa
      *
      * @return \DateTime
      */
-    public function getHasi()
+    public function getFetxa()
     {
-        return $this->hasi;
+        return $this->fetxa;
     }
 
     /**

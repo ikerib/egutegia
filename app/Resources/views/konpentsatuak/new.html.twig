@@ -4,16 +4,15 @@
 
 {% block content_row %}
 
-    {#{{ form_start(form) }}#}
-        {#{{ form_widget(form) }}#}
-        {#<input type="submit" value="Create" />#}
-    {#{{ form_end(form) }}#}
-
-
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+            {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'id': 'frmKonepntsatuak'} }) }}
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Langilea' | trans }}</label>
                 <div class="col-sm-7">
@@ -21,27 +20,21 @@
                 </div>
             </div>
 
+            <div class="row">&nbsp;</div>
+
             <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Mota' | trans }}</label>
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz' | trans }}</label>
                 <div class="col-sm-7">
-                    {{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}
+
+                    <div id="fetxa-inline"></div>
+                    <div style="display: none;">
+                        {{ form_widget(form.fetxa, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+
                 </div>
             </div>
 
-
-            <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiztik' | trans }}</label>
-                <div class="col-sm-7">
-                    {{ form_widget(form.hasi, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>egun</strong>' | trans|raw }}</label>
-                <div class="col-sm-7">
-                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-            </div>
+            <div class="row">&nbsp;</div>
 
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>ordu</strong>' | trans | raw }}</label>
@@ -50,6 +43,8 @@
                 </div>
             </div>
 
+            <div class="row">&nbsp;</div>
+
             <div class="form-group">
                 <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
                 <div class="col-sm-7">
@@ -57,21 +52,11 @@
                 </div>
             </div>
 
-
-
-            {#<div class="form-group">#}
-                {#<label for="min-date" class="col-sm-4 control-label">{{ 'Eskaera data' | trans }}</label>#}
-                {#<div class="col-sm-7">#}
-                    {#{{ form_widget(form.noiz, { 'attr': {'class': 'form-control'} }) }}#}
-                {#</div>#}
-            {#</div>#}
+            <div class="row">&nbsp;</div>
 
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <p>Egin klik 'Lortu inprimakia' botoian eta inprimatu dokumentua.</p>
-                    <p>Sinatu eta entregatu.</p>
-                    <p>&nbsp;</p>
                     <button type="submit" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
                 </div>
                 <div class="col-md-4"></div>
