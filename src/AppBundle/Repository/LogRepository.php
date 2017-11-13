@@ -28,4 +28,20 @@ class LogRepository extends EntityRepository
 
         return $query->getResult();
     }
+
+    public function findLoginlogs()
+    {
+        $em = $this->getEntityManager();
+        /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
+        $query = $em->createQuery('
+            SELECT l
+                FROM AppBundle:Log l
+                WHERE l.name = :textua
+        ');
+
+        //$consulta = $em->createQuery($dql);
+        $query->setParameter('textua', "Login");
+
+        return $query->getResult();
+    }
 }

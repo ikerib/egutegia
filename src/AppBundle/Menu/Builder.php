@@ -35,7 +35,7 @@ class Builder implements ContainerAwareInterface
         $checker = $this->container->get('security.authorization_checker');
         if (($checker->isGranted('ROLE_USER') && ($checker->isGranted('ROLE_BIDERATZAILEA'))) || ($checker->isGranted('ROLE_SUPER_ADMIN')))  {
             $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
-            $menu->addChild(' Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index']);
+            $menu->addChild(' Sinatzaileak', ['icon' => 'time', 'route' => 'admin_sinatzaileak_index']);
             /** @var EntityManager $em */
             $em = $this->container->get('doctrine.orm.entity_manager');
             $eskaerak = $em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
@@ -56,6 +56,7 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild(' Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
                     ->setLinkAttribute('class', 'childClass');
             }
+            $menu->addChild(' Azken konexioak', ['icon' => 'time', 'route' => 'admin_log_index']);
         }
 
 
