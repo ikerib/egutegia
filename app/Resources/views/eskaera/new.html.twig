@@ -38,16 +38,30 @@
             </div>
 
             <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>egun</strong>' | trans|raw }}</label>
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>egunak</strong>' | trans|raw }}</label>
                 <div class="col-sm-7">
-                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>orduak</strong>' | trans | raw }}</label>
+                <div class="col-sm-7">
+                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4"></div>
+                <div class="col-md-8">
+                    <p>Lanaldia: {{ eskaera.calendar.hoursDay }}</p>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>ordu</strong>' | trans | raw }}</label>
                 <div class="col-sm-7">
-                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.total, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>
 
@@ -70,9 +84,6 @@
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <p>Egin klik 'Lortu inprimakia' botoian eta inprimatu dokumentua.</p>
-                    <p>Sinatu eta entregatu.</p>
-                    <p>&nbsp;</p>
                     <button id="btnSubmit" type="button" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
                 </div>
                 <div class="col-md-4"></div>

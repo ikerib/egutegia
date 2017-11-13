@@ -53,6 +53,7 @@ class EskaeraType extends AbstractType
             ])
             ->add('egunak')
             ->add('orduak')
+            ->add('total',null, array('disabled'=>true))
             ->add('oharra')
             ->add('noiz', DateType::class, [
                 'widget' => 'single_text',

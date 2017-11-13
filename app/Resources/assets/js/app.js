@@ -28,7 +28,6 @@ $(document).ready(function () {
 
     /*****************************************************************************************************************/
     /** ESKAERA NEW  *************************************************************************************************/
-
     /*****************************************************************************************************************/
     function workday_count(fstart, fend) {
         const start = moment(fstart);
@@ -66,11 +65,22 @@ $(document).ready(function () {
     });
 
     $('.cmbFetxaKalc').change(function () {
-        const hasi = $('#appbundle_eskaera_hasi').val()
-        const amaitu = $('#appbundle_eskaera_amaitu').val()
-        const d = workday_count(hasi, amaitu)
+        const hasi = $('#appbundle_eskaera_hasi').val();
+        const amaitu = $('#appbundle_eskaera_amaitu').val();
+        let d = workday_count(hasi, amaitu);
+        if ( isNaN(d)) {
+            d = 0;
+        }
+        const orduak = $('#appbundle_eskaera_orduak').val();
+        const egunOrduak = $('#txtJornada').val();
 
-        $('#appbundle_eskaera_orduak').val(d.toFixed(2))
+        $('#appbundle_eskaera_egunak').val(d.toFixed(2));
+        let tmp = $('#appbundle_eskaera_egunak').val() * egunOrduak;
+
+        tmp = parseFloat(tmp) + parseFloat(orduak);
+
+        $('#appbundle_eskaera_total').val(tmp.toFixed(2));
+
     });
 
     /*****************************************************************************************************************/

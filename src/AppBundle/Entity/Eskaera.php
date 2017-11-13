@@ -68,6 +68,13 @@ class Eskaera
     private $orduak;
 
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="total", type="decimal", precision=10, scale=2)
+     */
+    private $total = 0;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -683,5 +690,29 @@ class Eskaera
     public function getEgunak()
     {
         return $this->egunak;
+    }
+
+    /**
+     * Set total
+     *
+     * @param string $total
+     *
+     * @return Eskaera
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return string
+     */
+    public function getTotal()
+    {
+        return $this->total;
     }
 }
