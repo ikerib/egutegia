@@ -39,7 +39,7 @@ class KonpentsatuakController extends Controller
     }
 
     /**
-     * @Route("/lista", name="admin_eskaera_list")
+     * @Route("/lista", name="admin_konpentsatuak_list")
      * @Method("GET")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -53,19 +53,19 @@ class KonpentsatuakController extends Controller
 
 
         if ( ($q == null) || ($q == 'all' )) {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
+            $konpentsatuak = $em->getRepository('AppBundle:Konpentsatuak')->findAll();
         } else  {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list($q);
+            $konpentsatuak = $em->getRepository('AppBundle:Konpentsatuak')->list($q);
         }
 
         $deleteForms = [];
-        foreach ($eskaeras as $e) {
-            /** @var Eskaera $e */
+        foreach ($konpentsatuak as $e) {
+            /** @var Konpentsatuak $e */
             $deleteForms[$e->getId()] = $this->createDeleteForm($e)->createView();
         }
 
-        return $this->render('eskaera/list.html.twig', array(
-            'eskaeras' => $eskaeras,
+        return $this->render('eskaera/edit.html.twig', array(
+            'konpentsatuak' => $konpentsatuak,
             'deleteForms' => $deleteForms,
         ));
     }
@@ -118,9 +118,9 @@ class KonpentsatuakController extends Controller
 
             $user = $this->getUser();
 
-            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format('Y-m-d') .'-' . $eskaera->getAmaitu()->format('Y-m-d') . '.pdf';
+            $name = $user->getUsername() . '-' . $konpentsatuak->getType() . '-' . $konpentsatuak->getFetxa()->format('Y-m-d') . '.pdf';
 
-            $nirepath = 'tmp/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
+            $nirepath = 'tmp/' . $user->getUsername() . '/' . $konpentsatuak->getNoiz()->format('Y').'/';
 
             $filename = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/' . $nirepath . $name;
             $filename = preg_replace("/app..../i", "", $filename);
@@ -128,20 +128,20 @@ class KonpentsatuakController extends Controller
             if (!file_exists($filename)) {
                 $this->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView(
-                        'eskaera/print.html.twig',
+                        'konpentsatuak/print.html.twig',
                         array(
-                            'eskaera' => $eskaera,
+                            'konpentsatuak' => $konpentsatuak,
                         )
                     ),$filename
                 );
             }
 
-            $em->persist($eskaera);
+            $em->persist($konpentsatuak);
 
             $doc = new Document();
             $doc->setFilename($name);
             $doc->setFilenamepath($filename);
-            $doc->setCalendar($eskaera->getCalendar());
+            $doc->setCalendar($konpentsatuak->getCalendar());
             $em->persist($doc);
 
             $em->flush();
@@ -162,8 +162,8 @@ class KonpentsatuakController extends Controller
                 ->setBody(
                     $this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
-                        'Emails/eskaera_berria.html.twig',
-                        array('eskaera' => $eskaera)
+                        'Emails/konpentsatuak_berria.html.twig',
+                        array('konpentsatuak' => $konpentsatuak)
                     ),
                     'text/html'
                 );

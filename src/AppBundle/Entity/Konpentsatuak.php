@@ -170,6 +170,7 @@ class Konpentsatuak
     public function __construct()
     {
         $this->noiz = New \DateTime();
+        $this->orduak=0;
         $this->abiatua = false;
         $this->amaitua = false;
     }
