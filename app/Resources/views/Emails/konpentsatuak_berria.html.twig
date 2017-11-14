@@ -1,0 +1,17 @@
+
+<p>Ordu konpentsatuen eskaera berria</p>
+
+<dl>
+    <dt>Nork</dt>
+    <dd>{{ konpentsatuak.user.displayname }}</dd>
+    <dt>Fetxa</dt>
+    <dd>{{ konpentsatuak.fetxa |date('Y-m-d') }}</dd>
+    <dt>Egun edo ordu kopurua</dt>
+    <dd>{{ konpentsatuak.orduak }} </dd>
+    <dt>Oharrak</dt>
+    <dd>{{ konpentsatuak.oharra }}</dd>
+</dl>
+
+<p>Eskaera ikusteko egin click estekan</p>
+
+<p>{{ url('admin_konpentsatuak_list', {'q':'no-way'}) }}</p>

@@ -110,6 +110,14 @@ class Notification
     private $eskaera;
 
     /**
+     * @var \AppBundle\Entity\Konpentsatuak
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Konpentsatuak", inversedBy="notifications")
+     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    private $konpentsatuak;
+
+    /**
      * @var \AppBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="notifications")
@@ -400,5 +408,29 @@ class Notification
     public function getResult()
     {
         return $this->result;
+    }
+
+    /**
+     * Set konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     *
+     * @return Notification
+     */
+    public function setKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak = null)
+    {
+        $this->konpentsatuak = $konpentsatuak;
+
+        return $this;
+    }
+
+    /**
+     * Get konpentsatuak
+     *
+     * @return \AppBundle\Entity\Konpentsatuak
+     */
+    public function getKonpentsatuak()
+    {
+        return $this->konpentsatuak;
     }
 }

@@ -77,6 +77,13 @@ class Sinatzaileak
      */
     protected $eskaera;
 
+    /**
+     * @var \AppBundle\Entity\Konpentsatuak
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Konpentsatuak", mappedBy="sinatzaileak")
+     */
+    protected $konpentsatuak;
+
 
     public function __toString()
     {
@@ -302,5 +309,39 @@ class Sinatzaileak
     public function getEskaera()
     {
         return $this->eskaera;
+    }
+
+    /**
+     * Add konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     *
+     * @return Sinatzaileak
+     */
+    public function addKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
+    {
+        $this->konpentsatuak[] = $konpentsatuak;
+
+        return $this;
+    }
+
+    /**
+     * Remove konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     */
+    public function removeKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
+    {
+        $this->konpentsatuak->removeElement($konpentsatuak);
+    }
+
+    /**
+     * Get konpentsatuak
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getKonpentsatuak()
+    {
+        return $this->konpentsatuak;
     }
 }

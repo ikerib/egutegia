@@ -46,7 +46,7 @@
             <div class="row">&nbsp;</div>
 
             <div class="form-group">
-                <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
+                <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Azalpena' | trans }}</label>
                 <div class="col-sm-7">
                     {{ form_widget(form.oharra, { 'attr': {'class': 'form-control'} }) }}
                 </div>
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <button type="submit" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
+                    <button  id="btnSubmitKonpentsatuak" type="button" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
                 </div>
                 <div class="col-md-4"></div>
             </div>
@@ -70,4 +70,38 @@
         <div class="col-md-2"></div>
     </div>
 
+{% endblock %}
+{% block foot_script %}
+    {{ parent() }}
+    <script language="JavaScript">
+        $('#btnSubmitKonpentsatuak').on('click', function () {
+            let ongi = true;
+
+            const hasi = $("#appbundle_konpentsatuak_fetxa").val();
+            if (hasi.length === 0) {
+                bootbox.alert('Noiz zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
+            const orduak = $("input[name='appbundle_konpentsatuak[orduak]']").val();
+            if (orduak.length === 0) {
+                bootbox.alert('Orduak zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
+            const noiz = $("input[name='appbundle_konpentsatuak[oharra]']").val();
+            if (noiz.length === 0) {
+                bootbox.alert('Azalpena zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
+
+
+            if ( ongi ) {
+                $('#frmKonepntsatuak').submit();
+            }
+
+
+        });
+    </script>
 {% endblock %}

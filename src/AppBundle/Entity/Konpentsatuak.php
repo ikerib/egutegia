@@ -120,7 +120,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="eskaera")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="konpentsatuak")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $user;
@@ -128,7 +128,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\Type
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="eskaera")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="konpentsatuak")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $type;
@@ -136,7 +136,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\Calendar
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="eskaeras")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="konpentsatuak")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $calendar;
@@ -144,7 +144,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="eskaera")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="konpentsatuak")
      * @ORM\JoinColumn(name="sinatzaileak_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $sinatzaileak;
@@ -152,7 +152,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\Notification
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="eskaera")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="konpentsatuak")
      */
     protected $notifications;
 
@@ -160,7 +160,7 @@ class Konpentsatuak
     /**
      * @var \AppBundle\Entity\Firma
      *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="eskaera")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="konpentsatuak")
      */
     protected $firma;
 

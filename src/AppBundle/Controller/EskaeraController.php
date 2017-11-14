@@ -209,7 +209,7 @@ class EskaeraController extends Controller
 
             $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format('Y-m-d') .'-' . $eskaera->getAmaitu()->format('Y-m-d') . '.pdf';
 
-            $nirepath = $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
+            $nirepath = 'tmp/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
 
             $filename = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/' . $nirepath . $name;
             $filename = preg_replace("/app..../i", "", $filename);

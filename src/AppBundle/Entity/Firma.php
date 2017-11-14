@@ -90,6 +90,15 @@ class Firma
     private $eskaera;
 
     /**
+     * @var \AppBundle\Entity\Konpentsatuak
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Konpentsatuak", inversedBy="firma")
+     * @ORM\JoinColumn(name="konpentsatuak_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
+     */
+    private $konpentsatuak;
+
+    /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="firma")
@@ -362,5 +371,29 @@ class Firma
     public function getNotifications()
     {
         return $this->notifications;
+    }
+
+    /**
+     * Set konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     *
+     * @return Firma
+     */
+    public function setKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak = null)
+    {
+        $this->konpentsatuak = $konpentsatuak;
+
+        return $this;
+    }
+
+    /**
+     * Get konpentsatuak
+     *
+     * @return \AppBundle\Entity\Konpentsatuak
+     */
+    public function getKonpentsatuak()
+    {
+        return $this->konpentsatuak;
     }
 }

@@ -207,6 +207,13 @@ class Calendar
     protected $eskaeras;
 
     /**
+     * @var \AppBundle\Entity\Konpentsatuak
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Konpentsatuak", mappedBy="calendar")
+     */
+    protected $konpentsatuak;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -802,5 +809,39 @@ class Calendar
     public function getEskaeras()
     {
         return $this->eskaeras;
+    }
+
+    /**
+     * Add konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     *
+     * @return Calendar
+     */
+    public function addKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
+    {
+        $this->konpentsatuak[] = $konpentsatuak;
+
+        return $this;
+    }
+
+    /**
+     * Remove konpentsatuak
+     *
+     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
+     */
+    public function removeKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
+    {
+        $this->konpentsatuak->removeElement($konpentsatuak);
+    }
+
+    /**
+     * Get konpentsatuak
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getKonpentsatuak()
+    {
+        return $this->konpentsatuak;
     }
 }
