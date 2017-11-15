@@ -67,6 +67,7 @@ freeCSS = [
 otherJS = [
     './app/Resources/assets/js/libs/respond.min.js',
     './app/Resources/assets/js/jquery/dist/jquery.min.js',
+    './app/Resources/assets/js/libs/jquery-ui.js',
     './app/Resources/assets/js/bootstrap/dist/js/bootstrap.min.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/bootstrap-year-calendar.min.js',
     './app/Resources/assets/js/bootstrap-year-calendar/js/languages/bootstrap-year-calendar.eu.js',

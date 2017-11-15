@@ -444,8 +444,8 @@ class ApiController extends FOSRestController
                     $osoa = $orduak;
                     $partziala = $orduak - $orduOsoak;
                 }
-                $calendar->setHoursSelf($osoa);
-                $calendar->setHoursSelfHalf($partziala);
+                $calendar->setHoursSelf($calendar->getHoursSelf()-$osoa);
+                $calendar->setHoursSelfHalf($calendar->getHoursSelfHalf()-$partziala);
             }
             if ($t->getRelated() === 'hours_compensed') {
                 $calendar->setHoursCompensed(

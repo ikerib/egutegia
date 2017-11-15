@@ -6,6 +6,20 @@
 {% endblock %}
 
 {% block page_header %}
+
+    <div class="row">
+
+        <p><strong>hours_compensed:</strong>{{ calendar.hoursCompensed }}</p>
+        <p><strong>hours_day:</strong>{{ calendar.hoursDay }}</p>
+        <p><strong>hours_free:</strong>{{ calendar.hoursFree }}</p>
+        <p><strong>hours_self:</strong>{{ calendar.hoursSelf }}</p>
+        <p><strong>hours_self_half:</strong>{{ calendar.hoursSelfHalf }}</p>
+        <p><strong>hours_sindikal:</strong>{{ calendar.hoursSindikal}}</p>
+        <p><strong>hours_year:</strong>{{ calendar.hoursYear }}</p>
+
+    </div>
+
+
     <div class="page-header hovebutton">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -604,8 +618,6 @@
 
     </div>
 
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 
     {% if calendar.template is not null %}
