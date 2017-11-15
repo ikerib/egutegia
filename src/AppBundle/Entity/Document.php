@@ -81,6 +81,12 @@ class Document
      */
     private $orden;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="egutegian", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $egutegian=false;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -319,5 +325,29 @@ class Document
     public function getEskaera()
     {
         return $this->eskaera;
+    }
+
+    /**
+     * Set egutegian
+     *
+     * @param boolean $egutegian
+     *
+     * @return Document
+     */
+    public function setEgutegian($egutegian)
+    {
+        $this->egutegian = $egutegian;
+
+        return $this;
+    }
+
+    /**
+     * Get egutegian
+     *
+     * @return boolean
+     */
+    public function getEgutegian()
+    {
+        return $this->egutegian;
     }
 }

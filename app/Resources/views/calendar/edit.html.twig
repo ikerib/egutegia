@@ -515,45 +515,46 @@
                             </thead>
                             <tbody>
                             {% for f in calendar.documents if calendar.documents %}
-                                <tr>
-                                    {#<td data-id="{{ f.id }}" class='priority'>{{ f.orden }}</td>#}
-                                    {% if f.filenamepath is defined %}
+                                {% if f.egutegian %}
+                                    <tr>
+                                        {% if f.filenamepath is defined %}
+                                            <td>
+                                                <a href="{{ f.filenamepath }}" target="_blank">{{ f.filename }}</a>
+                                            </td>
+                                        {% else %}
+                                            <td>
+                                                <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">{{ f.filename }}</a>
+                                            </td>
+                                        {% endif %}
+                                        <td>{{ f.created | date('Y-m-d H:i:s') }}</td>
                                         <td>
-                                            <a href="{{ f.filenamepath }}" target="_blank">{{ f.filename }}</a>
+                                            <ul class="list-inline text-center">
+                                                <li>
+                                                    <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">
+                                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    {{ form_start(deletedocumentforms[f.id],{'attr': {'id': f.id}}) }}
+                                                    <a class="btnRemoveRow" data-id="{{ f.id }}" href="javascript:void(0);">
+                                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                    </a>
+                                                    {{ form_end(deletedocumentforms[f.id]) }}
+                                                </li>
+                                                <li>
+                                                    <a class="btnFitxategiUp"
+                                                       href="{{ path('admin_document_order_up', {'id': f.id}) }}"><i
+                                                                class="fa fa-arrow-up" aria-hidden="true"></i></a>
+                                                </li>
+                                                <li>
+                                                    <a class="btnFitxategiDown"
+                                                       href="{{ path('admin_document_order_down', {'id': f.id}) }}"><i
+                                                                class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                                                </li>
+                                            </ul>
                                         </td>
-                                    {% else %}
-                                        <td>
-                                            <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">{{ f.filename }}</a>
-                                        </td>
-                                    {% endif %}
-                                    <td>{{ f.created | date('Y-m-d H:i:s') }}</td>
-                                    <td>
-                                        <ul class="list-inline text-center">
-                                            <li>
-                                                <a href="{{ vich_uploader_asset(f, 'uploadfile') }}" target="_blank">
-                                                    <span class="glyphicon glyphicon-eye-open"></span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                {{ form_start(deletedocumentforms[f.id],{'attr': {'id': f.id}}) }}
-                                                <a class="btnRemoveRow" data-id="{{ f.id }}" href="javascript:void(0);">
-                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                                </a>
-                                                {{ form_end(deletedocumentforms[f.id]) }}
-                                            </li>
-                                            <li>
-                                                <a class="btnFitxategiUp"
-                                                   href="{{ path('admin_document_order_up', {'id': f.id}) }}"><i
-                                                            class="fa fa-arrow-up" aria-hidden="true"></i></a>
-                                            </li>
-                                            <li>
-                                                <a class="btnFitxategiDown"
-                                                   href="{{ path('admin_document_order_down', {'id': f.id}) }}"><i
-                                                            class="fa fa-arrow-down" aria-hidden="true"></i></a>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
+                                    </tr>
+                                {% endif %}
                             {% endfor %}
                             </tbody>
 
@@ -602,6 +603,10 @@
         </div>
 
     </div>
+
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
 
     {% if calendar.template is not null %}
         {% set templateid =  calendar.template.id %}
