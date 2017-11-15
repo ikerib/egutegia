@@ -44,8 +44,11 @@ class EskaeraController extends Controller
 
         $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAllByUser($user->getId());
 
+        $types = $em->getRepository('AppBundle:Type')->findEskaerak();
+
         return $this->render('eskaera/index.html.twig', array(
-            'eskaeras' => $eskaeras,
+            'eskaeras'  => $eskaeras,
+            'types'     => $types
         ));
     }
 
@@ -114,6 +117,20 @@ class EskaeraController extends Controller
         $eskaera->setEgutegian(true);
         $em->persist($eskaera);
 
+        /**
+         * Mugitu dokumentua beharrezko lekura
+         */
+        /** @var Document $doc */
+        $doc = $eskaera->getDocuments()[0];
+        $tmpPath = $this->getParameter('app.dir_tmp_pdf');
+        $pdfPath = $this->getParameter('app.dir_base_pdf');
+
+        $nirepath = $tmpPath . $doc->getFilenamepath();
+        $doc->setFilenamepath($pdfPath . $doc->getFilenamepath());
+        $em->persist($eskaera);
+
+        rename($tmpPath, $pdfPath);
+
         $em->flush();
 
         $this->addFlash('success', 'Datuak ongi gordeak izan dira.');
@@ -124,13 +141,14 @@ class EskaeraController extends Controller
     /**
      * Creates a new eskaera entity.
      *
-     * @Route("/new", name="eskaera_new")
+     * @Route("/new/{q}", name="eskaera_new")
      * @Method({"GET", "POST"})
      * @param Request $request
      *
+     * @param $q
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, $q)
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -151,8 +169,12 @@ class EskaeraController extends Controller
         $eskaera->setUser( $user );
         $eskaera->setName( $user->getDisplayname() );
         $eskaera->setCalendar( $calendar );
+
+        $type = $em->getRepository('AppBundle:Type')->find($q);
+        $eskaera->setType($type);
+
         $form = $this->createForm('AppBundle\Form\EskaeraType', $eskaera, array(
-            'action' => $this->generateUrl('eskaera_new'),
+            'action' => $this->generateUrl('eskaera_new', array('q' => $q)),
             'method' => 'POST',
         ));
         $form->handleRequest($request);
@@ -193,7 +215,7 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if ( count($collision) > 0 ) {
+            if ( (count($collision) > 0) && ($collision!=="")) {
                 $txt="";
                 /** @var Event $e */
                 foreach ($collision as $e) {
@@ -209,19 +231,22 @@ class EskaeraController extends Controller
 
             $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format('Y-m-d') .'-' . $eskaera->getAmaitu()->format('Y-m-d') . '.pdf';
 
-            $nirepath = 'tmp/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
+            $filepath = '/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format('Y').'/';
 
-            $filename = $this->container->getParameter('kernel.root_dir') . '/../web/uploads/' . $nirepath . $name;
-            $filename = preg_replace("/app..../i", "", $filename);
+            $filename = $filepath . $name;
 
-            if (!file_exists($filename)) {
+            $tmpPath = $this->getParameter('app.dir_tmp_pdf');
+
+            $nirepath = $tmpPath . $filename;
+
+            if (!file_exists($nirepath)) {
                 $this->get('knp_snappy.pdf')->generateFromHtml(
                     $this->renderView(
                         'eskaera/print.html.twig',
                         array(
                             'eskaera' => $eskaera,
                         )
-                    ),$filename
+                    ),$nirepath
                 );
             }
 
@@ -231,6 +256,7 @@ class EskaeraController extends Controller
             $doc->setFilename($name);
             $doc->setFilenamepath($filename);
             $doc->setCalendar($eskaera->getCalendar());
+            $doc->setEskaera($eskaera);
             $em->persist($doc);
 
             $em->flush();

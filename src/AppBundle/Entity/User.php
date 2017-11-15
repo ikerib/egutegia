@@ -103,13 +103,6 @@ class User extends BaseUser implements LdapUserInterface
     protected $eskaera;
 
     /**
-     * @var \AppBundle\Entity\Konpentsatuak
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Konpentsatuak", mappedBy="user")
-     */
-    protected $konpentsatuak;
-
-    /**
      * @var \AppBundle\Entity\Firmadet
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Firmadet", mappedBy="firmatzailea")
@@ -445,37 +438,4 @@ class User extends BaseUser implements LdapUserInterface
         return $this->firmadet;
     }
 
-    /**
-     * Add konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     *
-     * @return User
-     */
-    public function addKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak[] = $konpentsatuak;
-
-        return $this;
-    }
-
-    /**
-     * Remove konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     */
-    public function removeKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak->removeElement($konpentsatuak);
-    }
-
-    /**
-     * Get konpentsatuak
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getKonpentsatuak()
-    {
-        return $this->konpentsatuak;
-    }
 }

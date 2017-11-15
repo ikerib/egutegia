@@ -90,15 +90,6 @@ class Firma
     private $eskaera;
 
     /**
-     * @var \AppBundle\Entity\Konpentsatuak
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Konpentsatuak", inversedBy="firma")
-     * @ORM\JoinColumn(name="konpentsatuak_id", referencedColumnName="id",onDelete="CASCADE")
-     * @Expose()
-     */
-    private $konpentsatuak;
-
-    /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="firma")
@@ -123,8 +114,6 @@ class Firma
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-
-
 
 
     /**
@@ -292,6 +281,40 @@ class Firma
     }
 
     /**
+     * Add notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     *
+     * @return Firma
+     */
+    public function addNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications[] = $notification;
+
+        return $this;
+    }
+
+    /**
+     * Remove notification
+     *
+     * @param \AppBundle\Entity\Notification $notification
+     */
+    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    {
+        $this->notifications->removeElement($notification);
+    }
+
+    /**
+     * Get notifications
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getNotifications()
+    {
+        return $this->notifications;
+    }
+
+    /**
      * Set eskaera
      *
      * @param \AppBundle\Entity\Eskaera $eskaera
@@ -337,63 +360,5 @@ class Firma
     public function getSinatzaileak()
     {
         return $this->sinatzaileak;
-    }
-
-    /**
-     * Add notification
-     *
-     * @param \AppBundle\Entity\Notification $notification
-     *
-     * @return Firma
-     */
-    public function addNotification(\AppBundle\Entity\Notification $notification)
-    {
-        $this->notifications[] = $notification;
-
-        return $this;
-    }
-
-    /**
-     * Remove notification
-     *
-     * @param \AppBundle\Entity\Notification $notification
-     */
-    public function removeNotification(\AppBundle\Entity\Notification $notification)
-    {
-        $this->notifications->removeElement($notification);
-    }
-
-    /**
-     * Get notifications
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getNotifications()
-    {
-        return $this->notifications;
-    }
-
-    /**
-     * Set konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     *
-     * @return Firma
-     */
-    public function setKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak = null)
-    {
-        $this->konpentsatuak = $konpentsatuak;
-
-        return $this;
-    }
-
-    /**
-     * Get konpentsatuak
-     *
-     * @return \AppBundle\Entity\Konpentsatuak
-     */
-    public function getKonpentsatuak()
-    {
-        return $this->konpentsatuak;
     }
 }

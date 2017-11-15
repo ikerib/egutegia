@@ -14,12 +14,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+
 
 /**
  * Document.
  *
  * @ORM\Table(name="document")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
+ * @ExclusionPolicy("all")
  * @Vich\Uploadable
  */
 class Document
@@ -30,6 +33,7 @@ class Document
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @expose()
      */
     private $id;
 
@@ -90,6 +94,17 @@ class Document
      * @Expose()
      */
     private $calendar;
+
+    /**
+     * @var Eskaera
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="documents")
+     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
+     */
+    private $eskaera;
+
+
 
     public function __toString()
     {
@@ -280,5 +295,29 @@ class Document
     public function getFilenamepath()
     {
         return $this->filenamepath;
+    }
+
+    /**
+     * Set eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Document
+     */
+    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    {
+        $this->eskaera = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \AppBundle\Entity\Eskaera
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
     }
 }

@@ -147,6 +147,14 @@ class Eskaera
     private $calendar;
 
     /**
+     * @var documents[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="eskaera",cascade={"persist", "remove"})
+     * @ORM\OrderBy({"orden"="ASC"})
+     */
+    private $documents;
+
+    /**
      * @var \AppBundle\Entity\Sinatzaileak
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="eskaera")
@@ -714,5 +722,39 @@ class Eskaera
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /**
+     * Add document
+     *
+     * @param \AppBundle\Entity\Document $document
+     *
+     * @return Eskaera
+     */
+    public function addDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
+    /**
+     * Remove document
+     *
+     * @param \AppBundle\Entity\Document $document
+     */
+    public function removeDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents->removeElement($document);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
     }
 }

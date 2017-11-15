@@ -77,14 +77,6 @@ class Sinatzaileak
      */
     protected $eskaera;
 
-    /**
-     * @var \AppBundle\Entity\Konpentsatuak
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Konpentsatuak", mappedBy="sinatzaileak")
-     */
-    protected $konpentsatuak;
-
-
     public function __toString()
     {
         return (string) $this->getName().'';
@@ -94,13 +86,14 @@ class Sinatzaileak
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
-
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->sinatzaileakdet = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->firma = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->eskaera = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -309,39 +302,5 @@ class Sinatzaileak
     public function getEskaera()
     {
         return $this->eskaera;
-    }
-
-    /**
-     * Add konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     *
-     * @return Sinatzaileak
-     */
-    public function addKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak[] = $konpentsatuak;
-
-        return $this;
-    }
-
-    /**
-     * Remove konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     */
-    public function removeKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak->removeElement($konpentsatuak);
-    }
-
-    /**
-     * Get konpentsatuak
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getKonpentsatuak()
-    {
-        return $this->konpentsatuak;
     }
 }

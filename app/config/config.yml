@@ -8,6 +8,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: eu
+    app.dir_base_pdf: '%dir_base_pdf%'
+    app.dir_tmp_pdf: '%dir_tmp_pdf%'
 
 framework:
     ide: "phpstorm://open?file=%%f&line=%%l"

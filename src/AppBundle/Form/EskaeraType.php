@@ -19,7 +19,6 @@ class EskaeraType extends AbstractType
     {
         $builder
             ->add('name')
-//            ->add('type')
             ->add('type', EntityType::class, [
                     'label' => 'Mota',
                     'required' => true,

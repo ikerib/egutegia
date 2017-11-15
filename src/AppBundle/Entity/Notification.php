@@ -110,14 +110,6 @@ class Notification
     private $eskaera;
 
     /**
-     * @var \AppBundle\Entity\Konpentsatuak
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Konpentsatuak", inversedBy="notifications")
-     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    private $konpentsatuak;
-
-    /**
      * @var \AppBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="notifications")
@@ -133,7 +125,6 @@ class Notification
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
-
 
 
     /**
@@ -216,6 +207,54 @@ class Notification
     public function getReaded()
     {
         return $this->readed;
+    }
+
+    /**
+     * Set completed
+     *
+     * @param boolean $completed
+     *
+     * @return Notification
+     */
+    public function setCompleted($completed)
+    {
+        $this->completed = $completed;
+
+        return $this;
+    }
+
+    /**
+     * Get completed
+     *
+     * @return boolean
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }
+
+    /**
+     * Set result
+     *
+     * @param boolean $result
+     *
+     * @return Notification
+     */
+    public function setResult($result)
+    {
+        $this->result = $result;
+
+        return $this;
+    }
+
+    /**
+     * Get result
+     *
+     * @return boolean
+     */
+    public function getResult()
+    {
+        return $this->result;
     }
 
     /**
@@ -360,77 +399,5 @@ class Notification
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set completed
-     *
-     * @param boolean $completed
-     *
-     * @return Notification
-     */
-    public function setCompleted($completed)
-    {
-        $this->completed = $completed;
-
-        return $this;
-    }
-
-    /**
-     * Get completed
-     *
-     * @return boolean
-     */
-    public function getCompleted()
-    {
-        return $this->completed;
-    }
-
-    /**
-     * Set result
-     *
-     * @param boolean $result
-     *
-     * @return Notification
-     */
-    public function setResult($result)
-    {
-        $this->result = $result;
-
-        return $this;
-    }
-
-    /**
-     * Get result
-     *
-     * @return boolean
-     */
-    public function getResult()
-    {
-        return $this->result;
-    }
-
-    /**
-     * Set konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     *
-     * @return Notification
-     */
-    public function setKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak = null)
-    {
-        $this->konpentsatuak = $konpentsatuak;
-
-        return $this;
-    }
-
-    /**
-     * Get konpentsatuak
-     *
-     * @return \AppBundle\Entity\Konpentsatuak
-     */
-    public function getKonpentsatuak()
-    {
-        return $this->konpentsatuak;
     }
 }

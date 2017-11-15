@@ -83,6 +83,7 @@
                 <tr>
                     <th data-field="id">ID</th>
                     <th>Izaera</th>
+                    <th>Eskaera</th>
                     <th>Egutegia</th>
                     <th>Hasi</th>
                     <th>Amaitu</th>
@@ -100,6 +101,7 @@
                         <td>{{ eskaera.id }}</td>
                         <td><a href="javascript:void(0);" class="btnEskaera"
                                data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
+                        <td>{{ eskaera.type.name }}</td>
                         <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}"
                                target="_blank">{{ eskaera.calendar.name }}</a></td>
                         <td>
@@ -270,7 +272,7 @@
 
                 bootbox.confirm({
                     title: "Seguru zuaude?",
-                    message: "Onartu botoian klik egin ondoren eskaera hau langilearen egutegian gehituko da. Ados?",
+                    message: "Onartu botoian klik egin ondoren eskaera hau langilearen egutegian gehituko da. Ados? <br /> Horrez gain eskaera dokumentua ere itsatsiko da.",
                     buttons: {
                         cancel: {
                             label: '<i class="fa fa-times"></i> Ezeztatu'
@@ -346,7 +348,7 @@
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",
-                    message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+                    message: "{{ 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.' | trans }}",
                     buttons: {
                         cancel: {
                             label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'

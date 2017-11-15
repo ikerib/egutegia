@@ -12,10 +12,12 @@
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Eskaera berria <span class="caret"></span>
                 </button>
+
                 <ul class="dropdown-menu">
-                    <li><a href="{{ path('eskaera_new') }}">Opor eskaera</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="{{ path('konpentsatuak_new') }}">Ordu Konpentsatuak</a></li>
+                    {% for t in types %}
+                        <li><a href="{{ path('eskaera_new', { 'q': t.id}) }}">{{ t.name }}</a></li>
+                        <li role="separator" class="divider"></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

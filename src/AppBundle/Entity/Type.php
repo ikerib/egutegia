@@ -131,13 +131,6 @@ class Type
     protected $eskaera;
 
     /**
-     * @var \AppBundle\Entity\Konpentsatuak
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Konpentsatuak", mappedBy="type")
-     */
-    protected $konpentsatuak;
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -157,10 +150,11 @@ class Type
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
+
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -168,7 +162,7 @@ class Type
     }
 
     /**
-     * Set name.
+     * Set name
      *
      * @param string $name
      *
@@ -182,7 +176,7 @@ class Type
     }
 
     /**
-     * Get name.
+     * Get name
      *
      * @return string
      */
@@ -192,7 +186,7 @@ class Type
     }
 
     /**
-     * Set slug.
+     * Set slug
      *
      * @param string $slug
      *
@@ -206,7 +200,7 @@ class Type
     }
 
     /**
-     * Get slug.
+     * Get slug
      *
      * @return string
      */
@@ -216,7 +210,7 @@ class Type
     }
 
     /**
-     * Set hours.
+     * Set hours
      *
      * @param string $hours
      *
@@ -230,7 +224,7 @@ class Type
     }
 
     /**
-     * Get hours.
+     * Get hours
      *
      * @return string
      */
@@ -240,7 +234,7 @@ class Type
     }
 
     /**
-     * Set color.
+     * Set color
      *
      * @param string $color
      *
@@ -254,7 +248,7 @@ class Type
     }
 
     /**
-     * Get color.
+     * Get color
      *
      * @return string
      */
@@ -264,7 +258,7 @@ class Type
     }
 
     /**
-     * Set created.
+     * Set created
      *
      * @param \DateTime $created
      *
@@ -278,7 +272,7 @@ class Type
     }
 
     /**
-     * Get created.
+     * Get created
      *
      * @return \DateTime
      */
@@ -288,7 +282,7 @@ class Type
     }
 
     /**
-     * Set updated.
+     * Set updated
      *
      * @param \DateTime $updated
      *
@@ -302,7 +296,7 @@ class Type
     }
 
     /**
-     * Get updated.
+     * Get updated
      *
      * @return \DateTime
      */
@@ -312,9 +306,9 @@ class Type
     }
 
     /**
-     * Set orden.
+     * Set orden
      *
-     * @param int $orden
+     * @param integer $orden
      *
      * @return Type
      */
@@ -326,9 +320,9 @@ class Type
     }
 
     /**
-     * Get orden.
+     * Get orden
      *
-     * @return int
+     * @return integer
      */
     public function getOrden()
     {
@@ -336,77 +330,9 @@ class Type
     }
 
     /**
-     * Add templateEvent.
+     * Set erakutsi
      *
-     * @param \AppBundle\Entity\TemplateEvent $templateEvent
-     *
-     * @return Type
-     */
-    public function addTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
-    {
-        $this->template_events[] = $templateEvent;
-
-        return $this;
-    }
-
-    /**
-     * Remove templateEvent.
-     *
-     * @param \AppBundle\Entity\TemplateEvent $templateEvent
-     */
-    public function removeTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
-    {
-        $this->template_events->removeElement($templateEvent);
-    }
-
-    /**
-     * Get templateEvents.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTemplateEvents()
-    {
-        return $this->template_events;
-    }
-
-    /**
-     * Add event.
-     *
-     * @param \AppBundle\Entity\Event $event
-     *
-     * @return Type
-     */
-    public function addEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events[] = $event;
-
-        return $this;
-    }
-
-    /**
-     * Remove event.
-     *
-     * @param \AppBundle\Entity\Event $event
-     */
-    public function removeEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Get events.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * Set erakutsi.
-     *
-     * @param bool $erakutsi
+     * @param boolean $erakutsi
      *
      * @return Type
      */
@@ -418,37 +344,13 @@ class Type
     }
 
     /**
-     * Get erakutsi.
+     * Get erakutsi
      *
-     * @return bool
+     * @return boolean
      */
     public function getErakutsi()
     {
         return $this->erakutsi;
-    }
-
-    /**
-     * Set related.
-     *
-     * @param string $related
-     *
-     * @return Type
-     */
-    public function setRelated($related)
-    {
-        $this->related = $related;
-
-        return $this;
-    }
-
-    /**
-     * Get related.
-     *
-     * @return string
-     */
-    public function getRelated()
-    {
-        return $this->related;
     }
 
     /**
@@ -473,6 +375,98 @@ class Type
     public function getErakutsiEskaera()
     {
         return $this->erakutsi_eskaera;
+    }
+
+    /**
+     * Set related
+     *
+     * @param string $related
+     *
+     * @return Type
+     */
+    public function setRelated($related)
+    {
+        $this->related = $related;
+
+        return $this;
+    }
+
+    /**
+     * Get related
+     *
+     * @return string
+     */
+    public function getRelated()
+    {
+        return $this->related;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return Type
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * Add templateEvent
+     *
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
+     *
+     * @return Type
+     */
+    public function addTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
+    {
+        $this->template_events[] = $templateEvent;
+
+        return $this;
+    }
+
+    /**
+     * Remove templateEvent
+     *
+     * @param \AppBundle\Entity\TemplateEvent $templateEvent
+     */
+    public function removeTemplateEvent(\AppBundle\Entity\TemplateEvent $templateEvent)
+    {
+        $this->template_events->removeElement($templateEvent);
+    }
+
+    /**
+     * Get templateEvents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTemplateEvents()
+    {
+        return $this->template_events;
     }
 
     /**
@@ -507,39 +501,5 @@ class Type
     public function getEskaera()
     {
         return $this->eskaera;
-    }
-
-    /**
-     * Add konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     *
-     * @return Type
-     */
-    public function addKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak[] = $konpentsatuak;
-
-        return $this;
-    }
-
-    /**
-     * Remove konpentsatuak
-     *
-     * @param \AppBundle\Entity\Konpentsatuak $konpentsatuak
-     */
-    public function removeKonpentsatuak(\AppBundle\Entity\Konpentsatuak $konpentsatuak)
-    {
-        $this->konpentsatuak->removeElement($konpentsatuak);
-    }
-
-    /**
-     * Get konpentsatuak
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getKonpentsatuak()
-    {
-        return $this->konpentsatuak;
     }
 }
