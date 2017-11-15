@@ -3,6 +3,14 @@
 {% block head_style %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <style>
+        .select2-close-mask{
+            z-index: 2099;
+        }
+        .select2-dropdown{
+            z-index: 3051;
+        }
+    </style>
 {% endblock %}
 {% block headline %}{{ 'Sinatzaileen zerrenda: ' | trans }}{{ sinatzaileak.name }} {% endblock %}
 
@@ -10,7 +18,7 @@
 {% block content_row %}
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="false" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="myModal" role="dialog" style="overflow:hidden;" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
