@@ -6,19 +6,21 @@
 {% endblock %}
 
 {% block page_header %}
+    {% if app.debug %}
+        <div class="row">
 
-    <div class="row" style="display: none;">
+            <p><strong>hours_compensed:</strong>{{ calendar.hoursCompensed }}</p>
+            <p><strong>hours_day:</strong>{{ calendar.hoursDay }}</p>
+            <p><strong>hours_free:</strong>{{ calendar.hoursFree }}</p>
+            <p><strong>hours_self:</strong>{{ calendar.hoursSelf }}</p>
+            <p><strong>hours_self_half:</strong>{{ calendar.hoursSelfHalf }}</p>
+            <p><strong>hours_sindikal:</strong>{{ calendar.hoursSindikal}}</p>
+            <p><strong>hours_year:</strong>{{ calendar.hoursYear }}</p>
+            <p><strong>selfHoursPartial:</strong>{{ selfHoursPartial }}</p>
+            <p><strong>selfHoursComplete:</strong>{{ selfHoursComplete }}</p>
 
-        <p><strong>hours_compensed:</strong>{{ calendar.hoursCompensed }}</p>
-        <p><strong>hours_day:</strong>{{ calendar.hoursDay }}</p>
-        <p><strong>hours_free:</strong>{{ calendar.hoursFree }}</p>
-        <p><strong>hours_self:</strong>{{ calendar.hoursSelf }}</p>
-        <p><strong>hours_self_half:</strong>{{ calendar.hoursSelfHalf }}</p>
-        <p><strong>hours_sindikal:</strong>{{ calendar.hoursSindikal}}</p>
-        <p><strong>hours_year:</strong>{{ calendar.hoursYear }}</p>
-
-    </div>
-
+        </div>
+    {% endif %}
 
     <div class="page-header hovebutton">
         <div class="panel panel-primary">
@@ -98,7 +100,7 @@
                         <ul class="list-inline">
                             <li>Egun osoak:</li>
                             {% set egunOsoak = (selfHoursComplete / calendar.hoursDay) | round (2) %}
-                            <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ egunOsoak }} egun)</li>
+                            <li id="selfHoursComplete">{{ selfHoursComplete }} ordu ({{ egunOsoak }} egun)</li>
                         </ul>
 
 
