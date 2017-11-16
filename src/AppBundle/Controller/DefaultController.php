@@ -34,6 +34,10 @@ class DefaultController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
+            throw $this->createAccessDeniedException('Aldeintzak!');
+        }
+
 
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */

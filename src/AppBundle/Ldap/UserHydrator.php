@@ -59,6 +59,10 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_SUPER_ADMIN';
                     $user->addRole($rol);
                 }
+                if ($sp[0] === 'Saila-Udaltzaingoa'){
+                    $rol = 'ROLE_UDALTZAINA';
+                    $user->addRole($rol);
+                }
             }
             $user->setMembers($ldapEntry['memberof']);
         }

@@ -120,7 +120,7 @@ class LdapAuthenticationProvider extends BaseProvider
             $log = new Log();
             $log->setName('Login');
             $log->setUser($user);
-            $log->setDescription($user->getUsername() . ' erabiltzaileak login');
+            $log->setDescription($user->getUsername());
 
             $this->em->persist($log);
             $this->em->flush();

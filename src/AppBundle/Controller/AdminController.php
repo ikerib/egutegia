@@ -53,21 +53,25 @@ class AdminController extends Controller
         $userdata = [];
         foreach ($ldapusers as $user) {
             /** @var $user User */
-            $u = [];
-            $u['user'] = $user;
-            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
-                $user->getUsername(),
-                date('Y')
-            );
-            $u['calendar'] = $calendar;
 
-            /** @var $usernotes User */
-            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
+            if ( $user->getDepartment()!=="Udaltzaingoa") {
+                $u = [];
+                $u['user'] = $user;
+                $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
+                    $user->getUsername(),
+                    date('Y')
+                );
+                $u['calendar'] = $calendar;
 
-            if ($usernotes) {
-                $user->setNotes($usernotes->getNotes());
+                /** @var $usernotes User */
+                $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
+
+                if ($usernotes) {
+                    $user->setNotes($usernotes->getNotes());
+                }
+                array_push($userdata, $u);
             }
-            array_push($userdata, $u);
+
         }
 
         $user = new User();
