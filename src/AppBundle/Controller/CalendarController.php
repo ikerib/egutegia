@@ -264,7 +264,8 @@ class CalendarController extends Controller
             }
         }
 
-        $selfHoursPartial = round($calendar->getHoursSelfHalf() - $selfHoursPartial,2);
+//        $selfHoursPartial = round($calendar->getHoursSelfHalf() - $selfHoursPartial,2);
+        $selfHoursPartial = round($calendar->getHoursSelfHalf(),2);
 //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round( $calendar->getHoursSelf() ,2);
 

@@ -338,10 +338,10 @@ $(function () {
     enableContextMenu: true,
     enableRangeSelection: true,
     contextMenuItems: [
-      {
-        text: 'Eguneratu',
-        click: editEvent
-      },
+      // {
+      //   text: 'Eguneratu',
+      //   click: editEvent
+      // },
       {
         text: 'Ezabatu',
         click: deleteEvent
