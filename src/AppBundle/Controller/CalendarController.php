@@ -59,7 +59,8 @@ class CalendarController extends Controller
      * @Route("/new/{username}", name="admin_calendar_new")
      * @Method({"GET", "POST"})
      *
-     * @param mixed $username
+     * @param Request $request
+     * @param mixed   $username
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */

@@ -21,7 +21,8 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
     {
         $em = $this->getEntityManager();
 
-        $dql = '
+        $dql = /** @lang text */
+            '
             SELECT c
             FROM AppBundle:Calendar c
               INNER Join c.user u
@@ -32,6 +33,25 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
         $query = $em->createQuery($dql);
         $query->setParameter('username', $username);
         $query->setParameter('year', $year);
+
+        return $query->getResult();
+    }
+
+    public function findAllCalendarsByUsername($username)
+    {
+        $em = $this->getEntityManager();
+
+        $dql = /** @lang text */
+            '
+            SELECT c
+            FROM AppBundle:Calendar c
+              INNER Join c.user u
+            WHERE u.username LIKE :username
+            Order by c.year desc
+        ';
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('username', $username);
 
         return $query->getResult();
     }
