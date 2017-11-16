@@ -28,14 +28,15 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root', ['navbar' => true]);
 
         $menu->addChild(' Hasiera', ['icon' => 'home', 'route' => 'dashboard']);
-        $menu->addChild(' Txantiloia', ['icon' => 'bookmark', 'route' => 'admin_template_index']);
-        $menu->addChild(' Mota', ['icon' => 'tag', 'route' => 'admin_type_index']);
-        $menu->addChild('divider2', ['divider' => true]);
+        $menu->addChild('Taula Laguntzaileak', ['icon' => 'th-list']);
+        $menu['Taula Laguntzaileak']->addChild('Motak', ['icon' => 'tag', 'route' => 'admin_type_index']);
+        $menu['Taula Laguntzaileak']->addChild(' Txantiloia', ['icon' => 'bookmark', 'route' => 'admin_template_index']);
+        $menu['Taula Laguntzaileak']->addChild('divider', ['divider' => true]);
 
         $checker = $this->container->get('security.authorization_checker');
         if (($checker->isGranted('ROLE_USER') && ($checker->isGranted('ROLE_BIDERATZAILEA'))) || ($checker->isGranted('ROLE_SUPER_ADMIN')))  {
-            $menu->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
-            $menu->addChild(' Sinatzaileak', ['icon' => 'time', 'route' => 'admin_sinatzaileak_index']);
+            $menu['Taula Laguntzaileak']->addChild(' Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index']);
+            $menu['Taula Laguntzaileak']->addChild(' Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index']);
             /** @var EntityManager $em */
             $em = $this->container->get('doctrine.orm.entity_manager');
             $eskaerak = $em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
@@ -56,7 +57,8 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild(' Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
                     ->setLinkAttribute('class', 'childClass');
             }
-            $menu->addChild(' Azken konexioak', ['icon' => 'time', 'route' => 'admin_log_index']);
+            $menu['Taula Laguntzaileak']->addChild('divider2', ['divider' => true]);
+            $menu['Taula Laguntzaileak']->addChild(' Azken konexioak', ['icon' => 'time', 'route' => 'admin_log_index']);
         }
 
 
