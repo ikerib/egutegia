@@ -28,6 +28,8 @@ class EgutegiaController extends Controller
      * @Method("GET")
      *
      * @param mixed $username
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function useregutegiaAction($username)
     {

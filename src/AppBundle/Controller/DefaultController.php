@@ -34,6 +34,10 @@ class DefaultController extends Controller
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
+            throw $this->createAccessDeniedException('Aldeintzak!');
+        }
+
 
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
@@ -45,7 +49,12 @@ class DefaultController extends Controller
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('dashboard');
             }
-            throw new EntityNotFoundException('Ez da egutegirik topatu edo egutegi bat baino gehiago ditu');
+            return $this->render(
+                'default/no_calendar_error.html.twig',
+                [
+                    'user' => $user
+                ]
+            );
         }
 
         /** @var Calendar $calendar */

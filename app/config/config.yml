@@ -8,6 +8,8 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: eu
+    app.dir_base_pdf: '%dir_base_pdf%'
+    app.dir_tmp_pdf: '%dir_tmp_pdf%'
 
 framework:
     ide: "phpstorm://open?file=%%f&line=%%l"
@@ -133,6 +135,12 @@ fos_js_routing:
         - admin_document_order_up
         - admin_calendar_compare
         - eskaera_index
+        - put_firma
+        - put_jakinarazpena_readed
+        - put_jakinarazpena
+        - get_firmatzaileak
+        - get_firmatzaileakfromjakinarazpena
+        - eskaera_add_to_calendar
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support
@@ -146,6 +154,8 @@ ldap_tools:
             password: %ldap_password%
             base_dn: %ldap_base_dn%
             servers: %ldap_server%
+
+
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'
@@ -201,3 +211,13 @@ vich_uploader:
             inject_on_load:     true # should the file be injected into the uploadable entity when it is loaded from the data store.
             delete_on_update:   true # should the file be deleted when a new file is uploaded
             delete_on_remove:   true # should the file be deleted when the entity is removed
+
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /usr/local/bin/wkhtmltopdf
+        options:
+            - { name: 'viewport-size', value: ‘1024x768’ }
+            - { name: 'page-size', value: 'A4' }
+            - { name: 'encoding', value: 'UTF-8' }

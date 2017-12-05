@@ -23,8 +23,10 @@ parameters:
     mailer_host: 127.0.0.1
     mailer_user: ~
     mailer_password: ~
-
+    mailer_bidaltzailea: 'egutegia@pasaia.net'
     mailer_user: fosusermailer@example.com
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
+    dir_base_pdf: /var/whatever
+    dir_tmp_pdf: /var/whatever

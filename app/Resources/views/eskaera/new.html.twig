@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block headline %}{{ 'Opor edo baimen eskaera berria' | trans }} {% endblock  %}
+{% block headline %}{{ eskaera.type.name ~ ' eskaera berria' | trans }} {% endblock  %}
 
 {% block content_row %}
     <div class="row">
         <div class="col-md-2"></div>
         <div class="col-md-8">
-            {{ form_start(form, { 'attr': {'class': 'form-horizontal'} }) }}
+            {{ form_start(form, { 'attr': {'class': 'form-horizontal', 'id': 'frmEskaeraNew'} }) }}
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Langilea' | trans }}</label>
                 <div class="col-sm-7">
@@ -15,33 +15,68 @@
             </div>
 
             <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Mota' | trans }}</label>
-                <div class="col-sm-7">
-                    {{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiztik' | trans }}</label>
+                {% if 'KONPENTSA' not in eskaera.type.name | upper %}
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Noiztik' | trans }}</label>
+                {% else  %}
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Eguna' | trans }}</label>
+                {% endif %}
                 <div class="col-sm-7">
                     {{ form_widget(form.hasi, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
                 </div>
             </div>
 
+            {% if 'KONPENTSA' not in eskaera.type.name | upper %}
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz arte' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.amaitu, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>egunak</strong>' | trans|raw }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.egunak, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+            {% endif %}
+
+
             <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz arte' | trans }}</label>
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>orduak</strong>' | trans | raw }}</label>
                 <div class="col-sm-7">
-                    {{ form_widget(form.amaitu, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
                 </div>
             </div>
 
+            {% if 'KONPENTSA' not in eskaera.type.name | upper %}
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <p>Lanaldia: {{ eskaera.calendar.hoursDay }}</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>ordu</strong>' | trans | raw }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.total, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="form-group">
-                <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat egun edo ordu' | trans }}</label>
+                {% if 'KONPENTSA' not in eskaera.type.name | upper %}
+                    <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
+                {% else %}
+                    <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Azalpena' | trans }}</label>
+                {% endif %}
                 <div class="col-sm-7">
-                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.oharra, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>
+
+
 
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Eskaera data' | trans }}</label>
@@ -53,66 +88,96 @@
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <p>Egin klik 'Lortu inprimakia' botoian eta inprimatu dokumentua.</p>
-                    <p>Sinatu eta entregatu.</p>
-                    <p>&nbsp;</p>
-                    <button type="submit" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
+                    <button id="btnSubmit" type="button" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
                 </div>
                 <div class="col-md-4"></div>
             </div>
             <div style="display: none">
                 {{ form_end(form) }}
                 <input id="txtJornada" type="text" value="{{ calendar.getHoursDay }}">
+                <input id="hoursFree" type="text" value="{{ calendar.hoursFree }}">
+                <input id="eskaeramota" type="hidden" value="{{ eskaera.type.name }}">
             </div>
 
         </div>
         <div class="col-md-2"></div>
     </div>
 
+
 {% endblock %}
 
 {% block foot_script %}
     {{ parent() }}
-    <script>
-      function workday_count (fstart, fend) {
-        var start = moment(fstart)
-        var end = moment(fend)
-        var first = start.clone().endOf('week'); // end of first week
-        var last = end.clone().startOf('week'); // start of last week
-        var days = Math.floor(last.diff(first,'days') * 5 / 7); // this will always multiply of 7
-        var wfirst = first.day() - start.day(); // check first week
-        if(start.day() == 0) --wfirst; // -1 if start with sunday
-        var wlast = end.day() - last.day(); // check last week
-        if(end.day() == 6) --wlast; // -1 if end with saturday
-        return wfirst + days + wlast; // get the total
-      }
+    <script language="JavaScript">
+        $('#btnSubmit').on('click', function () {
+            var ongi = true;
+            var eskaeramota = $('#eskaeramota').val();
+            var konpentsatuada = false;
+            if (eskaeramota.toUpperCase().indexOf("KONPENTSA") !==-1) {
+                konpentsatuada = true;
+            }
 
-      $(function () {
+            if ($("input[type=radio]:checked").length === 0) {
+                bootbox.alert('Mota zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
 
-        $('#appbundle_eskaera_hasi').datepicker({
-          format: 'yyyy-mm-dd',
-          language: 'eu'
+            var hasi = $("input[name='appbundle_eskaera[hasi]']").val();
+            if (hasi.length === 0) {
+                if (konpentsatuada === false) {
+                    bootbox.alert('Noiztik zehaztea beharrezkoa da.');
+                } else {
+                    bootbox.alert('Eguna zehaztea beharrezkoa da.');
+                }
+
+                ongi = false;
+                return;
+            }
+
+            if (konpentsatuada === false) {
+                var amaitu = $("input[name='appbundle_eskaera[amaitu]']").val();
+                if (amaitu.length === 0) {
+                    bootbox.alert('Amaitu zehaztea beharrezkoa da.');
+                    ongi = false;
+                    return;
+                }
+
+                var egunak = $("input[name='appbundle_eskaera[egunak]']").val();
+                if (egunak.length === 0) {
+                    bootbox.alert('Egunak zehaztea beharrezkoa da.');
+                    ongi = false;
+                    return;
+                }
+            } else {
+                var oharra = $("input[name='appbundle_eskaera[oharra]']").val();
+                if (oharra.length === 0) {
+                    bootbox.alert('Azalpena zehaztea beharrezkoa da.');
+                    ongi = false;
+                    return;
+                }
+            }
+
+
+            var orduak = $("input[name='appbundle_eskaera[orduak]']").val();
+            if (orduak.length === 0) {
+                bootbox.alert('Orduak zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
+            var noiz = $("input[name='appbundle_eskaera[noiz]']").val();
+            if (noiz.length === 0) {
+                bootbox.alert('Noiz zehaztea beharrezkoa da.');
+                ongi = false;
+                return;
+            }
+
+
+            if ( ongi ) {
+                $('#frmEskaeraNew').submit();
+            }
+
+
         });
-
-        $('#appbundle_eskaera_amaitu').datepicker({
-          format: 'yyyy-mm-dd',
-          language: 'eu'
-        });
-
-        $('.cmbFetxaKalc').change( function () {
-          var hasi = $('#appbundle_eskaera_hasi').val()
-          var amaitu = $('#appbundle_eskaera_amaitu').val()
-
-          var d = workday_count(hasi, amaitu)
-          $('#appbundle_eskaera_orduak').val(d.toFixed(2))
-//          var j = $('#txtTotalHousSelected').data('jornada')
-//
-//          var t = d * parseFloat(j)
-//
-//          $('#txtTotalHousSelected').val(t.toFixed(2))
-
-        });
-
-      });
     </script>
 {% endblock %}

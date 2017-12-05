@@ -1,6 +1,6 @@
 /**
  * @preserve tableExport.jquery.plugin
- *
+ * egutegia18
  * Copyright (c) 2015-2017 hhurz, https://github.com/hhurz/tableExport.jquery.plugin
  * Original work Copyright (c) 2014 Giri Raj, https://github.com/kayalshri/
  *

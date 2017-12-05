@@ -1,4 +1,5 @@
 /**
+ * Egutegia14
  * Spanish translation for bootstrap-year-calendar
  * Paul DAVID-SIVELLE
  * Based on 
@@ -8,8 +9,8 @@
  
 ;(function($){
 	$.fn.calendar.dates['es'] = {
-		days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
-		daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+		days: ["Domingo", "Lunes", "Martes", "Miï¿½rcoles", "Jueves", "Viernes", "Sï¿½bado"],
+		daysShort: ["Dom", "Lun", "Mar", "Miï¿½", "Jue", "Vie", "Sï¿½b"],
 		daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
 		months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
 		monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],

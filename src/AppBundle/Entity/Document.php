@@ -14,12 +14,15 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+
 
 /**
  * Document.
  *
  * @ORM\Table(name="document")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DocumentRepository")
+ * @ExclusionPolicy("all")
  * @Vich\Uploadable
  */
 class Document
@@ -30,8 +33,17 @@ class Document
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @expose()
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="filenamepath", type="string", length=255)
+     * @Expose()
+     */
+    private $filenamepath;
 
     /**
      * @var string
@@ -69,6 +81,12 @@ class Document
      */
     private $orden;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="egutegian", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $egutegian=false;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -82,6 +100,17 @@ class Document
      * @Expose()
      */
     private $calendar;
+
+    /**
+     * @var Eskaera
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="documents")
+     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
+     */
+    private $eskaera;
+
+
 
     public function __toString()
     {
@@ -248,5 +277,77 @@ class Document
     public function getOrden()
     {
         return $this->orden;
+    }
+
+    /**
+     * Set filenamepath
+     *
+     * @param string $filenamepath
+     *
+     * @return Document
+     */
+    public function setFilenamepath($filenamepath)
+    {
+        $this->filenamepath = $filenamepath;
+
+        return $this;
+    }
+
+    /**
+     * Get filenamepath
+     *
+     * @return string
+     */
+    public function getFilenamepath()
+    {
+        return $this->filenamepath;
+    }
+
+    /**
+     * Set eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Document
+     */
+    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    {
+        $this->eskaera = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Get eskaera
+     *
+     * @return \AppBundle\Entity\Eskaera
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
+    }
+
+    /**
+     * Set egutegian
+     *
+     * @param boolean $egutegian
+     *
+     * @return Document
+     */
+    public function setEgutegian($egutegian)
+    {
+        $this->egutegian = $egutegian;
+
+        return $this;
+    }
+
+    /**
+     * Get egutegian
+     *
+     * @return boolean
+     */
+    public function getEgutegian()
+    {
+        return $this->egutegian;
     }
 }

@@ -200,6 +200,13 @@ class Calendar
     private $hours;
 
     /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="calendar")
+     */
+    protected $eskaeras;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -219,10 +226,12 @@ class Calendar
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
 
+
+
     /**
-     * Get id.
+     * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -230,7 +239,7 @@ class Calendar
     }
 
     /**
-     * Set name.
+     * Set name
      *
      * @param string $name
      *
@@ -244,7 +253,7 @@ class Calendar
     }
 
     /**
-     * Get name.
+     * Get name
      *
      * @return string
      */
@@ -254,9 +263,9 @@ class Calendar
     }
 
     /**
-     * Set year.
+     * Set year
      *
-     * @param int $year
+     * @param integer $year
      *
      * @return Calendar
      */
@@ -268,9 +277,9 @@ class Calendar
     }
 
     /**
-     * Get year.
+     * Get year
      *
-     * @return int
+     * @return integer
      */
     public function getYear()
     {
@@ -278,363 +287,7 @@ class Calendar
     }
 
     /**
-     * Set hoursYear.
-     *
-     * @param string $hoursYear
-     *
-     * @return Calendar
-     */
-    public function setHoursYear($hoursYear)
-    {
-        $this->hours_year = $hoursYear;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursYear.
-     *
-     * @return string
-     */
-    public function getHoursYear()
-    {
-        return $this->hours_year;
-    }
-
-    /**
-     * Set hoursFree.
-     *
-     * @param string $hoursFree
-     *
-     * @return Calendar
-     */
-    public function setHoursFree($hoursFree)
-    {
-        $this->hours_free = $hoursFree;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursFree.
-     *
-     * @return string
-     */
-    public function getHoursFree()
-    {
-        return $this->hours_free;
-    }
-
-    /**
-     * Set hoursSelf.
-     *
-     * @param string $hoursSelf
-     *
-     * @return Calendar
-     */
-    public function setHoursSelf($hoursSelf)
-    {
-        $this->hours_self = $hoursSelf;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursSelf.
-     *
-     * @return string
-     */
-    public function getHoursSelf()
-    {
-        return $this->hours_self;
-    }
-
-    /**
-     * Set hoursCompensed.
-     *
-     * @param string $hoursCompensed
-     *
-     * @return Calendar
-     */
-    public function setHoursCompensed($hoursCompensed)
-    {
-        $this->hours_compensed = $hoursCompensed;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursCompensed.
-     *
-     * @return string
-     */
-    public function getHoursCompensed()
-    {
-        return $this->hours_compensed;
-    }
-
-    /**
-     * Set hoursDay.
-     *
-     * @param string $hoursDay
-     *
-     * @return Calendar
-     */
-    public function setHoursDay($hoursDay)
-    {
-        $this->hours_day = $hoursDay;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursDay.
-     *
-     * @return string
-     */
-    public function getHoursDay()
-    {
-        return $this->hours_day;
-    }
-
-    /**
-     * Set note.
-     *
-     * @param string $note
-     *
-     * @return Calendar
-     */
-    public function setNote($note)
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    /**
-     * Get note.
-     *
-     * @return string
-     */
-    public function getNote()
-    {
-        return $this->note;
-    }
-
-    /**
-     * Set slug.
-     *
-     * @param string $slug
-     *
-     * @return Calendar
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * Get slug.
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set created.
-     *
-     * @param \DateTime $created
-     *
-     * @return Calendar
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created.
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * Set updated.
-     *
-     * @param \DateTime $updated
-     *
-     * @return Calendar
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
-
-        return $this;
-    }
-
-    /**
-     * Get updated.
-     *
-     * @return \DateTime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Set contentChangedBy.
-     *
-     * @param string $contentChangedBy
-     *
-     * @return Calendar
-     */
-    public function setContentChangedBy($contentChangedBy)
-    {
-        $this->contentChangedBy = $contentChangedBy;
-
-        return $this;
-    }
-
-    /**
-     * Get contentChangedBy.
-     *
-     * @return string
-     */
-    public function getContentChangedBy()
-    {
-        return $this->contentChangedBy;
-    }
-
-    /**
-     * Set user.
-     *
-     * @param \AppBundle\Entity\User $user
-     *
-     * @return Calendar
-     */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user.
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set template.
-     *
-     * @param \AppBundle\Entity\Template $template
-     *
-     * @return Calendar
-     */
-    public function setTemplate(\AppBundle\Entity\Template $template = null)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
-     * Get template.
-     *
-     * @return \AppBundle\Entity\Template
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    /**
-     * Add event.
-     *
-     * @param \AppBundle\Entity\Event $event
-     *
-     * @return Calendar
-     */
-    public function addEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events[] = $event;
-
-        return $this;
-    }
-
-    /**
-     * Remove event.
-     *
-     * @param \AppBundle\Entity\Event $event
-     */
-    public function removeEvent(\AppBundle\Entity\Event $event)
-    {
-        $this->events->removeElement($event);
-    }
-
-    /**
-     * Get events.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getEvents()
-    {
-        return $this->events;
-    }
-
-    /**
-     * Add document.
-     *
-     * @param \AppBundle\Entity\Document $document
-     *
-     * @return Calendar
-     */
-    public function addDocument(\AppBundle\Entity\Document $document)
-    {
-        $this->documents[] = $document;
-
-        return $this;
-    }
-
-    /**
-     * Remove document.
-     *
-     * @param \AppBundle\Entity\Document $document
-     */
-    public function removeDocument(\AppBundle\Entity\Document $document)
-    {
-        $this->documents->removeElement($document);
-    }
-
-    /**
-     * Get documents.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDocuments()
-    {
-        return $this->documents;
-    }
-
-    /**
-     * Set percentYear.
+     * Set percentYear
      *
      * @param string $percentYear
      *
@@ -648,7 +301,7 @@ class Calendar
     }
 
     /**
-     * Get percentYear.
+     * Get percentYear
      *
      * @return string
      */
@@ -658,85 +311,75 @@ class Calendar
     }
 
     /**
-     * Add hour.
+     * Set hoursYear
      *
-     * @param \AppBundle\Entity\Hour $hour
+     * @param string $hoursYear
      *
      * @return Calendar
      */
-    public function addHour(\AppBundle\Entity\Hour $hour)
+    public function setHoursYear($hoursYear)
     {
-        $this->hours[] = $hour;
+        $this->hours_year = $hoursYear;
 
         return $this;
     }
 
     /**
-     * Remove hour.
-     *
-     * @param \AppBundle\Entity\Hour $hour
-     */
-    public function removeHour(\AppBundle\Entity\Hour $hour)
-    {
-        $this->hours->removeElement($hour);
-    }
-
-    /**
-     * Get hours.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getHours()
-    {
-        return $this->hours;
-    }
-
-    /**
-     * Set hoursSindikal.
-     *
-     * @param string $hoursSindikal
-     *
-     * @return Calendar
-     */
-    public function setHoursSindikal($hoursSindikal)
-    {
-        $this->hours_sindikal = $hoursSindikal;
-
-        return $this;
-    }
-
-    /**
-     * Get hoursSindikal.
+     * Get hoursYear
      *
      * @return string
      */
-    public function getHoursSindikal()
+    public function getHoursYear()
     {
-        return $this->hours_sindikal;
+        return $this->hours_year;
     }
 
     /**
-     * Set hirurtekoa.
+     * Set hoursFree
      *
-     * @param string $hirurtekoa
+     * @param string $hoursFree
      *
      * @return Calendar
      */
-    public function setHirurtekoa($hirurtekoa)
+    public function setHoursFree($hoursFree)
     {
-        $this->hirurtekoa = $hirurtekoa;
+        $this->hours_free = $hoursFree;
 
         return $this;
     }
 
     /**
-     * Get hirurtekoa.
+     * Get hoursFree
      *
      * @return string
      */
-    public function getHirurtekoa()
+    public function getHoursFree()
     {
-        return $this->hirurtekoa;
+        return $this->hours_free;
+    }
+
+    /**
+     * Set hoursSelf
+     *
+     * @param string $hoursSelf
+     *
+     * @return Calendar
+     */
+    public function setHoursSelf($hoursSelf)
+    {
+        $this->hours_self = $hoursSelf;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSelf
+     *
+     * @return string
+     */
+    public function getHoursSelf()
+    {
+        return $this->hours_self;
     }
 
     /**
@@ -761,5 +404,405 @@ class Calendar
     public function getHoursSelfHalf()
     {
         return $this->hours_self_half;
+    }
+
+    /**
+     * Set hoursCompensed
+     *
+     * @param string $hoursCompensed
+     *
+     * @return Calendar
+     */
+    public function setHoursCompensed($hoursCompensed)
+    {
+        $this->hours_compensed = $hoursCompensed;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursCompensed
+     *
+     * @return string
+     */
+    public function getHoursCompensed()
+    {
+        return $this->hours_compensed;
+    }
+
+    /**
+     * Set hoursSindikal
+     *
+     * @param string $hoursSindikal
+     *
+     * @return Calendar
+     */
+    public function setHoursSindikal($hoursSindikal)
+    {
+        $this->hours_sindikal = $hoursSindikal;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSindikal
+     *
+     * @return string
+     */
+    public function getHoursSindikal()
+    {
+        return $this->hours_sindikal;
+    }
+
+    /**
+     * Set hoursDay
+     *
+     * @param string $hoursDay
+     *
+     * @return Calendar
+     */
+    public function setHoursDay($hoursDay)
+    {
+        $this->hours_day = $hoursDay;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursDay
+     *
+     * @return string
+     */
+    public function getHoursDay()
+    {
+        return $this->hours_day;
+    }
+
+    /**
+     * Set hirurtekoa
+     *
+     * @param string $hirurtekoa
+     *
+     * @return Calendar
+     */
+    public function setHirurtekoa($hirurtekoa)
+    {
+        $this->hirurtekoa = $hirurtekoa;
+
+        return $this;
+    }
+
+    /**
+     * Get hirurtekoa
+     *
+     * @return string
+     */
+    public function getHirurtekoa()
+    {
+        return $this->hirurtekoa;
+    }
+
+    /**
+     * Set note
+     *
+     * @param string $note
+     *
+     * @return Calendar
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return string
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     *
+     * @return Calendar
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return Calendar
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return Calendar
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set contentChangedBy
+     *
+     * @param string $contentChangedBy
+     *
+     * @return Calendar
+     */
+    public function setContentChangedBy($contentChangedBy)
+    {
+        $this->contentChangedBy = $contentChangedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get contentChangedBy
+     *
+     * @return string
+     */
+    public function getContentChangedBy()
+    {
+        return $this->contentChangedBy;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return Calendar
+     */
+    public function setUser(\AppBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set template
+     *
+     * @param \AppBundle\Entity\Template $template
+     *
+     * @return Calendar
+     */
+    public function setTemplate(\AppBundle\Entity\Template $template = null)
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * Get template
+     *
+     * @return \AppBundle\Entity\Template
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * Add event
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return Calendar
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event
+     *
+     * @param \AppBundle\Entity\Event $event
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * Add document
+     *
+     * @param \AppBundle\Entity\Document $document
+     *
+     * @return Calendar
+     */
+    public function addDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents[] = $document;
+
+        return $this;
+    }
+
+    /**
+     * Remove document
+     *
+     * @param \AppBundle\Entity\Document $document
+     */
+    public function removeDocument(\AppBundle\Entity\Document $document)
+    {
+        $this->documents->removeElement($document);
+    }
+
+    /**
+     * Get documents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDocuments()
+    {
+        return $this->documents;
+    }
+
+    /**
+     * Add hour
+     *
+     * @param \AppBundle\Entity\Hour $hour
+     *
+     * @return Calendar
+     */
+    public function addHour(\AppBundle\Entity\Hour $hour)
+    {
+        $this->hours[] = $hour;
+
+        return $this;
+    }
+
+    /**
+     * Remove hour
+     *
+     * @param \AppBundle\Entity\Hour $hour
+     */
+    public function removeHour(\AppBundle\Entity\Hour $hour)
+    {
+        $this->hours->removeElement($hour);
+    }
+
+    /**
+     * Get hours
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHours()
+    {
+        return $this->hours;
+    }
+
+    /**
+     * Add eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     *
+     * @return Calendar
+     */
+    public function addEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaeras[] = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Remove eskaera
+     *
+     * @param \AppBundle\Entity\Eskaera $eskaera
+     */
+    public function removeEskaera(\AppBundle\Entity\Eskaera $eskaera)
+    {
+        $this->eskaeras->removeElement($eskaera);
+    }
+
+    /**
+     * Get eskaeras
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEskaeras()
+    {
+        return $this->eskaeras;
     }
 }

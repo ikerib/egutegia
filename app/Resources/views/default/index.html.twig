@@ -5,6 +5,7 @@
 {% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
+
     <form id="frmCompare" method="post" action="{{ path('admin_calendar_compare') }}">
         <input id="txtUsers" type="hidden" name="users" value="" title="Users">
     </form>
@@ -54,6 +55,7 @@
                 data-sortable="true">{{ 'Abizenak' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="saila"
                 data-sortable="true">{{ 'Saila' | trans }}</th>
+            <th>Urtea</th>
             <th data-halign="left" data-align="left" data-field="notes" data-editable="true"
                 data-editable-emptytext="For free."
                 data-sortable="true">{{ 'Oharrak' | trans }}</th>
@@ -63,6 +65,7 @@
             <th data-halign="center" data-align="center">{{ 'Opor orduak' | trans }}</th>
             <th data-halign="center" data-align="center">{{ 'Norberarentzako orduak' | trans }}</th>
             <th data-halign="center" data-align="center">{{ 'Konpentsatutako orduak' | trans }}</th>
+            <th data-halign="center" data-align="center"></th>
         </tr>
         </thead>
         <tbody>
@@ -73,6 +76,18 @@
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
+                <td>
+                    {% if user.egutegiak is defined %}
+                        {% if user.egutegiak | length > 1 %}
+                            <select name="year" class="cmbYear">
+                                <option value="-1">Aukeratu bat</option>
+                                {% for e in user.egutegiak %}
+                                    <option value="{{ url('admin_calendar_edit', { 'id': e.id }) }}">{{ e.year }}</option>
+                                {% endfor %}
+                            </select>
+                        {% endif %}
+                    {% endif %}
+                </td>
                 <td>
                     {% if user.user.has('notes') %}
                         <a href="javascript:void(0)" class="btn btnUserNote"
@@ -122,6 +137,12 @@
                         {% endif %}
                     </td>
                     <td>{{ user.calendar[0].hoursCompensed }} </td>
+                    <td>
+                        <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs"
+                           data-username="{{ user.user.username }}">
+                            <i class="fa fa-plus-square-o" aria-hidden="true"> Berria</i>
+                        </a>
+                    </td>
                 {% else %}
                     <td>
                         <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs"
@@ -129,6 +150,7 @@
                             <i class="fa fa-plus-square-o" aria-hidden="true"> Sortu</i>
                         </a>
                     </td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -194,184 +216,189 @@
     {{ parent() }}
     <script>
 
-      var $table = $('#table'), selections = []
+        var $table = $( "#table" ), selections = [];
 
-      function initTable () {
-        $table.bootstrapTable({
-          height: getHeight()
-        })
-        $table.bootstrapTable('uncheckAll');
-      }
+        function initTable() {
+            $table.bootstrapTable( {
+                                       height: getHeight()
+                                   } );
+            $table.bootstrapTable( "uncheckAll" );
+        }
 
-      function getHeight () {
-        var winh = $(window).height()
-        var h2h = $('h2').outerHeight(true)
-        var fooh = $('footer').outerHeight(true)
-        return winh - h2h - fooh - 200
-      }
+        function getHeight() {
+            var winh = $( window ).height();
+            var h2h = $( "h2" ).outerHeight( true );
+            var fooh = $( "footer" ).outerHeight( true );
+            return winh - h2h - fooh - 200;
+        }
 
-      $(function () {
+        $( function () {
 
-        initTable()
+            initTable();
 
-        // Compare button click
-        $(document).on('click', '#btnCompare', function () {
-          var tableData = $table.bootstrapTable('getSelections')
-          var selection = []
+            // Compare button click
+            $( document ).on( "click", "#btnCompare", function () {
+                var tableData = $table.bootstrapTable( "getSelections" );
+                var selection = [];
 
-          if ( tableData.length > 5 ) {
-            bootbox.alert("Ezin dira 5 baina egutegi gehiagi aukeratu.")
-            return -1
-          }
+                if ( tableData.length > 5 ) {
+                    bootbox.alert( "Ezin dira 5 baina egutegi gehiagi aukeratu." );
+                    return -1;
+                }
 
 
-          for (index = 0, len = tableData.length; index < len; ++index) {
-            var t1 = tableData[index];
-            selection.push(t1.id)
-          }
+                for ( index = 0, len = tableData.length; index < len; ++index ) {
+                    var t1 = tableData[ index ];
+                    selection.push( t1.id );
+                }
 
-          $('#txtUsers').val(selection)
+                $( "#txtUsers" ).val( selection );
 
-          $('#frmCompare').submit()
+                $( "#frmCompare" ).submit();
 
-        })
+            } );
 
-        // New Calendar
-        $(document).on('click', '.btnNewCalendar', function () {
-          $('#divModalCalendarNew').empty()
-          var myusername = $(this).data('username')
-          var url = Routing.generate('admin_calendar_new', {username: myusername})
-          $('#divModalCalendarNew').load(url, function () {
-            $('#appbundle_calendar_template').append('<option value=\'-1\' selected>Aukeratu bat</option>')
-            $('#new-modal').modal()
-          })
-        })
+            // New Calendar
+            $( document ).on( "click", ".btnNewCalendar", function () {
+                $( "#divModalCalendarNew" ).empty();
+                var myusername = $( this ).data( "username" );
+                var url = Routing.generate( "admin_calendar_new", { username: myusername } );
+                $( "#divModalCalendarNew" ).load( url, function () {
+                    $( "#appbundle_calendar_template" ).append( "<option value='-1' selected>Aukeratu bat</option>" );
+                    $( "#new-modal" ).modal();
+                } );
+            } );
 
-        // Edir user notes#
-        $(document).on('click', '.btnUserNote', function () {
-          $('#txtUserNotes').val($(this).data('usernote'))
-          $('#usernoteusername').val($(this).data('username'))
-          $('#modal-usernote').modal()
-        })
+            // Edir user notes#
+            $( document ).on( "click", ".btnUserNote", function () {
+                $( "#txtUserNotes" ).val( $( this ).data( "usernote" ) );
+                $( "#usernoteusername" ).val( $( this ).data( "username" ) );
+                $( "#modal-usernote" ).modal();
+            } );
 
-        // Save User Note
-        $(document).on('click', '#btn-save-usernote', function () {
-          var username = $('#usernoteusername').val()
-          var url = Routing.generate('post_usernotes', {'username': username})
+            // Save User Note
+            $( document ).on( "click", "#btn-save-usernote", function () {
+                var username = $( "#usernoteusername" ).val();
+                var url = Routing.generate( "post_usernotes", { "username": username } );
 
-          var d = {}
-          d.notes = $('#txtUserNotes').val()
+                var d = {};
+                d.notes = $( "#txtUserNotes" ).val();
 
-          $.ajax({
-            url: url,
-            data: JSON.stringify(d),
-            type: 'POST',
-            contentType: 'application/json',
-            success: function () {
-              location.reload()
-            },
-            error: function () {
-              alert('Datuak ez dira gorde, akats bar gertatu da.')
+                $.ajax( {
+                            url: url,
+                            data: JSON.stringify( d ),
+                            type: "POST",
+                            contentType: "application/json",
+                            success: function () {
+                                location.reload();
+                            },
+                            error: function () {
+                                alert( "Datuak ez dira gorde, akats bar gertatu da." );
+                            }
+                        } );
+            } );
+
+            // get template data
+            $( document ).on( "click", "#appbundle_calendar_template", function () {
+                var val = $( this ).val();
+                if ( val !== "-1" ) {
+                    var url = Routing.generate( "get_template", { "id": val } );
+                    $.ajax( {
+                                url: url,
+                                data: {
+                                    format: "json"
+                                },
+                                success: function ( result ) {
+                                    $( "#appbundle_calendar_hoursYear" ).val( result.hours_year );
+                                    $( "#appbundle_calendar_hoursFree" ).val( result.hours_free );
+                                    $( "#appbundle_calendar_hoursSelf" ).val( result.hours_self );
+                                    $( "#appbundle_calendar_hoursDay" ).val( result.hours_day );
+                                    birkalkulatu();
+                                    birkalkulatuNorbere();
+                                },
+                                error: function () {
+                                    console.log( "HORROR!" );
+                                }
+                            } );
+                }
+            } );
+
+
+            $( ".cmbYear" ).change( function () {
+                var url = $( this ).val();
+                window.location = url;
+            } );
+
+            $( document ).on( "change", "#appbundle_calendar_percentYear", function () {
+                birkalkulatu();
+                birkalkulatuNorbere();
+            } );
+
+            $( document ).on( "change", "#appbundle_calendar_hirurtekoa", function () {
+                birkalkulatuNorbere();
+            } );
+
+
+            function birkalkulatu() {
+                var ori = $( "#appbundle_calendar_percentYear" ); // portzentaia
+                var vori = parseFloat( $( ori ).val() );
+
+                var hiru = $( "#appbundle_calendar_hirurtekoa" ); // hirurtekoa
+                var vhiru = parseFloat( $( hiru ).val() );
+
+                // Jornada
+                var des3 = $( "#appbundle_calendar_hoursDay" );
+                var vdes3 = parseFloat( $( des3 ).val() );
+                if ( (vdes3 !== 0) && (vori !== 0) ) {
+                    vdes3 = vdes3 * vori / 100;
+                    $( des3 ).val( vdes3.toFixed( 2 ) );
+                }
+
+                // Oporrak
+                var des1 = $( "#appbundle_calendar_hoursFree" );
+                var vdes1 = parseFloat( $( des1 ).val() );
+                if ( (vdes1 !== 0) && (vori !== 0) ) {
+                    vdes1 = vdes1 * vori / 100;
+                    $( des1 ).val( vdes1.toFixed( 2 ) );
+                }
+
+                // Norberarentzako
+                var des2 = $( "#appbundle_calendar_hoursSelf" );
+                var vdes2 = parseFloat( $( des2 ).val() );
+                // Gehitu hirurtekoak
+                vdes2 = vdes2 + (vdes3 * vhiru);
+                if ( (vdes2 !== 0) && (vori !== 0) ) {
+                    vdes2 = vdes2 * vori / 100;
+                    $( des2 ).val( vdes2.toFixed( 2 ) );
+                }
             }
-          })
-        })
 
-        // get template data
-        $(document).on('click', '#appbundle_calendar_template', function () {
-          var val = $(this).val()
-          if (val !== '-1') {
-            var url = Routing.generate('get_template', {'id': val})
-            $.ajax({
-              url: url,
-              data: {
-                format: 'json'
-              },
-              success: function (result) {
-                $('#appbundle_calendar_hoursYear').val(result.hours_year)
-                $('#appbundle_calendar_hoursFree').val(result.hours_free)
-                $('#appbundle_calendar_hoursSelf').val(result.hours_self)
-                $('#appbundle_calendar_hoursDay').val(result.hours_day)
-                birkalkulatu()
-                birkalkulatuNorbere()
-              },
-              error: function () {
-                console.log('HORROR!')
-              }
-            })
-          }
-        })
+            function birkalkulatuNorbere() {
+                var ori = $( "#appbundle_calendar_percentYear" ); // portzentaia
+                var vori = parseFloat( $( ori ).val() );
+                var hiru = $( "#appbundle_calendar_hirurtekoa" ); // hirurtekoa
+                var vhiru = parseFloat( $( hiru ).val() );
+                var des3 = $( "#appbundle_calendar_hoursDay" );
+                var vdes3 = parseFloat( $( des3 ).val() );
+                // Norberarentzako
+                var des2 = $( "#appbundle_calendar_hoursSelf" );
+                var vdes2 = parseFloat( $( des2 ).val() );
+                // Gehitu hirurtekoak
+                vdes2 = vdes2 + (vdes3 * vhiru);
+                $( des2 ).val( vdes2.toFixed( 2 ) );
 
-        $(document).on('change', '#appbundle_calendar_percentYear', function () {
-            birkalkulatu()
-            birkalkulatuNorbere()
-        })
+                // Zatituta Max izango da jornada * 2
+                var zatituta = vdes3 * 2;
+                // ezin du izan norbere orduen baino gehiago noski
+                if ( zatituta > vdes2 ) {
+                    zatituta = vdes2;
+                }
 
-        $(document).on('change', '#appbundle_calendar_hirurtekoa', function () {
-            birkalkulatuNorbere()
-        })
+                $( "#appbundle_calendar_hoursSelfHalf" ).val( zatituta );
 
 
-        function birkalkulatu() {
-          var ori = $('#appbundle_calendar_percentYear') // portzentaia
-          var vori = parseFloat($(ori).val())
+            }
 
-          var hiru = $('#appbundle_calendar_hirurtekoa') // hirurtekoa
-          var vhiru = parseFloat($(hiru).val())
-
-          // Jornada
-          var des3 = $('#appbundle_calendar_hoursDay')
-          var vdes3 = parseFloat($(des3).val())
-          if ((vdes3 !== 0) && (vori !== 0)) {
-            vdes3 = vdes3 * vori / 100
-            $(des3).val(vdes3.toFixed(2))
-          }
-
-          // Oporrak
-          var des1 = $('#appbundle_calendar_hoursFree')
-          var vdes1 = parseFloat($(des1).val())
-          if ((vdes1 !== 0) && (vori !== 0)) {
-            vdes1 = vdes1 * vori / 100
-            $(des1).val(vdes1.toFixed(2))
-          }
-
-          // Norberarentzako
-          var des2 = $('#appbundle_calendar_hoursSelf')
-          var vdes2 = parseFloat($(des2).val())
-          // Gehitu hirurtekoak
-          vdes2 = vdes2 + (vdes3 * vhiru)
-          if ((vdes2 !== 0) && (vori !== 0)) {
-            vdes2 = vdes2 * vori / 100
-            $(des2).val(vdes2.toFixed(2))
-          }
-        }
-
-        function birkalkulatuNorbere() {
-          var ori = $('#appbundle_calendar_percentYear') // portzentaia
-          var vori = parseFloat($(ori).val())
-          var hiru = $('#appbundle_calendar_hirurtekoa') // hirurtekoa
-          var vhiru = parseFloat($(hiru).val())
-          var des3 = $('#appbundle_calendar_hoursDay')
-          var vdes3 = parseFloat($(des3).val())
-          // Norberarentzako
-          var des2 = $('#appbundle_calendar_hoursSelf')
-          var vdes2 = parseFloat($(des2).val())
-          // Gehitu hirurtekoak
-          vdes2 = vdes2 + (vdes3 * vhiru)
-          $(des2).val(vdes2.toFixed(2))
-
-          // Zatituta Max izango da jornada * 2
-          var zatituta = vdes3 * 2;
-          // ezin du izan norbere orduen baino gehiago noski
-          if ( zatituta > vdes2 ) {
-            zatituta = vdes2;
-          }
-
-          $('#appbundle_calendar_hoursSelfHalf').val(zatituta)
-
-
-
-        }
-
-      })
+        } );
     </script>
 {% endblock %}

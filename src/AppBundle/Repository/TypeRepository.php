@@ -21,7 +21,8 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
     {
         $em = $this->getEntityManager();
         /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
-        $query = $em->createQuery('
+        $query = $em->createQuery(/** @lang text */
+            '
             SELECT DISTINCT  t.id, t.name, t.color, t.hours, t.orden
                 FROM AppBundle:Type t
                 INNER JOIN t.events e
@@ -42,6 +43,7 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         /** @var \Doctrine\DBAL\Query\QueryBuilder $query */
         $query = $em->createQuery(
+            /** @lang text */
             'SELECT DISTINCT t.id, t.name, t.color, t.hours, t.orden
             FROM AppBundle:Calendar c
             INNER JOIN c.template tt
@@ -63,6 +65,7 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
 
         /** @var \Doctrine\DBAL\Query\QueryBuilder $query */
         $query = $em->createQuery(
+            /** @lang text */
             'SELECT DISTINCT t.id, t.name, t.color, t.hours, t.orden
             FROM AppBundle:Template tt
             INNER JOIN tt.template_events te
@@ -73,6 +76,23 @@ class TypeRepository extends \Doctrine\ORM\EntityRepository
         );
 
         $query->setParameter('templateid', $templateid);
+
+        return $query->getResult();
+    }
+
+    public function findEskaerak() {
+        $em = $this->getEntityManager();
+
+        /** @var \Doctrine\DBAL\Query\QueryBuilder $query */
+        $query = $em->createQuery(
+            /** @lang text */
+            'SELECT t
+            FROM  AppBundle:Type t
+            WHERE t.erakutsi_eskaera = 1
+            ORDER BY t.orden
+        '
+        );
+
 
         return $query->getResult();
     }

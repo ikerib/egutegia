@@ -73,39 +73,6 @@
     {% endembed %}
 {% endblock navbar %}
 
-    {#{% if is_granted('ROLE_ADMIN') %}#}
-    {#{% block subnav %}#}
-    {#{% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': false, 'fluid': true } %}#}
-    {#{% block brand %}#}
-
-    {#{% endblock %}#}
-
-    {#{% block menu %}#}
-    {#<div class="row">#}
-    {#<div class="col-md-3">#}
-    {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuLeft', {'automenu':'navbar', 'currentClass': ''}) }}#}
-    {#</div>#}
-    {#<div class="col-md-6" id="alertSpot">#}
-    {#{% for type, flashes in app.session.flashbag.all %}#}
-    {#{% for flash in flashes %}#}
-    {#<div class="alert alert-{{ type }} fade in alert-dismissible" role="alert">#}
-    {#<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>#}
-    {#{{ flash }}#}
-    {#</div>#}
-    {#{% endfor %}#}
-    {#{% endfor %}#}
-    {#</div>#}
-    {#<div class="col-md-3">#}
-    {#<div class="pull-right">#}
-    {#{{ mopa_bootstrap_menu('AppBundle:Builder:subMenuRight', {'automenu':'navbar', 'currentClass': ''}) }}#}
-    {#</div>#}
-    {#</div>#}
-    {#</div>#}
-    {#{% endblock %}#}
-    {#{% endembed %}#}
-    {#{% endblock %}#}
-    {#{% endif %}#}
-
 {% block container %}
 {% block container_div_start %}<div class="{% block container_class %}container-fluid{% endblock container_class %}">{% endblock container_div_start %}
     {% block header %}
@@ -177,28 +144,29 @@
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% if app.debug %}
-    <script src="{{ asset('js/respond.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-year-calendar.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-year-calendar.es.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-year-calendar.eu.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-table-eu-EU.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-table-export.min.js') }}"></script>
-    <script src="{{ asset('js/jspdf.js') }}"></script>
-    <script src="{{ asset('js/jspdf.plugin.autotable.js') }}"></script>
-    <script src="{{ asset('js/tableExport.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-popover.js') }}"></script>
-    <script src="{{ asset('js/bootbox.min.js') }}"></script>
-    <script src="{{ asset('js/moment-with-locales.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.eu.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.es.min.js') }}"></script>
-    <script src="{{ asset('js/moment-with-locales.js') }}"></script>
+        <script src="{{ asset('js/respond.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.min.js') }}"></script>
+        <script src="{{ asset('js/jquery-ui.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-year-calendar.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-year-calendar.es.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-year-calendar.eu.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-table.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-table-eu-EU.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-table-export.min.js') }}"></script>
+        <script src="{{ asset('js/jspdf.js') }}"></script>
+        <script src="{{ asset('js/jspdf.plugin.autotable.js') }}"></script>
+        <script src="{{ asset('js/tableExport.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-popover.js') }}"></script>
+        <script src="{{ asset('js/bootbox.min.js') }}"></script>
+        <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.eu.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-datepicker.es.min.js') }}"></script>
+        <script src="{{ asset('js/moment-with-locales.min.js') }}"></script>
 
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/calendar-share.js') }}"></script>
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/calendar-share.js') }}"></script>
     {% else %}
     <script src="{{ asset('js/app.min.js') }}"></script>
     {% endif %}

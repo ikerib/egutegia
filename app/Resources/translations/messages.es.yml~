@@ -41,23 +41,68 @@ Abizenak: Apellidos
 Sartu: Entrar
 'Txantiloi berria': 'Nueva Plantilla'
 'Egun bat zenbat ordu dira': 'Cuantas horas son un día'
-'Lan orduak:' : 'Horas trabaho'
-'Norberarentzako:' : 'Asuntos propios'
-'Konpentsatutakoak:' : 'Compensadas'
-'Hasiera': 'Inicio'
-'Txantiloiak': 'Plantillas'
-'Motak': 'Tipos'
-'Egutegia': 'Calendario'
-'Itxi': 'Cerrar'
-'Izena': 'Nombre'
-'Lan orduak guztira': 'Total horas trabajadas'
-'Opor orduak guztira': 'Total horas vacaciones'
-'Opor orduak hartuta': 'Total horas disfrutadas'
-'Ezeztatu': 'Cancelar'
-'Gorde': 'Guardar'
-'Mota': 'Tipo'
-'Orduak': 'Horas'
-'Fetxak': 'Fechas'
-'Oharrak': 'Notas'
-'Fitxategiak': 'Ficheros'
-'Denboralerroa': 'Línea de tiempo'
+'Portzentaia:': 'Porcentage:'
+'Jornada:': 'Jornada:'
+Portzentaia: Porcentage
+Konpentsatuak: Compensadas
+'Ordu konpentsatuak': 'Horas Compensadas'
+'Dokumentua gehitu': 'Añadir Documento'
+'Dokumentu berria': 'Nuevo Documento'
+Dokumentua: Documento
+'Noiz igo da': 'Cuando ha sido subido'
+Fetxa: Fecha
+Minutuak: Minutos
+Faktorea: Factor
+'Orduak konpentsatzera': 'Horas a compensar'
+Saila: Departamento
+Ordena: Orden
+Erakutsi: Mostrar
+Bai: Si
+Ez: 'No'
+'Aukeratu Dokumentua': 'Selecciona Documento'
+msg.sindikalak: 'Sindicales '
+msg.lanaldi: 'Jornada '
+msg.eguneko.lanaldia: 'Jornada diaria :'
+msg.konpentsatzeke: 'A compensar '
+msg.norberarentzako: 'Asuntos propios : '
+msg.opor.orduak: 'Horas vacaciones: '
+msg.urteko.orduak: 'Horas a trabajar año: '
+msg.portzentaia: 'Porcentage: '
+msg.egutegi.berria: 'Nuevo calendario'
+'Sinatzaileen zerrenda': messages
+Jakinarazpenak: __Jakinarazpenak
+Irakurria: __Irakurria
+Erantzunda: __Erantzunda
+Erantzuna: __Erantzuna
+Gaia: __Gaia
+Hasi: __Hasi
+Amaitu: __Amaitu
+'Noiz jasoa': '__Noiz jasoa'
+Oharra: __Oharra
+Eskaeretan: __Eskaeretan
+Erlazioa: __Erlazioa
+'Mota berria': '__Mota berria'
+'Sinatzaileen zerrenda:': '__Sinatzaileen zerrenda:'
+Erabiltzaileak: __Erabiltzaileak
+'Sinatzaileen zerrena aldatu': '__Sinatzaileen zerrena aldatu'
+'Opor edo baimen eskaera berria': '__Opor edo baimen eskaera berria'
+Langilea: __Langilea
+Noiztik: __Noiztik
+'Noiz arte': '__Noiz arte'
+'Guztira zenbat egun edo ordu': '__Guztira zenbat egun edo ordu'
+Deskribapena: __Deskribapena
+'Eskaera data': '__Eskaera data'
+'Lortu inprimatika': '__Lortu inprimatika'
+'Eskaeren zerrenda': '__Eskaeren zerrenda'
+Noiz: __Noiz
+Sinatzaileak: __Sinatzaileak
+Orden: __Orden
+'Firma zerrenda': '__Firma zerrenda'
+Nork: __Nork
+'Hirurtekoak:': '__Hirurtekoak:'
+'Norberarentzako orduak zatituta (max)': '__Norberarentzako orduak zatituta (max)'
+'Urterako ordu konpentsatuak': '__Urterako ordu konpentsatuak'
+msg.norberarentzakozati: __msg.norberarentzakozati
+'Gutxieneko zerbitzuak:': '__Gutxieneko zerbitzuak:'
+'Gutxieneko zerbitzuaen zerrenda': '__Gutxieneko zerbitzuaen zerrenda'
+'Zerrena aldatu': '__Zerrena aldatu'

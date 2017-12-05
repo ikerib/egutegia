@@ -1,4 +1,5 @@
 /**
+ * egutegia4
  * Created by iibarguren on 3/13/17.
  */
 
@@ -361,10 +362,10 @@ $(function () {
     enableContextMenu: true,
     enableRangeSelection: true,
     contextMenuItems: [
-      {
-        text: 'Eguneratu',
-        click: editEvent
-      },
+      // {
+      //   text: 'Eguneratu',
+      //   click: editEvent
+      // },
       {
         text: 'Ezabatu',
         click: deleteEvent

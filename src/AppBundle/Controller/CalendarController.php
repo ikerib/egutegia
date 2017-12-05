@@ -59,7 +59,8 @@ class CalendarController extends Controller
      * @Route("/new/{username}", name="admin_calendar_new")
      * @Method({"GET", "POST"})
      *
-     * @param mixed $username
+     * @param Request $request
+     * @param mixed   $username
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
@@ -263,10 +264,10 @@ class CalendarController extends Controller
             }
         }
 
-        //$selfHoursPartial = round((float)$calendar->getHoursSelfHalf() - $selfHoursPartial,2);
-        $selfHoursPartial = (float)$calendar->getHoursSelfHalf() ;
-        //$selfHoursComplete = round((float)$calendar->getHoursSelf() - (float) $selfHoursPartial,2);
-        $selfHoursComplete = (float)$calendar->getHoursSelf();
+//        $selfHoursPartial = round($calendar->getHoursSelfHalf() - $selfHoursPartial,2);
+        $selfHoursPartial = round($calendar->getHoursSelfHalf(),2);
+//        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
+        $selfHoursComplete = round( $calendar->getHoursSelf() ,2);
 
         return $this->render(
             'calendar/edit.html.twig',

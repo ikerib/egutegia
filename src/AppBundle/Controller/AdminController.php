@@ -61,6 +61,9 @@ class AdminController extends Controller
             );
             $u['calendar'] = $calendar;
 
+            $egutegiguztiak = $em->getRepository( 'AppBundle:Calendar' )->findAllCalendarsByUsername( $user->getUsername() );
+            $u[ 'egutegiak' ] = $egutegiguztiak;
+
             /** @var $usernotes User */
             $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
 

@@ -9,7 +9,10 @@
 
 namespace AppBundle\Security\Authentication;
 
+use AppBundle\Entity\Log;
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FR3D\LdapBundle\Ldap\LdapManagerInterface;
@@ -24,6 +27,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class LdapAuthenticationProvider extends BaseProvider
 {
+
     /**
      * @var UserProviderInterface
      */
@@ -39,15 +43,18 @@ class LdapAuthenticationProvider extends BaseProvider
      */
     private $userManager;
 
+    private $em;
+
     /**
      * Constructor.
      *
-     * @param UserCheckerInterface  $userChecker                An UserCheckerInterface interface
-     * @param string                $providerKey                A provider key
-     * @param UserProviderInterface $userProvider               An UserProviderInterface interface
-     * @param LdapManagerInterface  $ldapManager                An LdapProviderInterface interface
-     * @param UserManagerInterface  $userManager
-     * @param bool                  $hideUserNotFoundExceptions Whether to hide user not found exception or not
+     * @param UserCheckerInterface $userChecker An UserCheckerInterface interface
+     * @param string $providerKey A provider key
+     * @param UserProviderInterface $userProvider An UserProviderInterface interface
+     * @param LdapManagerInterface $ldapManager An LdapProviderInterface interface
+     * @param UserManagerInterface $userManager
+     * @param bool $hideUserNotFoundExceptions Whether to hide user not found exception or not
+     * @param EntityManagerInterface $em
      */
     public function __construct(
         UserCheckerInterface $userChecker,
@@ -55,13 +62,15 @@ class LdapAuthenticationProvider extends BaseProvider
         UserProviderInterface $userProvider,
         LdapManagerInterface $ldapManager,
         UserManagerInterface $userManager,
-        $hideUserNotFoundExceptions = true
+        $hideUserNotFoundExceptions = true,
+        EntityManagerInterface $em
     ) {
         parent::__construct($userChecker, $providerKey, $userProvider, $ldapManager, $hideUserNotFoundExceptions);
 
         $this->userProvider = $userProvider;
         $this->ldapManager = $ldapManager;
         $this->userManager = $userManager;
+        $this->em = $em;
     }
 
     /**
@@ -107,6 +116,14 @@ class LdapAuthenticationProvider extends BaseProvider
                     }
                 }
             }
+
+            $log = new Log();
+            $log->setName('Login');
+            $log->setUser($user);
+            $log->setDescription($user->getUsername());
+
+            $this->em->persist($log);
+            $this->em->flush();
 
             return $user;
         } catch (UsernameNotFoundException $notFound) {

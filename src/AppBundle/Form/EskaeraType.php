@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,12 +19,12 @@ class EskaeraType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('type')
             ->add('type', EntityType::class, [
                     'label' => 'Mota',
                     'required' => true,
                     'expanded' => true,
                     'class' => 'AppBundle\Entity\Type',
+                    'attr' => array('class' =>'type_label'),
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')
                             ->where('u.erakutsi_eskaera=true')
@@ -31,8 +32,13 @@ class EskaeraType extends AbstractType
                     },
                     'choice_label' => function ($template) {
                         /* @var  $template \AppBundle\Entity\Template */
-                        return $template->getName();
-                    }, ]
+                        return trim($template->getName());
+                    },
+                    'choice_attr' => function($val, $key, $index) {
+                        // adds a class like attending_yes, attending_no, etc
+                        return ['class' => 'attending_'.strtolower($key)];
+                    },
+                    ]
             )
             ->add('hasi', DateType::class, [
                 'widget' => 'single_text',
@@ -44,7 +50,10 @@ class EskaeraType extends AbstractType
                 'html5' => false,
                 'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
+            ->add('egunak')
             ->add('orduak')
+            ->add('total',null, array('disabled'=>true))
+            ->add('oharra')
             ->add('noiz', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
@@ -54,6 +63,22 @@ class EskaeraType extends AbstractType
 
             ->add('user')
             ->add('calendar')
+            ->add('sinatzaileak', EntityType::class, [
+                    'label' => 'Sinatzaile zerrenda',
+                    'placeholder'=> 'Aukeratu bat...',
+                    'required' => false,
+                    'class' => 'AppBundle\Entity\Sinatzaileak',
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->orderBy('u.name', 'ASC');
+                    },
+                    'choice_label' => function ($template) {
+                        /* @var  $template \AppBundle\Entity\Template */
+                        return trim($template->getName());
+                    }
+                    ]
+            )
+
         ;
     }
     
