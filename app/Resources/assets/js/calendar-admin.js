@@ -350,7 +350,7 @@ $(function () {
   var currentYear = $( "#calendarYear" ).val();
   var minYear = new Date( currentYear, 0, 1 );
   var maxYear = new Date( currentYear + 1, 0, 7 );
-  
+
 
   $('#calendar').calendar({
     // style: 'background',

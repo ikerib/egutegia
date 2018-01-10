@@ -78,14 +78,12 @@
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
                 <td>
                     {% if user.egutegiak is defined %}
-                        {% if user.egutegiak | length > 1 %}
-                            <select name="year" class="cmbYear">
-                                <option value="-1">Aukeratu bat</option>
-                                {% for e in user.egutegiak %}
-                                    <option value="{{ url('admin_calendar_edit', { 'id': e.id }) }}">{{ e.year }}</option>
-                                {% endfor %}
-                            </select>
-                        {% endif %}
+                    <select name="year" class="cmbYear">
+                        <option value="-1">Aukeratu bat</option>
+                        {% for e in user.egutegiak %}
+                            <option value="{{ url('admin_calendar_edit', { 'id': e.id }) }}">{{ e.year }}</option>
+                        {% endfor %}
+                    </select>
                     {% endif %}
                 </td>
                 <td>
