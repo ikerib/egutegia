@@ -322,10 +322,9 @@
             } );
 
 
-            $( ".cmbYear" ).change( function () {
-                var url = $( this ).val();
-                window.location = url;
-            } );
+            $( document ).on( "change", ".cmbYear", function () {
+                window.location = $( this ).val();
+            });
 
             $( document ).on( "change", "#appbundle_calendar_percentYear", function () {
                 birkalkulatu();
