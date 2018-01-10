@@ -28,7 +28,7 @@
         "fr3d/ldap-bundle": "^3.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "friendsofsymfony/rest-bundle": "^2.1",
-        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "friendsofsymfony/user-bundle": "~2.0",
         "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^1.2",
         "knplabs/knp-menu-bundle": "dev-master",

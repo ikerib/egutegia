@@ -164,6 +164,9 @@ fos_user:
     from_email:
         address: informatika@pasaia.net
         sender_name: "Iker Ibarguren"
+    registration:
+            confirmation:
+                enabled: false
 
 fr3d_ldap:
    driver:
