@@ -63,6 +63,8 @@ class CalendarController extends Controller
      * @param mixed   $username
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \LdapTools\Exception\EmptyResultException
+     * @throws \LdapTools\Exception\MultiResultException
      */
     public function newAction(Request $request, $username = '')
     {

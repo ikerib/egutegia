@@ -9,6 +9,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Calendar;
+use AppBundle\Entity\Eskaera;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\Expose;
@@ -40,7 +42,7 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(name="filenamepath", type="string", length=255)
+     * @ORM\Column(name="filenamepath", type="string", length=255, nullable=true)
      * @Expose()
      */
     private $filenamepath;
@@ -61,6 +63,13 @@ class Document
      * @var File
      */
     private $uploadfile;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var integer
+     */
+    private $imageSize;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -126,7 +135,7 @@ class Document
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $uploadfile
      *
-     * @return File
+     * @return Document
      */
     public function setUploadfile(File $uploadfile = null)
     {
@@ -141,6 +150,16 @@ class Document
         return $this;
     }
 
+    public function setImageSize(int $imageSize)
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize()
+    {
+        return $this->imageSize;
+    }
+
     /**
      * @return File|null
      */
@@ -152,7 +171,7 @@ class Document
     /**
      * @param string $filename
      *
-     * @return File
+     * @return Document
      */
     public function setFilename($filename)
     {
@@ -234,11 +253,11 @@ class Document
     /**
      * Set calendar.
      *
-     * @param \AppBundle\Entity\Calendar $calendar
+     * @param Calendar $calendar
      *
      * @return Document
      */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    public function setCalendar( Calendar $calendar = null)
     {
         $this->calendar = $calendar;
 
@@ -248,7 +267,7 @@ class Document
     /**
      * Get calendar.
      *
-     * @return \AppBundle\Entity\Calendar
+     * @return Calendar
      */
     public function getCalendar()
     {
@@ -306,11 +325,11 @@ class Document
     /**
      * Set eskaera
      *
-     * @param \AppBundle\Entity\Eskaera $eskaera
+     * @param Eskaera $eskaera
      *
      * @return Document
      */
-    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    public function setEskaera( Eskaera $eskaera = null)
     {
         $this->eskaera = $eskaera;
 
@@ -320,7 +339,7 @@ class Document
     /**
      * Get eskaera
      *
-     * @return \AppBundle\Entity\Eskaera
+     * @return Eskaera
      */
     public function getEskaera()
     {

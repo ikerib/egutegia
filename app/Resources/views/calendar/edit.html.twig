@@ -543,7 +543,9 @@
                             </thead>
                             <tbody>
                             {% for f in calendar.documents if calendar.documents %}
-                                {% if f.egutegian %}
+
+                                {#{% if f.egutegian or f.egutegian is null %}#}
+                                    {#{{ dump(f) }}#}
                                     <tr>
                                         {% if f.filenamepath is defined %}
                                             <td>
@@ -582,7 +584,7 @@
                                             </ul>
                                         </td>
                                     </tr>
-                                {% endif %}
+                                {#{% endif %}#}
                             {% endfor %}
                             </tbody>
 
@@ -641,7 +643,7 @@
     {% endif %}
     <input type="hidden" id="templateid" value="{{ templateid }}">
     <input type="hidden" id="calendarid" value="{{ calendar.id }}">
-    <input type="text" id="calendarYear" value="{{ calendar.year }}">
+    <input type="hidden" id="calendarYear" value="{{ calendar.year }}">
 
 {% endblock %}
 
