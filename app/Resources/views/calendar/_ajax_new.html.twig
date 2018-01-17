@@ -72,8 +72,16 @@
             </div>
         </div>
 
-        <hr>
 
+        <div class="row">
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <label>{{ lastCalendar.year }}</label>
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="form-group">
@@ -83,8 +91,11 @@
                         {{ 'Urteko lan orduak:' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lastHoursYear" value="{{ lastCalendar.hoursYear }}" disabled>
                 </div>
             </div>
         </div>
@@ -97,8 +108,11 @@
                         {{ 'Urteko opor orduak:' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lasthoursFree" value="{{ lastCalendar.hoursFree }}" disabled>
                 </div>
             </div>
         </div>
@@ -111,8 +125,11 @@
                         {{ 'Norberarentzako orduak' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lasthoursSelf" value="{{ lastCalendar.hoursSelf }}" disabled>
                 </div>
             </div>
         </div>
@@ -124,8 +141,11 @@
                         {{ 'Norberarentzako orduak zatituta (max)' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursSelfHalf, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lasthoursSelfHalf" value="{{ lastCalendar.hoursSelfHalf }}" disabled>
                 </div>
             </div>
         </div>
@@ -138,8 +158,11 @@
                         {{ 'Urterako ordu konpentsatuak' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lasthoursCompensed" value="{{ lastCalendar.hoursCompensed }}" disabled>
                 </div>
             </div>
         </div>
@@ -152,8 +175,11 @@
                         {{ 'Jornada:' | trans }}
                     </label>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-4">
                     {{ form_widget(form.hoursDay, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" id="lasthoursDay" value="{{ lastCalendar.hoursDay }}" disabled>
                 </div>
             </div>
         </div>

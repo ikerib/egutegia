@@ -83,6 +83,10 @@ class CalendarController extends Controller
         }
         $year = ( new DateTime() )->format('Y');
         $calendar->setName($username.' - '.$year);
+
+        $lastYear = $year-1;
+        $lastCalendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($username,$lastYear);
+
         $form = $this->createForm(
             CalendarType::class,
             $calendar,
@@ -152,6 +156,7 @@ class CalendarController extends Controller
                 [
                     'calendar' => $calendar,
                     'username' => $username,
+                    'lastCalendar' => $lastCalendar[0],
                     'form' => $form->createView(),
                 ]
             );
