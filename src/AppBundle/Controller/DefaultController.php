@@ -102,17 +102,20 @@ class DefaultController extends Controller
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
         if ((!$calendar) || (count($calendar) > 1)) {
-            throw new EntityNotFoundException('Ez da egutegirik topatu.');
+            return $this->render(
+                'default/no_calendar_error.html.twig',
+                [
+                    'user' => $user
+                ]
+            );
         }
 
-        //$documents = $calendar->getDocuments();
 
         return $this->render(
             'default/fitxategiak.html.twig',
             [
                 'user' => $user,
-                'calendar' => $calendar[0],
-                //'documents' => $documents
+                'calendar' => $calendar[0]
             ]
         );
     }

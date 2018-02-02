@@ -358,7 +358,6 @@ $(function () {
     // minDate: new Date('2017-01-01'),
     minDate: minYear,
     maxDate: maxYear,
-    disabledWeekDays: [6, 0],
     allowOverlap: true,
     enableContextMenu: true,
     enableRangeSelection: true,

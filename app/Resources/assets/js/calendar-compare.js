@@ -10,7 +10,6 @@ $(function () {
     // style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
-    disabledWeekDays: [6, 0],
     allowOverlap: true,
     enableContextMenu: false,
     enableRangeSelection: false,
