@@ -70,4 +70,23 @@ class EventRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findKonpentsatuak()
+    {
+        $sql = "SELECT sum(`event`.hours) as suma, calendar.id, user.id, user.username, user.department, user.lanpostua, calendar.year" .
+            " FROM `event` INNER JOIN calendar ON calendar.id = event.calendar_id" .
+            " INNER JOIN `type` ON type.id = `event`.`type_id`" .
+            " INNER JOIN `user` on user.id = calendar.user_id" .
+            " WHERE type_id=:id and calendar.year = :year" .
+            " GROUP BY calendar.id";
+
+        $params = array(
+            'id' => 16,
+            'year' => 2017
+        );
+
+        return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
+
+    }
+
 }

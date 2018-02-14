@@ -70,7 +70,7 @@ $(function () {
     $('#event-modal').modal('hide')
   }
 
-  var currentYear = new Date().getFullYear()
+    var currentYear = new Date().getFullYear();
 
   $('#admincalendar').calendar({
     style: 'background',

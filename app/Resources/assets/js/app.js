@@ -81,7 +81,7 @@ $(document).ready(function () {
     $('.cmbFetxaKalc').change(function () {
         $('#appbundle_eskaera_total').val(0);
         const txtEgunak = $('#appbundle_eskaera_egunak').val();
-        let d;
+        var d;
         if ( txtEgunak === "0" ) {
             d=0;
             // return
@@ -98,7 +98,7 @@ $(document).ready(function () {
         const egunOrduak = $('#txtJornada').val();
 
         $('#appbundle_eskaera_egunak').val(d.toFixed(2));
-        let tmp = $('#appbundle_eskaera_egunak').val() * egunOrduak;
+        var tmp = $('#appbundle_eskaera_egunak').val() * egunOrduak;
 
         tmp = parseFloat(tmp) + parseFloat(orduak);
 

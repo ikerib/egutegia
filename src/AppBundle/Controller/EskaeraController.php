@@ -13,6 +13,7 @@ use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\Notification;
 use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\User;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -152,6 +153,7 @@ class EskaeraController extends Controller
      * @param         $q
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws EntityNotFoundException
      */
     public function newAction( Request $request, $q )
     {
@@ -168,6 +170,9 @@ class EskaeraController extends Controller
             date( 'Y' )
         );
 
+        if (!$calendar){
+            throw new EntityNotFoundException();
+        }
         $calendar = $calendar[ 0 ];
 
         $eskaera = new Eskaera();

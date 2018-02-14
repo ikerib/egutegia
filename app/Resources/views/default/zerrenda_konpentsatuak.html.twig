@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block content_div_start %}{% endblock %}
+{% block content_div_end %}{% endblock %}
+{% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
+
+{% block content_row %}
+
+    <div class="row">
+        <div class="col-md-1">
+            <select name="urtea" id="cmbUrtea">
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+            </select>
+        </div>
+    </div>
+
+    <table class="table table-hover table-bordered">
+        <tr>
+            <th>Langilea</th>
+            <th>Saila</th>
+            <th>Lanpostua</th>
+            <th>Orduak Guztira</th>
+        </tr>
+        {% for k in konpentsatuak %}
+            <tr>
+                <td>{{ k.username }}</td>
+                <td>{{ k.department }}</td>
+                <td>{{ k.lanpostua }}</td>
+                <td>{{ k.suma }}</td>
+            </tr>
+
+
+        {% endfor %}
+    </table>
+
+
+
+{% endblock %}

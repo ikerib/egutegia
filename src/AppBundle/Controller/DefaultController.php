@@ -28,14 +28,31 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/zerrenda/konpentsauak", name="zerrenda_konpentsatuak")
+     */
+    public function zerrendakonpentsatuakAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak();
+
+
+        return $this->render(
+            'default/zerrenda_konpentsatuak.html.twig',
+            [
+                'konpentsatuak' => $konpentsatuak
+            ]
+        );
+    }
+
+    /**
      * @Route("/mycalendar", name="user_homepage")
      */
     public function userhomepageAction()
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
-            throw $this->createAccessDeniedException('Aldeintzak!');
+        if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_UDALTZAINA' ) ) {
+            throw $this->createAccessDeniedException( 'Aldeintzak!' );
         }
 
 
@@ -43,16 +60,17 @@ class DefaultController extends Controller
         /** @var $user User */
         $user = $this->getUser();
 
-        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+        $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $user->getUsername(), date( 'Y' ) );
 
-        if ((!$calendar) || (count($calendar) > 1)) {
-            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-                return $this->redirectToRoute('dashboard');
+        if ( ( !$calendar ) || ( count( $calendar ) > 1 ) ) {
+            if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_ADMIN' ) ) {
+                return $this->redirectToRoute( 'dashboard' );
             }
+
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'user' => $user
+                    'user' => $user,
                 ]
             );
         }
@@ -65,12 +83,12 @@ class DefaultController extends Controller
         $selfHoursPartial = 0;
         $selfHoursComplete = 0;
 
-        foreach ($selfHours as $s) {
+        foreach ( $selfHours as $s ) {
             /** @var Event $s */
-            if ( $s->getHours() < $calendar->getHoursDay()) {
+            if ( $s->getHours() < $calendar->getHoursDay() ) {
                 $selfHoursPartial += (float)$s->getHours();
             } else {
-                $selfHoursComplete +=(float)$s->getHours();
+                $selfHoursComplete += (float)$s->getHours();
             }
         }
 
@@ -81,10 +99,10 @@ class DefaultController extends Controller
         return $this->render(
             'default/user_homepage.html.twig',
             [
-                'user' => $user,
-                'calendar' => $calendar,
-                'selfHoursPartial'=> $selfHoursPartial,
-                'selfHoursComplete'=>$selfHoursComplete
+                'user'              => $user,
+                'calendar'          => $calendar,
+                'selfHoursPartial'  => $selfHoursPartial,
+                'selfHoursComplete' => $selfHoursComplete,
             ]
         );
     }
@@ -94,18 +112,18 @@ class DefaultController extends Controller
      */
     public function userdocumetsAction()
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
 
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
-        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+        $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $user->getUsername(), date( 'Y' ) );
 
-        if ((!$calendar) || (count($calendar) > 1)) {
+        if ( ( !$calendar ) || ( count( $calendar ) > 1 ) ) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'user' => $user
+                    'user' => $user,
                 ]
             );
         }
@@ -114,8 +132,8 @@ class DefaultController extends Controller
         return $this->render(
             'default/fitxategiak.html.twig',
             [
-                'user' => $user,
-                'calendar' => $calendar[0]
+                'user'     => $user,
+                'calendar' => $calendar[ 0 ],
             ]
         );
     }

@@ -50,7 +50,7 @@ class Document
     /**
      * @var string
      *
-     * @ORM\Column(name="filename", type="string", length=255)
+     * @ORM\Column(name="filename", type="string", length=255, nullable=true)
      * @Expose()
      */
     private $filename;
@@ -65,7 +65,7 @@ class Document
     private $uploadfile;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      *
      * @var integer
      */

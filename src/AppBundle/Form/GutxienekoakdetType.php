@@ -23,7 +23,7 @@ class GutxienekoakdetType extends AbstractType
                 'placeholder'=>'Aukeratu bat...',
                 'class' => 'AppBundle\Entity\User',
                 'attr' => array(
-                    'class'=>'select2'
+                    'class'=>'nireselect2'
                 ),
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')

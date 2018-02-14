@@ -59,22 +59,26 @@
 {% endblock %}
 {% block foot_script %}
     {{ parent() }}
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/eu.js') }}"></script>
     <script>
         $(document).ready(function () {
 
-            $('#btnBerria').on('click', function () {
-                $('#myModal').modal();
+            $('.nireselect2').select2({width: '80%'});
+
+            $("#btnBerria").on("click", function () {
+                $("#myModal").modal();
             });
 
-            $('#btnNewZerrendaUser').on('click', function () {
-                var u = $('#appbundle_gutxienekoakdet_user').val();
-                if (u.length > 0)
-                    $('#frmNewZerrendaUser').submit();
+            $("#btnNewZerrendaUser").on("click", function () {
+                var u = $("#appbundle_gutxienekoakdet_user").val();
+                if ( u.length > 0 )
+                    $("#frmNewZerrendaUser").submit();
                 else
-                    bootbox.alert("Langile bat aukeratu behar duzu.")
+                    bootbox.alert("Langile bat aukeratu behar duzu.");
             });
 
-            $('.btnRemoveRow').on('click', function () {
+            $(".btnRemoveRow").on("click", function () {
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",
@@ -87,15 +91,15 @@
                             label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
                         }
                     },
-                    callback: function (result) {
-                        if (result === true) {
-                            $(that).closest('form').submit();
+                    callback: function ( result ) {
+                        if ( result === true ) {
+                            $(that).closest("form").submit();
                         }
                     }
                 });
             });
 
-        })
+        });
 
     </script>
 {% endblock %}
