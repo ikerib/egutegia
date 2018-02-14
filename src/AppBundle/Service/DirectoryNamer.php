@@ -27,10 +27,10 @@ class DirectoryNamer implements DirectoryNamerInterface
      *
      * @return string
      */
-    public function directoryName($document, PropertyMapping $mapping)
+    public function directoryName($object, PropertyMapping $mapping):string
     {
         /** @var Calendar $calendar */
-        $calendar = $document->getCalendar();
+        $calendar = $object->getCalendar();
 
         /** @var User $user */
         $user = $calendar->getUser();
