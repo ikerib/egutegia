@@ -32,19 +32,23 @@
         "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0",
 
-        "egeloen/ckeditor-bundle": "^5.0",
+        "stof/doctrine-extensions-bundle": "^1.2",
+
         "fr3d/ldap-bundle": "^3.0",
+        "ldaptools/ldaptools-bundle": "^0.9.0",
+
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "friendsofsymfony/rest-bundle": "^2.1",
         "friendsofsymfony/user-bundle": "~2.0",
-        "jms/serializer-bundle": "^2.3",
-        "knplabs/knp-menu-bundle": "^2.0",
-        "knplabs/knp-snappy-bundle": "^1.5",
-        "ldaptools/ldaptools-bundle": "^0.9.0",
-        "mopa/bootstrap-bundle": "dev-master",
         "nelmio/api-doc-bundle": "^2.13",
         "nelmio/cors-bundle": "^1.5",
-        "stof/doctrine-extensions-bundle": "^1.2",
+        "jms/serializer-bundle": "^2.3",
+
+        "knplabs/knp-menu-bundle": "^2.0",
+        "knplabs/knp-snappy-bundle": "^1.5",
+        "mopa/bootstrap-bundle": "dev-master",
+
+        "egeloen/ckeditor-bundle": "^5.0",
         "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {

@@ -148,11 +148,11 @@ mopa_bootstrap:
 ldap_tools:
     domains:
         pasaia:
-            domain_name: %ldap_domain%
-            username: %ldap_username%
-            password: %ldap_password%
-            base_dn: %ldap_base_dn%
-            servers: %ldap_server%
+            domain_name: '%ldap_domain%'
+            username: '%ldap_username%'
+            password: '%ldap_password%'
+            base_dn: '%ldap_base_dn%'
+            servers: '%ldap_server%'
 
 
 
@@ -169,9 +169,9 @@ fos_user:
 
 fr3d_ldap:
    driver:
-      host: %ldap_domain%
-      username: %ldap_username%
-      password: %ldap_password%
+      host: '%ldap_domain%'
+      username: '%ldap_username%'
+      password: '%ldap_password%'
       useSsl:   false
       accountDomainName: donibane.pasaia.net
       accountDomainNameShort: pasaia
