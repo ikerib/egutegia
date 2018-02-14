@@ -22,7 +22,7 @@ class DirectoryNamer implements DirectoryNamerInterface
      *
      * Directory name is formed based on user ID and media type
      *
-     * @param Document        $document
+     * @param                 $object
      * @param PropertyMapping $mapping
      *
      * @return string

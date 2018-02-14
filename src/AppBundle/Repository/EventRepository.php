@@ -81,8 +81,8 @@ class EventRepository extends EntityRepository
             " GROUP BY calendar.id";
 
         $params = array(
-            'id' => 16,
-            'year' => 2017
+            'id' => 6,
+            'year' => 2018
         );
 
         return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "49fc0c2f343b386a8b3fa47738c2d1e9",
+    "content-hash": "03688784131ea8bf94d14ec56b25d438",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1892,7 +1892,7 @@
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "dev-master",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
@@ -5913,7 +5913,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "knplabs/knp-menu-bundle": 20,
         "mopa/bootstrap-bundle": 20
     },
     "prefer-stable": false,

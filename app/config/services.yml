@@ -3,6 +3,9 @@ parameters:
     fr3d_ldap.security.authentication.provider.class: AppBundle\Security\Authentication\LdapAuthenticationProvider
 
 services:
+
+  _defaults: { public: true }
+
   fr3d_ldap.security.authentication.provider:
       class: "%fr3d_ldap.security.authentication.provider.class%"
       arguments:

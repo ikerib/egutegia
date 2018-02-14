@@ -100,9 +100,17 @@ Orden: __Orden
 'Firma zerrenda': '__Firma zerrenda'
 Nork: __Nork
 'Hirurtekoak:': '__Hirurtekoak:'
-'Norberarentzako orduak zatituta (max)': '__Norberarentzako orduak zatituta (max)'
-'Urterako ordu konpentsatuak': '__Urterako ordu konpentsatuak'
+'Norberarentzako orduak zatituta (max)': 'Norberarentzako orduak zatituta (max)'
+'Urterako ordu konpentsatuak': 'Urterako ordu konpentsatuak'
 msg.norberarentzakozati: __msg.norberarentzakozati
-'Gutxieneko zerbitzuak:': '__Gutxieneko zerbitzuak:'
-'Gutxieneko zerbitzuaen zerrenda': '__Gutxieneko zerbitzuaen zerrenda'
-'Zerrena aldatu': '__Zerrena aldatu'
+'Gutxieneko zerbitzuak:': 'Gutxieneko zerbitzuak:'
+'Gutxieneko zerbitzuaen zerrenda': 'Gutxieneko zerbitzuaen zerrenda'
+'Zerrena aldatu': 'Zerrena aldatu'
+'Nº Jakinarazpena': 'Nº Jakinarazpena'
+'Nº Eskaera': 'Nº Eskaera'
+'Konexioen zerrenda': 'Konexioen zerrenda'
+Nor: __Nor
+'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
+'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
+'Guztira zenbat <strong>ordu</strong>': 'Guztira zenbat <strong>ordu</strong>'
+'Guztira zenbat <strong>egun</strong>': 'Guztira zenbat <strong>egun</strong>'
