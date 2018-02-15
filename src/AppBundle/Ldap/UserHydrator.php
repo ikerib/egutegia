@@ -49,17 +49,18 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_ADMIN';
                     $user->addRole('ROLE_ADMIN');
                 }
+                
                 if ($sp[0] === 'APP-Web_Egutegia-Bideratzaile'){
                     $rol = 'ROLE_BIDERATZAILEA';
                     $user->addRole($rol);
                     $rol = 'ROLE_ADMIN';
                     $user->addRole($rol);
                 }
-                if ($sp[0] === 'InformatikaSaila'){
+                if ($sp[0] === 'ROL-Antolakuntza_Informatika'){
                     $rol = 'ROLE_SUPER_ADMIN';
                     $user->addRole($rol);
                 }
-                if ($sp[0] === 'Saila-Udaltzaingoa'){
+                if ($sp[0] === 'Udaltzaingoa'){
                     $rol = 'ROLE_UDALTZAINA';
                     $user->addRole($rol);
                 }

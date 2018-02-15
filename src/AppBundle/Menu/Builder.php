@@ -59,6 +59,8 @@ class Builder implements ContainerAwareInterface
             }
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider2', [ 'divider' => true ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( ' Azken konexioak', [ 'icon' => 'time', 'route' => 'admin_log_index' ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider3', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( ' Zerrendak', [ 'icon' => 'list', 'route' => 'zerrenda_konpentsatuak' ] );
         }
 
 
