@@ -9,6 +9,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -49,5 +50,31 @@ class UserRepository extends EntityRepository
             ->setParameter('roles', '%"'.$role.'"%');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findSailGuztiak()
+    {
+        $sql = /** @lang text */
+            "SELECT DISTINCT(department) FROM `user` WHERE department IS NOT NULL ORDER BY department ASC ";
+        $params = array();
+
+        try {
+            return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
+        } catch ( DBALException $e ) {
+            throw new $e;
+        }
+    }
+
+    public function findLanpostuGuztiak()
+    {
+        $sql = /** @lang text */
+            "SELECT DISTINCT(lanpostua) FROM `user` WHERE lanpostua IS NOT NULL ORDER BY lanpostua";
+        $params = array();
+
+        try {
+            return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
+        } catch ( DBALException $e ) {
+            throw new $e;
+        }
     }
 }

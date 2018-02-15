@@ -55,4 +55,17 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
         return $query->getResult();
     }
+
+    public function getEgutegiUrteak()
+    {
+        $sql = /** @lang text */
+            "SELECT DISTINCT(`year`) FROM `calendar`";
+        $params = array();
+
+        try {
+            return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
+        } catch ( DBALException $e ) {
+            throw new $e;
+        }
+    }
 }

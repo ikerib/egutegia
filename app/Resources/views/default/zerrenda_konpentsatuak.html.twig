@@ -2,7 +2,7 @@
 
 {% block content_div_start %}{% endblock %}
 {% block content_div_end %}{% endblock %}
-{% block headline %}{{ 'Langileen zerrenda' | trans }} {% endblock %}
+{% block headline %}{{ 'Zerrendak' | trans }} {% endblock %}
 
 {% block content_row %}
 
@@ -15,7 +15,50 @@
                 <div class="well">
                     <div class="row">
                         <form action="{{ path('zerrenda_konpentsatuak') }}" class="form-inline" method="post">
-                            <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="cmbMota">Mota</label><br>
+                                    <select name="mota" id="cmbMota" class="form-control">
+                                        <option value="0">Aukeratu bat</option>
+                                        {% for m in motak %}
+                                            <option value="{{ m.id }}">{{ m.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cmbSaila">Saila</label><br>
+                                    <select name="saila" id="cmbSaila" class="form-control">
+                                        <option value="0">Aukeratu bat...</option>
+                                        {% for s in sailak %}
+                                            <option value="{{ s.department }}">{{ s.department }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label for="cmbLanpostu">Lanpostuak</label><br>
+                                    <select name="lanpostua" id="cmbLanpostu" class="form-control">
+                                        <option value="0">Aukeratu bat...</option>
+                                        {% for l in lanpostuak %}
+                                            <option value="{{ l.lanpostua }}">{{ l.lanpostua|length > 50 ? l.lanpostua|slice(0, 50) ~ '...' : l.lanpostua  }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">&nbsp;</div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="cmbUrtea">Urtea</label><br>
+                                    <select name="urtea" id="cmbUrtea" class="form-control">
+                                        <option value="{{ "now"|date('Y') }} ">{{ "now"|date('Y') }} </option>
+                                        {% for u in urteak %}
+                                            <option value="{{ u.year }}">{{ u.year }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
                                 <div class="col-md-3" id="divDateRange">
                                     <label>Datak</label>
                                     <div class="input-daterange input-group" id="filterDatepicker">
@@ -24,47 +67,75 @@
                                         <input type="text" class="input-sm form-control" name="data_amaitu" />
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <label for="cmbEgoera">Egoera</label><br>
-                                    <select name="egoera" id="cmbEgoera" class="form-control">
-                                        <option value="0">Irekita</option>
-                                        <option value="1">Itxita</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6"></div>
-                                <div class="col-md-1">
-                                    <label for=""></label>
+
+
+
+                                <div class="col-md-3">
+                                    <label for="">&nbsp;</label>
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-search fa-lg"></i>
                                     </button>
                                 </div>
                             </div>
+
+
+
+
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-12">
+            <table data-toggle="table"
+                   data-classes="table table-hover table-condensed"
+                   data-striped="true"
 
+                   data-pagination="true"
+                   data-page-size="25"
+                   data-search="true"
+                    {#data-height="300"#}
 
-    <table class="table table-hover table-bordered">
-        <tr>
-            <th>Langilea</th>
-            <th>Saila</th>
-            <th>Lanpostua</th>
-            <th>Orduak Guztira</th>
-        </tr>
-        {% for k in konpentsatuak %}
-            <tr>
-                <td>{{ k.username }}</td>
-                <td>{{ k.department }}</td>
-                <td>{{ k.lanpostua }}</td>
-                <td>{{ k.suma }}</td>
-            </tr>
+                   data-sort-name="name"
+                   data-sort-order="asc"
 
+                   data-icon-size="sm"
+                   data-show-toggle="true"
+                   data-show-columns="true"
 
-        {% endfor %}
-    </table>
+                   data-toolbar="#toolbar"
+                   data-show-export="true"
+                   data-export-types="['csv','excel']"
+                   data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "egutegia"
+               }'>
+
+                <thead>
+                <tr>
+                    <th data-halign="center" data-align="left" data-field="username" data-sortable="true">Langilea</th>
+                    <th data-halign="center" data-align="right" data-field="department" data-sortable="true">Saila</th>
+                    <th data-halign="center" data-align="right" data-field="lanpostua" data-sortable="true">Lanpostua</th>
+                    <th data-halign="center" data-align="right" data-field="suma" data-sortable="true">Orduak Guztira</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for k in konpentsatuak %}
+                    <tr>
+                        <td>{{ k.username }}</td>
+                        <td>{{ k.department }}</td>
+                        <td>{{ k.lanpostua }}</td>
+                        <td>{{ k.suma }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 
 

@@ -71,21 +71,53 @@ class EventRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findKonpentsatuak()
+    public function findKonpentsatuak( $hasi=null, $fin=null, $urtea=null, $saila=null, $lanpostua=null, $mota = null)
     {
-        $sql = "SELECT sum(`event`.hours) as suma, calendar.id, user.id, user.username, user.department, user.lanpostua, calendar.year" .
-            " FROM `event` INNER JOIN calendar ON calendar.id = event.calendar_id" .
-            " INNER JOIN `type` ON type.id = `event`.`type_id`" .
-            " INNER JOIN `user` on user.id = calendar.user_id" .
-            " WHERE type_id=:id and calendar.year = :year" .
-            " GROUP BY calendar.id";
+//        $sql = "SELECT sum(`event`.hours) as suma, calendar.id, user.id, user.username, user.department, user.lanpostua, calendar.year" .
+//            " FROM `event` INNER JOIN calendar ON calendar.id = event.calendar_id" .
+//            " INNER JOIN `type` ON type.id = `event`.`type_id`" .
+//            " INNER JOIN `user` on user.id = calendar.user_id ";
+//
+//        $where =" WHERE type_id=:id and calendar.year = :year" .
+//            " GROUP BY calendar.id";
+//
+//        $sql = $sql . $where;
+//
+//        $params = array(
+//            'id' => 6,
+//            'year' => $urtea
+//        );
+//
+//        return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
 
-        $params = array(
-            'id' => 6,
-            'year' => 2018
-        );
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('SUM(e.hours) as suma', 'c.id', 'u.id', 'u.username', 'u.department', 'u.lanpostua', 'c.year');
+//        $qb->from('AppBundle:Event', 'e');
+        $qb->innerJoin( 'e.calendar', 'c' );
+        $qb->innerJoin( 'e.type', 't' );
+        $qb->innerJoin( 'c.user', 'u' );
+        $qb->groupBy( 'c.id' );
 
-        return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
+        if ($mota) {
+            $qb->andWhere( 'e.type = :mota' )->setParameter( 'mota', $mota );
+        }
+        if ($urtea) {
+            $qb->andWhere( 'c.year = :urtea' )->setParameter( 'urtea', $urtea );
+        }
+        if ($hasi) {
+            $qb->andWhere( 'e.start_date > :hasi' )->setParameter( 'hasi', $hasi );
+        }
+        if ($fin) {
+            $qb->andWhere( 'e.end_date > :fin' )->setParameter( 'fin', $fin );
+        }
+        if ($saila) {
+            $qb->andWhere( 'u.department = :saila' )->setParameter( 'saila', $saila );
+        }
+        if ($lanpostua) {
+            $qb->andWhere( 'u.lanpostua = :lanpostua' )->setParameter( 'lanpostua', $lanpostua );
+        }
+
+        return $qb->getQuery()->getResult();
 
     }
 

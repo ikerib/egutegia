@@ -15,7 +15,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -29,17 +29,39 @@ class DefaultController extends Controller
 
     /**
      * @Route("/zerrenda/konpentsauak", name="zerrenda_konpentsatuak")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function zerrendakonpentsatuakAction()
+    public function zerrendakonpentsatuakAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak();
 
+//        FORM POST PARAMETERS
+        $hasi = $request->request->get('data_hasi');
+        $fin = $request->request->get('data_amaitu');
+        $urtea = $request->request->get('urtea');
+        $saila = $request->request->get('saila');
+        $lanpostua = $request->request->get('lanpostua');
+        $mota = $request->request->get('mota');
+
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        $sailak = $em->getRepository( 'AppBundle:User' )->findSailGuztiak();
+        $urteak = $em->getRepository( 'AppBundle:Calendar' )->getEgutegiUrteak();
+        $lanpostuak = $em->getRepository( 'AppBundle:User' )->findLanpostuGuztiak();
+        $motak = $em->getRepository( 'AppBundle:Type' )->findAll();
 
         return $this->render(
             'default/zerrenda_konpentsatuak.html.twig',
             [
-                'konpentsatuak' => $konpentsatuak
+                'konpentsatuak' => $konpentsatuak,
+                'sailak'        => $sailak,
+                'lanpostuak'    => $lanpostuak,
+                'urteak'        => $urteak,
+                'motak'         => $motak
             ]
         );
     }
