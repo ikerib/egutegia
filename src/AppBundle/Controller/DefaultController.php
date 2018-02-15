@@ -64,9 +64,14 @@ class DefaultController extends Controller
             $testua = $testua . " Saila:" . $saila;
         if ($lanpostua)
             $testua = $testua . " Lanpostua:" . $lanpostua;
-        if ($mota)
+        if ($mota) {
             $motatest = $em->getRepository( 'AppBundle:Type' )->find( $mota );
-            $testua = $testua . " Mota:" . $motatest->getName();
+            if ($motatest) {
+                $testua = $testua . " Mota:" . $motatest->getName();
+            }
+
+        }
+
 
         return $this->render(
             'default/zerrenda_konpentsatuak.html.twig',
