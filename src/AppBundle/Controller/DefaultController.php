@@ -54,6 +54,20 @@ class DefaultController extends Controller
         $lanpostuak = $em->getRepository( 'AppBundle:User' )->findLanpostuGuztiak();
         $motak = $em->getRepository( 'AppBundle:Type' )->findAll();
 
+
+        $testua = $urtea . "-ko datuak erakusten ";
+        if ($hasi)
+            $testua = $testua . $hasi . "-tik hasita ";
+        if ($fin)
+            $testua = $testua . $fin . "-erarte. ";
+        if ($saila)
+            $testua = $testua . " Saila:" . $saila;
+        if ($lanpostua)
+            $testua = $testua . " Lanpostua:" . $lanpostua;
+        if ($mota)
+            $motatest = $em->getRepository( 'AppBundle:Type' )->find( $mota );
+            $testua = $testua . " Mota:" . $motatest->getName();
+
         return $this->render(
             'default/zerrenda_konpentsatuak.html.twig',
             [
@@ -61,7 +75,8 @@ class DefaultController extends Controller
                 'sailak'        => $sailak,
                 'lanpostuak'    => $lanpostuak,
                 'urteak'        => $urteak,
-                'motak'         => $motak
+                'motak'         => $motak,
+                'testua'        => $testua
             ]
         );
     }
