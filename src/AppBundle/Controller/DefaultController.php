@@ -93,14 +93,21 @@ class DefaultController extends Controller
     {
         $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
 
-        if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_UDALTZAINA' ) ) {
-            throw $this->createAccessDeniedException( 'Aldeintzak!' );
-        }
-
-
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
+
+        if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_UDALTZAINA' ) ) {
+            return $this->render(
+                'default/no_calendar_error.html.twig',
+                [
+                    'h1Textua'      => 'Sistemak ez du erabiltzailea ezagutzen.',
+                    'h3Testua'      => '',
+                    'user'          => $user,
+                ]
+            );
+        }
+
 
         $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $user->getUsername(), date( 'Y' ) );
 
@@ -112,7 +119,9 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'user' => $user,
+                    'h1Textua'      => 'Ez daukazu Egutegirik sortuta aplikazioan',
+                    'h3Testua'      => 'Deitu Pertsonal sailera',
+                    'user'          => $user,
                 ]
             );
         }
