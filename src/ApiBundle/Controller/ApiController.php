@@ -17,6 +17,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Log;
 
+use AppBundle\Entity\Notification;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\TemplateEvent;
@@ -1049,8 +1050,10 @@ class ApiController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
 
+        /** @var Notification $jak */
         $jak = $em->getRepository( 'AppBundle:Notification' )->find( $jakinarazpenaid );
 
+        /** @var Firmadet $fd */
         $fd = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatzaileak( $jak->getEskaera()->getId() );
 
         if ( $fd === null ) {

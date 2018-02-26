@@ -170,12 +170,18 @@
                                     </a>
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
+                                {% if eskaera.amaitua != true  %}
                                 <li>
-                                    <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}" data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                    {% if eskaera.bideratua %}
                                         <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                    </a>
-                                </li>
+                                    {% else %}
+                                        <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}" data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        </a>
+                                    {% endif %}
 
+                                </li>
+                                {% endif %}
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
 
                                 {% if eskaera.amaitua %}

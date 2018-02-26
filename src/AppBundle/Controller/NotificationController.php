@@ -51,6 +51,46 @@ class NotificationController extends Controller
     }
 
     /**
+     * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
+     *
+     * @Route("/list", name="notification_list")
+     * @Method("GET")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAction(Request $request)
+    {
+        /**
+         * Parametroak baditu hauek izan daitezke:
+         * -1 Irakurri gabe
+         * 0 Guztiak
+         * 1 Irakurritakoak
+         */
+        $em = $this->getDoctrine()->getManager();
+
+        $q = $request->query->get('q');
+
+        if ( is_null($q) ) {
+            $q = null;
+        }
+
+        $notifications = $em->getRepository('AppBundle:Notification')->getAllUserNotifications($q);
+
+        $deleteForms = [];
+        foreach ($notifications as $notify) {
+            /** @var Notification $notify */
+            $deleteForms[$notify->getId()] = $this->createDeleteForm($notify)->createView();
+        }
+
+        return $this->render('notification/list.html.twig', array(
+            'notifications' => $notifications,
+            'deleteforms' => $deleteForms,
+        ));
+    }
+
+
+    /**
      * Finds and displays a notification entity.
      *
      * @Route("/{id}", name="notification_show")
@@ -65,5 +105,45 @@ class NotificationController extends Controller
         return $this->render('notification/show.html.twig', array(
             'notification' => $notification,
         ));
+    }
+
+    /**
+     * Deletes a type entity.
+     *
+     * @Route("/{id}", name="notification_delete")
+     * @Method("DELETE")
+     * @param Request $request
+     * @param Notification $notify
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(Request $request, Notification $notify)
+    {
+        $form = $this->createDeleteForm($notify);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($notify);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('notification_list');
+    }
+
+    /**
+     * Creates a form to delete a type entity.
+     *
+     * @param Notification $notify The type entity
+     *
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     */
+    private function createDeleteForm(Notification $notify)
+    {
+        return $this->createFormBuilder()
+                    ->setAction($this->generateUrl('notification_delete', ['id' => $notify->getId()]))
+                    ->setMethod('DELETE')
+                    ->getForm()
+            ;
     }
 }

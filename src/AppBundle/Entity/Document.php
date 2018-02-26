@@ -150,7 +150,7 @@ class Document
         return $this;
     }
 
-    public function setImageSize(int $imageSize)
+    public function setImageSize($imageSize)
     {
         $this->imageSize = $imageSize;
     }

@@ -62,7 +62,7 @@ class EskaeraController extends Controller
      */
     public function listAction( Request $request )
     {
-        $this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Egin login' );
+        $this->denyAccessUnlessGranted( ['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login' );
         $em = $this->getDoctrine()->getManager();
 
         $q = $request->query->get( 'q' );
@@ -171,7 +171,14 @@ class EskaeraController extends Controller
         );
 
         if (!$calendar){
-            throw new EntityNotFoundException();
+            return $this->render(
+                'default/no_calendar_error.html.twig',
+                [
+                    'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
+                    'h3Testua' => 'Deitu Pertsonal sailera',
+                    'user'     => $user,
+                ]
+            );
         }
         $calendar = $calendar[ 0 ];
 
@@ -225,15 +232,18 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if ( ( count( $collision ) > 0 ) && ( $collision !== "" ) ) {
-                $txt = "";
-                /** @var Event $e */
-                foreach ( $collision as $e ) {
-                    $txt = $txt . " - " . $e->getCalendar()->getUser();
+            if ( $collision !== "" ) {
+                if ( count( $collision ) > 0  ) {
+                    $txt = "";
+                    /** @var Event $e */
+                    foreach ( $collision as $e ) {
+                        $txt = $txt . " - " . $e->getCalendar()->getUser();
+                    }
+                    $txtOharra = $eskaera->getOharra() . " ADI!!  " . $txt . " langileekin koinzidentziak ditu";
+                    $eskaera->setOharra( $txtOharra );
                 }
-                $txtOharra = $eskaera->getOharra() . " ADI!!  " . $txt . " langileekin koinzidentziak ditu";
-                $eskaera->setOharra( $txtOharra );
             }
+
 
             /** PDF Fitxategia sortu */
 
@@ -427,7 +437,7 @@ class EskaeraController extends Controller
                     $em->persist( $firma );
 
                     $eskaera->setAbiatua( true );
-                    $em->persist( $eskaera );
+
 
                     $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
                     /** @var Sinatzaileakdet $s */
@@ -449,25 +459,26 @@ class EskaeraController extends Controller
 
                         /**
                          * bidali emaila notifikatzen firmatu beharreko eskaerak dituela
+                         * TODO: Sinatzaileei emaila bidali abisuakin. Email batean eskaera guztiak.
                          */
-                        if ( strlen( $s->getUser()->getEmail() ) > 0 ) {
-                            $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
-
-                            $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria] :' . $eskaera->getUser()->getDisplayname() ) )
-                                ->setFrom( $bailtzailea )
-                                ->setTo( $s->getUser()->getEmail() )
-                                ->setBody(
-                                    $this->renderView(
-                                    // app/Resources/views/Emails/registration.html.twig
-                                        'Emails/jakinarazpen_berria.html.twig',
-                                        array( 'eskaera' => $eskaera )
-                                    ),
-                                    'text/html'
-                                );
-
-                            $this->get( 'mailer' )->send( $message );
-
-                        }
+//                        if ( strlen( $s->getUser()->getEmail() ) > 0 ) {
+//                            $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
+//
+//                            $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria] :' . $eskaera->getUser()->getDisplayname() ) )
+//                                ->setFrom( $bailtzailea )
+//                                ->setTo( $s->getUser()->getEmail() )
+//                                ->setBody(
+//                                    $this->renderView(
+//                                    // app/Resources/views/Emails/registration.html.twig
+//                                        'Emails/jakinarazpen_berria.html.twig',
+//                                        array( 'eskaera' => $eskaera )
+//                                    ),
+//                                    'text/html'
+//                                );
+//
+//                            $this->get( 'mailer' )->send( $message );
+//
+//                        }
 
 
                         $fd = new Firmadet();
@@ -476,6 +487,9 @@ class EskaeraController extends Controller
                         $em->persist( $fd );
 
                     }
+
+                    $eskaera->setBideratua( true );
+                    $em->persist( $eskaera );
 
                 } else if ( $eskaera->getAmaitua() === false ) {
 
@@ -525,7 +539,7 @@ class EskaeraController extends Controller
      *
      * @param Eskaera $eskaera The eskaera entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm( Eskaera $eskaera )
     {

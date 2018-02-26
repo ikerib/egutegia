@@ -33,22 +33,26 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function zerrendakonpentsatuakAction(Request $request)
+    public function zerrendakonpentsatuakAction( Request $request )
     {
 
 //        FORM POST PARAMETERS
-        $hasi = $request->request->get('data_hasi');
-        $fin = $request->request->get('data_amaitu');
-        $urtea = $request->request->get('urtea');
-        $saila = $request->request->get('saila');
-        $lanpostua = $request->request->get('lanpostua');
-        $mota = $request->request->get('mota');
+        $hasi = $request->request->get( 'data_hasi' );
+        $fin = $request->request->get( 'data_amaitu' );
+        $urtea = $request->request->get( 'urtea' );
+        $saila = $request->request->get( 'saila' );
+        $lanpostua = $request->request->get( 'lanpostua' );
+        $mota = $request->request->get( 'mota' );
 
+        if ((!$urtea) && (!$mota) ){
+            $urtea = date( "Y" );
+            $mota = 6;
+        }
 
         $em = $this->getDoctrine()->getManager();
 
 
-        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak( $hasi, $fin, $urtea, $saila, $lanpostua, $mota );
         $sailak = $em->getRepository( 'AppBundle:User' )->findSailGuztiak();
         $urteak = $em->getRepository( 'AppBundle:Calendar' )->getEgutegiUrteak();
         $lanpostuak = $em->getRepository( 'AppBundle:User' )->findLanpostuGuztiak();
@@ -56,17 +60,17 @@ class DefaultController extends Controller
 
 
         $testua = $urtea . "-ko datuak erakusten ";
-        if ($hasi)
+        if ( $hasi )
             $testua = $testua . $hasi . "-tik hasita ";
-        if ($fin)
+        if ( $fin )
             $testua = $testua . $fin . "-erarte. ";
-        if ($saila)
+        if ( $saila )
             $testua = $testua . " Saila:" . $saila;
-        if ($lanpostua)
+        if ( $lanpostua )
             $testua = $testua . " Lanpostua:" . $lanpostua;
-        if ($mota) {
+        if ( $mota ) {
             $motatest = $em->getRepository( 'AppBundle:Type' )->find( $mota );
-            if ($motatest) {
+            if ( $motatest ) {
                 $testua = $testua . " Mota:" . $motatest->getName();
             }
 
@@ -81,7 +85,7 @@ class DefaultController extends Controller
                 'lanpostuak'    => $lanpostuak,
                 'urteak'        => $urteak,
                 'motak'         => $motak,
-                'testua'        => $testua
+                'testua'        => $testua,
             ]
         );
     }
@@ -101,9 +105,9 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'h1Textua'      => 'Sistemak ez du erabiltzailea ezagutzen.',
-                    'h3Testua'      => '',
-                    'user'          => $user,
+                    'h1Textua' => 'Sistemak ez du erabiltzailea ezagutzen.',
+                    'h3Testua' => '',
+                    'user'     => $user,
                 ]
             );
         }
@@ -119,9 +123,9 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'h1Textua'      => 'Ez daukazu Egutegirik sortuta aplikazioan',
-                    'h3Testua'      => 'Deitu Pertsonal sailera',
-                    'user'          => $user,
+                    'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
+                    'h3Testua' => 'Deitu Pertsonal sailera',
+                    'user'     => $user,
                 ]
             );
         }
@@ -174,7 +178,9 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'user' => $user,
+                    'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
+                    'h3Testua' => 'Deitu Pertsonal sailera',
+                    'user'     => $user,
                 ]
             );
         }

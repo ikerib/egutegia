@@ -50,20 +50,14 @@
     {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true , 'fluid': true } %}
 {% block brand %}
     {% if is_granted('ROLE_ADMIN') %}
-    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
+        <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
     {% else %}
-    <a class="navbar-brand" href="{{ path('user_homepage') }}">
-        {% if is_granted('ROLE_USER') %}
-            {% if app.user.displayname %}
-                {{ app.user.displayname }}{% else %}{{ app.user.username }}
-            {% endif %}
-        {% endif %}
-    </a>
+    <a class="navbar-brand" href="{{ path('user_homepage') }}">Egutegiak</a>
     {% endif %}
 {% endblock %}
 
 {% block menu %}
-    {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}
         {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
     {% endif %}
     <div class="pull-right">

@@ -64,6 +64,10 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_UDALTZAINA';
                     $user->addRole($rol);
                 }
+                if (strpos($sp[0], 'App-Web_Egutegia-Sinatzailea') !== false) {
+                    $rol = 'ROLE_SINATZAILEA';
+                    $user->addRole($rol);
+                }
             }
             $user->setMembers($ldapEntry['memberof']);
         }

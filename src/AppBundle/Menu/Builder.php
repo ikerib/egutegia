@@ -25,43 +25,49 @@ class Builder implements ContainerAwareInterface
 
     public function mainMenu( FactoryInterface $factory, array $options )
     {
+        $checker = $this->container->get( 'security.authorization_checker' );
+
         $menu = $factory->createItem( 'root', [ 'navbar' => true ] );
 
-        $menu->addChild( ' Hasiera', [ 'icon' => 'home', 'route' => 'dashboard' ] );
-        $menu->addChild( 'Taula Laguntzaileak', [ 'icon' => 'th-list' ] );
-        $menu[ 'Taula Laguntzaileak' ]->addChild( 'Motak', [ 'icon' => 'tag', 'route' => 'admin_type_index' ] );
-        $menu[ 'Taula Laguntzaileak' ]->addChild( ' Txantiloia', [ 'icon' => 'bookmark', 'route' => 'admin_template_index' ] );
-        $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider', [ 'divider' => true ] );
 
-        $checker = $this->container->get( 'security.authorization_checker' );
-        if ( ( $checker->isGranted( 'ROLE_USER' ) && ( $checker->isGranted( 'ROLE_BIDERATZAILEA' ) ) ) || ( $checker->isGranted( 'ROLE_SUPER_ADMIN' ) ) ) {
+        if ( $checker->isGranted( 'ROLE_BIDERATZAILEA' ) || ( $checker->isGranted( 'ROLE_SUPER_ADMIN' ) ) ) {
+            $menu->addChild( ' Hasiera', [ 'icon' => 'home', 'route' => 'dashboard' ] );
+            $menu->addChild( 'Taula Laguntzaileak', [ 'icon' => 'th-list' ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Motak', [ 'icon' => 'tag', 'route' => 'admin_type_index' ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( ' Txantiloia', [ 'icon' => 'bookmark', 'route' => 'admin_template_index' ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider', [ 'divider' => true ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( ' Bateraezinak', [ 'icon' => 'lock', 'route' => 'admin_gutxienekoak_index' ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( ' Sinatzaileak', [ 'icon' => 'pencil', 'route' => 'admin_sinatzaileak_index' ] );
-            /** @var EntityManager $em */
-            $em = $this->container->get( 'doctrine.orm.entity_manager' );
-            $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
-
-            if ( count( $eskaerak ) > 0 ) {
-                //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
-                $menu->addChild(
-                    'Eskaerak',
-                    array(
-                        'route'           => 'admin_eskaera_list',
-                        'routeParameters' => array( 'q' => 'all' ),
-                        'icon'            => 'inbox',
-                        'label'           => "Eskaera <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
-                        'extras'          => array( 'safe_label' => true ),
-                    )
-                );
-            } else {
-                $menu->addChild( ' Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
-                     ->setLinkAttribute( 'class', 'childClass' );
-            }
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider2', [ 'divider' => true ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( ' Azken konexioak', [ 'icon' => 'time', 'route' => 'admin_log_index' ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider3', [ 'divider' => true ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( ' Zerrendak', [ 'icon' => 'list', 'route' => 'zerrenda_konpentsatuak' ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider4', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( ' Jakinarazpen guztiak', [ 'icon' => 'notify', 'route' => 'notification_list' ] );
         }
+
+
+        /** @var EntityManager $em */
+        $em = $this->container->get( 'doctrine.orm.entity_manager' );
+        $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
+
+        if ( count( $eskaerak ) > 0 ) {
+            //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
+            $menu->addChild(
+                'Eskaerak',
+                array(
+                    'route'           => 'admin_eskaera_list',
+                    'routeParameters' => array( 'q' => 'all' ),
+                    'icon'            => 'inbox',
+                    'label'           => "Eskaera <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
+                    'extras'          => array( 'safe_label' => true ),
+                )
+            );
+        } else {
+            $menu->addChild( ' Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
+                 ->setLinkAttribute( 'class', 'childClass' );
+        }
+
 
 
         return $menu;

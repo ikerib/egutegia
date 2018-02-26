@@ -102,6 +102,12 @@ class Eskaera
 
     /**
      * @var bool
+     * @ORM\Column(name="bideratua", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $bideratua=false;
+
+    /**
+     * @var bool
      * @ORM\Column(name="amaitua", type="boolean", nullable=true, options={"default"=false})
      */
     private $amaitua=false;
@@ -756,5 +762,29 @@ class Eskaera
     public function getDocuments()
     {
         return $this->documents;
+    }
+
+    /**
+     * Set bideratua.
+     *
+     * @param bool|null $bideratua
+     *
+     * @return Eskaera
+     */
+    public function setBideratua($bideratua = null)
+    {
+        $this->bideratua = $bideratua;
+
+        return $this;
+    }
+
+    /**
+     * Get bideratua.
+     *
+     * @return bool|null
+     */
+    public function getBideratua()
+    {
+        return $this->bideratua;
     }
 }

@@ -42,6 +42,13 @@ class Notification
     /**
      * @var bool
      *
+     * @ORM\Column(name="notified", type="boolean", nullable=true)
+     */
+    private $notified;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="readed", type="boolean")
      */
     private $readed;
@@ -91,6 +98,7 @@ class Notification
         $this->completed = false;
         $this->readed = false;
         $this->result = false;
+        $this->notified = false;
     }
 
     /**
@@ -399,5 +407,29 @@ class Notification
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set notified.
+     *
+     * @param bool|null $notified
+     *
+     * @return Notification
+     */
+    public function setNotified($notified = null)
+    {
+        $this->notified = $notified;
+
+        return $this;
+    }
+
+    /**
+     * Get notified.
+     *
+     * @return bool|null
+     */
+    public function getNotified()
+    {
+        return $this->notified;
     }
 }
