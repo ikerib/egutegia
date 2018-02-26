@@ -153,7 +153,6 @@ class EskaeraController extends Controller
      * @param         $q
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws EntityNotFoundException
      */
     public function newAction( Request $request, $q )
     {
@@ -245,7 +244,9 @@ class EskaeraController extends Controller
             }
 
 
-            /** PDF Fitxategia sortu */
+            /**
+             * PDF Fitxategia sortu
+             */
 
             $user = $this->getUser();
 
@@ -274,7 +275,7 @@ class EskaeraController extends Controller
 
             $doc = new Document();
             $doc->setFilename( $name );
-            $doc->setFilenamepath( $filename );
+            $doc->setFilenamepath( $nirepath );
             $doc->setCalendar( $eskaera->getCalendar() );
             $doc->setEskaera( $eskaera );
             $em->persist( $doc );
@@ -307,7 +308,7 @@ class EskaeraController extends Controller
             $this->get( 'mailer' )->send( $message );
 
 
-            return $this->redirectToRoute( 'eskaera_show', array( 'id' => $eskaera->getId() ) );
+            return $this->redirectToRoute( 'eskaera_gauzatua', array( 'id' => $eskaera->getId() ) );
 
         }
 
@@ -315,6 +316,26 @@ class EskaeraController extends Controller
             'eskaera'  => $eskaera,
             'calendar' => $calendar,
             'form'     => $form->createView(),
+        ) );
+    }
+
+    /**
+     * Eskaera zuzen gauzatua izan da
+     *
+     * @Route("/{id}/ok", name="eskaera_gauzatua")
+     * @Method("GET")
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function gauzatuaAction( Eskaera $eskaera )
+    {
+        $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
+        $deleteForm = $this->createDeleteForm( $eskaera );
+
+        return $this->render( 'eskaera/gauzatua.html.twig', array(
+            'eskaera'     => $eskaera,
+            'delete_form' => $deleteForm->createView(),
         ) );
     }
 
@@ -355,12 +376,17 @@ class EskaeraController extends Controller
             'eskaera' => $eskaera,
         ) );
 
-        $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format( 'Y-m-d' ) . '.pdf';
+        $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format( 'Y-m-d' ) . '-' . $eskaera->getAmaitu()->format( 'Y-m-d' ) . '.pdf';
 
-        $filename = $this->container->getParameter( 'kernel.root_dir' ) . '/../web/uploads/' . $name;
-        $filename = preg_replace( "/app..../i", "", $filename );
+        $filepath = '/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format( 'Y' ) . '/';
 
-        if ( !file_exists( $filename ) ) {
+        $filename = $filepath . $name;
+
+        $tmpPath = $this->getParameter( 'app.dir_tmp_pdf' );
+
+        $nirepath = $tmpPath . $filename;
+
+        if ( !file_exists( $nirepath ) ) {
             $this->get( 'knp_snappy.pdf' )->generateFromHtml(
                 $this->renderView(
                     'eskaera/print.html.twig',
@@ -375,7 +401,7 @@ class EskaeraController extends Controller
                 $filename
             );
         } else {
-            return new BinaryFileResponse( $filename );
+            return new BinaryFileResponse( $nirepath );
 
         }
 

@@ -60,7 +60,7 @@
                 <div class="form-group">
                     <label for="min-date" class="col-sm-4 control-label">{{ 'Guztira zenbat <strong>ordu</strong>' | trans | raw }}</label>
                     <div class="col-sm-7">
-                        {{ form_widget(form.total, { 'attr': {'class': 'form-control'} }) }}
+                        {{ form_widget(form.total, { 'attr': {'class': 'form-control disabled'} }) }}
                     </div>
                 </div>
             {% endif %}
@@ -88,7 +88,7 @@
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">
-                    <button id="btnSubmit" type="button" class="btn btn-primary">{{ 'Lortu inprimatika' | trans }}</button>
+                    <button id="btnSubmit" type="button" class="btn btn-primary">{{ 'Eskaera gauzatu' | trans }}</button>
                 </div>
                 <div class="col-md-4"></div>
             </div>
