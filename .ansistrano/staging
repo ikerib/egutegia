@@ -6,5 +6,5 @@ ansible_connection=ssh
 ansible_user=root
 
 deploy_path=/var/www/egutegia
-git_branch_default=dev
+git_branch_default=master
 symfony_inventory_env=prod
