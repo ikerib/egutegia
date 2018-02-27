@@ -1,5 +1,5 @@
 [hosts]
-172.28.64.200
+172.28.64.67
 
 [hosts:vars]
 ansible_connection=ssh
