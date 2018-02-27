@@ -159,8 +159,9 @@
                         <td>
                             <ul class="list-inline text-left">
                                 <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}"><i class="fa fa-eye"
-                                                                                                  aria-hidden="true"></i></a>
+                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
+                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </li>
                                 <li>
                                     {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
@@ -324,9 +325,9 @@
 
 
                         if (obj.firmatua === false) {
-                            html = html + "<td>Firmatzeke</td></tr>";
+                            html = html + "<td><span class='label label-danger '>Ez</span></td></tr>";
                         } else {
-                            html = html + "<td>Firmatua</td></tr>";
+                            html = html + "<td><span class='label label-success'>Bai</span></td></tr>";
                         }
 
 

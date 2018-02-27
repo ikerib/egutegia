@@ -128,12 +128,18 @@ class EskaeraController extends Controller
         $tmpPath = $this->getParameter( 'app.dir_tmp_pdf' );
         $pdfPath = $this->getParameter( 'app.dir_base_pdf' );
 
-        $nirepath = $tmpPath . $doc->getFilenamepath();
-        $doc->setFilenamepath( $pdfPath . $doc->getFilenamepath() );
+        $docuser = $doc->getEskaera()->getUser();
+
+        $pathFrom = $doc->getFilenamepath();
+        $pathTo = $pdfPath . "/". $docuser->getUsername()."/".$eskaera->getCalendar()->getYear()."/". $doc->getFilename();
+        $doc->setFilenamepath( $pathTo );
         $doc->setEgutegian( true );
         $em->persist( $eskaera );
 
-        rename( $tmpPath, $pdfPath );
+        if (!is_dir(dirname($pathTo))) {
+            mkdir(dirname($pathTo), 0777, true);
+        }
+        rename( $pathFrom, $pathTo );
 
         $em->flush();
 
@@ -249,8 +255,17 @@ class EskaeraController extends Controller
              */
 
             $user = $this->getUser();
+            $noiz = Date( 'Y-m-d' );
+            if ($eskaera->getNoiz()->format( 'Y-m-d' ) != null){
+                $noiz = $eskaera->getNoiz()->format( 'Y-m-d' );
+            }
 
-            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $eskaera->getNoiz()->format( 'Y-m-d' ) . '-' . $eskaera->getAmaitu()->format( 'Y-m-d' ) . '.pdf';
+            $amaitu = "";
+            if ($eskaera->getAmaitu() != null){
+                $amaitu = $eskaera->getAmaitu()->format( 'Y-m-d' );
+            }
+
+            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' .$noiz . '-' . $amaitu . '.pdf';
 
             $filepath = '/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format( 'Y' ) . '/';
 
@@ -470,13 +485,16 @@ class EskaeraController extends Controller
                     foreach ( $sinatzaileusers as $s ) {
                         $notify = New Notification();
                         $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
-                        $notify->setDescription(
-                            $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
-                            "Egutegia: " . $eskaera->getCalendar()->getName() . "\n" .
-                            "Hasi: " . $eskaera->getHasi()->format( 'Y-m-d' ) . "\n" .
-                            "Amaitu: " . $eskaera->getAmaitu()->format( 'Y-m-d' )
 
-                        );
+                        $desc  = $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
+                            "Egutegia: " . $eskaera->getCalendar()->getName() . "\n" .
+                            "Hasi: " . $eskaera->getHasi()->format( 'Y-m-d' ) . "\n";
+
+                        if ($eskaera->getAmaitu() != null){
+                            $desc .= "Amaitu: " . $eskaera->getAmaitu()->format( 'Y-m-d' );
+                        }
+
+                        $notify->setDescription($desc);
                         $notify->setEskaera( $eskaera );
                         $notify->setFirma( $firma );
                         $notify->setReaded( false );

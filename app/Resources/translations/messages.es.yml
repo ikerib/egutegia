@@ -70,36 +70,36 @@ msg.urteko.orduak: 'Horas a trabajar año: '
 msg.portzentaia: 'Porcentage: '
 msg.egutegi.berria: 'Nuevo calendario'
 'Sinatzaileen zerrenda': 'Lista firmantes'
-Jakinarazpenak: __Jakinarazpenak
-Irakurria: __Irakurria
-Erantzunda: __Erantzunda
-Erantzuna: __Erantzuna
-Gaia: __Gaia
-Hasi: __Hasi
-Amaitu: __Amaitu
-'Noiz jasoa': '__Noiz jasoa'
-Oharra: __Oharra
-Eskaeretan: __Eskaeretan
-Erlazioa: __Erlazioa
-'Mota berria': '__Mota berria'
-'Sinatzaileen zerrenda:': '__Sinatzaileen zerrenda:'
-Erabiltzaileak: __Erabiltzaileak
-'Sinatzaileen zerrena aldatu': '__Sinatzaileen zerrena aldatu'
-'Opor edo baimen eskaera berria': '__Opor edo baimen eskaera berria'
-Langilea: __Langilea
-Noiztik: __Noiztik
-'Noiz arte': '__Noiz arte'
-'Guztira zenbat egun edo ordu': '__Guztira zenbat egun edo ordu'
-Deskribapena: __Deskribapena
-'Eskaera data': '__Eskaera data'
-'Lortu inprimatika': '__Lortu inprimatika'
-'Eskaeren zerrenda': '__Eskaeren zerrenda'
-Noiz: __Noiz
-Sinatzaileak: __Sinatzaileak
-Orden: __Orden
-'Firma zerrenda': '__Firma zerrenda'
-Nork: __Nork
-'Hirurtekoak:': '__Hirurtekoak:'
+Jakinarazpenak: Notificaciones
+Irakurria: Leidos
+Erantzunda: Respondidos
+Erantzuna: Respuesta
+Gaia: Tema
+Hasi: Empieza
+Amaitu: Termina
+'Noiz jasoa': 'Recibido'
+Oharra: Notas
+Eskaeretan: Peticiones
+Erlazioa: Relación
+'Mota berria': 'Nuevo tipo'
+'Sinatzaileen zerrenda:': 'Listado de firmantes:'
+Erabiltzaileak: Usuarios
+'Sinatzaileen zerrena aldatu': 'Cambiar lista de firmantes'
+'Opor edo baimen eskaera berria': 'Petición de permiso o vacaciones'
+Langilea: Trabajador
+Noiztik: Desde
+'Noiz arte': 'Hasta'
+'Guztira zenbat egun edo ordu': 'Días y horas en total'
+Deskribapena: Descripción
+'Eskaera data': 'Fecha de la petición'
+'Lortu inprimatika': 'Grabar'
+'Eskaeren zerrenda': 'Lista de peticiones'
+Noiz: Cuando
+Sinatzaileak: Firmantes
+Orden: Orden
+'Firma zerrenda': 'Lista formantes'
+Nork: Quien
+'Hirurtekoak:': 'Trienios:'
 'Norberarentzako orduak zatituta (max)': 'Norberarentzako orduak zatituta (max)'
 'Urterako ordu konpentsatuak': 'Urterako ordu konpentsatuak'
 msg.norberarentzakozati: __msg.norberarentzakozati
@@ -109,14 +109,14 @@ msg.norberarentzakozati: __msg.norberarentzakozati
 'Nº Jakinarazpena': 'Nº Jakinarazpena'
 'Nº Eskaera': 'Nº Eskaera'
 'Konexioen zerrenda': 'Konexioen zerrenda'
-Nor: __Nor
+Nor: Quien
 'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
 'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
 'Guztira zenbat <strong>ordu</strong>': 'Guztira zenbat <strong>ordu</strong>'
 'Guztira zenbat <strong>egun</strong>': 'Guztira zenbat <strong>egun</strong>'
 'eskaera berria': '__eskaera berria'
-Eguna: __Eguna
-Azalpena: __Azalpena
+Eguna: Día
+Azalpena: Descripcioón
 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': '__Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
 'Nondik kendu': '__Nondik kendu'
 Eskaera gauzatu: 'Solicitar'

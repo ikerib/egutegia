@@ -34,7 +34,9 @@
                     <th>Mota</th>
                     <th>Hasi</th>
                     <th>Amaitu</th>
+                    <th>Egunak</th>
                     <th>Orduak</th>
+                    <th>Orduak Guztira</th>
                     <th>Bideratua</th>
                     <th>Gauzatua</th>
                     <th></th>
@@ -48,7 +50,9 @@
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.egunak }}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></td>
+                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.total }}</a></td>
                         <td>
                             <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
                                 {% if eskaera.abiatua == true %}

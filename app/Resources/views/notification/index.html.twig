@@ -82,6 +82,7 @@
             <th data-halign="center" data-align="center" data-field="result"
                 data-sortable="true">{{ 'Erantzuna' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Gaia' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Mota' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="hasi"
                 data-sortable="true">{{ 'Hasi' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="amaitu"
@@ -127,6 +128,7 @@
                     </a>
                 </td>
                 <td>{{ notification.name }}</td>
+                <td>{{ notification.eskaera.type }}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.orduak }}</td>
