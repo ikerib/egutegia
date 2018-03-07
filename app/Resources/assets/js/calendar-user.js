@@ -7,7 +7,7 @@ $(function () {
   var currentYear = new Date().getFullYear()
 
   $('#usercalendar').calendar({
-    style: 'background',
+    // style: 'background',
     language: 'eu',
     minDate: new Date('2017-01-01'),
     allowOverlap: true,
