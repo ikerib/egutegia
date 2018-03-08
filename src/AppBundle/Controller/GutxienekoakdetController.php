@@ -80,6 +80,9 @@ class GutxienekoakdetController extends Controller
      *
      * @Route("/{id}", name="admin_gutxienekoakdet_show")
      * @Method("GET")
+     * @param Gutxienekoakdet $gutxienekoakdet
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Gutxienekoakdet $gutxienekoakdet)
     {
@@ -96,6 +99,10 @@ class GutxienekoakdetController extends Controller
      *
      * @Route("/{id}/edit", name="admin_gutxienekoakdet_edit")
      * @Method({"GET", "POST"})
+     * @param Request         $request
+     * @param Gutxienekoakdet $gutxienekoakdet
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
     {
