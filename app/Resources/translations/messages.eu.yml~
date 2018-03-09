@@ -69,7 +69,7 @@ msg.opor.orduak: 'Opor orduak: '
 msg.urteko.orduak: 'Urteko lan orduak: '
 msg.portzentaia: 'Portzentaia: '
 msg.egutegi.berria: 'Egutegi berria'
-'Sinatzaileen zerrenda': messages
+'Sinatzaileen zerrenda': 'Sinatzaileen zerrenda'
 Jakinarazpenak: '  Jakinarazpenak'
 Irakurria: '  Irakurria'
 Erantzunda: '  Erantzunda'
@@ -111,6 +111,12 @@ msg.norberarentzakozati: 'Norbere arazoetarako zatituta'
 'Nº Jakinarazpena': 'Nº Jakinarazpena'
 'Nº Eskaera': 'Nº Eskaera'
 'Konexioen zerrenda': 'Konexioen zerrenda'
-Nor: __Nor
+Nor: Nor
 'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
 'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
+'eskaera berria': '__eskaera berria'
+Eguna: Eguna
+Azalpena: Azalpena
+'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
+'Nondik kendu': 'Nondik kendu'
+Eskaera gauzatu: 'Eskaera gauzatu'

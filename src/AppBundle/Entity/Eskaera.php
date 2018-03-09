@@ -49,7 +49,7 @@ class Eskaera
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="amaitu", type="datetime")
+     * @ORM\Column(name="amaitu", type="datetime", nullable=true)
      */
     private $amaitu;
 

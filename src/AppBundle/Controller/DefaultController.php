@@ -105,11 +105,12 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'h1Textua' => 'Sistemak ez du erabiltzailea ezagutzen.',
+                    'h1Textua' => $this->get('translator')->trans('error.udaltzaina'),
                     'h3Testua' => '',
                     'user'     => $user,
                 ]
             );
+
         }
 
 
@@ -119,15 +120,15 @@ class DefaultController extends Controller
             if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_ADMIN' ) ) {
                 return $this->redirectToRoute( 'dashboard' );
             }
-
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
-                    'h3Testua' => 'Deitu Pertsonal sailera',
+                    'h1Textua' => $this->get('translator')->trans('error.no.calendar'),
+                    'h3Testua' => $this->get('translator')->trans('error.call.personal'),
                     'user'     => $user,
                 ]
             );
+
         }
 
         /** @var Calendar $calendar */
@@ -178,8 +179,8 @@ class DefaultController extends Controller
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
-                    'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
-                    'h3Testua' => 'Deitu Pertsonal sailera',
+                    'h1Textua' => $this->get('translator')->trans('error.no.calendar'),
+                    'h3Testua' => $this->get('translator')->trans('error.call.personal'),
                     'user'     => $user,
                 ]
             );

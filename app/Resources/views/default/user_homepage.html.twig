@@ -12,15 +12,6 @@
                 </div>
             </div>
             <div class="panel-body">
-                {#<div class="row">#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.urteko.orduak' | trans }}</strong> {{ calendar.hoursYear}}</div>#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.opor.orduak' | trans }} </strong> {{ calendar.hoursFree }}</div>#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.norberarentzako' | trans }} </strong> {{ calendar.hoursSelf}}</div>#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.konpentsatzeke' | trans }} </strong> {{ calendar.hoursCompensed }}</div>#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.sindikalak' | trans }} </strong> {{ calendar.hoursSindikal }}</div>#}
-                    {#<div class="col-sm-2"><strong>{{ 'msg.portzentaia' | trans }} </strong> {{ calendar.percentYear }}</div>#}
-                {#</div>#}
-
                 <div class="row">
                     <div class="col-sm-4">
                         <strong>{{ 'msg.urteko.orduak' | trans }}</strong>
@@ -68,20 +59,13 @@
                         <input id="txtNorbereZatika" type="hidden" value="{{ selfHoursPartial }}">
                         <input id="numberHoursPartial" type="hidden" value="{{ selfHoursPartial }}">
                         <ul class="list-inline">
-                            <li>Zatitu daitezke:</li>
+                            <li>{{ 'msg.zatitu' | trans }}</li>
                             <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</li>
                         </ul>
                         <ul class="list-inline">
-                            <li>Egun osoak:</li>
+                            <li>{{ 'msg.egun.osoak' | trans }}</li>
                             <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</li>
                         </ul>
-
-                        {#<dl class="dl-horizontal">#}
-                        {#<dt>Zatitu daitezke:</dt>#}
-                        {#<dd id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</dd>#}
-                        {#<dt>Egun osoak:</dt>#}
-                        {#<dd id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</dd>#}
-                        {#</dl>#}
                     </div>
                 </div>
 
@@ -98,6 +82,7 @@
 
     <input type="hidden" id="calendarid" value="{{ calendar.id }}">
     <input type="hidden" id="templateid" value="{{ calendar.template.id }}">
+    <input type="hidden" id="locale"     value="{{ app.request.getLocale() }}">
 
 {% endblock %}
 
@@ -113,15 +98,15 @@
     <script>
         $(function () {
             /*************************************************************************************************************/
-          /** MISC *****************************************************************************************************/
+            /** MISC *****************************************************************************************************/
             /*************************************************************************************************************/
-          var x = parseFloat($('#numberLanaldi').val())
-          var textua = " ( " + moment.duration(x, 'hours').hours() + ' ordu ' + moment.duration(x, 'hours').minutes() +  " minutu )"
-          $('#hourLanaldi').text(textua)
+            var x = parseFloat($("#numberLanaldi").val());
+            var textua = " ( " + moment.duration(x, "hours").hours() + " ordu " + moment.duration(x, "hours").minutes() + " minutu )";
+            $("#hourLanaldi").text(textua);
 
-          var x1 = parseFloat($('#numberHoursPartial').val())
-          var textua1 = " ( " + moment.duration(x1, 'hours').hours() + ' ordu ' + moment.duration(x1, 'hours').minutes() +  " minutu )"
-          $('#selfHoursPartialToHour').text(textua1)
+            var x1 = parseFloat($("#numberHoursPartial").val());
+            var textua1 = " ( " + moment.duration(x1, "hours").hours() + " ordu " + moment.duration(x1, "hours").minutes() + " minutu )";
+            $("#selfHoursPartialToHour").text(textua1);
         });
     </script>
 {% endblock %}

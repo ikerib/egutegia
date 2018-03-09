@@ -71,6 +71,9 @@ class UserHydrator implements HydratorInterface
             }
             $user->setMembers($ldapEntry['memberof']);
         }
+        if ((array_key_exists('preferredlanguage', $ldapEntry)) && (count($ldapEntry['preferredlanguage']))) {
+            $user->setHizkuntza( $ldapEntry[ 'preferredlanguage' ][ 0 ] );
+        }
         $user->setDn($ldapEntry['dn']);
         $user->setEnabled(true);
         $user->setPassword('');

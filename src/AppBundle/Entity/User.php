@@ -58,6 +58,11 @@ class User extends BaseUser implements LdapUserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    protected $hizkuntza;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     protected $lanpostua;
 
     /**
@@ -438,4 +443,28 @@ class User extends BaseUser implements LdapUserInterface
         return $this->firmadet;
     }
 
+
+    /**
+     * Set hizkuntza.
+     *
+     * @param string|null $hizkuntza
+     *
+     * @return User
+     */
+    public function setHizkuntza($hizkuntza = null)
+    {
+        $this->hizkuntza = $hizkuntza;
+
+        return $this;
+    }
+
+    /**
+     * Get hizkuntza.
+     *
+     * @return string|null
+     */
+    public function getHizkuntza()
+    {
+        return $this->hizkuntza;
+    }
 }

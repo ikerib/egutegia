@@ -11,13 +11,13 @@
         <div class="col-md-10">
             <div class="btn-group" role="group" aria-label="...">
                 <a class="btn {% if app.request.get('q') == 'all' %}        btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'all'}) }}">Guztiak</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'all'}) }}">{{ 'Guztiak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'no-way' %}     btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'no-way'}) }}">Bideratu gabeak</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'no-way'}) }}">{{ 'Bideratu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unsigned' %}   btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'unsigned'}) }}">Gauzatu gabeak</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'unsigned'}) }}">{{ 'Gauzatu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unadded' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">Egutean sartu gabe</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">{{ 'Egutean sartu gabe' | trans }}</a>
             </div>
 
         </div>
@@ -82,16 +82,16 @@
                 <thead>
                 <tr>
                     <th data-field="id">ID</th>
-                    <th>Izaera</th>
-                    <th>Eskaera</th>
-                    <th>Egutegia</th>
-                    <th>Hasi</th>
-                    <th>Amaitu</th>
-                    <th>Orduak/Egunak</th>
-                    <th>Bideratua</th>
-                    <th>Gauzatua</th>
-                    <th>Egutegian</th>
-                    <th>Sinatzaile taldea</th>
+                    <th>{{ "Izaera" | trans }}</th>
+                    <th>{{ "Eskaera" | trans }}</th>
+                    <th>{{ "Egutegia" | trans }}</th>
+                    <th>{{ "Hasi" | trans }}</th>
+                    <th>{{ "Amaitu" | trans }}</th>
+                    <th>{{ "Orduak/Egunak" | trans }}</th>
+                    <th>{{ "Bideratua" | trans }}</th>
+                    <th>{{ "Gauzatua" | trans }}</th>
+                    <th>{{ "Egutegian" | trans }}</th>
+                    <th>{{ "Sinatzaile taldea" | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>

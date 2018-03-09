@@ -7,6 +7,7 @@ Izena: Izena
 'Opor orduak hartuta': 'Opor orduak hartuta'
 Ezeztatu: Ezeztatu
 Txantiloiak: Txantiloiak
+Bateraezinak: Bateraezinak
 Hasiera: Hasiera
 Motak: Motak
 Orduak: Orduak
@@ -22,8 +23,11 @@ Txantiloia: Txantiloia
 'Lan orduak:': 'Lan orduak:'
 'Opor orduak:': 'Opor orduak:'
 'Norberarentzako:': 'Norberarentzako:'
-'Konpentsatutakoo:': 'Konpentsatutakoo:'
+'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Egutegia
+Eskaerak: Eskaerak
+'Azken konexioak': 'Azken konexioak'
+Irten: Salir
 Mota: Mota
 Fetxak: Fetxak
 'Langileen zerrenda': 'Langileen zerrenda'
@@ -35,6 +39,7 @@ Denboralerroa: Denboralerroa
 Nombre: Nombre
 Abizenak: Abizenak
 'Urteko orduak': 'Urteko orduak'
+'Opor orduak': 'Opor orduak'
 'Konpentsatutako orduak': 'Konpentsatutako orduak'
 'Udal Langileen egutegi kudeatzailea': 'Udal Langileen egutegi kudeatzailea'
 Sartu: Sartu
@@ -54,6 +59,7 @@ Minutuak: Minutuak
 Faktorea: Faktorea
 'Orduak konpentsatzera': 'Orduak konpentsatzera'
 Saila: Saila
+Urtea: Urtea
 'Opor orduak': 'Opor orduak'
 Ordena: Ordena
 Erakutsi: Erakutsi
@@ -69,6 +75,8 @@ msg.opor.orduak: 'Opor orduak: '
 msg.urteko.orduak: 'Urteko lan orduak: '
 msg.portzentaia: 'Portzentaia: '
 msg.egutegi.berria: 'Egutegi berria'
+msg.zatitu: 'Zatitu daitezke:'
+msg.egun.osoak: 'Egun osoak:'
 'Sinatzaileen zerrenda': 'Sinatzaileen zerrenda'
 Jakinarazpenak: '  Jakinarazpenak'
 Irakurria: '  Irakurria'
@@ -119,4 +127,27 @@ Eguna: Eguna
 Azalpena: Azalpena
 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
 'Nondik kendu': 'Nondik kendu'
-Eskaera gauzatu: 'Eskaera gauzatu'
+'Eskaera gauzatu': 'Eskaera gauzatu'
+Zerrendak: Zerrendak
+'Jakinarazpen guztiak': 'Jakinarazpen guztiak'
+error.udaltzaina: "Sistemak ez du erabiltzailea ezagutzen."
+error.no.calendar: 'Ez daukazu Egutegirik sortuta aplikazioan'
+error.call.personal: 'Deitu Pertsonal sailera'
+Lanpostua: 'Lanpostua'
+Datak: 'Datak'
+Orduak Guztira: 'Orduak Guztira'
+Izaera: 'Langilea'
+Eskaera: 'Eskaera'
+Orduak/Egunak: 'Orduak/Egunak'
+Bideratua: 'Bideatua'
+Gauzatua: 'Gauzatua'
+Egutegian: 'Egutegian'
+Sinatzaile taldea: 'Sinatzaile taldea'
+Guztiak: 'Guztiak'
+'Bideratu gabeak': 'Bideratu gabeak'
+'Gauzatu gabeak': 'Gauzatu gabeak'
+'Egutean sartu gabe': 'Egutean sartu gabe'
+Fitxategia: 'Fitxategia'
+Eskaera berria: 'Eskaera berria'
+Egunak: 'Egunak'
+Lanaldia: Lanaldia

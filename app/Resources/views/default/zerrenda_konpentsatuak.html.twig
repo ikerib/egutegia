@@ -18,7 +18,7 @@
                             <div class="row">
 
                                 <div class="col-md-3">
-                                    <label for="cmbMota">Mota</label><br>
+                                    <label for="cmbMota">{{ "Mota" | trans }}</label><br>
                                     <select name="mota" id="cmbMota" class="form-control">
                                         <option value="0">Aukeratu bat</option>
                                         {% for m in motak %}
@@ -27,7 +27,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="cmbSaila">Saila</label><br>
+                                    <label for="cmbSaila">{{ "Saila" |trans }}</label><br>
                                     <select name="saila" id="cmbSaila" class="form-control">
                                         <option value="0">Aukeratu bat...</option>
                                         {% for s in sailak %}
@@ -37,7 +37,7 @@
                                 </div>
 
                                 <div class="col-md-3">
-                                    <label for="cmbLanpostu">Lanpostuak</label><br>
+                                    <label for="cmbLanpostu">{{ "Lanpostua" | trans }}</label><br>
                                     <select name="lanpostua" id="cmbLanpostu" class="form-control">
                                         <option value="0">Aukeratu bat...</option>
                                         {% for l in lanpostuak %}
@@ -51,7 +51,7 @@
 
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="cmbUrtea">Urtea</label><br>
+                                    <label for="cmbUrtea">{{ "Urtea" | trans }}</label><br>
                                     <select name="urtea" id="cmbUrtea" class="form-control">
                                         <option value="{{ "now"|date('Y') }} ">{{ "now"|date('Y') }} </option>
                                         {% for u in urteak %}
@@ -61,7 +61,7 @@
                                 </div>
 
                                 <div class="col-md-3" id="divDateRange">
-                                    <label>Datak</label>
+                                    <label>{{ "Datak" | trans }}</label>
                                     <div class="input-daterange input-group" id="filterDatepicker">
                                         <input type="text" class="input-sm form-control" name="data_hasi" />
                                         <span class="input-group-addon">-</span>
@@ -119,10 +119,10 @@
 
                 <thead>
                 <tr>
-                    <th data-halign="center" data-align="left" data-field="username" data-sortable="true">Langilea</th>
-                    <th data-halign="center" data-align="right" data-field="department" data-sortable="true">Saila</th>
-                    <th data-halign="center" data-align="right" data-field="lanpostua" data-sortable="true">Lanpostua</th>
-                    <th data-halign="center" data-align="right" data-field="suma" data-sortable="true">Orduak Guztira</th>
+                    <th data-halign="center" data-align="left" data-field="username" data-sortable="true">{{ 'Langilea' | trans }}</th>
+                    <th data-halign="center" data-align="right" data-field="department" data-sortable="true">{{ 'Saila' | trans }}</th>
+                    <th data-halign="center" data-align="right" data-field="lanpostua" data-sortable="true">{{ 'Lanpostua' | trans }}</th>
+                    <th data-halign="center" data-align="right" data-field="suma" data-sortable="true">{{ 'Orduak Guztira' | trans }}</th>
                 </tr>
                 </thead>
                 <tbody>

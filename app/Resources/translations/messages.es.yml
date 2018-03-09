@@ -7,6 +7,7 @@ Itxi: Cerrar
 'Opor orduak hartuta': 'Total horas disfrutadas'
 Ezeztatu: Cancelar
 Txantiloiak: Plantillas
+Bateraezinak: Incompatibles
 Hasiera: Inicio
 Motak: Tipos
 Orduak: Horas
@@ -18,14 +19,17 @@ Onartu: Aceptar
 'Urteko lan orduak:': 'Total horas a trabajar:'
 'Urteko opor orduak:': 'Total horas vacaciones:'
 'Urteko norberarentzako orduak:': 'Total horas asuntos propios:'
-Txantiloia: Txantiloia
+Txantiloia: Plantilla
 'Lan orduak:': 'Lan orduak:'
 'Opor orduak:': 'Opor orduak:'
 'Norberarentzako:': 'Norberarentzako:'
-'Konpentsatutakoo:': 'Konpentsatutakoo:'
-Egutegia: Egutegia
-Mota: Mota
-Fetxak: Fetxak
+'Konpentsatutakoo:': 'Konpentsatutako:'
+Egutegia: Calendario
+Eskaerak: Peticiones
+'Azken konexioak': 'Ultimas conexiones'
+Irten: Salir
+Mota: Tipo
+Fetxak: Fechas
 'Langileen zerrenda': 'Langileen zerrenda'
 'Egutegi berria:': 'Egutegi berria:'
 'Konpentsatutakoak:': 'Compensadas:'
@@ -55,6 +59,7 @@ Minutuak: Minutos
 Faktorea: Factor
 'Orduak konpentsatzera': 'Horas a compensar'
 Saila: Departamento
+Urtea: Año
 Ordena: Orden
 Erakutsi: Mostrar
 Bai: Si
@@ -69,6 +74,8 @@ msg.opor.orduak: 'Horas vacaciones: '
 msg.urteko.orduak: 'Horas a trabajar año: '
 msg.portzentaia: 'Porcentage: '
 msg.egutegi.berria: 'Nuevo calendario'
+msg.zatitu: 'Se pueden dividir:'
+msg.egun.osoak: 'Días completos:'
 'Sinatzaileen zerrenda': 'Lista firmantes'
 Jakinarazpenak: Notificaciones
 Irakurria: Leidos
@@ -77,7 +84,7 @@ Erantzuna: Respuesta
 Gaia: Tema
 Hasi: Empieza
 Amaitu: Termina
-'Noiz jasoa': 'Recibido'
+'Noiz jasoa': Recibido
 Oharra: Notas
 Eskaeretan: Peticiones
 Erlazioa: Relación
@@ -88,11 +95,11 @@ Erabiltzaileak: Usuarios
 'Opor edo baimen eskaera berria': 'Petición de permiso o vacaciones'
 Langilea: Trabajador
 Noiztik: Desde
-'Noiz arte': 'Hasta'
+'Noiz arte': Hasta
 'Guztira zenbat egun edo ordu': 'Días y horas en total'
 Deskribapena: Descripción
 'Eskaera data': 'Fecha de la petición'
-'Lortu inprimatika': 'Grabar'
+'Lortu inprimatika': Grabar
 'Eskaeren zerrenda': 'Lista de peticiones'
 Noiz: Cuando
 Sinatzaileak: Firmantes
@@ -110,13 +117,37 @@ msg.norberarentzakozati: __msg.norberarentzakozati
 'Nº Eskaera': 'Nº Eskaera'
 'Konexioen zerrenda': 'Konexioen zerrenda'
 Nor: Quien
-'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
-'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
-'Guztira zenbat <strong>ordu</strong>': 'Guztira zenbat <strong>ordu</strong>'
-'Guztira zenbat <strong>egun</strong>': 'Guztira zenbat <strong>egun</strong>'
-'eskaera berria': '__eskaera berria'
+'Eskatutako <strong>egunak</strong>': '<strong>Días</strong> pedidos'
+'Eskatutako <strong>orduak</strong>': '<strong>Horas</strong> pedidas'
+'Guztira zenbat <strong>ordu</strong>': 'Total <strong>horas</strong>'
+'Guztira zenbat <strong>egun</strong>': 'Total <strong>días</strong>'
+'eskaera berria': 'Nueva petición'
 Eguna: Día
 Azalpena: Descripcioón
 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': '__Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
 'Nondik kendu': '__Nondik kendu'
-Eskaera gauzatu: 'Solicitar'
+'Eskaera gauzatu': Solicitar
+Zerrendak: Listados
+'Jakinarazpen guztiak': 'Todas las notificaciones'
+error.udaltzaina: 'El sistema no reconoce al usuario.'
+'Taula Laguntzaileak': 'Tablas auxiliares'
+error.no.calendar: 'No tienes un Calendario creado en el sistema'
+error.call.personal: 'Llama a personal'
+Lanpostua: 'Puesto de trabajo'
+Datak: 'Fechas'
+Orduak Guztira: 'Total horas'
+Izaera: 'Trabajador'
+Eskaera: 'Petición'
+Orduak/Egunak: 'Horas/Días'
+Bideratua: 'Dirigido'
+Gauzatua: 'Completado'
+Egutegian: 'En el calendario'
+Sinatzaile taldea: 'Grupo firmante'
+Guztiak: 'Todos'
+'Bideratu gabeak': 'Sin asignar'
+'Gauzatu gabeak': 'Sin completar'
+'Egutean sartu gabe': 'Sin añadir al calendario'
+Fitxategia: 'Fichero'
+Eskaera berria: 'Nueva petición'
+Egunak: 'Días'
+Lanaldia: 'Jornada laboral'

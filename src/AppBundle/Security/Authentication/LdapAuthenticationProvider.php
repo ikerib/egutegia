@@ -112,6 +112,9 @@ class LdapAuthenticationProvider extends BaseProvider
                         if ($ldapUser->getDn()) {
                             $user->setDn($ldapUser->getDn());
                         }
+                        if ($ldapUser->getHizkuntza()) {
+                            $user->setHizkuntza( $ldapUser->getHizkuntza() );
+                        }
                         $this->userManager->updateUser($user);
                     }
                 }
