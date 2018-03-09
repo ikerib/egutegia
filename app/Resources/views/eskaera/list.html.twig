@@ -163,6 +163,7 @@
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                     </a>
                                 </li>
+                                {% if eskaera.egutegian == false %}
                                 <li>
                                     {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
                                     <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
@@ -171,6 +172,7 @@
                                     </a>
                                     {{ form_end(deleteForms[eskaera.id]) }}
                                 </li>
+                                {% endif %}
                                 {% if eskaera.amaitua != true  %}
                                 <li>
                                     {% if eskaera.bideratua %}

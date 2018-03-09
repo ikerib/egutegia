@@ -33,7 +33,11 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $ldap = $this->get('ldap_tools.ldap_manager');
-        /* OJO ALDATZEN BADA CalendarController newAction ere aldatu */
+
+        /****************************************************************************************************************
+         ***  OJO ALDATZEN BADA CalendarController newAction ere aldatu *************************************************
+         ****************************************************************************************************************/
+
         $ldapusers = $ldap->buildLdapQuery()
             ->select(
                 [
