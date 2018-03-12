@@ -185,6 +185,7 @@ class EskaeraController extends Controller
                 ]
             );
         }
+        /** @var Calendar $calendar */
         $calendar = $calendar[ 0 ];
 
         $eskaera = new Eskaera();
@@ -327,9 +328,12 @@ class EskaeraController extends Controller
 
         }
 
+        $jaiegunak = $calendar->getTemplate()->getTemplateEvents();
+
         return $this->render( 'eskaera/new.html.twig', array(
             'eskaera'  => $eskaera,
             'calendar' => $calendar,
+            'jaiegunak'=> $jaiegunak,
             'form'     => $form->createView(),
         ) );
     }

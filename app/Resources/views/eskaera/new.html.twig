@@ -1,5 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block head_style %}
+
+    {{ parent() }}
+    <style>
+        .datepicker table tr td.disabled,
+        .datepicker table tr td.disabled:hover {
+            color: #b90000;
+        }
+    </style>
+
+{% endblock %}
+
 {% block headline %}{{ eskaera.type.name ~ ' ' ~ 'eskaera berria' | trans  | lower}} {% endblock  %}
 
 {% block content_row %}
@@ -104,6 +116,11 @@
     </div>
 
 
+    <input type="hidden" id="txtJaiEgunak" value="{{ jaiegunak |  serialize('json') }}"/>
+
+
+    <button id="button" class="btn btn-warning">Disable Dates</button>
+
 {% endblock %}
 
 {% block foot_script %}
@@ -179,5 +196,33 @@
 
 
         });
+
+        var jaiegunak = JSON.parse($("#txtJaiEgunak").val());
+        var arrayJaiEgunak = [];
+
+        $.each( jaiegunak, function( key, value ) {
+            var nireFetxa = moment(value.start_date);
+            arrayJaiEgunak.push(moment(nireFetxa).format("YYYY-MM-DD"));
+        });
+
+        $('#appbundle_eskaera_hasi').datepicker({
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            datesDisabled: arrayJaiEgunak,
+            daysOfWeekDisabled: '6,0',
+            language: '{{ app.request.locale }}'
+        });
+
+        $('#appbundle_eskaera_amaitu').datepicker({
+            autoclose: true,
+            format: 'yyyy-mm-dd',
+            datesDisabled: arrayJaiEgunak,
+            daysOfWeekDisabled: '6,0',
+            language: '{{ app.request.locale }}'
+        });
+
+
     </script>
 {% endblock %}
+
+

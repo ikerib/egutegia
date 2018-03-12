@@ -43,12 +43,12 @@ class EskaeraType extends AbstractType
             ->add('hasi', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
+//                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
             ->add('amaitu', DateType::class, [
                 'widget' => 'single_text',
                 'html5' => false,
-                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
+//                'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
             ->add('egunak')
             ->add('orduak')

@@ -4,13 +4,13 @@
 
 $(document).ready(function () {
 
-    $(document).on('mouseenter', '.page-header', function () {
-        $('.btnPageHeaderEdit').show();
-        $('.btnEzabatu').show()
-    }).on('mouseleave', '.page-header', function () {
-        $('.btnPageHeaderEdit').hide();
-        $('.btnEzabatu').hide()
-    })
+    $(document).on("mouseenter", ".page-header", function () {
+        $(".btnPageHeaderEdit").show();
+        $(".btnEzabatu").show();
+    }).on("mouseleave", ".page-header", function () {
+        $(".btnPageHeaderEdit").hide();
+        $(".btnEzabatu").hide();
+    });
 
     $('#btnGorde').on('click', function () {
         $('form').submit()
@@ -24,7 +24,7 @@ $(document).ready(function () {
         $('#edit-modal').modal()
     });
 
-    $('.dropdown-toggle').dropdown()
+    $(".dropdown-toggle").dropdown();
 
     /*****************************************************************************************************************/
     /** ESKAERA NEW  *************************************************************************************************/
@@ -60,17 +60,6 @@ $(document).ready(function () {
         autoclose: true
     });
 
-    $('#appbundle_eskaera_hasi').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        language: 'eu'
-    });
-
-    $('#appbundle_eskaera_amaitu').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        language: 'eu'
-    });
 
     $('#appbundle_eskaera_noiz').datepicker({
         autoclose: true,
