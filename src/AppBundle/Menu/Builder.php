@@ -45,29 +45,31 @@ class Builder implements ContainerAwareInterface
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'Zerrendak', [ 'icon' => 'list', 'route' => 'zerrenda_konpentsatuak' ] )->setExtra('translation_domain','messages');
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider4', [ 'divider' => true ] );
             $menu[ 'Taula Laguntzaileak' ]->addChild( 'Jakinarazpen guztiak', [ 'icon' => 'notify', 'route' => 'notification_list' ] )->setExtra('translation_domain','messages');
+
+            /** @var EntityManager $em */
+            $em = $this->container->get( 'doctrine.orm.entity_manager' );
+            $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
+
+            if ( count( $eskaerak ) > 0 ) {
+                //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
+                $menu->addChild(
+                    'Eskaerak',
+                    array(
+                        'route'           => 'admin_eskaera_list',
+                        'routeParameters' => array( 'q' => 'all' ),
+                        'icon'            => 'inbox',
+                        'label'           => $this->container->get("translator")->trans("Eskaerak") . " <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
+                        'extras'          => array( 'safe_label' => true ),
+                    )
+                );
+            } else {
+                $menu->addChild( 'Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
+                     ->setLinkAttribute( 'class', 'childClass' )->setExtra('translation_domain','messages');
+            }
         }
 
 
-        /** @var EntityManager $em */
-        $em = $this->container->get( 'doctrine.orm.entity_manager' );
-        $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
 
-        if ( count( $eskaerak ) > 0 ) {
-            //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
-            $menu->addChild(
-                'Eskaerak',
-                array(
-                    'route'           => 'admin_eskaera_list',
-                    'routeParameters' => array( 'q' => 'all' ),
-                    'icon'            => 'inbox',
-                    'label'           => $this->container->get("translator")->trans("Eskaerak") . " <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
-                    'extras'          => array( 'safe_label' => true ),
-                )
-            );
-        } else {
-            $menu->addChild( 'Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
-                 ->setLinkAttribute( 'class', 'childClass' )->setExtra('translation_domain','messages');
-        }
 
 
 
@@ -124,7 +126,7 @@ class Builder implements ContainerAwareInterface
 
             $menu[ 'User' ]->addChild( 'divider', [ 'divider' => true ] );
 
-            if ( ( !$checker->isGranted( 'ROLE_BIDERATZAILEA' ) ) && ( ( $checker->isGranted( 'ROLE_ADMIN' ) ) ) ) {
+            if ( ( $checker->isGranted( 'ROLE_SINATZAILEA' ) ) ) {
                 $menu[ 'User' ]->addChild(
                     'Jakinarazpenak',
                     array(
