@@ -29,21 +29,7 @@ $(document).ready(function () {
     /*****************************************************************************************************************/
     /** ESKAERA NEW  *************************************************************************************************/
     /*****************************************************************************************************************/
-    function workday_count(fstart, fend) {
-        const start = moment(fstart);
-        const end = moment(fend);
-        const first = start.clone().endOf('week'); // end of first week
-        const last = end.clone().startOf('week'); // start of last week
-        const days = Math.floor(last.diff(first, 'days') * 5 / 7); // this will always multiply of 7
 
-        var wfirst = first.day() - start.day(); // check first week
-        if (start.day() === 0) --wfirst; // -1 if start with sunday
-
-        var wlast = end.day() - last.day(); // check last week
-        if (end.day() === 6) --wlast; // -1 if end with saturday
-
-        return wfirst + days + wlast; // get the total
-    }
 
     $('#fetxa-inline').datepicker({
         format: "yyyy-mm-dd",
@@ -61,39 +47,9 @@ $(document).ready(function () {
     });
 
 
-    $('#appbundle_eskaera_noiz').datepicker({
-        autoclose: true,
-        format: 'yyyy-mm-dd',
-        language: 'eu'
-    });
 
-    $('.cmbFetxaKalc').change(function () {
-        $('#appbundle_eskaera_total').val(0);
-        const txtEgunak = $('#appbundle_eskaera_egunak').val();
-        var d;
-        if ( txtEgunak === "0" ) {
-            d=0;
-            // return
-        } else {
-            const hasi = $('#appbundle_eskaera_hasi').val();
-            const amaitu = $('#appbundle_eskaera_amaitu').val();
-            d = workday_count(hasi, amaitu);
-            if ( isNaN(d)) {
-                d = 0;
-            }
-        }
 
-        const orduak = $('#appbundle_eskaera_orduak').val();
-        const egunOrduak = $('#txtJornada').val();
 
-        $('#appbundle_eskaera_egunak').val(d.toFixed(2));
-        var tmp = $('#appbundle_eskaera_egunak').val() * egunOrduak;
-
-        tmp = parseFloat(tmp) + parseFloat(orduak);
-
-        $('#appbundle_eskaera_total').val(tmp.toFixed(2));
-
-    });
 
     /*****************************************************************************************************************/
     /** FIN ESKAERA NEW  *********************************************************************************************/
