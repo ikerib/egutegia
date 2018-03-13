@@ -43,8 +43,8 @@
            data-search="true"
             {#data-height="300"#}
 
-           data-sort-name="name"
-           data-sort-order="asc"
+           data-sort-name="id"
+           data-sort-order="desc"
 
            data-icon-size="sm"
            data-show-refresh="true"
@@ -71,28 +71,18 @@
 
         <thead>
         <tr>
-            <th data-halign="center" data-align="center" data-field="id" data-visible="false"
-                data-sortable="true">{{ 'Nº Jakinarazpena' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="eskaera.id"
-                data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="readed"
-                data-sortable="true">{{ 'Irakurria' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="completed"
-                data-sortable="true">{{ 'Erantzunda' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="result"
-                data-sortable="true">{{ 'Erantzuna' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Gaia' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Mota' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="hasi"
-                data-sortable="true">{{ 'Hasi' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="amaitu"
-                data-sortable="true">{{ 'Amaitu' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="orduak"
-                data-sortable="true">{{ 'Orduak' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="created"
-                data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="eskaera.oharra"
-                data-sortable="true">{{ 'Erantzuna' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="id"            data-visible="false" data-sortable="true">{{ 'Nº Jakinarazpena' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="eskaera.id"    data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="readed"        data-sortable="true">{{ 'Irakurria' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="completed"     data-sortable="true">{{ 'Erantzunda' | trans }}</th>
+            <th data-halign="center" data-align="center" data-field="result"        data-sortable="true">{{ 'Erantzuna' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="name"            data-sortable="true">{{ 'Gaia' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="name"            data-sortable="true">{{ 'Mota' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="hasi"            data-sortable="true">{{ 'Hasi' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="amaitu"          data-sortable="true">{{ 'Amaitu' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="orduak"          data-sortable="true">{{ 'Orduak' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="created"         data-sortable="true">{{ 'Noiz jasoa' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.oharra"  data-sortable="true">{{ 'Erantzuna' | trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -242,21 +232,30 @@
                                         "<tr>" +
                                             "<th>Firmatzailea</th>" +
                                             "<th>Firmatua</th>" +
+                                            "<th>Erantzuna</th>" +
                                         "</tr>" +
                                     "</thead><tbody";
                                         $.each(data, function (i, obj) {
                                             var myspan = "";
                                             var fondoa ="";
-                                            if (obj.firmatua === false) {
-                                                myspan = "<span class='label label-danger'>Ez</span>";
+                                            var erantzuna ="";
+                                            if (!("firmatua" in obj)) {
+                                                myspan = "<span class='label label-warning'>Ez</span>";
                                                 fondoa = "danger";
+                                                erantzuna = "-";
                                             } else {
                                                 myspan = "<span class='label label-success'>Bai</span>";
                                                 fondoa = "success";
+                                                if ( obj.firmatua === false ) {
+                                                    erantzuna = "<span class='label label-danger'>Ez onartua</span>";
+                                                } else {
+                                                    erantzuna = "<span class='label label-success'>Bai onartua</span>";
+                                                }
                                             }
                                             html = html + "<tr>" +
                                                 "<td>" + obj.user.username + "</td>"+
                                                 "<td>" + myspan + "</td>"+
+                                                "<td>" + erantzuna + "</td>"+
                                             "</tr>";
                                         });
                                     html = html +"</tbody>"+

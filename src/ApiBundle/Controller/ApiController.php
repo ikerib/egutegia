@@ -58,7 +58,7 @@ class ApiController extends FOSRestController
      *
      * @param $id
      *
-     * @return array|View
+     * @return \AppBundle\Entity\Template|array|View|object
      * @Annotations\View()
      * @Get("/template/{id}")
      */
@@ -128,7 +128,7 @@ class ApiController extends FOSRestController
      *
      * @param Request $request
      *
-     * @return static
+     * @return View
      */
     public function postTemplateEventsAction( Request $request )
     {
@@ -179,7 +179,7 @@ class ApiController extends FOSRestController
      * @Rest\Delete("/templateevents/{templateid}")
      * @Rest\View(statusCode=204)
      *
-     * @return array
+     * @return View
      */
 
     public function deleteTemplateEventsAction( $templateid )
@@ -249,7 +249,7 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $id
      *
-     * @return static
+     * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/events/{id}")
@@ -397,9 +397,7 @@ class ApiController extends FOSRestController
      * @var Request
      * @Annotations\View()
      *
-     * @param Request $request
-     *
-     * @return static
+     * @return View
      */
 
     public function postEventsAction( Request $request )
@@ -499,7 +497,7 @@ class ApiController extends FOSRestController
      * @Rest\Delete("/events/{id}")
      * @Rest\View(statusCode=204)
      *
-     * @return array
+     * @return View
      */
 
     public function deleteEventsAction( $id )
@@ -569,10 +567,9 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $calendarid
      *
+     * @return View
      * @throws HttpException
      *
-     * @return static
-     * @Annotations\View()
      */
     public function postNotesAction( Request $request, $calendarid )
     {
@@ -626,9 +623,9 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $username
      *
-     * @throws HttpException
-     *
-     * @return static
+     * @return View
+     * @throws \LdapTools\Exception\EmptyResultException
+     * @throws \LdapTools\Exception\MultiResultException
      * @Annotations\View()
      */
 
@@ -714,7 +711,7 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $id
      *
-     * @return static
+     * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/firma/{id}")
@@ -743,70 +740,49 @@ class ApiController extends FOSRestController
             /**
              * 1-.Begiratu user honek firmatuta duen, ez badu firmatua, firmatu
              */
-            $firmatudu = $em->getRepository( 'AppBundle:Firma' )->ErabiltzaileakEskaeraFirmatzekeDu(
-                $user->getId(),
-                $firma->getId()
-            );
+
+            //            $firmatudu = $em->getRepository( 'AppBundle:Firma' )->ErabiltzaileakEskaeraFirmatzekeDu(
+            //                $user->getId(),
+            //                $firma->getId()
+            //            );
 
             /**
              * 2-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
              *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
              */
-            if ( count( $firmatudu ) == 0 ) { // ez du firmatu
-                //Firmatu
-                /** @var Firmadet $firmadets */
-                $firmadets = $firma->getFirmadet();
-                /** @var Firmadet $fd */
-                foreach ( $firmadets as $fd ) {
-                    /** @var Sinatzaileakdet $sd */
-                    $sd = $fd->getSinatzaileakdet();
 
-                    /** @var User $su */
-                    $su = $sd->getUser();
+            //            if ( count( $firmatudu ) == 0 ) { // ez du firmatu
+            //Firmatu
+            /** @var Firmadet $firmadets */
+            $firmadets = $firma->getFirmadet();
+            /** @var Firmadet $fd */
+            foreach ( $firmadets as $fd ) {
+                /** @var Sinatzaileakdet $sd */
+                $sd = $fd->getSinatzaileakdet();
 
-                    if ( $user->getId() == $su->getId() ) {
-                        $fd->setFirmatua( $onartua );
-                        $fd->setFirmatzailea( $user );
-                        $fd->setNoiz( New \DateTime() );
-                        $em->persist( $fd );
-                        $em->flush();
-                        break;
-                    }
+                /** @var User $su */
+                $su = $sd->getUser();
+
+                if ( $user->getId() == $su->getId() ) {
+                    $fd->setFirmatua( $onartua );
+                    $fd->setFirmatzailea( $user );
+                    $fd->setNoiz( New \DateTime() );
+                    $em->persist( $fd );
+                    $em->flush();
+                    break;
                 }
-            } else {
-                if ( $onartua == false ) {
-                    $firma->setCompleted( false );
-                    $em->persist( $firma );
-                }
-
-                /** @var Firmadet $firmadets */
-                $firmadets = $firma->getFirmadet();
-                /** @var Firmadet $fd */
-                foreach ( $firmadets as $fd ) {
-                    /** @var Sinatzaileakdet $sd */
-                    $sd = $fd->getSinatzaileakdet();
-
-                    /** @var User $su */
-                    $su = $sd->getUser();
-
-                    if ( $user->getId() == $su->getId() ) {
-                        $fd->setFirmatua( $onartua );
-                        $fd->setFirmatzailea( $user );
-                        $fd->setNoiz( New \DateTime() );
-                        $em->persist( $fd );
-                    }
-                }
-                $em->flush();
-
             }
+
+            //            }
+
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
-            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak(
-                $eskaera->getSinatzaileak()->getId()
-            );
-            $firmadet = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak(
-                $firma->getId()
-            );
+//            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak(
+//                $eskaera->getSinatzaileak()->getId()
+//            );
+//            $firmadet = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak(
+//                $firma->getId()
+//            );
 
             $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
 
@@ -826,7 +802,9 @@ class ApiController extends FOSRestController
 
                 $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
                 $bideratzaileak = [];
+                /** @var User $b */
                 foreach ( $bideratzaileakfind as $b ) {
+
                     array_push( $bideratzaileak, $b->getEmail() );
                 }
                 $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
@@ -876,7 +854,7 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $id
      *
-     * @return static
+     * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/jakinarazpenareaded/{id}")
@@ -926,7 +904,7 @@ class ApiController extends FOSRestController
      * @param Request $request
      * @param         $id
      *
-     * @return static
+     * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/jakinarazpena/{id}")
@@ -1022,13 +1000,10 @@ class ApiController extends FOSRestController
         /** @var Firmadet $f */
         foreach ( $fd as $f ) {
             $user = $f->getSinatzaileakdet()->getUser();
-            $firma = false;
-            if ( $f->getFirmatua() ) {
-                $firma = true;
-            }
+
             $r = array(
                 'user'     => $user,
-                'firmatua' => $firma,
+                'firmatua' => $f->getFirmatua(),
             );
 
             array_push( $users, $r );
@@ -1041,7 +1016,8 @@ class ApiController extends FOSRestController
     /**
      * Get firmadet of a Jakinarazèma.
      *
-     * @param jakinarazpenaid
+     *
+     * @param $jakinarazpenaid
      *
      * @return array|View
      * @Annotations\View()
@@ -1065,13 +1041,9 @@ class ApiController extends FOSRestController
         /** @var Firmadet $f */
         foreach ( $fd as $f ) {
             $user = $f->getSinatzaileakdet()->getUser();
-            $firma = false;
-            if ( $f->getFirmatua() ) {
-                $firma = true;
-            }
             $r = array(
                 'user'     => $user,
-                'firmatua' => $firma,
+                'firmatua' => $f->getFirmatua(),
             );
 
             array_push( $users, $r );

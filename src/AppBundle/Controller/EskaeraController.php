@@ -113,7 +113,7 @@ class EskaeraController extends Controller
         $ev->setName( "Eskaeratik: " . $eskaera->getName() );
         $ev->setStartDate( $eskaera->getHasi() );
         $ev->setEndDate( $eskaera->getAmaitu() );
-        $ev->setHours( $eskaera->getOrduak() );
+        $ev->setHours( $eskaera->getTotal() );
         $ev->setType( $eskaera->getType() );
         $em->persist( $ev );
 

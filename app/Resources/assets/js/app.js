@@ -88,7 +88,7 @@ $(document).ready(function () {
             data: {onartua: 1}
         })
             .done(function (data) {
-                const url2 = Routing.generate('put_jakinarazpena', {'id': jakinarazpenaid})
+                const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
                 $.ajax({
                     url: url2,
                     method: 'PUT',

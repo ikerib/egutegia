@@ -126,7 +126,7 @@ class Builder implements ContainerAwareInterface
 
             $menu[ 'User' ]->addChild( 'divider', [ 'divider' => true ] );
 
-            if ( ( $checker->isGranted( 'ROLE_SINATZAILEA' ) ) ) {
+            if ( ( $checker->isGranted( 'ROLE_SINATZAILEA' )) || ( $checker->isGranted('ROLE_SUPER_ADMIN')) ) {
                 $menu[ 'User' ]->addChild(
                     'Jakinarazpenak',
                     array(

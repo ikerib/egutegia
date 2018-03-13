@@ -213,11 +213,6 @@
         </div>
     </div>
 
-    {#<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">#}
-        {#<div id="modal-dialog" class="modal-dialog" role="document">#}
-        {#</div>#}
-    {#</div>#}
-
     <div class="my-modal-base">
         <div class="my-modal-cont"></div>
     </div>
@@ -312,7 +307,9 @@
             $table.bootstrapTable();
             $table.on('expand-row.bs.table', function (e, index, row, $detail) {
                 var miid = row.id
-                var url = Routing.generate('get_firmatzaileak', {'eskaeraid': miid})
+                var url = Routing.generate("get_firmatzaileak", { "eskaeraid": miid });
+
+                console.log(url);
 
                 $detail.html('toc toc...' + url + ' helbideari deika');
 
@@ -320,17 +317,28 @@
                     var html = "<div class='row'>" +
                         "<div class='col-md-2'></div>" +
                         "<div class='col-md-8'>" +
-                        "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th></tr></thead><tbody>";
+                        "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th><th><strong>Erantzuna</strong></th></tr></thead><tbody>";
                     $.each(data, function (i, obj) {
 
                         html = html + "<tr'><td>" + obj.user.username + "</td>";
 
 
-                        if (obj.firmatua === false) {
-                            html = html + "<td><span class='label label-danger '>Ez</span></td></tr>";
+                        /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */
+                        if (!("firmatua" in obj)) {
+                            html = html + "<td><span class='label label-warning '>Ez</span></td><td>-</td></tr>";
                         } else {
-                            html = html + "<td><span class='label label-success'>Bai</span></td></tr>";
+                            html = html + "<td><span class='label label-success '>Bai</span></td>";
+
+                            if (obj.firmatua === true ) {
+                                html = html + "<td><span class='label label-success'>Bai onartua</span></td></tr>";
+                            } else {
+                                html = html + "<td><span class='label label-danger'>Ez onartua</span></td></tr>";
+                            }
                         }
+
+
+
+
 
 
                     });
