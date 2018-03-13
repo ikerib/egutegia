@@ -44,6 +44,14 @@ class Firmadet
     private $firmatua;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="postit", type="boolean", nullable=true)
+     * @Expose()
+     */
+    private $postit;
+
+    /**
      * @var integer
      * @Gedmo\SortablePosition
      * @ORM\Column(name="orden", type="integer", nullable=true)
@@ -303,5 +311,29 @@ class Firmadet
     public function getFirmatzailea()
     {
         return $this->firmatzailea;
+    }
+
+    /**
+     * Set postit.
+     *
+     * @param bool|null $postit
+     *
+     * @return Firmadet
+     */
+    public function setPostit($postit = null)
+    {
+        $this->postit = $postit;
+
+        return $this;
+    }
+
+    /**
+     * Get postit.
+     *
+     * @return bool|null
+     */
+    public function getPostit()
+    {
+        return $this->postit;
     }
 }

@@ -79,9 +79,9 @@ $(document).ready(function () {
     })
 
     $('.btnEskaeraOnartu').on('click', function () {
-        const firmaid = $(this).data('firmaid')
-        const jakinarazpenaid = $(this).data('notifyid')
-        const url = Routing.generate('put_firma', {'id': firmaid})
+        const firmaid = $(this).data("firmaid");
+        const jakinarazpenaid = $(this).data("notifyid");
+        const url = Routing.generate("put_firma", { "id": firmaid });
         $.ajax({
             url: url,
             method: 'PUT',

@@ -14,6 +14,7 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 
+use AppBundle\Entity\Firma;
 use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Log;
 
@@ -710,15 +711,19 @@ class ApiController extends FOSRestController
      *
      * @param Request $request
      * @param         $id
+     * @param null    $userid
      *
      * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
-     * @Rest\Put("/firma/{id}")
+     * @Rest\Put("/firma/{id}/{userid}")
      */
-    public function putFirmaAction( Request $request, $id )
+    public function putFirmaAction( Request $request, $id, $userid=null )
     {
         $em = $this->getDoctrine()->getManager();
+
+        /** $userid bidaltzen bada postit botoia erabilli delako da */
+        $postit = false;
 
         $jsonData = json_decode( $request->getContent(), true );
         $onartua = false;
@@ -732,26 +737,24 @@ class ApiController extends FOSRestController
             throw new EntityNotFoundException();
         }
 
-        /** @var User $user */
-        $user = $this->getUser();
+        if ($userid == null) {
+            /** @var User $user */
+            $user = $this->getUser();
+        } else {
+            /** @var User $user */
+            $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
+            $postit = true;
+        }
+
 
         if ( $firma->getCompleted() == false ) {
 
-            /**
-             * 1-.Begiratu user honek firmatuta duen, ez badu firmatua, firmatu
-             */
-
-            //            $firmatudu = $em->getRepository( 'AppBundle:Firma' )->ErabiltzaileakEskaeraFirmatzekeDu(
-            //                $user->getId(),
-            //                $firma->getId()
-            //            );
 
             /**
-             * 2-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
+             * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
              *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
              */
 
-            //            if ( count( $firmatudu ) == 0 ) { // ez du firmatu
             //Firmatu
             /** @var Firmadet $firmadets */
             $firmadets = $firma->getFirmadet();
@@ -767,22 +770,16 @@ class ApiController extends FOSRestController
                     $fd->setFirmatua( $onartua );
                     $fd->setFirmatzailea( $user );
                     $fd->setNoiz( New \DateTime() );
+                    $fd->setPostit( $postit );
                     $em->persist( $fd );
                     $em->flush();
                     break;
                 }
             }
 
-            //            }
 
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
-//            $sinatzaileakdet = $em->getRepository( 'AppBundle:Sinatzaileakdet' )->getSinatuBeharDutenErabiltzaileak(
-//                $eskaera->getSinatzaileak()->getId()
-//            );
-//            $firmadet = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatuaDutenErabiltzaileak(
-//                $firma->getId()
-//            );
 
             $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
 
@@ -792,7 +789,7 @@ class ApiController extends FOSRestController
             }
 
             /**
-             * 3-. firma guztiak baditu, orduan eskaera onartzen da erabat.
+             * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
              */
             if ( $firma->getCompleted() == true ) {
                 /** @var Eskaera $eskaera */
@@ -833,7 +830,7 @@ class ApiController extends FOSRestController
         header( 'access-control-allow-origin: *' );
 
         return $view;
-    } // "put_firma"             [PUT] /firma/{id}
+    }
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/
@@ -891,7 +888,7 @@ class ApiController extends FOSRestController
 
 
     /**
-     * Onartu / Ez onartu eskaera.
+     * Jakinarazpena irakurria eta erantzuna markatu.
      *
      * @ApiDoc(
      *   resource = true,
@@ -989,21 +986,33 @@ class ApiController extends FOSRestController
     {
         $em = $this->getDoctrine()->getManager();
 
+        /** @var Firmadet $fd */
         $fd = $em->getRepository( 'AppBundle:Firmadet' )->getFirmatzaileak( $eskaeraid );
 
         if ( $fd === null ) {
             return new View( 'there are no users exist', Response::HTTP_NOT_FOUND );
         }
 
-        /** Soilik User-ak behar ditugu */
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository( 'AppBundle:Eskaera' )->find( $eskaeraid );
+        /** @var Firma $firma */
+        $firma = $eskaera->getFirma();
+        /** @var Notification $notify */
+        $notify = $em->getRepository( 'AppBundle:Notification' )->getNotificationForFirma( $firma->getId() );
+
+
         $users = [];
         /** @var Firmadet $f */
         foreach ( $fd as $f ) {
             $user = $f->getSinatzaileakdet()->getUser();
 
+
             $r = array(
-                'user'     => $user,
-                'firmatua' => $f->getFirmatua(),
+                'user'      => $user,
+                'notify'    => $notify,
+                'postit'    => $f->getPostit(),
+                'firmaid'   => $firma->getId(),
+                'firmatua'  => $f->getFirmatua(),
             );
 
             array_push( $users, $r );

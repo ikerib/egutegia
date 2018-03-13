@@ -6,6 +6,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -118,4 +119,15 @@ class NotificationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getNotificationForFirma($firmaid) {
+        $qb = $this->createQueryBuilder( 'n' )
+                    ->select('n,u')
+                    ->innerJoin( 'n.user', 'u' )
+                    ->innerJoin('n.firma', 'f')
+                    ->where('f.id=:firmaid')
+
+                    ->setParameter( 'firmaid', $firmaid);
+
+        return $qb->getQuery()->getResult( Query::HYDRATE_ARRAY);
+    }
 }

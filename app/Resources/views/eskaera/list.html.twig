@@ -306,7 +306,7 @@
 
             $table.bootstrapTable();
             $table.on('expand-row.bs.table', function (e, index, row, $detail) {
-                var miid = row.id
+                var miid = row.id;
                 var url = Routing.generate("get_firmatzaileak", { "eskaeraid": miid });
 
                 console.log(url);
@@ -317,11 +317,38 @@
                     var html = "<div class='row'>" +
                         "<div class='col-md-2'></div>" +
                         "<div class='col-md-8'>" +
-                        "<table class='table table-bordered table-striped table-hover table-condensed'><thead><tr><th><strong>Erabiltzailea</strong></th><th><strong>Firmatua</strong></th><th><strong>Erantzuna</strong></th></tr></thead><tbody>";
+                        "<table class='table table-bordered table-striped table-hover table-condensed'>" +
+                            "<thead>" +
+                        "       <tr>" +
+                        "           <th><strong>Erabiltzailea</strong></th>" +
+                        "           <th><strong>Firmatua</strong></th>" +
+                        "           <th><strong>Erantzuna</strong></th>" +
+                        "           <th><strong></strong></th>" +
+                        "       </tr>" +
+                        "   </thead>" +
+                        "<tbody>";
                     $.each(data, function (i, obj) {
+                        console.log("------------------------------------------------------------------------------");
+                        console.log(obj);
+                        console.log("------------------------------------------------------------------------------");
+
+                        var jakinarazpenid=0;
+                        var postit = false;
+
+                        if ( 'postit' in obj ) {
+                            postit = true;
+                        }
+
+                        /** bilatu jakinarazpen_id **/
+                        $.each(obj.notify, function ( k, n ) {
+                            if ( n.user.id === obj.user.id) {
+                                jakinarazpenid = n.id;
+                                return false;
+                            }
+                        });
 
                         html = html + "<tr'><td>" + obj.user.username + "</td>";
-
+                        var sinatua = false;
 
                         /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */
                         if (!("firmatua" in obj)) {
@@ -330,15 +357,27 @@
                             html = html + "<td><span class='label label-success '>Bai</span></td>";
 
                             if (obj.firmatua === true ) {
-                                html = html + "<td><span class='label label-success'>Bai onartua</span></td></tr>";
+                                sinatua = true;
+                                html = html + "<td><span class='label label-success'>Bai onartua</span></td>";
                             } else {
-                                html = html + "<td><span class='label label-danger'>Ez onartua</span></td></tr>";
+                                html = html + "<td><span class='label label-danger'>Ez onartua</span></td>";
                             }
                         }
 
+                        /** Sinadura badu ez du postit botoia behar */
+                        if ( sinatua === false ) {
+                            html = html + "<td>" +
+                                "<button class='btn btn-xs btn-primary btnPostIt' data-firmaid="+obj.firmaid+" data-userid="+ obj.user.id +" data-notifyid="+ jakinarazpenid +">Post it!</button>" +
+                                "</td>";
+                        } else {
+                            if ( postit === true ) {
+                                html = html + "<td>Postit botoi bidez sinatua</td>";
+                            } else {
+                                html = html + "<td></td>";
+                            }
+                        }
 
-
-
+                        html = html + "</tr>";
 
 
                     });
@@ -382,6 +421,34 @@
                 });
             });
 
+            $("#tableEskaerak").on("click", ".btnPostIt", function () {
+                var eskaerid = $(this).data("eskaeraid");
+                var userid = $(this).data("userid");
+
+                var firmaid = $(this).data("firmaid");
+                var jakinarazpenaid = $(this).data("notifyid");
+                var url = Routing.generate("put_firma", { id: firmaid, userid: userid });
+                $.ajax({
+                    url: url,
+                    method: 'PUT',
+                    data: {onartua: 1}
+                })
+                 .done(function (data) {
+                     const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                     $.ajax({
+                         url: url2,
+                         method: 'PUT',
+                         data: {onartua: 1}
+                     }).done(function (data) {
+                         location.reload()
+                     }).fail(function (xhr) {
+                         bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
+                     })
+                 })
+                 .fail(function (xhr) {
+                     bootbox.alert('Akats bat gertatu da firmatzerakoan.')
+                 });
+            });
 
         });
     </script>
