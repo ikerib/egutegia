@@ -76,8 +76,8 @@
             <th data-halign="center" data-align="center" data-field="readed"        data-sortable="true">{{ 'Irakurria' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="completed"     data-sortable="true">{{ 'Erantzunda' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="result"        data-sortable="true">{{ 'Erantzuna' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="name"            data-sortable="true">{{ 'Gaia' | trans }}</th>
-            <th data-halign="center" data-align="left" data-field="name"            data-sortable="true">{{ 'Mota' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="eskaera.user.username"            data-sortable="true">{{ 'Langilea' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="type"            data-sortable="true">{{ 'Mota' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="hasi"            data-sortable="true">{{ 'Hasi' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="amaitu"          data-sortable="true">{{ 'Amaitu' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="orduak"          data-sortable="true">{{ 'Orduak' | trans }}</th>
@@ -117,7 +117,7 @@
                         {% endif %}
                     </a>
                 </td>
-                <td>{{ notification.name }}</td>
+                <td>{{ notification.eskaera.user.username }}</td>
                 <td>{{ notification.eskaera.type }}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
