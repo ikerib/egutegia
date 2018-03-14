@@ -124,7 +124,7 @@ Nor: Quien
 'eskaera berria': 'Nueva petición'
 Eguna: Día
 Azalpena: Descripcioón
-'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': '__Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
+msg.eskaera.ezabatu: '¿Estas seguro de que deseas eliminar la petición? Si aceptas, también se borraran los documentos asociados. Si las petición ha sido añadida al calendario NO SE BORRARAN del calendario. Hay que hacerlo manualmente desde el calendario del trabajador'
 'Nondik kendu': '__Nondik kendu'
 'Eskaera gauzatu': Solicitar
 Zerrendak: Listados

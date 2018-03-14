@@ -125,7 +125,7 @@ Nor: Nor
 'eskaera berria': 'eskaera berria'
 Eguna: Eguna
 Azalpena: Azalpena
-'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
+msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere. Datuak egutegian gehituak izan badira EZ DIRA EZABATUKO. Ezabatzeko langilearen egutegira joan eta eskuz egin behar da.'
 'Nondik kendu': 'Nondik kendu'
 'Eskaera gauzatu': 'Eskaera gauzatu'
 Zerrendak: Zerrendak
