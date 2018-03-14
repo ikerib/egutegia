@@ -150,13 +150,20 @@ class CalendarController extends Controller
             return $this->redirectToRoute('admin_calendar_edit', ['id' => $calendar->getId()]);
         }
 
+        if ( count($lastCalendar) == 0 ) {
+            $azkenEgutegi = null;
+        } else {
+            $azkenEgutegi = $lastCalendar[ 0 ];
+        }
+
+
         if ($request->isXmlHttpRequest()) {
             return $this->render(
                 'calendar/_ajax_new.html.twig',
                 [
                     'calendar' => $calendar,
                     'username' => $username,
-                    'lastCalendar' => $lastCalendar[0],
+                    'lastCalendar' => $azkenEgutegi,
                     'form' => $form->createView(),
                 ]
             );

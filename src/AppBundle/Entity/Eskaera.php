@@ -119,6 +119,12 @@ class Eskaera
     private $egutegian=false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="konfliktoa", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $konfliktoa=false;
+
+    /**
      * @var string
      * @ORM\Column(name="oharra", type="string", nullable=true)
      */
@@ -193,6 +199,7 @@ class Eskaera
         $this->noiz = New \DateTime();
         $this->abiatua = false;
         $this->amaitua = false;
+        $this->konfliktoa = false;
     }
 
     public function __toString()
@@ -786,5 +793,29 @@ class Eskaera
     public function getBideratua()
     {
         return $this->bideratua;
+    }
+
+    /**
+     * Set konfliktoa.
+     *
+     * @param bool|null $konfliktoa
+     *
+     * @return Eskaera
+     */
+    public function setKonfliktoa($konfliktoa = null)
+    {
+        $this->konfliktoa = $konfliktoa;
+
+        return $this;
+    }
+
+    /**
+     * Get konfliktoa.
+     *
+     * @return bool|null
+     */
+    public function getKonfliktoa()
+    {
+        return $this->konfliktoa;
     }
 }

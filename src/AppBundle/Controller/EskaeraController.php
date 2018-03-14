@@ -62,7 +62,7 @@ class EskaeraController extends Controller
      */
     public function listAction( Request $request )
     {
-        $this->denyAccessUnlessGranted( ['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login' );
+        $this->denyAccessUnlessGranted( [ 'ROLE_ADMIN', 'ROLE_SINATZAILEA' ], null, 'Egin login' );
         $em = $this->getDoctrine()->getManager();
 
         $q = $request->query->get( 'q' );
@@ -131,13 +131,13 @@ class EskaeraController extends Controller
         $docuser = $doc->getEskaera()->getUser();
 
         $pathFrom = $doc->getFilenamepath();
-        $pathTo = $pdfPath . "/". $docuser->getUsername()."/".$eskaera->getCalendar()->getYear()."/". $doc->getFilename();
+        $pathTo = $pdfPath . "/" . $docuser->getUsername() . "/" . $eskaera->getCalendar()->getYear() . "/" . $doc->getFilename();
         $doc->setFilenamepath( $pathTo );
         $doc->setEgutegian( true );
         $em->persist( $eskaera );
 
-        if (!is_dir(dirname($pathTo))) {
-            mkdir(dirname($pathTo), 0777, true);
+        if ( !is_dir( dirname( $pathTo ) ) ) {
+            mkdir( dirname( $pathTo ), 0777, true );
         }
         rename( $pathFrom, $pathTo );
 
@@ -175,7 +175,7 @@ class EskaeraController extends Controller
             date( 'Y' )
         );
 
-        if (!$calendar){
+        if ( !$calendar ) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
@@ -209,7 +209,8 @@ class EskaeraController extends Controller
             $user = $data->getUser();
             $fini = $data->getHasi();
             $ffin = $data->getAmaitu();
-            $collision = "";
+            $collision1 = "";
+            $collision2 = "";
 
 
             /**
@@ -227,7 +228,8 @@ class EskaeraController extends Controller
                     foreach ( $gutxienekoakdet as $gd ) {
                         /** @var Gutxienekoakdet $gd */
                         if ( $gd->getUser() !== $user ) {
-                            $collision = $em->getRepository( 'AppBundle:Event' )->checkCollision( $gd->getUser()->getId(), $fini, $ffin );
+                            $collision1 = $em->getRepository( 'AppBundle:Event' )->checkCollision( $gd->getUser()->getId(), $fini, $ffin );
+                            $collision2 = $em->getRepository( 'AppBundle:Eskaera' )->checkCollision( $gd->getUser()->getId(), $fini, $ffin );
                         }
                     }
                 }
@@ -238,17 +240,29 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if ( $collision !== "" ) {
-                if ( count( $collision ) > 0  ) {
+            if (( $collision1 !== "" ) || ($collision2 !== "")) {
+                if ( ( $collision1 !== "" ) && ( count( $collision1 ) > 0 )) {
                     $txt = "";
                     /** @var Event $e */
-                    foreach ( $collision as $e ) {
+                    foreach ( $collision1 as $e ) {
                         $txt = $txt . " - " . $e->getCalendar()->getUser();
                     }
                     $txtOharra = $eskaera->getOharra() . " ADI!!  " . $txt . " langileekin koinzidentziak ditu";
                     $eskaera->setOharra( $txtOharra );
+                    $eskaera->setKonfliktoa( true );
+                }
+                if ( ( $collision2 !== "" ) && ( count( $collision2 ) > 0 )) {
+                    $txt = "";
+                    /** @var Event $e */
+                    foreach ( $collision2 as $e ) {
+                        $txt = $txt . " - " . $e->getCalendar()->getUser();
+                    }
+                    $txtOharra = $eskaera->getOharra() . " ADI!!  " . $txt . " langileekin koinzidentziak ditu";
+                    $eskaera->setOharra( $txtOharra );
+                    $eskaera->setKonfliktoa( true );
                 }
             }
+
 
 
             /**
@@ -257,16 +271,16 @@ class EskaeraController extends Controller
 
             $user = $this->getUser();
             $noiz = Date( 'Y-m-d' );
-            if ($eskaera->getNoiz()->format( 'Y-m-d' ) != null){
+            if ( $eskaera->getNoiz()->format( 'Y-m-d' ) != null ) {
                 $noiz = $eskaera->getNoiz()->format( 'Y-m-d' );
             }
 
             $amaitu = "";
-            if ($eskaera->getAmaitu() != null){
+            if ( $eskaera->getAmaitu() != null ) {
                 $amaitu = $eskaera->getAmaitu()->format( 'Y-m-d' );
             }
 
-            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' .$noiz . '-' . $amaitu . '.pdf';
+            $name = $user->getUsername() . '-' . $eskaera->getType() . '-' . $noiz . '-' . $amaitu . '.pdf';
 
             $filepath = '/' . $user->getUsername() . '/' . $eskaera->getNoiz()->format( 'Y' ) . '/';
 
@@ -328,13 +342,18 @@ class EskaeraController extends Controller
 
         }
 
-        $jaiegunak = $calendar->getTemplate()->getTemplateEvents();
+        $jaiegunak = $em->getRepository( 'AppBundle:TemplateEvent' )->findBy(
+            array(
+                'template' => $calendar->getTemplate()->getId(),
+            )
+        );
+
 
         return $this->render( 'eskaera/new.html.twig', array(
-            'eskaera'  => $eskaera,
-            'calendar' => $calendar,
-            'jaiegunak'=> $jaiegunak,
-            'form'     => $form->createView(),
+            'eskaera'   => $eskaera,
+            'calendar'  => $calendar,
+            'jaiegunak' => $jaiegunak,
+            'form'      => $form->createView(),
         ) );
     }
 
@@ -490,15 +509,15 @@ class EskaeraController extends Controller
                         $notify = New Notification();
                         $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
 
-                        $desc  = $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
+                        $desc = $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
                             "Egutegia: " . $eskaera->getCalendar()->getName() . "\n" .
                             "Hasi: " . $eskaera->getHasi()->format( 'Y-m-d' ) . "\n";
 
-                        if ($eskaera->getAmaitu() != null){
+                        if ( $eskaera->getAmaitu() != null ) {
                             $desc .= "Amaitu: " . $eskaera->getAmaitu()->format( 'Y-m-d' );
                         }
 
-                        $notify->setDescription($desc);
+                        $notify->setDescription( $desc );
                         $notify->setEskaera( $eskaera );
                         $notify->setFirma( $firma );
                         $notify->setReaded( false );

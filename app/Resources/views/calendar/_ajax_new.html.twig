@@ -78,7 +78,7 @@
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    <label>{{ lastCalendar.year }}</label>
+                    <label>{% if lastCalendariyear is defined %}{{ lastCalendar.year }}{% endif %}</label>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
                     {{ form_widget(form.hoursYear, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lastHoursYear" value="{{ lastCalendar.hoursYear }}" disabled>
+                    <input class="form-control" type="text" id="lastHoursYear" value="{% if lastCalendar.hoursYear is defined %}{{ lastCalendar.hoursYear }}{% endif %}" disabled>
                 </div>
             </div>
         </div>
@@ -112,7 +112,7 @@
                     {{ form_widget(form.hoursFree, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lasthoursFree" value="{{ lastCalendar.hoursFree }}" disabled>
+                    <input class="form-control" type="text" id="lasthoursFree" value="{% if lastCalendar.hoursFree is defined %}{{ lastCalendar.hoursFree }} {% endif %}" disabled>
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                     {{ form_widget(form.hoursSelf, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lasthoursSelf" value="{{ lastCalendar.hoursSelf }}" disabled>
+                    <input class="form-control" type="text" id="lasthoursSelf" value="{% if lastCalendar.hoursSelf is defined %}{{ lastCalendar.hoursSelf}}{% endif %}" disabled>
                 </div>
             </div>
         </div>
@@ -145,7 +145,7 @@
                     {{ form_widget(form.hoursSelfHalf, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lasthoursSelfHalf" value="{{ lastCalendar.hoursSelfHalf }}" disabled>
+                    <input class="form-control" type="text" id="lasthoursSelfHalf" value="{% if lastCalendar.hoursSelfHalf is defined %}{{ lastCalendar.hoursSelfHalf}}{% endif %}" disabled>
                 </div>
             </div>
         </div>
@@ -162,7 +162,7 @@
                     {{ form_widget(form.hoursCompensed, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lasthoursCompensed" value="{{ lastCalendar.hoursCompensed }}" disabled>
+                    <input class="form-control" type="text" id="lasthoursCompensed" value="{% if lastCalendar.hoursCompensed is defined %}{{ lastCalendar.hoursCompensed }}{% endif %}" disabled>
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
                     {{ form_widget(form.hoursDay, { 'attr': {'class': 'form-control'} }) }}
                 </div>
                 <div class="col-sm-4">
-                    <input class="form-control" type="text" id="lasthoursDay" value="{{ lastCalendar.hoursDay }}" disabled>
+                    <input class="form-control" type="text" id="lasthoursDay" value="{% if lastCalendar.hoursDay is defined%}{{ lastCalendar.hoursDay }}{% endif %}" disabled>
                 </div>
             </div>
         </div>

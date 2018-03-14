@@ -1,5 +1,15 @@
 {% extends 'base.html.twig' %}
 
+{% block head_style %}
+
+    {{ parent() }}
+    <style>
+        @media print {
+            body {-webkit-print-color-adjust: exact;}
+        }
+    </style>
+{% endblock %}
+
 {% block page_header %}
     <div class="page-header hovebutton">
 

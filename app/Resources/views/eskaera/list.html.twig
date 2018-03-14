@@ -92,6 +92,7 @@
                     <th>{{ "Gauzatua" | trans }}</th>
                     <th>{{ "Egutegian" | trans }}</th>
                     <th>{{ "Sinatzaile taldea" | trans }}</th>
+                    <th>{{ "Bateraezinak" | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -155,6 +156,13 @@
 
                         </td>
 
+                        <td>
+                            {% if eskaera.konfliktoa == true %}
+                                <label class="label label-danger">Bai</label>
+                            {% else %}
+                                <label class="label label-success">Ez</label>
+                            {% endif %}
+                        </td>
 
                         <td>
                             <ul class="list-inline text-left">

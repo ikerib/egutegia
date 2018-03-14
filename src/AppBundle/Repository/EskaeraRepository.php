@@ -95,4 +95,19 @@ class EskaeraRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function checkCollision($userid, $fini, $ffin) {
+        $qb = $this->createQueryBuilder( 'e' );
+
+        $qb->innerJoin('e.calendar','c')
+           ->innerJoin('c.user', 'u')
+           ->where('u.id=:userid')
+           ->andWhere('(:fini BETWEEN e.hasi AND e.amaitu) OR (:ffin BETWEEN e.hasi AND e.amaitu)')
+           ->setParameter('userid',$userid)
+           ->setParameter('fini',$fini)
+           ->setParameter('ffin',$ffin)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
 }
