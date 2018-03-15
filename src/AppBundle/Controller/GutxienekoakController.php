@@ -27,8 +27,16 @@ class GutxienekoakController extends Controller
 
         $gutxienekoaks = $em->getRepository('AppBundle:Gutxienekoak')->findAll();
 
+        $deleteForms = [];
+        foreach ( $gutxienekoaks as $e ) {
+            /** @var Gutxienekoak $e */
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm( $e )->createView();
+        }
+
+
         return $this->render('gutxienekoak/index.html.twig', array(
             'gutxienekoaks' => $gutxienekoaks,
+            'deleteForms' => $deleteForms,
         ));
     }
 
@@ -142,7 +150,7 @@ class GutxienekoakController extends Controller
      *
      * @param Gutxienekoak $gutxienekoak The gutxienekoak entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Gutxienekoak $gutxienekoak)
     {
@@ -158,7 +166,7 @@ class GutxienekoakController extends Controller
      *
      * @param Gutxienekoakdet $gd
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      * @internal param Gutxienekoak $gutxienekoak The gutxienekoak entity
      *
      */
