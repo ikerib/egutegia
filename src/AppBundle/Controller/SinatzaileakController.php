@@ -27,8 +27,15 @@ class SinatzaileakController extends Controller
 
         $sinatzaileaks = $em->getRepository('AppBundle:Sinatzaileak')->findAll();
 
+        $deleteForms = [];
+        foreach ( $sinatzaileaks as $e ) {
+            /** @var Sinatzaileak $e */
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm( $e )->createView();
+        }
+
         return $this->render('sinatzaileak/index.html.twig', array(
             'sinatzaileaks' => $sinatzaileaks,
+            'deleteForms' => $deleteForms,
         ));
     }
 

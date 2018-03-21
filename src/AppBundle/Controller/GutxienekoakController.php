@@ -33,7 +33,6 @@ class GutxienekoakController extends Controller
             $deleteForms[ $e->getId() ] = $this->createDeleteForm( $e )->createView();
         }
 
-
         return $this->render('gutxienekoak/index.html.twig', array(
             'gutxienekoaks' => $gutxienekoaks,
             'deleteForms' => $deleteForms,

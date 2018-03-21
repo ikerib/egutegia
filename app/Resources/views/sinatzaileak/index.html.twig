@@ -69,6 +69,14 @@
                             <a href="{{ path('admin_sinatzaileak_edit', { 'id': sinatzaileak.id }) }}"><i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </li>
+                        <li>
+                            {{ form_start(deleteForms[sinatzaileak.id],{'attr': {'id': sinatzaileak.id}}) }}
+                            <a class="btnRemoveRow" data-id="{{ sinatzaileak.id }}"
+                               href="#sinatzaileakEditModal{{ sinatzaileak.id }}">
+                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                            {{ form_end(deleteForms[sinatzaileak.id]) }}
+                        </li>
                     </ul>
                 </td>
             </tr>
@@ -115,6 +123,26 @@
               }
           });
 
+          $('.btnRemoveRow').on('click', function () {
+              var that = $(this);
+              bootbox.confirm({
+                  title: "{{ 'Adi!' | trans }}",
+                  message: "{{ 'msg.ezabatu' | trans }}",
+                  buttons: {
+                      cancel: {
+                          label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                      },
+                      confirm: {
+                          label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                      }
+                  },
+                  callback: function (result) {
+                      if (result === true) {
+                          $(that).closest('form').submit();
+                      }
+                  }
+              });
+          });
       });
     </script>
 
