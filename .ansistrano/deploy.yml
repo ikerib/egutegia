@@ -5,7 +5,7 @@
   roles:
     - cbrunnkvist.ansistrano-symfony-deploy
   vars:
-    ansistrano_keep_releases: 3
+    ansistrano_keep_releases: 5
     symfony_deploy_env: prod
     symfony_dir: "./"
     symfony_app_dir: "{{ symfony_dir }}/app"
