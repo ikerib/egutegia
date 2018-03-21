@@ -84,7 +84,7 @@
                     <th data-field="id">ID</th>
                     <th>{{ "Izaera" | trans }}</th>
                     <th>{{ "Eskaera" | trans }}</th>
-                    <th>{{ "Egutegia" | trans }}</th>
+                    <th>{{ "Eskaera eguna" | trans }}</th>
                     <th>{{ "Hasi" | trans }}</th>
                     <th>{{ "Amaitu" | trans }}</th>
                     <th>{{ "Orduak/Egunak" | trans }}</th>
@@ -103,8 +103,9 @@
                         <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera"
                                data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
                         <td>{{ eskaera.type.name }}</td>
-                        <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}"
-                               target="_blank">{{ eskaera.calendar.name }}</a></td>
+                        <td>
+                            {% if eskaera.noiz %}{{ eskaera.noiz|date('Y-m-d') }}{% endif %}
+                        </td>
                         <td>
                             {% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}
                         </td>
