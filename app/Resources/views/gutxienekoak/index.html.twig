@@ -120,7 +120,7 @@
 
             $("#btnNewZerrenda").on("click", function () {
                 if ( $("#appbundle_gutxienekoak_name").val().length > 0 ) {
-                    $("form").submit();
+                    $("#frmNewGutxienekoak").submit();
                 } else {
                     bootbox.alert("Izena ezartzea beharrezkoa da");
                 }
