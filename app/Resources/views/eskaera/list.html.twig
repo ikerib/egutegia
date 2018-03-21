@@ -100,7 +100,7 @@
                 {% for eskaera in eskaeras %}
                     <tr>
                         <td>{{ eskaera.id }}</td>
-                        <td><a href="javascript:void(0);" class="btnEskaera"
+                        <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera"
                                data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
                         <td>{{ eskaera.type.name }}</td>
                         <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}"
