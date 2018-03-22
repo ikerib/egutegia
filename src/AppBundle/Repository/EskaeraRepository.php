@@ -39,6 +39,13 @@ class EskaeraRepository extends EntityRepository
                       WHERE e.egutegian = 0 and e.amaitua = 1
                 ';
                 break;
+            case 'conflict':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                      WHERE e.egutegian = 0 and e.amaitua = 1 and e.bideratua = 0 and e.konfliktoa = 1
+                ';
+                break;
             default:
                 $dql = '
                       SELECT e
