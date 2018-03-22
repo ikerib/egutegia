@@ -33,6 +33,27 @@
 
         {% block head_script %}
             {#<script src="{{ asset('js/modernizr.js') }}"></script>#}
+            {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                <style>
+                    .inpersonalizatua {
+                        background-color: #2ca741 !important;
+                    }
+                    .navbar-inverse {
+
+                    }
+                    .navbar-inverse {
+                        background-image: -webkit-linear-gradient(top, #af488f 0%, #68506b 100%);
+                        background-image: -o-linear-gradient(top, #af488f 0%, #68506b 100%);
+                        background-image: -webkit-gradient(linear, left top, left bottom, from(#af488f), to(#68506b)) !important;
+                        background-image: linear-gradient(to bottom, #af488f 0%, #68506b 100%);
+                        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#af488f', endColorstr='#68506b', GradientType=0);
+                        filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+                        background-repeat: repeat-x;
+                        border-radius: 4px;
+                    }
+
+                </style>
+            {% endif %}"
         {% endblock head_script %}
 
     </head>

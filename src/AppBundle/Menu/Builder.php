@@ -93,6 +93,19 @@ class Builder implements ContainerAwareInterface
 
         $menu = $factory->createItem( 'root', [ 'navbar' => true, 'icon' => 'user' ] );
 
+
+        if ( $checker->isGranted( 'ROLE_PREVIOUS_ADMIN' ) ) {
+            $menu = $factory->createItem( 'root', [ 'navbar' => true, 'icon' => 'exit' ] );
+            $menu->addChild('Exit', array(
+                'label'             => 'Modu arruntera izuli',
+                'route'             => 'dashboard',
+                'routeParameters'   => array( '_switch_user' => '_exit' ),
+                'icon'              => 'exit'
+            ));
+
+        }
+
+
         if ( $checker->isGranted( 'ROLE_USER' ) ) {
             if ( count( $notifications ) == 0 ) {
                 $menu->addChild('User', array( 'label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));

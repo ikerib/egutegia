@@ -48,16 +48,15 @@
         <thead>
         <tr>
             <th data-checkbox="true"></th>
-            <th data-visible="false" data-switchable="false" data-field="id"></th>
-            <th data-halign="left" data-align="left" data-field="firstName"
-                data-sortable="true">{{ 'Nombre' | trans }}</th>
-            <th data-halign="left" data-align="left" data-field="lastName"
-                data-sortable="true">{{ 'Abizenak' | trans }}</th>
-            <th data-halign="left" data-align="left" data-field="saila"
-                data-sortable="true">{{ 'Saila' | trans }}</th>
+            {#<th data-visible="false" data-switchable="false" data-field="id"></th>#}
+            {% if is_granted('ROLE_BIDERATZAILEA') %}
+                <th data-halign="center" data-align="center"></th>
+            {% endif %}
+            <th data-halign="left" data-align="left" data-field="firstName" data-sortable="true">{{ 'Nombre' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="lastName"  data-sortable="true">{{ 'Abizenak' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="saila"     data-sortable="true">{{ 'Saila' | trans }}</th>
             <th>{{ 'Urtea' | trans }}</th>
-            <th data-halign="left" data-align="left" data-field="notes" data-editable="true"
-                data-editable-emptytext="For free."
+            <th data-halign="left" data-align="left" data-field="notes" data-editable="true" data-editable-emptytext="For free."
                 data-sortable="true">{{ 'Oharrak' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Egutegia' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Txantiloia' | trans }}</th>
@@ -72,7 +71,15 @@
         {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
             <tr>
                 <td></td>
-                <td>{% if user.user.has('username') %}{{ user.user.get('username') }}{% endif %}</td>
+
+                {% if is_granted('ROLE_BIDERATZAILEA') %}
+                    <td class="nireTD">
+                        <a href="{{ path('homepage', { _switch_user: user.user.get('username') }) }}">
+                            <i class="fa fa-user-o" aria-hidden="true" title="Inpertsonalizatu"></i>
+                        </a>
+                    </td>
+                {% endif %}
+
                 <td>{% if user.user.has('firstName') %}{{ user.user.get('firstName') }}{% endif %}</td>
                 <td>{% if user.user.has('lastName') %}{{ user.user.get('lastName') }}{% endif %}</td>
                 <td>{% if user.user.has('department') %}{{ user.user.get('department') }}{% endif %}</td>
