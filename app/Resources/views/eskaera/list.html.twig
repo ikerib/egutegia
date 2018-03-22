@@ -449,9 +449,6 @@
                     title: "Oharra",
                     inputType: 'textarea',
                     callback: function (result) {
-                        console.log(result);
-
-
                         $.ajax({
                             url: url,
                             method: 'PUT',
@@ -472,8 +469,6 @@
                          .fail(function (xhr) {
                              bootbox.alert('Akats bat gertatu da firmatzerakoan.')
                          });
-
-
                     }
                 });
 
