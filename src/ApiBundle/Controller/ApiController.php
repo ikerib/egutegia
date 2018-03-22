@@ -727,6 +727,7 @@ class ApiController extends FOSRestController
 
         $jsonData = json_decode( $request->getContent(), true );
         $onartua = false;
+        $oharrak = $request->request->get( "oharra" );
         if ( $request->request->get( "onartua" ) == 1 ) {
             $onartua = true;
         }
@@ -780,6 +781,12 @@ class ApiController extends FOSRestController
 
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
+
+
+            // Oharrak grabatu
+            $eskaera->setOharra($oharrak);
+            $em->persist( $eskaera );
+
 
             $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
 

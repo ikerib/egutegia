@@ -92,12 +92,13 @@
                     <th data-halign="center" data-align="left" data-field="eskaera.noiz" data-sortable="true">{{ "Eskaera eguna" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak/Egunak" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.abiatua" data-sortable="true">{{ "Bideratua" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.amaitua" data-sortable="true">{{ "Gauzatua" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.egutegian" data-sortable="true">{{ "Egutegian" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.sinatzaileak" data-sortable="true">{{ "Sinatzaile taldea" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.konfliktoa" data-sortable="true">{{ "Bateraezinak" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="eskaera.oharrak" data-sortable="true">{{ "Oharrak" | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -170,6 +171,8 @@
                                 <label class="label label-success">Ez</label>
                             {% endif %}
                         </td>
+
+                        <td>{{ eskaera.oharra }}</td>
 
                         <td>
                             <ul class="list-inline text-left">
@@ -324,8 +327,6 @@
                 var miid = row.id;
                 var url = Routing.generate("get_firmatzaileak", { "eskaeraid": miid });
 
-                console.log(url);
-
                 $detail.html('toc toc...' + url + ' helbideari deika');
 
                 $.get(url, function (data) {
@@ -335,7 +336,7 @@
                         "<table class='table table-bordered table-striped table-hover table-condensed'>" +
                             "<thead>" +
                         "       <tr>" +
-                        "           <th><strong>Erabiltzailea</strong></th>" +
+                        "           <th><strong>Langilea</strong></th>" +
                         "           <th><strong>Firmatua</strong></th>" +
                         "           <th><strong>Erantzuna</strong></th>" +
                         "           <th><strong></strong></th>" +
@@ -343,9 +344,6 @@
                         "   </thead>" +
                         "<tbody>";
                     $.each(data, function (i, obj) {
-                        console.log("------------------------------------------------------------------------------");
-                        console.log(obj);
-                        console.log("------------------------------------------------------------------------------");
 
                         var jakinarazpenid=0;
                         var postit = false;
@@ -362,12 +360,12 @@
                             }
                         });
 
-                        html = html + "<tr'><td>" + obj.user.username + "</td>";
+                        html = html + "<tr'><td>" + obj.user.displayname + "</td>";
                         var sinatua = false;
 
                         /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */
                         if (!("firmatua" in obj)) {
-                            html = html + "<td><span class='label label-warning '>Ez</span></td><td>-</td></tr>";
+                            html = html + "<td><span class='label label-warning '>Ez</span></td><td>-</td>";
                         } else {
                             html = html + "<td><span class='label label-success '>Bai</span></td>";
 
@@ -437,32 +435,47 @@
             });
 
             $("#tableEskaerak").on("click", ".btnPostIt", function () {
+
                 var eskaerid = $(this).data("eskaeraid");
                 var userid = $(this).data("userid");
 
                 var firmaid = $(this).data("firmaid");
                 var jakinarazpenaid = $(this).data("notifyid");
                 var url = Routing.generate("put_firma", { id: firmaid, userid: userid });
-                $.ajax({
-                    url: url,
-                    method: 'PUT',
-                    data: {onartua: 1}
-                })
-                 .done(function (data) {
-                     const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
-                     $.ajax({
-                         url: url2,
-                         method: 'PUT',
-                         data: {onartua: 1}
-                     }).done(function (data) {
-                         location.reload()
-                     }).fail(function (xhr) {
-                         bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-                     })
-                 })
-                 .fail(function (xhr) {
-                     bootbox.alert('Akats bat gertatu da firmatzerakoan.')
-                 });
+
+                bootbox.prompt({
+                    title: "Oharra",
+                    inputType: 'textarea',
+                    callback: function (result) {
+                        console.log(result);
+
+
+                        $.ajax({
+                            url: url,
+                            method: 'PUT',
+                            data: {onartua: 1, oharra: result}
+                        })
+                         .done(function (data) {
+                             const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                             $.ajax({
+                                 url: url2,
+                                 method: 'PUT',
+                                 data: {onartua: 1}
+                             }).done(function (data) {
+                                 location.reload()
+                             }).fail(function (xhr) {
+                                 bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
+                             })
+                         })
+                         .fail(function (xhr) {
+                             bootbox.alert('Akats bat gertatu da firmatzerakoan.')
+                         });
+
+
+                    }
+                });
+
+
             });
 
         });

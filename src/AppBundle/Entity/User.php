@@ -42,31 +42,37 @@ class User extends BaseUser implements LdapUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $department;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $displayname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $nan;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $hizkuntza;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $lanpostua;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
      */
     protected $notes;
 
