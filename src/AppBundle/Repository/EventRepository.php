@@ -75,7 +75,7 @@ class EventRepository extends EntityRepository
     {
 
         $qb = $this->createQueryBuilder('e');
-        $qb->select('SUM(e.hours) as suma', 'c.id', 'u.id', 'u.username', 'u.department', 'u.lanpostua', 'c.year');
+        $qb->select('SUM(e.hours) as suma', 'c.id as calendarid', 'u.id', 'u.username', 'u.department', 'u.lanpostua', 'c.year');
         $qb->innerJoin( 'e.calendar', 'c' );
         $qb->innerJoin( 'e.type', 't' );
         $qb->innerJoin( 'c.user', 'u' );
@@ -99,6 +99,8 @@ class EventRepository extends EntityRepository
         if ($lanpostua) {
             $qb->andWhere( 'u.lanpostua = :lanpostua' )->setParameter( 'lanpostua', $lanpostua );
         }
+
+        $sql = $qb->getQuery()->getSQL();
 
         return $qb->getQuery()->getResult();
 

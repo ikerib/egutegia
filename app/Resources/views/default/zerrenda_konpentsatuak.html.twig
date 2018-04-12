@@ -128,7 +128,7 @@
                 <tbody>
                 {% for k in konpentsatuak %}
                     <tr>
-                        <td><a target="_blank" href="{{ path('admin_calendar_edit', { 'id': k.id }) }}">{{ k.username }}</a></td>
+                        <td><a target="_blank" href="{{ path('admin_calendar_edit', { 'id': k.calendarid }) }}">{{ k.username }}</a></td>
                         <td>{{ k.department }}</td>
                         <td>{{ k.lanpostua }}</td>
                         <td>{{ k.suma }}</td>
