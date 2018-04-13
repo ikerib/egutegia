@@ -713,17 +713,19 @@ class ApiController extends FOSRestController
      * @param         $id
      * @param null    $userid
      *
+     *
      * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
      * @Rest\Put("/firma/{id}/{userid}")
      */
-    public function putFirmaAction( Request $request, $id, $userid=null )
+    public function putFirmaAction( Request $request, $id, $userid = null )
     {
         $em = $this->getDoctrine()->getManager();
 
         /** $userid bidaltzen bada postit botoia erabilli delako da */
         $postit = false;
+        $autofirma = false;
 
         $jsonData = json_decode( $request->getContent(), true );
         $onartua = false;
@@ -738,13 +740,16 @@ class ApiController extends FOSRestController
             throw new EntityNotFoundException();
         }
 
-        if ($userid == null) {
+        if ( ( $userid == null ) ) {
             /** @var User $user */
             $user = $this->getUser();
-        } else {
+        } else if (  $userid !== null )  {
             /** @var User $user */
             $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
             $postit = true;
+        } else {
+            /** @var User $user */
+            $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
         }
 
 
@@ -772,6 +777,7 @@ class ApiController extends FOSRestController
                     $fd->setFirmatzailea( $user );
                     $fd->setNoiz( New \DateTime() );
                     $fd->setPostit( $postit );
+                    $fd->setAutofirma( $autofirma );
                     $em->persist( $fd );
                     $em->flush();
                     break;
@@ -784,7 +790,7 @@ class ApiController extends FOSRestController
 
 
             // Oharrak grabatu
-            $eskaera->setOharra($oharrak);
+            $eskaera->setOharra( $oharrak );
             $em->persist( $eskaera );
 
 
@@ -835,6 +841,7 @@ class ApiController extends FOSRestController
         $view->setData( $firma );
         header( 'content-type: application/json; charset=utf-8' );
         header( 'access-control-allow-origin: *' );
+
 
         return $view;
     }
@@ -1015,11 +1022,12 @@ class ApiController extends FOSRestController
 
 
             $r = array(
-                'user'      => $user,
-                'notify'    => $notify,
-                'postit'    => $f->getPostit(),
-                'firmaid'   => $firma->getId(),
-                'firmatua'  => $f->getFirmatua(),
+                'user'     => $user,
+                'notify'   => $notify,
+                'postit'   => $f->getPostit(),
+                'autofirma'=> $f->getAutofirma(),
+                'firmaid'  => $firma->getId(),
+                'firmatua' => $f->getFirmatua(),
             );
 
             array_push( $users, $r );

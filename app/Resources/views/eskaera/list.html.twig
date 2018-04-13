@@ -349,9 +349,14 @@
 
                         var jakinarazpenid=0;
                         var postit = false;
+                        var autofirma = false;
 
                         if ( 'postit' in obj ) {
                             postit = true;
+                        }
+
+                        if ( 'autofirma' in obj ) {
+                            autofirma = true;
                         }
 
                         /** bilatu jakinarazpen_id **/
@@ -387,6 +392,8 @@
                         } else {
                             if ( postit === true ) {
                                 html = html + "<td>Postit botoi bidez sinatua</td>";
+                            } else if ( autofirma === true ) {
+                                html = html + "<td>Autofirmatua</td>";
                             } else {
                                 html = html + "<td></td>";
                             }

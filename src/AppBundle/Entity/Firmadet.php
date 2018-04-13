@@ -52,6 +52,14 @@ class Firmadet
     private $postit;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="autofirma", type="boolean", nullable=true)
+     * @Expose()
+     */
+    private $autofirma;
+
+    /**
      * @var integer
      * @Gedmo\SortablePosition
      * @ORM\Column(name="orden", type="integer", nullable=true)
@@ -335,5 +343,29 @@ class Firmadet
     public function getPostit()
     {
         return $this->postit;
+    }
+
+    /**
+     * Set autofirma.
+     *
+     * @param bool|null $autofirma
+     *
+     * @return Firmadet
+     */
+    public function setAutofirma($autofirma = null)
+    {
+        $this->autofirma = $autofirma;
+
+        return $this;
+    }
+
+    /**
+     * Get autofirma.
+     *
+     * @return bool|null
+     */
+    public function getAutofirma()
+    {
+        return $this->autofirma;
     }
 }

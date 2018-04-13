@@ -20,6 +20,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use GuzzleHttp\Client;
+
 
 /**
  * Eskaera controller.
@@ -240,8 +242,8 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if (( $collision1 !== "" ) || ($collision2 !== "")) {
-                if ( ( $collision1 !== "" ) && ( count( $collision1 ) > 0 )) {
+            if ( ( $collision1 !== "" ) || ( $collision2 !== "" ) ) {
+                if ( ( $collision1 !== "" ) && ( count( $collision1 ) > 0 ) ) {
                     $txt = "";
                     /** @var Event $e */
                     foreach ( $collision1 as $e ) {
@@ -251,7 +253,7 @@ class EskaeraController extends Controller
                     $eskaera->setOharra( $txtOharra );
                     $eskaera->setKonfliktoa( true );
                 }
-                if ( ( $collision2 !== "" ) && ( count( $collision2 ) > 0 )) {
+                if ( ( $collision2 !== "" ) && ( count( $collision2 ) > 0 ) ) {
                     $txt = "";
                     /** @var Event $e */
                     foreach ( $collision2 as $e ) {
@@ -262,7 +264,6 @@ class EskaeraController extends Controller
                     $eskaera->setKonfliktoa( true );
                 }
             }
-
 
 
             /**
@@ -473,6 +474,7 @@ class EskaeraController extends Controller
      * @param Eskaera $eskaera
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function editAction( Request $request, Eskaera $eskaera )
     {
@@ -499,6 +501,7 @@ class EskaeraController extends Controller
                     $firma->setEskaera( $eskaera );
                     $firma->setCompleted( 0 );
                     $em->persist( $firma );
+                    $em->flush();
 
                     $eskaera->setAbiatua( true );
 
@@ -506,51 +509,56 @@ class EskaeraController extends Controller
                     $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
                     /** @var Sinatzaileakdet $s */
                     foreach ( $sinatzaileusers as $s ) {
-                        $notify = New Notification();
-                        $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
-
-                        $desc = $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
-                            "Egutegia: " . $eskaera->getCalendar()->getName() . "\n" .
-                            "Hasi: " . $eskaera->getHasi()->format( 'Y-m-d' ) . "\n";
-
-                        if ( $eskaera->getAmaitu() != null ) {
-                            $desc .= "Amaitu: " . $eskaera->getAmaitu()->format( 'Y-m-d' );
-                        }
-
-                        $notify->setDescription( $desc );
-                        $notify->setEskaera( $eskaera );
-                        $notify->setFirma( $firma );
-                        $notify->setReaded( false );
-                        $notify->setUser( $s->getUser() );
-                        $em->persist( $notify );
-
-                        /**
-                         * bidali emaila notifikatzen firmatu beharreko eskaerak dituela
-                         * TODO: Sinatzaileei emaila bidali abisuakin. Email batean eskaera guztiak.
-                         */
-//                        if ( strlen( $s->getUser()->getEmail() ) > 0 ) {
-//                            $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
-//
-//                            $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria] :' . $eskaera->getUser()->getDisplayname() ) )
-//                                ->setFrom( $bailtzailea )
-//                                ->setTo( $s->getUser()->getEmail() )
-//                                ->setBody(
-//                                    $this->renderView(
-//                                    // app/Resources/views/Emails/registration.html.twig
-//                                        'Emails/jakinarazpen_berria.html.twig',
-//                                        array( 'eskaera' => $eskaera )
-//                                    ),
-//                                    'text/html'
-//                                );
-//
-//                            $this->get( 'mailer' )->send( $message );
-//
-//                        }
-
 
                         $fd = new Firmadet();
                         $fd->setFirma( $firma );
                         $fd->setSinatzaileakdet( $s );
+
+                        /* TODO: Eskatzailea sinatzaile zerrendan badago autofirmatu */
+
+                        $eskatzaile_id = $eskaera->getUser()->getId();
+
+                        if ( $s->getUser()->getId() == $eskatzaile_id ) {
+                            // Autofirmatu. Eskatzailea eta sinatzaile zerrendako user berdinak direnez, firmatu
+
+                            /** @var \GuzzleHttp\Client $client */
+                            $client = $this->get( 'eight_points_guzzle.client.api_put_firma' );
+//                            $url = "/app_dev.php/api/firma/".$firma->getId()."/".$eskatzaile_id.".json?XDEBUG_SESSION_START=PHPSTORM";
+                            $url = "/app_dev.php/api/firma/" . $firma->getId() . "/" . $eskatzaile_id . ".json";
+
+                            $r = $client->request( 'PUT', $url, [
+                                'json' => $eskaera,
+                            ] );
+
+
+                            $firmatzailea = $em->getRepository( 'AppBundle:User' )->find( $eskatzaile_id );
+
+                            $fd->setAutofirma( true );
+                            $fd->setFirmatua( true );
+                            $fd->setFirmatzailea( $firmatzailea );
+                            $fd->setNoiz( new \DateTime() );
+                            $em->persist( $fd );
+                        } else {
+
+                            $notify = New Notification();
+                            $notify->setName( 'Eskaera berria sinatzeke: ' . $eskaera->getUser()->getDisplayname() );
+
+                            $desc = $eskaera->getUser()->getDisplayname() . " langilearen eskaera berria daukazu sinatzeke.\n" .
+                                "Egutegia: " . $eskaera->getCalendar()->getName() . "\n" .
+                                "Hasi: " . $eskaera->getHasi()->format( 'Y-m-d' ) . "\n";
+
+                            if ( $eskaera->getAmaitu() != null ) {
+                                $desc .= "Amaitu: " . $eskaera->getAmaitu()->format( 'Y-m-d' );
+                            }
+
+                            $notify->setDescription( $desc );
+                            $notify->setEskaera( $eskaera );
+                            $notify->setFirma( $firma );
+                            $notify->setReaded( false );
+                            $notify->setUser( $s->getUser() );
+                            $em->persist( $notify );
+                        }
+
                         $em->persist( $fd );
 
                     }

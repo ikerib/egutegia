@@ -26,6 +26,8 @@ class AppKernel extends Kernel
 
             new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
 
+            new EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle(),
+
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),

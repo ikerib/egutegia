@@ -223,3 +223,15 @@ knp_snappy:
             - { name: 'viewport-size', value: ‘1024x768’ }
             - { name: 'page-size', value: 'A4' }
             - { name: 'encoding', value: 'UTF-8' }
+
+
+eight_points_guzzle:
+    # (de)activate logging/profiler; default: %kernel.debug%
+    logging: true
+
+    clients:
+        api_put_firma:
+            base_url: '%api_url%'
+            options:
+                headers:
+                    Accept: "application/json"
