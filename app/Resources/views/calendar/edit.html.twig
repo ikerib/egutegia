@@ -22,6 +22,9 @@
         </div>
     {% endif %}
 
+    <input type="hidden" id="calendarHoursSelf" value="{{ calendar.hoursSelf }}">
+    <input type="hidden" id="calendarHoursSelfHalf" value="{{ calendar.hoursSelfHalf }}">
+
     <div class="page-header hovebutton">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -110,6 +113,7 @@
             </div>
         </div>
     </div>
+
 {% endblock page_header %}
 
 {% block content_content %}

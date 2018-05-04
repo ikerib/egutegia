@@ -290,7 +290,7 @@ class ApiController extends FOSRestController
         $newValue = (float)$jsonData[ 'hours' ];
 
         $oldType = $jsonData[ 'oldType' ];
-        $hours = (float)( $event->getHours() ) - (float)$oldValue;
+        $hours   = (float)( $event->getHours() ) - (float)$oldValue;
 
         if ( $type->getRelated() ) {
             if ( $type->getId() === (int)$oldType ) { // Mota berdinekoak badira, zuzenketa
@@ -333,7 +333,6 @@ class ApiController extends FOSRestController
                             $calendar->setHoursSelf( (float)$calendar->getHoursSelf() + $oldValue );
                         }
                     }
-                    //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) + $oldValue);
                 }
                 if ( $tOld->getRelated() === 'hours_compensed' ) {
                     $calendar->setHoursCompensed( (float)( $calendar->getHoursCompensed() ) + $oldValue );
@@ -355,7 +354,6 @@ class ApiController extends FOSRestController
                             $calendar->setHoursSelf( (float)$calendar->getHoursSelf() - $newValue );
                         }
                     }
-                    //$calendar->setHoursSelf((float) ($calendar->getHoursSelf()) - $newValue);
                 }
                 if ( $tNew->getRelated() === 'hours_compensed' ) {
                     $calendar->setHoursCompensed( (float)( $calendar->getHoursCompensed() ) - $newValue );
@@ -403,7 +401,7 @@ class ApiController extends FOSRestController
 
     public function postEventsAction( Request $request )
     {
-        $em = $this->getDoctrine()->getManager();
+        $em       = $this->getDoctrine()->getManager();
         $jsonData = json_decode( $request->getContent(), true );
 
         // find calendar
@@ -426,6 +424,12 @@ class ApiController extends FOSRestController
         $event->setHours( $jsonData[ 'hours' ] );
         $event->setType( $type );
 
+        if ( $type->getId() == 5 ) {  // TODO: Norbere arazoetarako
+            $event->setNondik( $jsonData[ "egunorduak" ] );
+            $event->setHoursSelfBefore( $jsonData[ "HoursSelfBefore" ] );
+            $event->setHoursSelfHalfBefore( $jsonData[ "HoursSelfHalfBefore" ] );
+        }
+
         $em->persist( $event );
 
         if ( $type->getRelated() ) {
@@ -441,22 +445,46 @@ class ApiController extends FOSRestController
                  * horrela bada hours_self-etik kendu bestela ordueta hours_self_half
                  */
                 $jornada = floatval( $calendar->getHoursDay() );
-                $orduak = floatval( $jsonData[ 'hours' ] );
+                $orduak  = floatval( $jsonData[ 'hours' ] );
+                $nondik  = $jsonData[ 'egunorduak' ];
 
-                $osoa = 0;
-                $partziala = 0;
+                $partziala           = 0;
+                $egunOsoaOrduak      = 0;
+                $egutegiaOrduakTotal = floatval( $calendar->getHoursSelf() ) + floatval( $calendar->getHoursSelfHalf() );
 
-                if ( $orduak < $jornada ) {
-                    $osoa = $orduak;
-                    $partziala = $orduak;
+
+                if ( $nondik == "orduak" ) {
+                    // Begiratu nahiko ordu dituen
+                    if ( $calendar->getHoursSelfHalf() >= $orduak ) {
+                        $partziala = $calendar->getHoursSelfHalf();
+                    } else {
+                        $view    = View::create();
+                        $errorea = array( "Result" => "Ez ditu nahikoa ordu" );
+                        $view->setData( $errorea );
+                        header( 'content-type: application/json; charset=utf-8' );
+                        header( 'access-control-allow-origin: *' );
+
+                        return $view;
+                    }
+
                 } else {
-                    $zenbatEgun = $orduak / $jornada;
+                    // Begiratu nahiko ordu dituen Egunetan
+                    // Eskatutako ordu adina edo gehiago baditu
+                    if ( $calendar->getHoursSelf() >= $orduak ) {
+                        $egunOsoaOrduak = $orduak;
+                    } else if ( $egutegiaOrduakTotal >= $orduak ) {
+                        $zenbatEgun = $orduak / $jornada;
+                        // Egun osoen kenketa
+                        $egunOsoak = (int)$zenbatEgun;
+                        // Orduen kenketa
+                        $gainontzekoa = $zenbatEgun - (int)$zenbatEgun;
 
-                    $orduOsoak = $jornada * $zenbatEgun;
-                    $osoa = $orduak;
-                    $partziala = $orduak - $orduOsoak;
+                        $egunOsoaOrduak = $egunOsoak * $jornada;
+                        $partziala      = $gainontzekoa * $jornada;
+                    }
                 }
-                $calendar->setHoursSelf( $calendar->getHoursSelf() - $osoa );
+
+                $calendar->setHoursSelf( $calendar->getHoursSelf() - $egunOsoaOrduak );
                 $calendar->setHoursSelfHalf( $calendar->getHoursSelfHalf() - $partziala );
             }
             if ( $t->getRelated() === 'hours_compensed' ) {
@@ -524,21 +552,28 @@ class ApiController extends FOSRestController
             }
             if ( $t->getRelated() === 'hours_self' ) {
 
-                $jornada = floatval( $calendar->getHoursDay() );
-                $orduak = floatval( $event->getHours() );
-                if ( $orduak < $jornada ) {
-                    $osoa = $orduak;
-                    $partziala = $orduak;
-                } else {
-                    $zenbatEgun = $orduak / $jornada;
+                /* Maiatzean (2018) Event entitarean sortu aurretik zuten balioak gordetzen hasi nintzen
+                   ezabatzen denean, datu horiek berreskuratu ahal izateko. Baina aurretik grabatutako datuetan... kalkuluak egin behar
+                 */
+                if ( !is_null($event->getNondik())  ) {  // Aurreko egoerako datuak grabatuak daude, iuju!
+                    $calendar->setHoursSelf( $event->getHoursSelfBefore() );
+                    $calendar->setHoursSelfHalf( $event->getHoursSelfHalfBefore() );
+                } else { // Kalkuluak egin behar. 2019rako egutegirako datorren elseko kodea ezaba daiteke, event guztiek izango bait dituzte datuak
+                    $jornada = floatval( $calendar->getHoursDay() );
+                    $orduak  = floatval( $event->getHours() );
+                    if ( $orduak < $jornada ) {
+                        $osoa      = $orduak;
+                        $partziala = $orduak;
+                    } else {
+                        $zenbatEgun = $orduak / $jornada;
 
-                    $orduOsoak = $jornada * $zenbatEgun;
-                    $osoa = $orduak;
-                    $partziala = $orduak - $orduOsoak;
+                        $orduOsoak = $jornada * $zenbatEgun;
+                        $osoa      = $orduak;
+                        $partziala = $orduak - $orduOsoak;
+                    }
+                    $calendar->setHoursSelf( floatval(($calendar->getHoursSelf()) + $osoa) * -1 );
+                    $calendar->setHoursSelfHalf( floatval( ($calendar->getHoursSelfHalf()) + $partziala) * -1 );
                 }
-                $calendar->setHoursSelf( $calendar->getHoursSelf() + $osoa );
-                $calendar->setHoursSelfHalf( $calendar->getHoursSelfHalf() + $partziala );
-//                $calendar->setHoursSelf((float)($calendar->getHoursSelf()) + $event->getHours());
 
             }
             if ( $t->getRelated() === 'hours_compensed' ) {
@@ -632,7 +667,7 @@ class ApiController extends FOSRestController
 
     public function postUsernotesAction( Request $request, $username )
     {
-        $em = $this->getDoctrine()->getManager();
+        $em   = $this->getDoctrine()->getManager();
         $user = $em->getRepository( 'AppBundle:User' )->getByUsername( $username );
 
         $jsonData = json_decode( $request->getContent(), true );
@@ -640,7 +675,7 @@ class ApiController extends FOSRestController
         $userManager = $this->container->get( 'fos_user.user_manager' );
 
         if ( !$user ) {
-            $ldap = $this->get( 'ldap_tools.ldap_manager' );
+            $ldap     = $this->get( 'ldap_tools.ldap_manager' );
             $ldapuser = $ldap->buildLdapQuery()
                              ->select(
                                  [
@@ -724,12 +759,12 @@ class ApiController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
 
         /** $userid bidaltzen bada postit botoia erabilli delako da */
-        $postit = false;
+        $postit    = false;
         $autofirma = false;
 
         $jsonData = json_decode( $request->getContent(), true );
-        $onartua = false;
-        $oharrak = $request->request->get( "oharra" );
+        $onartua  = false;
+        $oharrak  = $request->request->get( "oharra" );
         if ( $request->request->get( "onartua" ) == 1 ) {
             $onartua = true;
         }
@@ -743,9 +778,9 @@ class ApiController extends FOSRestController
         if ( ( $userid == null ) ) {
             /** @var User $user */
             $user = $this->getUser();
-        } else if (  $userid !== null )  {
+        } else if ( $userid !== null ) {
             /** @var User $user */
-            $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
+            $user   = $em->getRepository( 'AppBundle:User' )->find( $userid );
             $postit = true;
         } else {
             /** @var User $user */
@@ -811,7 +846,7 @@ class ApiController extends FOSRestController
                 $em->persist( $eskaera );
 
                 $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
-                $bideratzaileak = [];
+                $bideratzaileak     = [];
                 /** @var User $b */
                 foreach ( $bideratzaileakfind as $b ) {
 
@@ -925,7 +960,7 @@ class ApiController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode( $request->getContent(), true );
-        $onartua = false;
+        $onartua  = false;
         if ( $request->request->get( "onartua" ) == 1 ) {
             $onartua = true;
         }
@@ -1022,12 +1057,12 @@ class ApiController extends FOSRestController
 
 
             $r = array(
-                'user'     => $user,
-                'notify'   => $notify,
-                'postit'   => $f->getPostit(),
-                'autofirma'=> $f->getAutofirma(),
-                'firmaid'  => $firma->getId(),
-                'firmatua' => $f->getFirmatua(),
+                'user'      => $user,
+                'notify'    => $notify,
+                'postit'    => $f->getPostit(),
+                'autofirma' => $f->getAutofirma(),
+                'firmaid'   => $firma->getId(),
+                'firmatua'  => $f->getFirmatua(),
             );
 
             array_push( $users, $r );
@@ -1065,7 +1100,7 @@ class ApiController extends FOSRestController
         /** @var Firmadet $f */
         foreach ( $fd as $f ) {
             $user = $f->getSinatzaileakdet()->getUser();
-            $r = array(
+            $r    = array(
                 'user'     => $user,
                 'firmatua' => $f->getFirmatua(),
             );

@@ -74,6 +74,28 @@ class Event
     private $hours = 0;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="nondik", type="string", length=255, nullable=true)
+     */
+    private $nondik;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="hoursSelfBefore", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $hoursSelfBefore = 0;
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="hoursSelfHalfBefore", type="decimal", precision=10, scale=2, nullable=true)
+     */
+    private $hoursSelfHalfBefore = 0;
+
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -340,5 +362,77 @@ class Event
     public function getEgunorduak()
     {
         return $this->egunorduak;
+    }
+
+    /**
+     * Set nondik.
+     *
+     * @param string|null $nondik
+     *
+     * @return Event
+     */
+    public function setNondik($nondik = null)
+    {
+        $this->nondik = $nondik;
+
+        return $this;
+    }
+
+    /**
+     * Get nondik.
+     *
+     * @return string|null
+     */
+    public function getNondik()
+    {
+        return $this->nondik;
+    }
+
+    /**
+     * Set hoursSelfBefore.
+     *
+     * @param string|null $hoursSelfBefore
+     *
+     * @return Event
+     */
+    public function setHoursSelfBefore($hoursSelfBefore = null)
+    {
+        $this->hoursSelfBefore = $hoursSelfBefore;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSelfBefore.
+     *
+     * @return string|null
+     */
+    public function getHoursSelfBefore()
+    {
+        return $this->hoursSelfBefore;
+    }
+
+    /**
+     * Set hoursSelfHalfBefore.
+     *
+     * @param string|null $hoursSelfHalfBefore
+     *
+     * @return Event
+     */
+    public function setHoursSelfHalfBefore($hoursSelfHalfBefore = null)
+    {
+        $this->hoursSelfHalfBefore = $hoursSelfHalfBefore;
+
+        return $this;
+    }
+
+    /**
+     * Get hoursSelfHalfBefore.
+     *
+     * @return string|null
+     */
+    public function getHoursSelfHalfBefore()
+    {
+        return $this->hoursSelfHalfBefore;
     }
 }
