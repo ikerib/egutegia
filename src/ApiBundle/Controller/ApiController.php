@@ -556,8 +556,11 @@ class ApiController extends FOSRestController
                    ezabatzen denean, datu horiek berreskuratu ahal izateko. Baina aurretik grabatutako datuetan... kalkuluak egin behar
                  */
                 if ( !is_null($event->getNondik())  ) {  // Aurreko egoerako datuak grabatuak daude, iuju!
-                    $calendar->setHoursSelf( $event->getHoursSelfBefore() );
-                    $calendar->setHoursSelfHalf( $event->getHoursSelfHalfBefore() );
+                    if ( $event->getNondik() == "Egunak" ) {
+                        $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + floatval($event->getHours()) );
+                    }else {
+                        $calendar->setHoursSelfHalf( floatval($calendar->getHoursSelfHalf()) + floatval($event->getHours()) );
+                    }
                 } else { // Kalkuluak egin behar. 2019rako egutegirako datorren elseko kodea ezaba daiteke, event guztiek izango bait dituzte datuak
                     $jornada = floatval( $calendar->getHoursDay() );
                     $orduak  = floatval( $event->getHours() );
@@ -571,8 +574,8 @@ class ApiController extends FOSRestController
                         $osoa      = $orduak;
                         $partziala = $orduak - $orduOsoak;
                     }
-                    $calendar->setHoursSelf( floatval(($calendar->getHoursSelf()) + $osoa) * -1 );
-                    $calendar->setHoursSelfHalf( floatval( ($calendar->getHoursSelfHalf()) + $partziala) * -1 );
+                    $calendar->setHoursSelf( floatval($calendar->getHoursSelf()) + floatval($osoa) * -1 );
+                    $calendar->setHoursSelfHalf( floatval($calendar->getHoursSelfHalf()) + floatval($partziala) * -1 );
                 }
 
             }
