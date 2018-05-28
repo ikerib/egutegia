@@ -19,6 +19,78 @@ $(function () {
         return wfirst + days + wlast; // get the total
     }
 
+    function editEvent (event) {
+        if ( event.istemplate === 1) {
+            bootbox.alert({
+                message: "Txantiloiaren parte da, ezin da eguneratu",
+                size: 'small'
+            });
+            return -1
+        }
+
+
+
+        $('#event-modal input[name="event-index"]').val(event ? event.id : '')
+        $('#event-modal input[name="event-name"]').val(event ? event.name : '')
+        $('#event-modal input[name="event-type"]').val(event ? event.type : '')
+
+        $('#event-modal input[name="event-hours"]').val(event ? event.hours : '')
+        // $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '')
+        $('#event-modal input[name="event-start-date"]').datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'eu',
+            autoclose: true
+        }).datepicker('update', event ? event.startDate : '')
+        // $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '')
+        $('#event-modal input[name="event-end-date"]').datepicker({
+            format: 'yyyy-mm-dd',
+            language: 'eu',
+            autoclose: true
+        }).datepicker('update', event ? event.endDate : '')
+        $('#txtOldValue').val(event ? event.hours : '')
+        $('#txtOldType').val(event ? event.type : '')
+
+
+
+
+
+        $('#oldValue').val(event ? event.hours : 0)
+
+        $('#cmbTypeSelect').val(event ? event.type : '')
+
+        if (event) {
+            if (event.type === undefined) {
+                $('#cmbTypeSelect').val('-1')
+            }
+        }
+
+        // Number of working days selected
+        let d = workday_count(event.startDate, event.endDate)
+        $('#txtWorkingDaysSelected').val(d.toFixed(2))
+        let j = $('#txtTotalHousSelected').data('jornada')
+
+        /** editatzen ari badan event obketutik ekarri behar du */
+        if (event.hours === undefined) {
+            let t = d * parseFloat(j)
+            $('#txtTotalHousSelected').val(t.toFixed(2))
+        }    else {
+            $('#txtTotalHousSelected').val(event.hours.toFixed(2))
+        }
+
+        $('#event-modal').on('shown.bs.modal', function () {
+            const egunOrdu = $('#cmbTypeSelect option:selected').val()
+            if (egunOrdu === "5") {
+                $('#divEgunOrduak').show("slow")
+            } else {
+                $('#divEgunOrduak').hide("slow")
+                $('#cmbEgunOrduak').val("-1")
+            }
+            $('#event-modal input[name="event-name"]').focus()
+        })
+
+        $('#event-modal').modal()
+    }
+
     function deleteEvent( event ) {
         var dataSource = $("#calendar").data("calendar").getDataSource();
 
