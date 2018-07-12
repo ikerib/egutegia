@@ -25,7 +25,7 @@ Txantiloia: Plantilla
 'Norberarentzako:': 'Norberarentzako:'
 'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Calendario
-Eskaerak: Peticiones
+Eskaerak: 'Nueva instancia'
 'Azken konexioak': 'Ultimas conexiones'
 Irten: Salir
 Mota: Tipo
@@ -100,7 +100,7 @@ Noiztik: Desde
 Deskribapena: Descripción
 'Eskaera data': 'Fecha de la petición'
 'Lortu inprimatika': Grabar
-'Eskaeren zerrenda': 'Lista de peticiones'
+'Eskaeren zerrenda': 'Listado de instancias'
 Noiz: Cuando
 Sinatzaileak: Firmantes
 Orden: Orden
@@ -121,7 +121,7 @@ Nor: Quien
 'Eskatutako <strong>orduak</strong>': '<strong>Horas</strong> pedidas'
 'Guztira zenbat <strong>ordu</strong>': 'Total <strong>horas</strong>'
 'Guztira zenbat <strong>egun</strong>': 'Total <strong>días</strong>'
-'eskaera berria': 'Nueva petición'
+'eskaera berria': 'Nueva instancia'
 Eguna: Día
 Azalpena: Descripcioón
 msg.eskaera.ezabatu: '¿Estas seguro de que deseas eliminar la petición? Si aceptas, también se borraran los documentos asociados. Si las petición ha sido añadida al calendario NO SE BORRARAN del calendario. Hay que hacerlo manualmente desde el calendario del trabajador'
@@ -148,7 +148,7 @@ Guztiak: 'Todos'
 'Gauzatu gabeak': 'Sin completar'
 'Egutean sartu gabe': 'Sin añadir al calendario'
 Fitxategia: 'Fichero'
-Eskaera berria: 'Nueva petición'
+Eskaera berria: 'Nueva instancia'
 Egunak: 'Días'
 Lanaldia: 'Jornada laboral'
 msg.ezabatu: '¿Seguro de que deseas eliminar?'

@@ -25,7 +25,7 @@ Txantiloia: Txantiloia
 'Norberarentzako:': 'Norberarentzako:'
 'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Egutegia
-Eskaerak: Eskaerak
+Eskaerak: 'Instantzia berria'
 'Azken konexioak': 'Azken konexioak'
 Irten: Irten
 Mota: Mota
@@ -101,7 +101,7 @@ Noiztik: '  Noiztik'
 Deskribapena: '  Deskribapena'
 'Eskaera data': '  Eskaera data'
 'Lortu inprimatika': '  Lortu inprimatika'
-'Eskaeren zerrenda': '  Eskaeren zerrenda'
+'Eskaeren zerrenda': '  Instantzien zerrenda'
 Noiz: '  Noiz'
 Sinatzaileak: '  Sinatzaileak'
 Orden: '  Orden'
@@ -122,7 +122,7 @@ msg.norberarentzakozati: 'Norbere arazoetarako zatituta'
 Nor: Nor
 'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
 'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
-'eskaera berria': 'eskaera berria'
+'eskaera berria': 'instantzia berria'
 Eguna: Eguna
 Azalpena: Azalpena
 msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere. Datuak egutegian gehituak izan badira EZ DIRA EZABATUKO. Ezabatzeko langilearen egutegira joan eta eskuz egin behar da.'
@@ -137,7 +137,7 @@ Lanpostua: 'Lanpostua'
 Datak: 'Datak'
 Orduak Guztira: 'Orduak Guztira'
 Izaera: 'Langilea'
-Eskaera: 'Eskaera'
+Eskaera: 'Instantzia berria'
 Orduak/Egunak: 'Orduak/Egunak'
 Bideratua: 'Bideatua'
 Gauzatua: 'Gauzatua'
@@ -148,7 +148,7 @@ Guztiak: 'Guztiak'
 'Gauzatu gabeak': 'Gauzatu gabeak'
 'Egutean sartu gabe': 'Egutean sartu gabe'
 Fitxategia: 'Fitxategia'
-Eskaera berria: 'Eskaera berria'
+Eskaera berria: 'Instantzia berria'
 Egunak: 'Egunak'
 Lanaldia: Lanaldia
 msg.ezabatu: 'ziur zaude ezabatu nahi duzula?'

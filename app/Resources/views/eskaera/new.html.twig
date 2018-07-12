@@ -67,7 +67,7 @@
                 </div>
             </div>
 
-            {% if 'KONPENTSA' not in eskaera.type.name | upper %}
+            {#{% if 'KONPENTSA' not in eskaera.type.name | upper %}#}
                 <div class="form-group">
                     <div class="col-md-4"></div>
                     <div class="col-md-8">
@@ -81,7 +81,7 @@
                         {{ form_widget(form.total, { 'attr': {'class': 'form-control disabled'} }) }}
                     </div>
                 </div>
-            {% endif %}
+            {#{% endif %}#}
 
             <div class="form-group">
                 {% if 'KONPENTSA' not in eskaera.type.name | upper %}

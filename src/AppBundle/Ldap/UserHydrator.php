@@ -28,19 +28,19 @@ class UserHydrator implements HydratorInterface
         $user = new User();
         $user->setUsername($ldapEntry['samaccountname'][0]);
         $user->setEmail($ldapEntry['mail'][0]);
-        if ((array_key_exists('department', $ldapEntry)) && (count($ldapEntry['department']))) {
+        if ( array_key_exists( 'department', $ldapEntry) && (count( $ldapEntry['department']))) {
             $user->setDepartment($ldapEntry['department'][0]);
         }
-        if ((array_key_exists('employeeid', $ldapEntry)) && (count($ldapEntry['employeeid']))) {
+        if ( array_key_exists( 'employeeid', $ldapEntry) && (count( $ldapEntry['employeeid']))) {
             $user->setNan($ldapEntry['employeeid'][0]);
         }
-        if ((array_key_exists('description', $ldapEntry)) && (count($ldapEntry['description']))) {
+        if ( array_key_exists( 'description', $ldapEntry) && (count( $ldapEntry['description']))) {
             $user->setLanpostua($ldapEntry['description'][0]);
         }
-        if ((array_key_exists('displayname', $ldapEntry)) && (count($ldapEntry['displayname']))) {
+        if ( array_key_exists( 'displayname', $ldapEntry) && (count( $ldapEntry['displayname']))) {
             $user->setDisplayname($ldapEntry['displayname'][0]);
         }
-        if ((array_key_exists('memberof', $ldapEntry)) && (count($ldapEntry['memberof']))) {
+        if ( array_key_exists( 'memberof', $ldapEntry) && (count( $ldapEntry['memberof']))) {
             $members = $ldapEntry['memberof'];
             $rol = 'ROLE_USER';
             foreach ($members as $key => $value) {
@@ -71,7 +71,7 @@ class UserHydrator implements HydratorInterface
             }
             $user->setMembers($ldapEntry['memberof']);
         }
-        if ((array_key_exists('preferredlanguage', $ldapEntry)) && (count($ldapEntry['preferredlanguage']))) {
+        if ( array_key_exists( 'preferredlanguage', $ldapEntry) && \count( $ldapEntry['preferredlanguage']) ) {
             $user->setHizkuntza( $ldapEntry[ 'preferredlanguage' ][ 0 ] );
         }
         $user->setDn($ldapEntry['dn']);

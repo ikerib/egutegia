@@ -101,7 +101,7 @@ class LdapAuthenticationProvider extends BaseProvider
                             $user->setNan($ldapUser->getNan());
                         }
                         if ($ldapUser->getLanpostua()) {
-                            $user->getLanpostua($ldapUser->getLanpostua());
+                            $user->setLanpostua($ldapUser->getLanpostua());
                         }
                         if ($ldapUser->getDisplayname()) {
                             $user->setDisplayname($ldapUser->getDisplayname());
@@ -124,7 +124,6 @@ class LdapAuthenticationProvider extends BaseProvider
             $log->setName('Login');
             $log->setUser($user);
             $log->setDescription($user->getUsername());
-
             $this->em->persist($log);
             $this->em->flush();
 

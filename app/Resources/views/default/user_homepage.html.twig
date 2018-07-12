@@ -5,7 +5,9 @@
     {{ parent() }}
     <style>
         @media print {
-            body {-webkit-print-color-adjust: exact;}
+            body {
+                -webkit-print-color-adjust: exact;
+            }
         }
     </style>
 {% endblock %}
@@ -70,7 +72,9 @@
                         <input id="numberHoursPartial" type="hidden" value="{{ selfHoursPartial }}">
                         <ul class="list-inline">
                             <li>{{ 'msg.zatitu' | trans }}</li>
-                            <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }} egun)</li>
+                            <li id="selfHoursPartial">{{ selfHoursPartial }} <span id="selfHoursPartialToHour"></span> ({{ (selfHoursPartial / calendar.hoursDay) | round (2) }}
+                                                                                                                       egun)
+                            </li>
                         </ul>
                         <ul class="list-inline">
                             <li>{{ 'msg.egun.osoak' | trans }}</li>
@@ -92,7 +96,7 @@
 
     <input type="hidden" id="calendarid" value="{{ calendar.id }}">
     <input type="hidden" id="templateid" value="{{ calendar.template.id }}">
-    <input type="hidden" id="locale"     value="{{ app.request.getLocale() }}">
+    <input type="hidden" id="locale" value="{{ app.request.getLocale() }}">
 
 {% endblock %}
 

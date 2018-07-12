@@ -12,8 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,7 +23,7 @@ class DefaultController extends Controller
      */
     public function homepageAction()
     {
-        return $this->redirectToRoute( 'user_homepage' );
+        return $this->redirectToRoute('user_homepage');
     }
 
     /**
@@ -33,45 +32,49 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function zerrendakonpentsatuakAction( Request $request )
+    public function zerrendakonpentsatuakAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
 
 //        FORM POST PARAMETERS
-        $hasi = $request->request->get( 'data_hasi' );
-        $fin = $request->request->get( 'data_amaitu' );
-        $urtea = $request->request->get( 'urtea' );
-        $saila = $request->request->get( 'saila' );
-        $lanpostua = $request->request->get( 'lanpostua' );
-        $mota = $request->request->get( 'mota' );
+        $hasi      = $request->request->get('data_hasi');
+        $fin       = $request->request->get('data_amaitu');
+        $urtea     = $request->request->get('urtea');
+        $saila     = $request->request->get('saila');
+        $lanpostua = $request->request->get('lanpostua');
+        $mota      = $request->request->get('mota');
 
-        if ((!$urtea) && (!$mota) ){
-            $urtea = date( "Y" );
-            $mota = 6;
+        if ((!$urtea) && (!$mota)) {
+            $urtea = date('Y');
+            $mota  = 6;
         }
 
         $em = $this->getDoctrine()->getManager();
 
 
-        $konpentsatuak = $em->getRepository( 'AppBundle:Event' )->findKonpentsatuak( $hasi, $fin, $urtea, $saila, $lanpostua, $mota );
-        $sailak = $em->getRepository( 'AppBundle:User' )->findSailGuztiak();
-        $urteak = $em->getRepository( 'AppBundle:Calendar' )->getEgutegiUrteak();
-        $lanpostuak = $em->getRepository( 'AppBundle:User' )->findLanpostuGuztiak();
-        $motak = $em->getRepository( 'AppBundle:Type' )->findAll();
+        $konpentsatuak = $em->getRepository('AppBundle:Event')->findKonpentsatuak($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        $sailak        = $em->getRepository('AppBundle:User')->findSailGuztiak();
+        $urteak        = $em->getRepository('AppBundle:Calendar')->getEgutegiUrteak();
+        $lanpostuak    = $em->getRepository('AppBundle:User')->findLanpostuGuztiak();
+        $motak         = $em->getRepository('AppBundle:Type')->findAll();
 
 
-        $testua = $urtea . "-ko datuak erakusten ";
-        if ( $hasi )
-            $testua = $testua . $hasi . "-tik hasita ";
-        if ( $fin )
-            $testua = $testua . $fin . "-erarte. ";
-        if ( $saila )
-            $testua = $testua . " Saila:" . $saila;
-        if ( $lanpostua )
-            $testua = $testua . " Lanpostua:" . $lanpostua;
-        if ( $mota ) {
-            $motatest = $em->getRepository( 'AppBundle:Type' )->find( $mota );
-            if ( $motatest ) {
-                $testua = $testua . " Mota:" . $motatest->getName();
+        $testua = $urtea.'-ko datuak erakusten ';
+        if ($hasi) {
+            $testua = $testua.$hasi.'-tik hasita ';
+        }
+        if ($fin) {
+            $testua = $testua.$fin.'-erarte. ';
+        }
+        if ($saila) {
+            $testua = $testua.' Saila:'.$saila;
+        }
+        if ($lanpostua) {
+            $testua = $testua.' Lanpostua:'.$lanpostua;
+        }
+        if ($mota) {
+            $motatest = $em->getRepository('AppBundle:Type')->find($mota);
+            if ($motatest) {
+                $testua = $testua.' Mota:'.$motatest->getName();
             }
 
         }
@@ -95,13 +98,13 @@ class DefaultController extends Controller
      */
     public function userhomepageAction()
     {
-        $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
 
-        if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_UDALTZAINA' ) ) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
@@ -114,12 +117,13 @@ class DefaultController extends Controller
         }
 
 
-        $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $user->getUsername(), date( 'Y' ) );
+        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
-        if ( ( !$calendar ) || ( count( $calendar ) > 1 ) ) {
-            if ( $this->get( 'security.authorization_checker' )->isGranted( 'ROLE_ADMIN' ) ) {
-                return $this->redirectToRoute( 'dashboard' );
+        if ((!$calendar) || (\count($calendar) > 1)) {
+            if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                return $this->redirectToRoute('dashboard');
             }
+
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
@@ -135,20 +139,20 @@ class DefaultController extends Controller
         $calendar = $calendar[ 0 ];
         // norberarentzako orduak
         /** @var Event $selfHours */
-        $selfHours = $em->getRepository( 'AppBundle:Event' )->findCalendarSelfEvents( $calendar->getId() );
-        $selfHoursPartial = 0;
+        $selfHours         = $em->getRepository('AppBundle:Event')->findCalendarSelfEvents($calendar->getId());
+        $selfHoursPartial  = 0;
         $selfHoursComplete = 0;
 
-        foreach ( $selfHours as $s ) {
+        foreach ($selfHours as $s) {
             /** @var Event $s */
-            if ( $s->getHours() < $calendar->getHoursDay() ) {
+            if ($s->getHours() < $calendar->getHoursDay()) {
                 $selfHoursPartial += (float)$s->getHours();
             } else {
                 $selfHoursComplete += (float)$s->getHours();
             }
         }
 
-        $selfHoursPartial = (float)$calendar->getHoursSelfHalf() - $selfHoursPartial;
+        $selfHoursPartial  = (float)$calendar->getHoursSelfHalf() - $selfHoursPartial;
         $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
 
 
@@ -168,14 +172,15 @@ class DefaultController extends Controller
      */
     public function userdocumetsAction()
     {
-        $this->denyAccessUnlessGranted( 'ROLE_USER', null, 'Egin login' );
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
-        $calendar = $em->getRepository( 'AppBundle:Calendar' )->findByUsernameYear( $user->getUsername(), date( 'Y' ) );
+        /** @var Calendar $calendar */
+        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
-        if ( ( !$calendar ) || ( count( $calendar ) > 1 ) ) {
+        if ((!$calendar) || (\count($calendar) > 1)) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [

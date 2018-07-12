@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock  %}
+{% block headline %}{{ 'Eskaeren zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
 
@@ -29,8 +29,8 @@
             <table id="tableEskaerak" class="table table-bordered table-striped table-hover table-condensed">
                 <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>{{ "Izaera" | trans }}</th>
+                    {#<th>Id</th>#}
+                    {#<th>{{ "Izaera" | trans }}</th>#}
                     <th>{{ "Mota" | trans }}</th>
                     <th>{{ "Hasi" | trans }}</th>
                     <th>{{ "Amaitu" | trans }}</th>
@@ -45,8 +45,8 @@
                 <tbody>
                 {% for eskaera in eskaeras %}
                     <tr>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>
+                        {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>#}
+                        {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>#}
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
@@ -80,7 +80,9 @@
                         </td>
                     </tr>
                 {% else %}
-                    <tr><td colspan="6"> Ez dago daturik</td></tr>
+                    <tr>
+                        <td colspan="6"> Ez dago daturik</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
