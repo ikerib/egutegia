@@ -7,6 +7,7 @@ Izena: Izena
 'Opor orduak hartuta': 'Opor orduak hartuta'
 Ezeztatu: Ezeztatu
 Txantiloiak: Txantiloiak
+Bateraezinak: Bateraezinak
 Hasiera: Hasiera
 Motak: Motak
 Orduak: Orduak
@@ -22,8 +23,11 @@ Txantiloia: Txantiloia
 'Lan orduak:': 'Lan orduak:'
 'Opor orduak:': 'Opor orduak:'
 'Norberarentzako:': 'Norberarentzako:'
-'Konpentsatutakoo:': 'Konpentsatutakoo:'
+'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Egutegia
+Eskaerak: 'Instantzia berria'
+'Azken konexioak': 'Azken konexioak'
+Irten: Irten
 Mota: Mota
 Fetxak: Fetxak
 'Langileen zerrenda': 'Langileen zerrenda'
@@ -35,12 +39,13 @@ Denboralerroa: Denboralerroa
 Nombre: Nombre
 Abizenak: Abizenak
 'Urteko orduak': 'Urteko orduak'
+'Opor orduak': 'Opor orduak'
 'Konpentsatutako orduak': 'Konpentsatutako orduak'
 'Udal Langileen egutegi kudeatzailea': 'Udal Langileen egutegi kudeatzailea'
 Sartu: Sartu
 'Txantiloi berria': 'Txantiloi berria'
 'Egun bat zenbat ordu dira': 'Egun bat zenbat ordu dira'
-'Portzentaia:': '__Portzentaia:'
+'Portzentaia:': 'Portzentaia:'
 'Jornada:': 'Jornada:'
 Portzentaia: Portzentaia
 Konpentsatuak: Konpentsatuak
@@ -54,6 +59,7 @@ Minutuak: Minutuak
 Faktorea: Faktorea
 'Orduak konpentsatzera': 'Orduak konpentsatzera'
 Saila: Saila
+Urtea: Urtea
 'Opor orduak': 'Opor orduak'
 Ordena: Ordena
 Erakutsi: Erakutsi
@@ -69,6 +75,8 @@ msg.opor.orduak: 'Opor orduak: '
 msg.urteko.orduak: 'Urteko lan orduak: '
 msg.portzentaia: 'Portzentaia: '
 msg.egutegi.berria: 'Egutegi berria'
+msg.zatitu: 'Zatitu daitezke:'
+msg.egun.osoak: 'Egun osoak:'
 'Sinatzaileen zerrenda': 'Sinatzaileen zerrenda'
 Jakinarazpenak: '  Jakinarazpenak'
 Irakurria: '  Irakurria'
@@ -93,7 +101,7 @@ Noiztik: '  Noiztik'
 Deskribapena: '  Deskribapena'
 'Eskaera data': '  Eskaera data'
 'Lortu inprimatika': '  Lortu inprimatika'
-'Eskaeren zerrenda': '  Eskaeren zerrenda'
+'Eskaeren zerrenda': '  Instantzien zerrenda'
 Noiz: '  Noiz'
 Sinatzaileak: '  Sinatzaileak'
 Orden: '  Orden'
@@ -114,9 +122,37 @@ msg.norberarentzakozati: 'Norbere arazoetarako zatituta'
 Nor: Nor
 'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
 'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
-'eskaera berria': '__eskaera berria'
 Eguna: Eguna
 Azalpena: Azalpena
-'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.': 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere.'
+msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere. Datuak egutegian gehituak izan badira EZ DIRA EZABATUKO. Ezabatzeko langilearen egutegira joan eta eskuz egin behar da.'
 'Nondik kendu': 'Nondik kendu'
-Eskaera gauzatu: 'Eskaera gauzatu'
+'Eskaera gauzatu': 'Eskaera gauzatu'
+Zerrendak: Zerrendak
+'Jakinarazpen guztiak': 'Jakinarazpen guztiak'
+error.udaltzaina: "Sistemak ez du erabiltzailea ezagutzen."
+error.no.calendar: 'Ez daukazu Egutegirik sortuta aplikazioan'
+error.call.personal: 'Deitu Pertsonal sailera'
+Lanpostua: 'Lanpostua'
+Datak: 'Datak'
+Orduak Guztira: 'Orduak Guztira'
+Izaera: 'Langilea'
+Eskaera: 'Instantzia berria'
+Orduak/Egunak: 'Orduak/Egunak'
+Bideratua: 'Bideatua'
+Gauzatua: 'Gauzatua'
+Egutegian: 'Egutegian'
+Sinatzaile taldea: 'Sinatzaileak'
+Guztiak: 'Guztiak'
+'Bideratu gabeak': 'Bideratu gabeak'
+'Gauzatu gabeak': 'Gauzatu gabeak'
+'Egutean sartu gabe': 'Egutean sartu gabe'
+Fitxategia: 'Fitxategia'
+Eskaera berria: 'Instantzia berria'
+Egunak: 'Egunak'
+Lanaldia: Lanaldia
+msg.ezabatu: 'ziur zaude ezabatu nahi duzula?'
+Eskaera eguna: 'Eskaera eguna'
+main_menu.eskaerak: 'Eskaerak'
+user_menu.eskaerak: 'Instantziak'
+Ekintzak: Ekintzak
+table.eskaera: 'Data'

@@ -50,22 +50,16 @@
                    data-toggle="table"
                    data-classes="table table-hover table-condensed"
                    data-striped="true"
-
                    data-id-field="id"
-
-
                    data-pagination="true"
                    data-page-size="15"
                    data-search="true"
-
                    data-sort-name="id"
                    data-sort-order="desc"
-
                    data-icon-size="sm"
                    data-show-refresh="true"
                    data-show-toggle="true"
                    data-show-columns="true"
-
                    data-toolbar="#toolbar"
                    data-show-export="true"
                    data-export-types="['csv','excel', 'pdf']"
@@ -80,48 +74,54 @@
                        }
                      }
                    }'
-                   {#data-height="460"#}
                    data-detail-view="true"
                    data-detail-formatter="detailFormatter"
             >
                 <thead>
                 <tr>
-                    <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true" data-field="id">ID</th>
+                    <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.name" data-sortable="true">{{ "Izaera" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.type.name " data-sortable="true">{{ "Mota" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.noiz" data-sortable="true">{{ "Eskaera" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.abiatua" data-sortable="true">{{ "Bideratua" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.amaitua" data-sortable="true">{{ "Gauzatua" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.egutegian" data-sortable="true">{{ "Egutegian" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.sinatzaileak" data-sortable="true">{{ "Sinatzaile taldea" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.konfliktoa" data-sortable="true">{{ "Bateraezinak" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.oharrak" data-sortable="true">{{ "Oharrak" | trans }}</th>
-                    <th></th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.noiz" data-sortable="true">{{ "table.eskaera" | trans }}</th>
+                    {#<th data-halign="center" data-align="left" data-field="eskaera.hasi" data-sortable="true">{{ "Hasi" | trans }}</th>#}
+                    {#<th data-halign="center" data-align="left" data-field="eskaera.amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>#}
+                    {#<th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak" | trans }}</th>#}
+                    <th data-halign="center" data-align="center" data-field="eskaera.abiatua" data-sortable="false">{{ "Bideratua" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.amaitua" data-sortable="false">{{ "Gauzatua" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.egutegian" data-sortable="false">{{ "Egutegian" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.konfliktoa" data-sortable="false">{{ "Bateraezinak" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="eskaera.oharrak" data-sortable="false">{{ "Oharrak" | trans }}</th>
+                    <th>{{ "Ekintzak" | trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for eskaera in eskaeras %}
                     <tr>
                         <td>{{ eskaera.id }}</td>
-                        <td><a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera"
-                               data-id="{{ eskaera.id }}">{{ eskaera.name }}</a></td>
-                        <td>{{ eskaera.user.department }}</td>
-                        <td>{{ eskaera.type.name }}</td>
                         <td>
-                            {% if eskaera.noiz %}{{ eskaera.noiz|date('Y-m-d') }}{% endif %}
+                            <a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                {{ eskaera.name }}
+                            </a>
                         </td>
                         <td>
-                            {% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}
+                            <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.user.department }}">
+                                {{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}
+                            </span>
                         </td>
                         <td>
-                            {% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}
+                            <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
+                                {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name}}
+                            </span>
                         </td>
                         <td>
-                            {{ eskaera.orduak }}
+                            {% if eskaera.noiz %}
+                                <label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"
+                                        title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">
+                                    {{ eskaera.noiz|date('Y-m-d') }}
+                                </label>
+                            {% endif %}
                         </td>
                         <td>
                             <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
@@ -160,7 +160,7 @@
                                 <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
                                    target="_blank">{{ eskaera.sinatzaileak }}</a>
                             {% else %}
-                                Eskaera bideratu gabe dago
+                                Bideratu gabe.
                             {% endif %}
 
                         </td>
@@ -173,36 +173,41 @@
                             {% endif %}
                         </td>
 
-                        <td>{{ eskaera.oharra }}</td>
+                        <td>
+                            <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.oharra }}">
+                                {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra  }}
+                            </span>
+                        </td>
 
                         <td>
-                            <ul class="list-inline text-left">
+                            <ul class="list text-left">
                                 <li>
                                     <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                        <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                     </a>
                                 </li>
                                 {% if eskaera.egutegian == false %}
-                                <li>
-                                    {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
-                                    <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
-                                       href="#eskaeraEditModal{{ eskaera.id }}">
-                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                    </a>
-                                    {{ form_end(deleteForms[eskaera.id]) }}
-                                </li>
-                                {% endif %}
-                                {% if eskaera.amaitua != true  %}
-                                <li>
-                                    {% if eskaera.bideratua %}
-                                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                    {% else %}
-                                        <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}" data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
-                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                    <li>
+                                        {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
+                                        <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
+                                           href="#eskaeraEditModal{{ eskaera.id }}">
+                                            <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
                                         </a>
-                                    {% endif %}
+                                        {{ form_end(deleteForms[eskaera.id]) }}
+                                    </li>
+                                {% endif %}
+                                {% if eskaera.amaitua != true %}
+                                    <li>
+                                        {% if eskaera.bideratua %}
+                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                        {% else %}
+                                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
+                                               data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                                <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
+                                            </a>
+                                        {% endif %}
 
-                                </li>
+                                    </li>
                                 {% endif %}
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
 
@@ -242,101 +247,85 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
-        var $table = $('#tableEskaerak');
+        var $table = $("#tableEskaerak");
 
         $(document).ready(function () {
-            function workday_count(fstart, fend) {
-                var start = moment(fstart);
-                var end = moment(fend);
-                var first = start.clone().endOf('week'); // end of first week
-                var last = end.clone().startOf('week'); // start of last week
-                var days = Math.floor(last.diff(first, 'days') * 5 / 7); // this will always multiply of 7
 
-                var wfirst = first.day() - start.day(); // check first week
-                if (start.day() === 0) --wfirst; // -1 if start with sunday
-
-                var wlast = end.day() - last.day(); // check last week
-                if (end.day() === 6) --wlast; // -1 if end with saturday
-
-                return wfirst + days + wlast; // get the total
-            }
+            $('[data-toggle="tooltip"]').tooltip();
 
             $("input[name*='appbundle_eskaera[hasi]']").datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd',
-                language: 'eu'
+                format: "yyyy-mm-dd",
+                language: "eu"
             });
             $("input[name*='appbundle_eskaera[noiz]']").datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd',
-                language: 'eu'
+                format: "yyyy-mm-dd",
+                language: "eu"
             });
             $("input[name*='appbundle_eskaera[amaitu]").datepicker({
                 autoclose: true,
-                format: 'yyyy-mm-dd',
-                language: 'eu'
+                format: "yyyy-mm-dd",
+                language: "eu"
             });
 
-            $('#flash').delay(500).fadeIn('normal', function () {
+            $("#flash").delay(500).fadeIn("normal", function () {
                 $(this).delay(2500).fadeOut();
             });
 
-            $('.btnEskaeraEgutegira').on('click', function () {
+            $(".btnEskaeraEgutegira").on("click", function () {
 
-                var egutegian = $(this).data('egutegian');
+                var egutegian = $(this).data("egutegian");
 
-                if (egutegian === 1) {
+                if ( egutegian === 1 ) {
                     return bootbox.alert({
                         message: "Iadanik egutegian grabatua daude datu hauek.",
-                        className: 'bb-alternate-modal'
+                        className: "bb-alternate-modal"
                     });
                 }
 
-                var miid = $(this).data('id');
+                var miid = $(this).data("id");
 
                 bootbox.confirm({
                     title: "Seguru zuaude?",
                     message: "Onartu botoian klik egin ondoren eskaera hau langilearen egutegian gehituko da. Ados? <br /> Horrez gain eskaera dokumentua ere itsatsiko da.",
                     buttons: {
                         cancel: {
-                            label: '<i class="fa fa-times"></i> Ezeztatu'
+                            label: "<i class=\"fa fa-times\"></i> Ezeztatu"
                         },
                         confirm: {
-                            label: '<i class="fa fa-check"></i> Onartu'
+                            label: "<i class=\"fa fa-check\"></i> Onartu"
                         }
                     },
-                    callback: function (result) {
-                        if (result === true) {
-                            var url = Routing.generate('eskaera_add_to_calendar', {'id': miid}, true);
-                            window.location.href = url;
+                    callback: function ( result ) {
+                        if ( result === true ) {
+                            window.location.href = Routing.generate("eskaera_add_to_calendar", { "id": miid }, true);
                         }
 
                     }
                 });
             });
 
-            $('.btnEskaera').on('click', function () {
-                var miid = $(this).data("id");
-                var url = $(this).data('myurl');
-                $('.my-modal-cont').load(url,function(result){
-                    $('#myModal').modal({show:true});
+            $(".btnEskaera").on("click", function () {
+                var url = $(this).data("myurl");
+                $(".my-modal-cont").load(url, function () {
+                    $("#myModal").modal({ show: true });
                 });
-
             });
 
             $table.bootstrapTable();
-            $table.on('expand-row.bs.table', function (e, index, row, $detail) {
+            $table.on("expand-row.bs.table", function ( e, index, row, $detail ) {
                 var miid = row.id;
                 var url = Routing.generate("get_firmatzaileak", { "eskaeraid": miid });
 
-                $detail.html('toc toc...' + url + ' helbideari deika');
+                $detail.html("toc toc..." + url + " helbideari deika");
 
-                $.get(url, function (data) {
+                $.get(url, function ( data ) {
                     var html = "<div class='row'>" +
                         "<div class='col-md-2'></div>" +
                         "<div class='col-md-8'>" +
                         "<table class='table table-bordered table-striped table-hover table-condensed'>" +
-                            "<thead>" +
+                        "<thead>" +
                         "       <tr>" +
                         "           <th><strong>Langilea</strong></th>" +
                         "           <th><strong>Firmatua</strong></th>" +
@@ -345,23 +334,23 @@
                         "       </tr>" +
                         "   </thead>" +
                         "<tbody>";
-                    $.each(data, function (i, obj) {
+                    $.each(data, function ( i, obj ) {
 
-                        var jakinarazpenid=0;
+                        var jakinarazpenid = 0;
                         var postit = false;
                         var autofirma = false;
 
-                        if ( 'postit' in obj ) {
+                        if ( "postit" in obj ) {
                             postit = true;
                         }
 
-                        if ( 'autofirma' in obj ) {
+                        if ( "autofirma" in obj ) {
                             autofirma = true;
                         }
 
                         /** bilatu jakinarazpen_id **/
                         $.each(obj.notify, function ( k, n ) {
-                            if ( n.user.id === obj.user.id) {
+                            if ( n.user.id === obj.user.id ) {
                                 jakinarazpenid = n.id;
                                 return false;
                             }
@@ -371,12 +360,12 @@
                         var sinatua = false;
 
                         /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */
-                        if (!("firmatua" in obj)) {
+                        if ( !("firmatua" in obj) ) {
                             html = html + "<td><span class='label label-warning '>Ez</span></td><td>-</td>";
                         } else {
                             html = html + "<td><span class='label label-success '>Bai</span></td>";
 
-                            if (obj.firmatua === true ) {
+                            if ( obj.firmatua === true ) {
                                 sinatua = true;
                                 html = html + "<td><span class='label label-success'>Bai onartua</span></td>";
                             } else {
@@ -387,7 +376,7 @@
                         /** Sinadura badu ez du postit botoia behar */
                         if ( sinatua === false ) {
                             html = html + "<td>" +
-                                "<button class='btn btn-xs btn-primary btnPostIt' data-firmaid="+obj.firmaid+" data-userid="+ obj.user.id +" data-notifyid="+ jakinarazpenid +">Post it!</button>" +
+                                "<button class='btn btn-xs btn-primary btnPostIt' data-firmaid=" + obj.firmaid + " data-userid=" + obj.user.id + " data-notifyid=" + jakinarazpenid + ">Post it!</button>" +
                                 "</td>";
                         } else {
                             if ( postit === true ) {
@@ -411,18 +400,25 @@
 
 
                     $detail.html(html);
+                }).fail(function() {
+                    bootbox.alert({
+                        message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
+                        className: 'bb-alternate-modal',
+                        backdrop: true
+                    });
+                    $detail.html('');
                 });
             });
 
 
-            $('.saveEditModal').on('click', function () {
-                var miid = $(this).data('id');
-                var mifrm = $('#frmEditEskaera' + miid);
-                $(mifrm).submit()
+            $(".saveEditModal").on("click", function () {
+                var miid = $(this).data("id");
+                var mifrm = $("#frmEditEskaera" + miid);
+                $(mifrm).submit();
             });
 
 
-            $('.btnRemoveRow').on('click', function () {
+            $(".btnRemoveRow").on("click", function () {
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",
@@ -435,46 +431,43 @@
                             label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
                         }
                     },
-                    callback: function (result) {
-                        if (result === true) {
-                            $(that).closest('form').submit();
+                    callback: function ( result ) {
+                        if ( result === true ) {
+                            $(that).closest("form").submit();
                         }
                     }
                 });
             });
 
             $("#tableEskaerak").on("click", ".btnPostIt", function () {
-
-                var eskaerid = $(this).data("eskaeraid");
                 var userid = $(this).data("userid");
-
                 var firmaid = $(this).data("firmaid");
                 var jakinarazpenaid = $(this).data("notifyid");
                 var url = Routing.generate("put_firma", { id: firmaid, userid: userid });
 
                 bootbox.prompt({
                     title: "Oharra",
-                    inputType: 'textarea',
-                    callback: function (result) {
+                    inputType: "textarea",
+                    callback: function ( result ) {
                         $.ajax({
                             url: url,
-                            method: 'PUT',
-                            data: {onartua: 1, oharra: result}
+                            method: "PUT",
+                            data: { onartua: 1, oharra: result }
                         })
-                         .done(function (data) {
-                             const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                         .done(function () {
+                             var url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
                              $.ajax({
                                  url: url2,
-                                 method: 'PUT',
-                                 data: {onartua: 1}
-                             }).done(function (data) {
-                                 location.reload()
-                             }).fail(function (xhr) {
-                                 bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-                             })
+                                 method: "PUT",
+                                 data: { onartua: 1 }
+                             }).done(function (  ) {
+                                 location.reload();
+                             }).fail(function (  ) {
+                                 bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.");
+                             });
                          })
-                         .fail(function (xhr) {
-                             bootbox.alert('Akats bat gertatu da firmatzerakoan.')
+                         .fail(function (  ) {
+                             bootbox.alert("Akats bat gertatu da firmatzerakoan.");
                          });
                     }
                 });

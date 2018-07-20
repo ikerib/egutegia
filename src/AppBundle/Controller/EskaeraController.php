@@ -133,11 +133,8 @@ class EskaeraController extends Controller
          */
         /** @var Document $doc */
         $doc     = $eskaera->getDocuments()[ 0 ];
-
         $pdfPath = $this->getParameter('app.dir_base_pdf');
-
         $docuser = $doc->getEskaera()->getUser();
-
         $pathFrom = $doc->getFilenamepath();
         $pathTo   = $pdfPath.'/'.$docuser->getUsername().'/'.$eskaera->getCalendar()->getYear().'/'.$doc->getFilename();
         $doc->setFilenamepath($pathTo);

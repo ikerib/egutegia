@@ -26,11 +26,9 @@ class Builder implements ContainerAwareInterface
     public function mainMenu(FactoryInterface $factory, array $options)
     {
         $checker = $this->container->get('security.authorization_checker');
-
         $menu = $factory->createItem('root', ['navbar' => true]);
 
-
-        if ($checker->isGranted('ROLE_BIDERATZAILEA') || ($checker->isGranted('ROLE_SUPER_ADMIN'))) {
+        if ($checker->isGranted('ROLE_BIDERATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
 
             $menu->addChild('Hasiera', ['icon' => 'home', 'route' => 'dashboard'])->setExtra('translation_domain', 'messages');
             $menu->addChild('Taula Laguntzaileak', ['icon' => 'th-list'])->setExtra('translation_domain', 'messages');
@@ -50,15 +48,14 @@ class Builder implements ContainerAwareInterface
             $em       = $this->container->get('doctrine.orm.entity_manager');
             $eskaerak = $em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
 
-            if (count($eskaerak) > 0) {
-                //$menu->addChild(' ADI!!! Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list']);
+            if (\count($eskaerak) > 0) {
                 $menu->addChild(
                     'Eskaerak',
                     array(
                         'route'           => 'admin_eskaera_list',
                         'routeParameters' => array('q' => 'all'),
                         'icon'            => 'inbox',
-                        'label'           => $this->container->get("translator")->trans("Eskaerak")." <span class='badge badge-error'>".count($eskaerak)."</span>",
+                        'label'           => $this->container->get('translator')->trans('main_menu.eskaerak')." <span class='badge badge-error'>".count($eskaerak)."</span>",
                         'extras'          => array('safe_label' => true),
                     )
                 );
@@ -78,7 +75,7 @@ class Builder implements ContainerAwareInterface
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function userMenu(FactoryInterface $factory, array $options)
+    public function userMenu(FactoryInterface $factory, array $options): \Knp\Menu\ItemInterface
     {
         /*
         * Sinatze ditu eskaerak??
@@ -91,33 +88,25 @@ class Builder implements ContainerAwareInterface
         /** @var $user User */
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
-
         $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
-
 
         if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
             $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
-            $menu->addChild(
-                'Exit',
-                array(
+            $menu->addChild('Exit', array(
                     'label'           => 'Modu arruntera izuli',
                     'route'           => 'dashboard',
                     'routeParameters' => array('_switch_user' => '_exit'),
                     'icon'            => 'exit',
                 )
             );
-
         }
-
 
         if ($checker->isGranted('ROLE_USER')) {
             if (\count($notifications) === 0) {
                 $menu->addChild('User', array('label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));
             } else {
-                $menu->addChild(
-                    'User',
-                    array(
-                        'label'    => $user->getDisplayname()." <span class='badge badge-error'>".\count($notifications)."</span>",
+                $menu->addChild('User', array(
+                        'label'    => $user->getDisplayname()." <span class='badge badge-error'>".\count($notifications).'</span>',
                         'dropdown' => true,
                         'icon'     => 'user',
                         'extras'   => array('safe_label' => true),
@@ -125,24 +114,21 @@ class Builder implements ContainerAwareInterface
                 );
             }
 
-            $menu[ 'User' ]->addChild(
-                'Egutegia',
-                array(
+            $menu[ 'User' ]->addChild( 'Egutegia',
+                [
                     'route' => 'user_homepage',
                     'icon'  => 'calendar',
-                )
+                ]
             )->setExtra('translation_domain', 'messages');
 
-            $menu[ 'User' ]->addChild(
-                'Fitxategiak',
+            $menu[ 'User' ]->addChild( 'Fitxategiak',
                 array(
                     'route' => 'user_documents',
                     'icon'  => 'folder-open',
                 )
             )->setExtra('translation_domain', 'messages');
 
-            $menu[ 'User' ]->addChild(
-                'Eskaerak',
+            $menu[ 'User' ]->addChild('user_menu.eskaerak',
                 array(
                     'route' => 'eskaera_index',
                     'icon'  => 'send',
@@ -155,7 +141,7 @@ class Builder implements ContainerAwareInterface
                 $menu[ 'User' ]->addChild(
                     'Jakinarazpenak',
                     array(
-                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications)."</span>",
+                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications).'</span>',
                         'route'  => 'notification_index',
                         'icon'   => 'bullhorn',
                         'extras' => array('safe_label' => true),

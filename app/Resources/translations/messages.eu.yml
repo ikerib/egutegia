@@ -60,7 +60,6 @@ Faktorea: Faktorea
 'Orduak konpentsatzera': 'Orduak konpentsatzera'
 Saila: Saila
 Urtea: Urtea
-'Opor orduak': 'Opor orduak'
 Ordena: Ordena
 Erakutsi: Erakutsi
 Bai: Bai
@@ -122,7 +121,6 @@ msg.norberarentzakozati: 'Norbere arazoetarako zatituta'
 Nor: Nor
 'Eskatutako <strong>egunak</strong>': 'Eskatutako <strong>egunak</strong>'
 'Eskatutako <strong>orduak</strong>': 'Eskatutako <strong>orduak</strong>'
-'eskaera berria': 'instantzia berria'
 Eguna: Eguna
 Azalpena: Azalpena
 msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako eskaera dokumentua ezabatukok da ere. Datuak egutegian gehituak izan badira EZ DIRA EZABATUKO. Ezabatzeko langilearen egutegira joan eta eskuz egin behar da.'
@@ -130,26 +128,35 @@ msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako 
 'Eskaera gauzatu': 'Eskaera gauzatu'
 Zerrendak: Zerrendak
 'Jakinarazpen guztiak': 'Jakinarazpen guztiak'
-error.udaltzaina: "Sistemak ez du erabiltzailea ezagutzen."
+error.udaltzaina: 'Sistemak ez du erabiltzailea ezagutzen.'
 error.no.calendar: 'Ez daukazu Egutegirik sortuta aplikazioan'
 error.call.personal: 'Deitu Pertsonal sailera'
-Lanpostua: 'Lanpostua'
-Datak: 'Datak'
-Orduak Guztira: 'Orduak Guztira'
-Izaera: 'Langilea'
+Lanpostua: Lanpostua
+Datak: Datak
+'Orduak Guztira': 'Orduak Guztira'
+Izaera: Langilea
 Eskaera: 'Instantzia berria'
-Orduak/Egunak: 'Orduak/Egunak'
-Bideratua: 'Bideatua'
-Gauzatua: 'Gauzatua'
-Egutegian: 'Egutegian'
-Sinatzaile taldea: 'Sinatzaile taldea'
-Guztiak: 'Guztiak'
+Orduak/Egunak: Orduak/Egunak
+Bideratua: Bideatua
+Gauzatua: Gauzatua
+Egutegian: Egutegian
+'Sinatzaile taldea': Sinatzaileak
+Guztiak: Guztiak
 'Bideratu gabeak': 'Bideratu gabeak'
 'Gauzatu gabeak': 'Gauzatu gabeak'
 'Egutean sartu gabe': 'Egutean sartu gabe'
-Fitxategia: 'Fitxategia'
-Eskaera berria: 'Instantzia berria'
-Egunak: 'Egunak'
+Fitxategia: Fitxategia
+'Eskaera berria': 'Instantzia berria'
+Egunak: Egunak
 Lanaldia: Lanaldia
 msg.ezabatu: 'ziur zaude ezabatu nahi duzula?'
-Eskaera eguna: 'Eskaera eguna'
+'Eskaera eguna': 'Eskaera eguna'
+main_menu.eskaerak: Eskaerak
+user_menu.eskaerak: Instantziak
+Ekintzak: Ekintzak
+table.eskaera: Data
+'eskaera berria': 'eskaera berria'
+Ikusi: Ikusi
+Ezabatu: Ezabatu
+Bideratu: Bideratu
+'Eskaera editatzen': 'Eskaera editatzen'

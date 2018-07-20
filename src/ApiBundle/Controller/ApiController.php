@@ -1049,6 +1049,10 @@ class ApiController extends FOSRestController
         $eskaera = $em->getRepository( 'AppBundle:Eskaera' )->find( $eskaeraid );
         /** @var Firma $firma */
         $firma = $eskaera->getFirma();
+
+        if (!$firma) {
+            return $this->view(null, 404);
+        }
         /** @var Notification $notify */
         $notify = $em->getRepository( 'AppBundle:Notification' )->getNotificationForFirma( $firma->getId() );
 
@@ -1068,7 +1072,7 @@ class ApiController extends FOSRestController
                 'firmatua'  => $f->getFirmatua(),
             );
 
-            array_push( $users, $r );
+            $users[] = $r;
         }
 
 

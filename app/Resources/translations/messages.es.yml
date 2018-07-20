@@ -134,22 +134,30 @@ error.udaltzaina: 'El sistema no reconoce al usuario.'
 error.no.calendar: 'No tienes un Calendario creado en el sistema'
 error.call.personal: 'Llama a personal'
 Lanpostua: 'Puesto de trabajo'
-Datak: 'Fechas'
-Orduak Guztira: 'Total horas'
-Izaera: 'Trabajador'
-Eskaera: 'Petición'
-Orduak/Egunak: 'Horas/Días'
-Bideratua: 'Dirigido'
-Gauzatua: 'Completado'
-Egutegian: 'En el calendario'
-Sinatzaile taldea: 'Grupo firmante'
-Guztiak: 'Todos'
+Datak: Fechas
+'Orduak Guztira': 'Total horas'
+Izaera: Trabajador
+Eskaera: Petición
+Orduak/Egunak: Horas/Días
+Bideratua: Dirigido
+Gauzatua: Completado
+Egutegian: Importado
+'Sinatzaile taldea': Firmantes
+Guztiak: Todos
 'Bideratu gabeak': 'Sin asignar'
 'Gauzatu gabeak': 'Sin completar'
 'Egutean sartu gabe': 'Sin añadir al calendario'
-Fitxategia: 'Fichero'
-Eskaera berria: 'Nueva instancia'
-Egunak: 'Días'
+Fitxategia: Fichero
+'Eskaera berria': 'Nueva instancia'
+Egunak: Días
 Lanaldia: 'Jornada laboral'
 msg.ezabatu: '¿Seguro de que deseas eliminar?'
-Eskaera eguna: 'Fecha petición'
+'Eskaera eguna': 'Fecha petición'
+main_menu.eskaerak: Peticiones
+user_menu.eskaerak: Instancias
+Ekintzak: '  Acciones  '
+table.eskaera: Fecha
+Ikusi: __Ikusi
+Ezabatu: __Ezabatu
+Bideratu: __Bideratu
+'Eskaera editatzen': '__Eskaera editatzen'
