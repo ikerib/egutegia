@@ -156,6 +156,7 @@ class DefaultController extends Controller
         $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
 
 
+
         return $this->render(
             'default/user_homepage.html.twig',
             [
