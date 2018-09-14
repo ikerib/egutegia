@@ -112,13 +112,13 @@
                         </td>
                         <td>
                             <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
-                                {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name}}
+                                {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}
                             </span>
                         </td>
                         <td>
                             {% if eskaera.noiz %}
                                 <label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"
-                                        title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">
+                                       title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">
                                     {{ eskaera.noiz|date('Y-m-d') }}
                                 </label>
                             {% endif %}
@@ -175,7 +175,7 @@
 
                         <td>
                             <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.oharra }}">
-                                {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra  }}
+                                {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra }}
                             </span>
                         </td>
 
@@ -251,7 +251,7 @@
 
         $(document).ready(function () {
 
-            $('[data-toggle="tooltip"]').tooltip();
+            $("[data-toggle=\"tooltip\"]").tooltip();
 
             $("input[name*='appbundle_eskaera[hasi]']").datepicker({
                 autoclose: true,
@@ -335,7 +335,7 @@
                         "   </thead>" +
                         "<tbody>";
                     $.each(data, function ( i, obj ) {
-
+console.log(obj);
                         var jakinarazpenid = 0;
                         var postit = false;
                         var autofirma = false;
@@ -356,7 +356,7 @@
                             }
                         });
 
-                        html = html + "<tr'><td>" + obj.user.displayname + "</td>";
+                        html = html + "<tr'><td>" + obj.user.username + "</td>";
                         var sinatua = false;
 
                         /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */
@@ -400,13 +400,13 @@
 
 
                     $detail.html(html);
-                }).fail(function() {
+                }).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
-                        className: 'bb-alternate-modal',
+                        className: "bb-alternate-modal",
                         backdrop: true
                     });
-                    $detail.html('');
+                    $detail.html("");
                 });
             });
 
@@ -443,32 +443,36 @@
                 var userid = $(this).data("userid");
                 var firmaid = $(this).data("firmaid");
                 var jakinarazpenaid = $(this).data("notifyid");
-                var url = Routing.generate("put_firma", { id: firmaid, userid: userid });
+                var url = Routing.generate("put_postit", { id: firmaid, userid: userid });
 
                 bootbox.prompt({
                     title: "Oharra",
                     inputType: "textarea",
                     callback: function ( result ) {
-                        $.ajax({
-                            url: url,
-                            method: "PUT",
-                            data: { onartua: 1, oharra: result }
-                        })
-                         .done(function () {
-                             var url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
-                             $.ajax({
-                                 url: url2,
-                                 method: "PUT",
-                                 data: { onartua: 1 }
-                             }).done(function (  ) {
-                                 location.reload();
-                             }).fail(function (  ) {
-                                 bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.");
+                        console.log(result);
+                        if (result !== null) {
+                            $.ajax({
+                                url: url,
+                                method: "PUT",
+                                data: { onartua: 1, oharra: result }
+                            })
+                             .done(function () {
+                                 var url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                                 $.ajax({
+                                     url: url2,
+                                     method: "PUT",
+                                     data: { onartua: 1 }
+                                 }).done(function () {
+                                     location.reload();
+                                 }).fail(function () {
+                                     bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.");
+                                 });
+                             })
+                             .fail(function () {
+                                 bootbox.alert("Akats bat gertatu da firmatzerakoan.");
                              });
-                         })
-                         .fail(function (  ) {
-                             bootbox.alert("Akats bat gertatu da firmatzerakoan.");
-                         });
+                        }
+
                     }
                 });
 

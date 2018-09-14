@@ -135,11 +135,13 @@ fos_js_routing:
         - admin_calendar_compare
         - eskaera_index
         - put_firma
+        - put_postit
         - put_jakinarazpena_readed
         - put_jakinarazpena
         - get_firmatzaileak
         - get_firmatzaileakfromjakinarazpena
         - eskaera_add_to_calendar
+
 
 mopa_bootstrap:
     form: ~ # Adds twig form theme support

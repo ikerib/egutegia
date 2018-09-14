@@ -736,6 +736,144 @@ class ApiController extends FOSRestController
     /***** ESKAERA API     ********************************************************************************************/
     /******************************************************************************************************************/
     /******************************************************************************************************************/
+
+    /**
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Postit funtzioa",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param Request $request
+     * @param         $id
+     * @param         $userid
+     *
+     *
+     * @return View
+     * @throws EntityNotFoundException
+     * @Rest\View(statusCode=200)
+     * @Rest\Put("/postit/{id}/{userid}")
+     */
+    public function putPostitAction(Request $request, $id, $userid): View
+    {
+        /**
+         * OHARRA: PUT_FIRMA MODIFIKATZEN BADA, PUT_POSTIT MODIFIKATU BEHAR DA ETA ALDERANTZIZ
+         */
+        $em = $this->getDoctrine()->getManager();
+
+        $jsonData = json_decode( $request->getContent(), true );
+        $onartua  = false;
+        $oharrak  = $request->request->get( 'oharra' );
+        if ( $request->request->get( 'onartua' ) === 1 ) {
+            $onartua = true;
+        }
+
+        // find eskaera
+        $firma = $em->getRepository( 'AppBundle:Firma' )->find( $id );
+        if ( !$firma ) {
+            throw new EntityNotFoundException('Ez da topatu');
+        }
+
+        /** @var User $user */
+        $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
+
+
+        if ( $firma->getCompleted() === false ) {
+
+
+            /**
+             * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
+             *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
+             */
+
+            //Firmatu
+            /** @var Firmadet $firmadets */
+            $firmadets = $firma->getFirmadet();
+            /** @var Firmadet $fd */
+            foreach ( $firmadets as $fd ) {
+                /** @var Sinatzaileakdet $sd */
+                $sd = $fd->getSinatzaileakdet();
+
+                /** @var User $su */
+                $su = $sd->getUser();
+
+                if ( $user->getId() === $su->getId() ) {
+                    $fd->setFirmatua( true );
+                    $fd->setFirmatzailea( $user );
+                    $fd->setNoiz( New \DateTime() );
+                    $em->persist( $fd );
+                    $em->flush();
+                    break;
+                }
+            }
+
+
+            /** @var Eskaera $eskaera */
+            $eskaera = $firma->getEskaera();
+
+
+            // Oharrak grabatu
+            $eskaera->setOharra( $oharrak );
+            $em->persist( $eskaera );
+
+
+            $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
+
+            if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
+                $firma->setCompleted( true );
+            } else {
+                $firma->setCompleted( false );
+            }
+            $em->persist( $firma );
+
+            /**
+             * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
+             */
+            if ( $firma->getCompleted() === true ) {
+                /** @var Eskaera $eskaera */
+                $eskaera = $firma->getEskaera();
+                $eskaera->setAmaitua( true );
+                $em->persist( $eskaera );
+
+                $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
+                $bideratzaileak     = [];
+                /** @var User $b */
+                foreach ( $bideratzaileakfind as $b ) {
+
+                    $bideratzaileak[] = $b->getEmail();
+                }
+                $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
+
+                $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname() ) )
+                    ->setFrom( $bailtzailea )
+                    ->setTo( $bideratzaileak )
+                    ->setBody(
+                        $this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                            'Emails/eskaera_onartua.html.twig',
+                            array( 'eskaera' => $eskaera )
+                        ),
+                        'text/html'
+                    );
+
+                $this->get( 'mailer' )->send( $message );
+
+            }
+        }
+        $em->flush();
+
+        $view = View::create();
+        $view->setData( $firma );
+        header( 'content-type: application/json; charset=utf-8' );
+        header( 'access-control-allow-origin: *' );
+
+
+        return $view;
+    }
+
     /**
      * Firmatu.
      *
@@ -758,6 +896,9 @@ class ApiController extends FOSRestController
      */
     public function putFirmaAction( Request $request, $id ): View
     {
+        /**
+         * OHARRA: PUT_FIRMA MODIFIKATZEN BADA, PUT_POSTIT MODIFIKATU BEHAR DA ETA ALDERANTZIZ
+         */
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode( $request->getContent(), true );
@@ -820,8 +961,10 @@ class ApiController extends FOSRestController
 
             if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
                 $firma->setCompleted( true );
-                $em->persist( $firma );
+            } else {
+                $firma->setCompleted( false );
             }
+            $em->persist( $firma );
 
             /**
              * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.

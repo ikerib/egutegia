@@ -95,6 +95,7 @@ $(document).ready(function () {
                     method: 'PUT',
                     data: {onartua: 1}
                 }).done(function (data) {
+                    console.log(data);
                     location.reload()
                 }).fail(function (xhr) {
                     bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
