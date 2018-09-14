@@ -904,7 +904,7 @@ class ApiController extends FOSRestController
         $jsonData = json_decode( $request->getContent(), true );
         $onartua  = false;
         $oharrak  = $request->request->get('oharra');
-        if ( $request->request->get('onartua') === 1 ) {
+        if ( $request->request->get('onartua') === "1" ) {
             $onartua = true;
         }
 
