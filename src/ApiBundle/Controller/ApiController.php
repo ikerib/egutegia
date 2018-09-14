@@ -1096,7 +1096,7 @@ class ApiController extends FOSRestController
                 'firmatua' => $f->getFirmatua(),
             );
 
-            array_push( $users, $r );
+            $users[] = $r;
         }
 
 

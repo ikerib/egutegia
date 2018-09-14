@@ -34,21 +34,24 @@ class NotificationController extends Controller
          * 0 Guztiak
          * 1 Irakurritakoak
          */
-        $em = $this->getDoctrine()->getManager();
+        $em   = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
         $q = $request->query->get('q');
 
-        if ( $q === null ) {
+        if ($q === null) {
             $q = null;
         }
 
         $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId(), $q);
 
-        return $this->render('notification/index.html.twig', array(
-            'notifications' => $notifications,
-            'user' => $user
-        ));
+        return $this->render(
+            'notification/index.html.twig',
+            array(
+                'notifications' => $notifications,
+                'user'          => $user,
+            )
+        );
     }
 
     /**
@@ -60,7 +63,7 @@ class NotificationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         /**
          * Parametroak baditu hauek izan daitezke:
@@ -72,7 +75,7 @@ class NotificationController extends Controller
 
         $q = $request->query->get('q');
 
-        if ( is_null($q) ) {
+        if ($q === null) {
             $q = null;
         }
 
@@ -81,13 +84,16 @@ class NotificationController extends Controller
         $deleteForms = [];
         foreach ($notifications as $notify) {
             /** @var Notification $notify */
-            $deleteForms[$notify->getId()] = $this->createDeleteForm($notify)->createView();
+            $deleteForms[ $notify->getId() ] = $this->createDeleteForm($notify)->createView();
         }
 
-        return $this->render('notification/list.html.twig', array(
-            'notifications' => $notifications,
-            'deleteforms' => $deleteForms,
-        ));
+        return $this->render(
+            'notification/list.html.twig',
+            array(
+                'notifications' => $notifications,
+                'deleteforms'   => $deleteForms,
+            )
+        );
     }
 
 
@@ -103,9 +109,12 @@ class NotificationController extends Controller
     public function showAction(Notification $notification)
     {
 
-        return $this->render('notification/show.html.twig', array(
-            'notification' => $notification,
-        ));
+        return $this->render(
+            'notification/show.html.twig',
+            array(
+                'notification' => $notification,
+            )
+        );
     }
 
     /**
@@ -113,7 +122,7 @@ class NotificationController extends Controller
      *
      * @Route("/{id}", name="notification_delete")
      * @Method("DELETE")
-     * @param Request $request
+     * @param Request      $request
      * @param Notification $notify
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -144,7 +153,6 @@ class NotificationController extends Controller
         return $this->createFormBuilder()
                     ->setAction($this->generateUrl('notification_delete', ['id' => $notify->getId()]))
                     ->setMethod('DELETE')
-                    ->getForm()
-            ;
+                    ->getForm();
     }
 }
