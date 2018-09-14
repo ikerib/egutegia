@@ -235,3 +235,7 @@ eight_points_guzzle:
             options:
                 headers:
                     Accept: "application/json"
+
+sensio_framework_extra:
+    router:
+        annotations: false

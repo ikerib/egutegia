@@ -26,7 +26,7 @@ class NotificationController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         /**
          * Parametroak baditu hauek izan daitezke:
@@ -39,7 +39,7 @@ class NotificationController extends Controller
 
         $q = $request->query->get('q');
 
-        if ( is_null($q) ) {
+        if ( $q === null ) {
             $q = null;
         }
 
@@ -47,6 +47,7 @@ class NotificationController extends Controller
 
         return $this->render('notification/index.html.twig', array(
             'notifications' => $notifications,
+            'user' => $user
         ));
     }
 

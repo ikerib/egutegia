@@ -749,49 +749,35 @@ class ApiController extends FOSRestController
      *
      * @param Request $request
      * @param         $id
-     * @param null    $userid
      *
      *
      * @return View
      * @throws EntityNotFoundException
      * @Rest\View(statusCode=200)
-     * @Rest\Put("/firma/{id}/{userid}")
+     * @Rest\Put("/firma/{id}")
      */
-    public function putFirmaAction( Request $request, $id, $userid = null )
+    public function putFirmaAction( Request $request, $id ): View
     {
         $em = $this->getDoctrine()->getManager();
 
-        /** $userid bidaltzen bada postit botoia erabilli delako da */
-        $postit    = false;
-        $autofirma = false;
-
         $jsonData = json_decode( $request->getContent(), true );
         $onartua  = false;
-        $oharrak  = $request->request->get( "oharra" );
-        if ( $request->request->get( "onartua" ) == 1 ) {
+        $oharrak  = $request->request->get('oharra');
+        if ( $request->request->get('onartua') === 1 ) {
             $onartua = true;
         }
 
         // find eskaera
         $firma = $em->getRepository( 'AppBundle:Firma' )->find( $id );
         if ( !$firma ) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('Ez da topatu');
         }
 
-        if ( ( $userid == null ) ) {
-            /** @var User $user */
-            $user = $this->getUser();
-        } else if ( $userid !== null ) {
-            /** @var User $user */
-            $user   = $em->getRepository( 'AppBundle:User' )->find( $userid );
-            $postit = true;
-        } else {
-            /** @var User $user */
-            $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
-        }
+        /** @var User $user */
+        $user = $this->getUser();
 
 
-        if ( $firma->getCompleted() == false ) {
+        if ( $firma->getCompleted() === false ) {
 
 
             /**
@@ -810,12 +796,10 @@ class ApiController extends FOSRestController
                 /** @var User $su */
                 $su = $sd->getUser();
 
-                if ( $user->getId() == $su->getId() ) {
+                if ( $user->getId() === $su->getId() ) {
                     $fd->setFirmatua( $onartua );
                     $fd->setFirmatzailea( $user );
                     $fd->setNoiz( New \DateTime() );
-                    $fd->setPostit( $postit );
-                    $fd->setAutofirma( $autofirma );
                     $em->persist( $fd );
                     $em->flush();
                     break;
@@ -834,7 +818,7 @@ class ApiController extends FOSRestController
 
             $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
 
-            if ( count( $zenbatFirmaFaltaDira ) == 0 ) { // firma guztiak lortu dira
+            if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
                 $firma->setCompleted( true );
                 $em->persist( $firma );
             }
@@ -842,7 +826,7 @@ class ApiController extends FOSRestController
             /**
              * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
              */
-            if ( $firma->getCompleted() == true ) {
+            if ( $firma->getCompleted() === true ) {
                 /** @var Eskaera $eskaera */
                 $eskaera = $firma->getEskaera();
                 $eskaera->setAmaitua( true );
@@ -853,7 +837,7 @@ class ApiController extends FOSRestController
                 /** @var User $b */
                 foreach ( $bideratzaileakfind as $b ) {
 
-                    array_push( $bideratzaileak, $b->getEmail() );
+                    $bideratzaileak[] = $b->getEmail();
                 }
                 $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
 

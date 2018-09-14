@@ -23,45 +23,45 @@ class Builder implements ContainerAwareInterface
 
     use ContainerAwareTrait;
 
-    public function mainMenu(FactoryInterface $factory, array $options)
+    public function mainMenu( FactoryInterface $factory, array $options )
     {
-        $checker = $this->container->get('security.authorization_checker');
-        $menu = $factory->createItem('root', ['navbar' => true]);
+        $checker = $this->container->get( 'security.authorization_checker' );
+        $menu    = $factory->createItem( 'root', [ 'navbar' => true ] );
 
-        if ($checker->isGranted('ROLE_BIDERATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
+        if ( $checker->isGranted( 'ROLE_BIDERATZAILEA' ) || $checker->isGranted( 'ROLE_SUPER_ADMIN' ) ) {
 
-            $menu->addChild('Hasiera', ['icon' => 'home', 'route' => 'dashboard'])->setExtra('translation_domain', 'messages');
-            $menu->addChild('Taula Laguntzaileak', ['icon' => 'th-list'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Motak', ['icon' => 'tag', 'route' => 'admin_type_index'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Txantiloiak', ['icon' => 'bookmark', 'route' => 'admin_template_index'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('divider', ['divider' => true]);
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Bateraezinak', ['icon' => 'lock', 'route' => 'admin_gutxienekoak_index'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Sinatzaileak', ['icon' => 'pencil', 'route' => 'admin_sinatzaileak_index'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('divider2', ['divider' => true]);
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Azken konexioak', ['icon' => 'time', 'route' => 'admin_log_index'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('divider3', ['divider' => true]);
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Zerrendak', ['icon' => 'list', 'route' => 'zerrenda_konpentsatuak'])->setExtra('translation_domain', 'messages');
-            $menu[ 'Taula Laguntzaileak' ]->addChild('divider4', ['divider' => true]);
-            $menu[ 'Taula Laguntzaileak' ]->addChild('Jakinarazpen guztiak', ['icon' => 'notify', 'route' => 'notification_list'])->setExtra('translation_domain', 'messages');
+            $menu->addChild( 'Hasiera', [ 'icon' => 'home', 'route' => 'dashboard' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu->addChild( 'Taula Laguntzaileak', [ 'icon' => 'th-list' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Motak', [ 'icon' => 'tag', 'route' => 'admin_type_index' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Txantiloiak', [ 'icon' => 'bookmark', 'route' => 'admin_template_index' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Bateraezinak', [ 'icon' => 'lock', 'route' => 'admin_gutxienekoak_index' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Sinatzaileak', [ 'icon' => 'pencil', 'route' => 'admin_sinatzaileak_index' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider2', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Azken konexioak', [ 'icon' => 'time', 'route' => 'admin_log_index' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider3', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Zerrendak', [ 'icon' => 'list', 'route' => 'zerrenda_konpentsatuak' ] )->setExtra( 'translation_domain', 'messages' );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'divider4', [ 'divider' => true ] );
+            $menu[ 'Taula Laguntzaileak' ]->addChild( 'Jakinarazpen guztiak', [ 'icon' => 'notify', 'route' => 'notification_list' ] )->setExtra( 'translation_domain', 'messages' );
 
             /** @var EntityManager $em */
-            $em       = $this->container->get('doctrine.orm.entity_manager');
-            $eskaerak = $em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
+            $em       = $this->container->get( 'doctrine.orm.entity_manager' );
+            $eskaerak = $em->getRepository( 'AppBundle:Eskaera' )->findBideratugabeak();
 
-            if (\count($eskaerak) > 0) {
+            if ( \count( $eskaerak ) > 0 ) {
                 $menu->addChild(
                     'Eskaerak',
                     array(
                         'route'           => 'admin_eskaera_list',
-                        'routeParameters' => array('q' => 'all'),
+                        'routeParameters' => array( 'q' => 'all' ),
                         'icon'            => 'inbox',
-                        'label'           => $this->container->get('translator')->trans('main_menu.eskaerak')." <span class='badge badge-error'>".count($eskaerak)."</span>",
-                        'extras'          => array('safe_label' => true),
+                        'label'           => $this->container->get( 'translator' )->trans( 'main_menu.eskaerak' ) . " <span class='badge badge-error'>" . count( $eskaerak ) . "</span>",
+                        'extras'          => array( 'safe_label' => true ),
                     )
                 );
             } else {
-                $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
-                     ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+                $menu->addChild( 'Eskaerak', [ 'icon' => 'inbox', 'route' => 'admin_eskaera_list' ] )
+                     ->setLinkAttribute( 'class', 'childClass' )->setExtra( 'translation_domain', 'messages' );
             }
         }
 
@@ -75,79 +75,80 @@ class Builder implements ContainerAwareInterface
      *
      * @return \Knp\Menu\ItemInterface
      */
-    public function userMenu(FactoryInterface $factory, array $options): \Knp\Menu\ItemInterface
+    public function userMenu( FactoryInterface $factory, array $options ): \Knp\Menu\ItemInterface
     {
         /*
         * Sinatze ditu eskaerak??
         */
         /** @var NotificationService $zerbitzua */
-        $zerbitzua     = $this->container->get('app.sinatzeke');
+        $zerbitzua     = $this->container->get( 'app.sinatzeke' );
         $notifications = $zerbitzua->GetNotifications();
 
-        $checker = $this->container->get('security.authorization_checker');
+        $checker = $this->container->get( 'security.authorization_checker' );
         /** @var $user User */
-        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $user = $this->container->get( 'security.token_storage' )->getToken()->getUser();
 
-        $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
+        $menu = $factory->createItem( 'root', [ 'navbar' => true, 'icon' => 'user' ] );
 
-        if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
-            $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
-            $menu->addChild('Exit', array(
-                    'label'           => 'Modu arruntera izuli',
-                    'route'           => 'dashboard',
-                    'routeParameters' => array('_switch_user' => '_exit'),
-                    'icon'            => 'exit',
-                )
+        if ( $checker->isGranted( 'ROLE_PREVIOUS_ADMIN' ) ) {
+            $menu = $factory->createItem( 'root', [ 'navbar' => true, 'icon' => 'exit' ] );
+            $menu->addChild( 'Exit', array(
+                                       'label'           => 'Modu arruntera izuli',
+                                       'route'           => 'dashboard',
+                                       'routeParameters' => array( '_switch_user' => '_exit' ),
+                                       'icon'            => 'exit',
+                                   )
             );
         }
 
-        if ($checker->isGranted('ROLE_USER')) {
-            if (\count($notifications) === 0) {
-                $menu->addChild('User', array('label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));
+        if ( $checker->isGranted( 'ROLE_USER' ) ) {
+            if ( \count( $notifications ) === 0 ) {
+                $menu->addChild( 'User', array( 'label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user' ) );
             } else {
-                $menu->addChild('User', array(
-                        'label'    => $user->getDisplayname()." <span class='badge badge-error'>".\count($notifications).'</span>',
-                        'dropdown' => true,
-                        'icon'     => 'user',
-                        'extras'   => array('safe_label' => true),
-                    )
+                $menu->addChild( 'User', array(
+                                           'pull-right' => true,
+                                           'label'    => $user->getDisplayname() . " <span class='badge badge-error'>" . \count( $notifications ) . '</span>',
+                                           'dropdown' => true,
+                                           'icon'     => 'user',
+                                           'extras'   => array( 'safe_label' => true ),
+                                       )
                 );
             }
 
             $menu[ 'User' ]->addChild( 'Egutegia',
-                [
-                    'route' => 'user_homepage',
-                    'icon'  => 'calendar',
-                ]
-            )->setExtra('translation_domain', 'messages');
+                                       [
+                                           'route' => 'user_homepage',
+                                           'icon'  => 'calendar',
+                                       ]
+            )->setExtra( 'translation_domain', 'messages' );
 
             $menu[ 'User' ]->addChild( 'Fitxategiak',
-                array(
-                    'route' => 'user_documents',
-                    'icon'  => 'folder-open',
-                )
-            )->setExtra('translation_domain', 'messages');
+                                       array(
+                                           'route' => 'user_documents',
+                                           'icon'  => 'folder-open',
+                                       )
+            )->setExtra( 'translation_domain', 'messages' );
 
-            $menu[ 'User' ]->addChild('user_menu.eskaerak',
-                array(
-                    'route' => 'eskaera_index',
-                    'icon'  => 'send',
-                )
-            )->setExtra('translation_domain', 'messages');
+            $menu[ 'User' ]->addChild( 'user_menu.eskaerak',
+                                       array(
+                                           'route' => 'eskaera_index',
+                                           'icon'  => 'send',
+                                       )
+            )->setExtra( 'translation_domain', 'messages' );
 
-            $menu[ 'User' ]->addChild('divider', ['divider' => true]);
+            $menu[ 'User' ]->addChild( 'divider', [ 'divider' => true ] );
 
-            if ($checker->isGranted('ROLE_SINATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
+            if ( $checker->isGranted( 'ROLE_SINATZAILEA' ) || $checker->isGranted( 'ROLE_SUPER_ADMIN' ) ) {
                 $menu[ 'User' ]->addChild(
                     'Jakinarazpenak',
                     array(
-                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications).'</span>',
+                        'label'  => $this->container->get( 'translator' )->trans( 'Jakinarazpenak' ) . " <span class='badge badge-error'>" . \count( $notifications ) . '</span>',
                         'route'  => 'notification_index',
                         'icon'   => 'bullhorn',
-                        'extras' => array('safe_label' => true),
+                        'extras' => array( 'safe_label' => true ),
                     )
-                )->setExtra('translation_domain', 'messages');
-                $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
+                )->setExtra( 'translation_domain', 'messages' );
+                $menu[ 'User' ]->addChild( 'divider2', [ 'divider' => true ] );
             }
 
 
@@ -157,10 +158,10 @@ class Builder implements ContainerAwareInterface
                     'route' => 'fos_user_security_logout',
                     'icon'  => 'log-out',
                 )
-            )->setExtra('translation_domain', 'messages');
+            )->setExtra( 'translation_domain', 'messages' );
 
         } else {
-            $menu->addChild('login', ['route' => 'fos_user_security_login']);
+            $menu->addChild( 'login', [ 'route' => 'fos_user_security_login' ] );
         }
 
 

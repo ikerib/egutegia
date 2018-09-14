@@ -81,7 +81,8 @@ $(document).ready(function () {
     $('.btnEskaeraOnartu').on('click', function () {
         const firmaid = $(this).data("firmaid");
         const jakinarazpenaid = $(this).data("notifyid");
-        const url = Routing.generate("put_firma", { "id": firmaid });
+        const userid = null;
+        const url = Routing.generate("put_firma", { "id": firmaid, "userid": null });
         $.ajax({
             url: url,
             method: 'PUT',
