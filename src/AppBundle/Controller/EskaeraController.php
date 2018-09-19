@@ -37,7 +37,7 @@ class EskaeraController extends Controller
      * @Route("/", name="eskaera_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -394,29 +394,6 @@ class EskaeraController extends Controller
     }
 
     /**
-     * Finds and displays a eskaera entity.
-     *
-     * @Route("/{id}", name="eskaera_show")
-     * @Method("GET")
-     * @param Eskaera $eskaera
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function showAction(Eskaera $eskaera): \Symfony\Component\HttpFoundation\Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
-        $deleteForm = $this->createDeleteForm($eskaera);
-
-        return $this->render(
-            'eskaera/show.html.twig',
-            array(
-                'eskaera'     => $eskaera,
-                'delete_form' => $deleteForm->createView(),
-            )
-        );
-    }
-
-    /**
      * Get PDF Document.
      *
      * @Route("/{id}/pdf", name="eskaera_pdf")
@@ -650,5 +627,28 @@ class EskaeraController extends Controller
                     ->setAction($this->generateUrl('eskaera_delete', array('id' => $eskaera->getId())))
                     ->setMethod('DELETE')
                     ->getForm();
+    }
+
+    /**
+     * Finds and displays a eskaera entity.
+     *
+     * @Route("/{id}", name="eskaera_show")
+     * @Method("GET")
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction(Eskaera $eskaera): \Symfony\Component\HttpFoundation\Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $deleteForm = $this->createDeleteForm($eskaera);
+
+        return $this->render(
+            'eskaera/show.html.twig',
+            array(
+                'eskaera'     => $eskaera,
+                'delete_form' => $deleteForm->createView(),
+            )
+        );
     }
 }

@@ -335,7 +335,6 @@
                         "   </thead>" +
                         "<tbody>";
                     $.each(data, function ( i, obj ) {
-// console.log(obj);
                         var jakinarazpenid = 0;
                         var postit = false;
                         var autofirma = false;
@@ -450,7 +449,7 @@
                     inputType: "textarea",
                     callback: function ( result ) {
                         console.log(result);
-                        if (result !== null) {
+                        if ( result !== null ) {
                             $.ajax({
                                 url: url,
                                 method: "PUT",
