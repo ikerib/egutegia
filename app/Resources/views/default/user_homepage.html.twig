@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-sm-4">
                         <strong>{{ 'msg.opor.orduak' | trans }} </strong>
-                        {% if calendar.hoursDay > 0  %}
+                        {% if calendar.hoursDay > 0 %}
                             <span id="hoursFree">{{ calendar.hoursFree }} ({{ (calendar.hoursFree / calendar.hoursDay) | round (2) }} egun) </span>
                             <input id="txtHoursFree" type="hidden" value="{{ calendar.hoursFree }}">
                         {% else %}
@@ -97,7 +97,7 @@
                                 <li id="selfHoursComplete">{{ selfHoursComplete }} ({{ (selfHoursComplete / calendar.hoursDay) | round (2) }} egun)</li>
                             {% else %}
                                 <li>Ez dago daturik</li>
-                            {%  endif %}
+                            {% endif %}
                         </ul>
                     </div>
                 </div>

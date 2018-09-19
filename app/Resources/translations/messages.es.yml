@@ -25,7 +25,6 @@ Txantiloia: Plantilla
 'Norberarentzako:': 'Norberarentzako:'
 'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Calendario
-Eskaerak: 'Nueva instancia'
 'Azken konexioak': 'Ultimas conexiones'
 Irten: Salir
 Mota: Tipo
@@ -138,6 +137,7 @@ Datak: Fechas
 'Orduak Guztira': 'Total horas'
 Izaera: Trabajador
 Eskaera: Petición
+Eskaerak: 'Gestión instancias'
 Orduak/Egunak: Horas/Días
 Bideratua: Dirigido
 Gauzatua: Completado

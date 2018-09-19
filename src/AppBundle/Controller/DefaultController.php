@@ -96,7 +96,7 @@ class DefaultController extends Controller
     /**
      * @Route("/mycalendar", name="user_homepage")
      */
-    public function userhomepageAction()
+    public function userhomepageAction(): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -156,7 +156,6 @@ class DefaultController extends Controller
         $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
 
 
-
         return $this->render(
             'default/user_homepage.html.twig',
             [
@@ -171,7 +170,7 @@ class DefaultController extends Controller
     /**
      * @Route("/fitxategiak", name="user_documents")
      */
-    public function userdocumetsAction()
+    public function userdocumetsAction(): \Symfony\Component\HttpFoundation\Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 

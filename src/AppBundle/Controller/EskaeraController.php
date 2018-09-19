@@ -132,9 +132,9 @@ class EskaeraController extends Controller
          * Mugitu dokumentua beharrezko lekura
          */
         /** @var Document $doc */
-        $doc     = $eskaera->getDocuments()[ 0 ];
-        $pdfPath = $this->getParameter('app.dir_base_pdf');
-        $docuser = $doc->getEskaera()->getUser();
+        $doc      = $eskaera->getDocuments()[ 0 ];
+        $pdfPath  = $this->getParameter('app.dir_base_pdf');
+        $docuser  = $doc->getEskaera()->getUser();
         $pathFrom = $doc->getFilenamepath();
         $pathTo   = $pdfPath.'/'.$docuser->getUsername().'/'.$eskaera->getCalendar()->getYear().'/'.$doc->getFilename();
         $doc->setFilenamepath($pathTo);
@@ -554,7 +554,7 @@ class EskaeraController extends Controller
 //                            $url = "/app_dev.php/api/firma/".$firma->getId()."/".$eskatzaile_id.".json?XDEBUG_SESSION_START=PHPSTORM";
                             $url = '/app_dev.php/api/firma/'.$firma->getId().'/'.$eskatzaile_id.'.json';
 
-                            $client->request('PUT',$url,['json' => $eskaera,]);
+                            $client->request('PUT', $url, ['json' => $eskaera,]);
 
                             $firmatzailea = $em->getRepository('AppBundle:User')->find($eskatzaile_id);
 
