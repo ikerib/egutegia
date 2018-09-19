@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
@@ -18,17 +17,18 @@ use Doctrine\ORM\QueryBuilder;
 class NotificationRepository extends EntityRepository
 {
 
-    public function getSinatzaileNotification() {
-        $sql="SELECT  notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email " .
-              "FROM notification " .
-              "  INNER JOIN eskaera ON eskaera.id = notification.eskaera_id " .
-              "  INNER JOIN firma ON firma.eskaera_id = eskaera.id " .
-              "  INNER JOIN firmadet on firmadet.firma_id = firma.id " .
-              "  INNER JOIN sinatzaileakdet ON sinatzaileakdet.id = firmadet.sinatzaileakdet_id " .
-              "  INNER JOIN user ON user.id = sinatzaileakdet.user_id " .
-              "WHERE notification.notified = 0 " .
-              "ORDER BY user.id;
-        ";
+    public function getSinatzaileNotification()
+    {
+        $sql = 'SELECT  notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email '.
+            'FROM notification '.
+            '  INNER JOIN eskaera ON eskaera.id = notification.eskaera_id '.
+            '  INNER JOIN firma ON firma.eskaera_id = eskaera.id '.
+            '  INNER JOIN firmadet on firmadet.firma_id = firma.id '.
+            '  INNER JOIN sinatzaileakdet ON sinatzaileakdet.id = firmadet.sinatzaileakdet_id '.
+            '  INNER JOIN user ON user.id = sinatzaileakdet.user_id '.
+            'WHERE notification.notified = 0 '.
+            'ORDER BY user.id;'
+        ;
 
 
         /** @var EntityManager $em */
@@ -36,98 +36,98 @@ class NotificationRepository extends EntityRepository
 
 
         try {
-            $query = $em->getConnection()->prepare( $sql );
+            $query = $em->getConnection()->prepare($sql);
             $query->execute();
             $clients = $query->fetchAll();
 
-        } catch ( DBALException $e ) {
+        } catch (DBALException $e) {
             $clients = null;
         }
 
         return $clients;
     }
 
-    public function getAllUnreadSortedByUser() {
+    public function getAllUnreadSortedByUser()
+    {
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('n')
-            ->select('n,e,u')
-            ->innerJoin('n.eskaera', 'e')
-            ->innerJoin('e.user', 'u')
-            ->andWhere('n.readed=false')
-            ->andWhere('n.notified=false')
-            ->orderBy('u.id')
-        ;
+                   ->select('n,e,u')
+                   ->innerJoin('n.eskaera', 'e')
+                   ->innerJoin('e.user', 'u')
+                   ->andWhere('n.readed=false')
+                   ->andWhere('n.notified=false')
+                   ->orderBy('u.id');
 
         return $qb->getQuery()->getResult();
     }
 
-    public function getAllUnread($userid) {
+    public function getAllUnread($userid)
+    {
         /** @var QueryBuilder $qb */
         $qb = $this->createQueryBuilder('n')
-            ->innerJoin('n.user', 'u')
-            ->where('u.id=:userid')
-            ->andWhere('n.readed=false')
-            ->setParameter('userid',$userid)
-        ;
+                   ->innerJoin('n.user', 'u')
+                   ->where('u.id=:userid')
+                   ->andWhere('n.readed=false')
+                   ->setParameter('userid', $userid);
 
         return $qb->getQuery()->getResult();
     }
 
-    public function getCurrentUserNotifications($userid, $q) {
+    public function getCurrentUserNotifications($userid, $q)
+    {
 
-        $qb = $this->createQueryBuilder( 'n' )
-            ->innerJoin( 'n.user', 'u' )
-            ->where( 'u.id=:userid' )
-            ->setParameter( 'userid', $userid );
+        $qb = $this->createQueryBuilder('n')
+                   ->innerJoin('n.user', 'u')
+                   ->where('u.id=:userid')
+                   ->setParameter('userid', $userid);
 
         if ($q) {
 
-            if ($q == 'unread' ) {
-                $qb->andWhere( 'n.readed=false' );
-            } elseif ($q == 'readed') {
-                $qb->andWhere( 'n.readed=true' );
-            } elseif ($q == 'unanswered') {
-                $qb->andWhere( 'n.result=false' );
+            if ($q === 'unread') {
+                $qb->andWhere('n.readed=false');
+            } elseif ($q === 'readed') {
+                $qb->andWhere('n.readed=true');
+            } elseif ($q === 'unanswered') {
+                $qb->andWhere('n.result=false');
             }
 
         }
 
 
-
         return $qb->getQuery()->getResult();
     }
 
-    public function getAllUserNotifications($q) {
+    public function getAllUserNotifications($q)
+    {
 
-        $qb = $this->createQueryBuilder( 'n' )
-                   ->innerJoin( 'n.user', 'u' );
+        $qb = $this->createQueryBuilder('n')
+                   ->innerJoin('n.user', 'u');
 
         if ($q) {
 
-            if ($q == 'unread' ) {
-                $qb->andWhere( 'n.readed=false' );
-            } elseif ($q == 'readed') {
-                $qb->andWhere( 'n.readed=true' );
-            } elseif ($q == 'unanswered') {
-                $qb->andWhere( 'n.result=false' );
+            if ($q === 'unread') {
+                $qb->andWhere('n.readed=false');
+            } elseif ($q === 'readed') {
+                $qb->andWhere('n.readed=true');
+            } elseif ($q === 'unanswered') {
+                $qb->andWhere('n.result=false');
             }
 
         }
 
 
-
         return $qb->getQuery()->getResult();
     }
 
-    public function getNotificationForFirma($firmaid) {
-        $qb = $this->createQueryBuilder( 'n' )
-                    ->select('n,u')
-                    ->innerJoin( 'n.user', 'u' )
-                    ->innerJoin('n.firma', 'f')
-                    ->where('f.id=:firmaid')
+    public function getNotificationForFirma($firmaid)
+    {
+        $qb = $this->createQueryBuilder('n')
+                   ->select('n,u')
+                   ->innerJoin('n.user', 'u')
+                   ->innerJoin('n.firma', 'f')
+                   ->where('f.id=:firmaid')
+                   ->setParameter('firmaid', $firmaid);
 
-                    ->setParameter( 'firmaid', $firmaid);
-
-        return $qb->getQuery()->getResult( Query::HYDRATE_ARRAY);
+        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
 }
