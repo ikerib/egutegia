@@ -26,56 +26,54 @@ class UserHydrator implements HydratorInterface
     public function hydrate(array $ldapEntry)
     {
         $user = new User();
-        $user->setUsername($ldapEntry['samaccountname'][0]);
-        $user->setEmail($ldapEntry['mail'][0]);
-        if ( array_key_exists( 'department', $ldapEntry) && (count( $ldapEntry['department']))) {
-            $user->setDepartment($ldapEntry['department'][0]);
+        $user->setUsername($ldapEntry[ 'samaccountname' ][ 0 ]);
+        $user->setEmail($ldapEntry[ 'mail' ][ 0 ]);
+        if (array_key_exists('department', $ldapEntry) && \count($ldapEntry[ 'department' ])) {
+            $user->setDepartment($ldapEntry[ 'department' ][ 0 ]);
         }
-        if ( array_key_exists( 'employeeid', $ldapEntry) && (count( $ldapEntry['employeeid']))) {
-            $user->setNan($ldapEntry['employeeid'][0]);
+        if (array_key_exists('employeeid', $ldapEntry) && \count($ldapEntry[ 'employeeid' ])) {
+            $user->setNan($ldapEntry[ 'employeeid' ][ 0 ]);
         }
-        if ( array_key_exists( 'description', $ldapEntry) && (count( $ldapEntry['description']))) {
-            $user->setLanpostua($ldapEntry['description'][0]);
+        if (array_key_exists('description', $ldapEntry) && \count($ldapEntry[ 'description' ])) {
+            $user->setLanpostua($ldapEntry[ 'description' ][ 0 ]);
         }
-        if ( array_key_exists( 'displayname', $ldapEntry) && (count( $ldapEntry['displayname']))) {
-            $user->setDisplayname($ldapEntry['displayname'][0]);
+        if (array_key_exists('displayname', $ldapEntry) && \count($ldapEntry[ 'displayname' ])) {
+            $user->setDisplayname($ldapEntry[ 'displayname' ][ 0 ]);
         }
-        if ( array_key_exists( 'memberof', $ldapEntry) && (count( $ldapEntry['memberof']))) {
-            $members = $ldapEntry['memberof'];
-            $rol = 'ROLE_USER';
+        if (array_key_exists('memberof', $ldapEntry) && \count($ldapEntry[ 'memberof' ])) {
+            $members = $ldapEntry[ 'memberof' ];
             foreach ($members as $key => $value) {
                 $sp = ldap_explode_dn($value, 1);
-                if ($sp[0] === 'APP-Web_Egutegia') {
+                if ($sp[ 0 ] === 'APP-Web_Egutegia') {
                     $rol = 'ROLE_ADMIN';
-                    $user->addRole('ROLE_ADMIN');
+                    $user->addRole($rol);
                 }
-
-                if ($sp[0] === 'APP-Web_Egutegia-Bideratzaile'){
+                if ($sp[ 0 ] === 'APP-Web_Egutegia-Bideratzaile') {
                     $rol = 'ROLE_BIDERATZAILEA';
                     $user->addRole($rol);
                     $rol = 'ROLE_ADMIN';
                     $user->addRole($rol);
                 }
-                if ($sp[0] === 'ROL-Antolakuntza_Informatika'){
+                if ($sp[ 0 ] === 'ROL-Antolakuntza_Informatika') {
                     $rol = 'ROLE_SUPER_ADMIN';
                     $user->addRole($rol);
                 }
-                if (strpos($sp[0], 'daltzaing') !== false) { // UDALTZAINA BADA
+                if (strpos($sp[ 0 ], 'daltzaing') !== false) { // UDALTZAINA BADA
 //                if (strpos($sp[0], 'Taldea-Udaltzaingoa') !== false) {
                     $rol = 'ROLE_UDALTZAINA';
                     $user->addRole($rol);
                 }
-                if (strpos($sp[0], 'App-Web_Egutegia-Sinatzailea') !== false) {
+                if (strpos($sp[ 0 ], 'App-Web_Egutegia-Sinatzailea') !== false) {
                     $rol = 'ROLE_SINATZAILEA';
                     $user->addRole($rol);
                 }
             }
-            $user->setMembers($ldapEntry['memberof']);
+            $user->setMembers($ldapEntry[ 'memberof' ]);
         }
-        if ( array_key_exists( 'preferredlanguage', $ldapEntry) && \count( $ldapEntry['preferredlanguage']) ) {
-            $user->setHizkuntza( $ldapEntry[ 'preferredlanguage' ][ 0 ] );
+        if (array_key_exists('preferredlanguage', $ldapEntry) && \count($ldapEntry[ 'preferredlanguage' ])) {
+            $user->setHizkuntza($ldapEntry[ 'preferredlanguage' ][ 0 ]);
         }
-        $user->setDn($ldapEntry['dn']);
+        $user->setDn($ldapEntry[ 'dn' ]);
         $user->setEnabled(true);
         $user->setPassword('');
 
