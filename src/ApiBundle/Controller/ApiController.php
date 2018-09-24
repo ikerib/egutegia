@@ -767,7 +767,7 @@ class ApiController extends FOSRestController
         $jsonData = json_decode( $request->getContent(), true );
         $onartua  = false;
         $oharrak  = $request->request->get( 'oharra' );
-        if ( $request->request->get( 'onartua' ) === 1 ) {
+        if (( $request->request->get('onartua') === "1" ) || ($request->request->get('onartua') === 1 )){
             $onartua = true;
         }
 
@@ -781,7 +781,7 @@ class ApiController extends FOSRestController
         $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
 
 
-        if ( $firma->getCompleted() === false ) {
+//        if ( $firma->getCompleted() === false ) {
 
 
             /**
@@ -862,7 +862,7 @@ class ApiController extends FOSRestController
                 $this->get( 'mailer' )->send( $message );
 
             }
-        }
+//        }
         $em->flush();
 
         $view = View::create();
@@ -904,7 +904,7 @@ class ApiController extends FOSRestController
         $jsonData = json_decode( $request->getContent(), true );
         $onartua  = false;
         $oharrak  = $request->request->get('oharra');
-        if ( $request->request->get('onartua') === "1" ) {
+        if (( $request->request->get('onartua') === "1" ) || ($request->request->get('onartua') === 1 )){
             $onartua = true;
         }
 
@@ -1091,7 +1091,7 @@ class ApiController extends FOSRestController
 
         $jsonData = json_decode( $request->getContent(), true );
         $onartua  = false;
-        if ( $request->request->get( "onartua" ) == 1 ) {
+        if (( $request->request->get('onartua') === "1" ) || ($request->request->get('onartua') === 1 )){
             $onartua = true;
         }
 
