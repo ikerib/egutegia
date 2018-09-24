@@ -30,6 +30,8 @@
                href="{{ path('notification_index', { 'q': 'readed'}) }}">Irakurritakoak</a>
             <a class="btn {% if app.request.get('q') == 'unanswered' %}    btn-info {% else %} btn-default {% endif %}"
                href="{{ path('notification_index', { 'q': 'unanswered'}) }}">Erantzun gabeak</a>
+            <a class="btn {% if app.request.get('q') == 'last-signature' %}    btn-info {% else %} btn-default {% endif %}"
+               href="{{ path('notification_index', { 'q': 'last-signature'}) }}">{{ 'Azken sinadura' | trans }}</a>
         </div>
     </div>
     <table id="tableJakinarazpena"

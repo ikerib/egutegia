@@ -57,6 +57,40 @@ class NotificationController extends Controller
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
      *
+     * @Route("/sinatzen", name="notification_sinatzen")
+     * @Method("GET")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sinatzenAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+
+        $q = $request->query->get('q');
+
+        if ($q === null) {
+            $q = null;
+        }
+
+        $notifications = $em->getRepository('AppBundle:Notification')->getCurrentUserNotifications($user->getId(), $q);
+
+
+        return $this->render(
+            'notification/sinatzen.html.twig',
+            array(
+                'notifications' => $notifications
+            )
+        );
+    }
+
+
+    /**
+     * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
+     *
      * @Route("/list", name="notification_list")
      * @Method("GET")
      * @param Request $request

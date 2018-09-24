@@ -632,7 +632,7 @@ class EskaeraController extends Controller
     /**
      * Finds and displays a eskaera entity.
      *
-     * @Route("/{id}", name="eskaera_show")
+     * @Route("/{id}/show", name="eskaera_show")
      * @Method("GET")
      * @param Eskaera $eskaera
      *

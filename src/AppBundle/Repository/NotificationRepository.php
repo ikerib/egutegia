@@ -89,8 +89,9 @@ class NotificationRepository extends EntityRepository
                 $qb->andWhere('n.readed=true');
             } elseif ($q === 'unanswered') {
                 $qb->andWhere('n.result=false');
+            } elseif ($q === 'lastsignature') {
+                $qb->andWhere('n.result=false');
             }
-
         }
 
 
