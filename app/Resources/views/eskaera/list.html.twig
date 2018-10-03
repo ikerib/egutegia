@@ -6,7 +6,11 @@
 
     <div class="row">
         <div class="col-md-2">
-
+            <div id="toolbar">
+                <div class="btn-group" role="group" aria-label="...">
+                    <a class="btn btnZabaldu btn-default" href="javascript:void(0);">{{ 'Zabaldu' | trans }}</a>
+                </div>
+            </div>
         </div>
         <div class="col-md-10">
             <div class="btn-group" role="group" aria-label="...">
@@ -482,5 +486,12 @@
 
         });
     </script>
-
+    <script>
+        // HACK!
+        $(document).ready(function () {
+            $(".btnZabaldu").on("click", function () {
+                $(".detail-icon").trigger("click");
+            });
+        });
+    </script>
 {% endblock %}
