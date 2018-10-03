@@ -96,9 +96,9 @@ class NotificationRepository extends EntityRepository
             }
         }
 
-        dump($userid);
-        dump($q);
-        dump($qb->getQuery()->getSQL());
+//        dump($userid);
+//        dump($q);
+//        dump($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }

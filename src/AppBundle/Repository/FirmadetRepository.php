@@ -46,7 +46,7 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
                    ->innerJoin('sd.sinatzaileak', 's')
                 ->andWhere('e.amaitua = 0')
                    ->orderBy('e.id', 'desc');
-        dump($qb->getQuery()->getSQL());
+//        dump($qb->getQuery()->getSQL());
         return $qb->getQuery()->getResult();
     }
 
