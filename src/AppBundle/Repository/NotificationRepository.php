@@ -78,7 +78,9 @@ class NotificationRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('n')
                    ->innerJoin('n.user', 'u')
+                    ->innerJoin('n.eskaera','e')
                    ->where('u.id=:userid')
+
                    ->setParameter('userid', $userid);
 
         if ($q) {
@@ -94,6 +96,9 @@ class NotificationRepository extends EntityRepository
             }
         }
 
+        dump($userid);
+        dump($q);
+        dump($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }

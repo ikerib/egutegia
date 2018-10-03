@@ -159,4 +159,21 @@ table.eskaera: Data
 Ikusi: Ikusi
 Ezabatu: Ezabatu
 Bideratu: Bideratu
-'Eskaera editatzen': 'Eskaera editatzen'
+'Eskaera editatzen': 'Editando instancia'
+'Guztiak onartu': 'Aceptar todas'
+'Guztiak ez onartu': 'No aceptar todas'
+'Ez onartu': 'No aceptar'
+'Azken sinadura': Aceptar
+erantzuna.Num: Num
+erantzuna.Langilea: Trabajador
+erantzuna.Saila: Departamento
+erantzuna.Mota: Tipo
+erantzuna.Hasi: Comienzo
+erantzuna.Amaitu: Fin
+erantzuna.Orduak: Horas
+erantzuna.Sinatzaileak: Firmantes
+erantzuna.Noiz: 'Fec. instancía'
+erantzuna.firmatzailea: Firmatzailea
+erantzuna.firmatua: 'Firmatua?'
+erantzuna.erantzuna: Erantzuna
+Zabaldu: 'Zabaldu/Itzi guztiak'

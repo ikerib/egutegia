@@ -36,5 +36,18 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function bilatuDenak() {
+        $qb = $this->createQueryBuilder('fd')
+                   ->select('f', 'fd', 'sd', 's', 'u')
+                   ->innerJoin('fd.firma', 'f')
+                   ->innerJoin('f.eskaera', 'e')
+                   ->innerJoin('fd.sinatzaileakdet', 'sd')
+                   ->innerJoin('sd.user', 'u')
+                   ->innerJoin('sd.sinatzaileak', 's')
+                ->andWhere('e.amaitua = 0')
+                   ->orderBy('e.id', 'desc');
+        dump($qb->getQuery()->getSQL());
+        return $qb->getQuery()->getResult();
+    }
 
 }

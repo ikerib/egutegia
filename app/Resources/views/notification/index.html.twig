@@ -22,6 +22,11 @@
 
     <div id="toolbar">
         <div class="btn-group" role="group" aria-label="...">
+            <a class="btn btnZabaldu btn-default" href="javascript:void(0);">{{ 'Zabaldu' | trans }}</a>
+        </div>
+    </div>
+    <div id="toolbar">
+        <div class="btn-group" role="group" aria-label="...">
             <a class="btn {% if (app.request.get('q') == 'all') or (app.request.get('q') is not defined) or (app.request.get('q') is null) %}        btn-info {% else %} btn-default {% endif %}"
                href="{{ path('notification_index', { 'q': 'all'}) }}">Guztiak</a>
             <a class="btn {% if app.request.get('q') == 'unread' %}     btn-info {% else %} btn-default {% endif %}"
@@ -30,8 +35,8 @@
                href="{{ path('notification_index', { 'q': 'readed'}) }}">Irakurritakoak</a>
             <a class="btn {% if app.request.get('q') == 'unanswered' %}    btn-info {% else %} btn-default {% endif %}"
                href="{{ path('notification_index', { 'q': 'unanswered'}) }}">Erantzun gabeak</a>
-            <a class="btn {% if app.request.get('q') == 'last-signature' %}    btn-info {% else %} btn-default {% endif %}"
-               href="{{ path('notification_index', { 'q': 'last-signature'}) }}">{{ 'Azken sinadura' | trans }}</a>
+            {#<a class="btn {% if app.request.get('q') == 'last-signature' %}    btn-info {% else %} btn-default {% endif %}"#}
+               {#href="{{ path('notification_index', { 'q': 'last-signature'}) }}">{{ 'Azken sinadura' | trans }}</a>#}
         </div>
     </div>
     <table id="tableJakinarazpena"
@@ -128,78 +133,93 @@
                 <td>{{ notification.eskaera.total }}</td>
                 <td>{{ notification.created | date('Y-m-d') }}
 
-                    <div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog"
-                         aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                                aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Eskaera</h4>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-10">
-                                            <ul class="list-inline">
-                                                <li><strong>Nork:</strong></li>
-                                                <li>{{ notification.eskaera.user.displayname }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-10">
-                                            <ul class="list-inline">
-                                                <li><strong>Fetxak:</strong></li>
-                                                <li>{{ notification.eskaera.hasi | date('Y-m-d') }}</li>
-                                                <li>/</li>
-                                                <li>{{ notification.eskaera.amaitu | date('Y-m-d') }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-10">
-                                            <ul class="list-inline">
-                                                <li><strong>Egunak:</strong></li>
-                                                <li>{{ notification.eskaera.orduak }}</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    {% if notification.eskaera.oharra | length > 0 %}
-                                        <div class="row">
-                                            <div class="col-md-2"></div>
-                                            <div class="col-md-10">
-                                                <ul class="list-inline">
-                                                    <li><strong>Oharrak:</strong></li>
-                                                    <li>{{ notification.eskaera.oharra }}</li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
-                                    <button type="button" class="btn btn-danger btnEskaeraEzOnartu"
-                                            data-firmaid="{{ notification.firma.id }}"
-                                            data-userid="{{ user.id }}"
-                                            data-notifyid="{{ notification.id }}">Eskaera EZ onartu
-                                    </button>
-                                    <button type="button" class="btn btn-primary btnEskaeraOnartu"
-                                            data-firmaid="{{ notification.firma.id }}"
-                                            data-userid="{{ user.id }}"
-                                            data-notifyid="{{ notification.id }}">Eskaera Onartu
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {#<div class="modal fade" id="frmEskaeraModalAccept{{ notification.id }}" tabindex="-1" role="dialog"#}
+                         {#aria-labelledby="frmEskaeraModalAccept{{ notification.id }}">#}
+                        {#<div class="modal-dialog" role="document">#}
+                            {#<div class="modal-content">#}
+                                {#<div class="modal-header">#}
+                                    {#<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span#}
+                                                {#aria-hidden="true">&times;</span></button>#}
+                                    {#<h4 class="modal-title" id="myModalLabel">Eskaera</h4>#}
+                                {#</div>#}
+                                {#<div class="modal-body">#}
+                                    {#<div class="row">#}
+                                        {#<div class="col-md-2"></div>#}
+                                        {#<div class="col-md-10">#}
+                                            {#<ul class="list-inline">#}
+                                                {#<li><strong>Nork:</strong></li>#}
+                                                {#<li>{{ notification.eskaera.user.displayname }}</li>#}
+                                            {#</ul>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {#<div class="row">#}
+                                        {#<div class="col-md-2"></div>#}
+                                        {#<div class="col-md-10">#}
+                                            {#<ul class="list-inline">#}
+                                                {#<li><strong>Fetxak:</strong></li>#}
+                                                {#<li>{{ notification.eskaera.hasi | date('Y-m-d') }}</li>#}
+                                                {#<li>/</li>#}
+                                                {#<li>{{ notification.eskaera.amaitu | date('Y-m-d') }}</li>#}
+                                            {#</ul>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {#<div class="row">#}
+                                        {#<div class="col-md-2"></div>#}
+                                        {#<div class="col-md-10">#}
+                                            {#<ul class="list-inline">#}
+                                                {#<li><strong>Egunak:</strong></li>#}
+                                                {#<li>{{ notification.eskaera.orduak }}</li>#}
+                                            {#</ul>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {#{% if notification.eskaera.oharra | length > 0 %}#}
+                                        {#<div class="row">#}
+                                            {#<div class="col-md-2"></div>#}
+                                            {#<div class="col-md-10">#}
+                                                {#<ul class="list-inline">#}
+                                                    {#<li><strong>Oharrak:</strong></li>#}
+                                                    {#<li>{{ notification.eskaera.oharra }}</li>#}
+                                                {#</ul>#}
+                                            {#</div>#}
+                                        {#</div>#}
+                                    {#{% endif %}#}
+                                {#</div>#}
+                                {#<div class="modal-footer">#}
+                                    {#<button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>#}
+                                    {#<button type="button" class="btn btn-danger btnEskaeraEzOnartu"#}
+                                            {#data-firmaid="{{ notification.firma.id }}"#}
+                                            {#data-userid="{{ user.id }}"#}
+                                            {#data-notifyid="{{ notification.id }}">Eskaera EZ onartu#}
+                                    {#</button>#}
+                                    {#<button type="button" class="btn btn-primary btnEskaeraOnartu"#}
+                                            {#data-firmaid="{{ notification.firma.id }}"#}
+                                            {#data-userid="{{ user.id }}"#}
+                                            {#data-notifyid="{{ notification.id }}">Eskaera Onartu#}
+                                    {#</button>#}
+                                {#</div>#}
+                            {#</div>#}
+                        {#</div>#}
+                    {#</div>#}
 
                 </td>
                 <td>
+                    <ul class="list list-inline">
+                        <li><button type="button" class="btn btn-xs btn-danger btnEskaeraEzOnartu"
+                                    data-firmaid="{{ notification.firma.id }}"
+                                    data-userid="{{ user.id }}"
+                                    data-notifyid="{{ notification.id }}">EZ onartu
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn btn-xs btn-primary btnEskaeraOnartu"
+                                    data-firmaid="{{ notification.firma.id }}"
+                                    data-userid="{{ user.id }}"
+                                    data-notifyid="{{ notification.id }}">Onartu
+                            </button>
+                        </li>
+                    </ul>
                     {#{% if notification.eskaera.oharra | length > 0 %}#}
-                    <button class="btnIrekiModal" data-target="#frmEskaeraModalAccept{{ notification.id }}">Erantzun</button>
+                    {#<button class="btnIrekiModal" data-target="#frmEskaeraModalAccept{{ notification.id }}">Erantzun</button>#}
                     {#{% endif %}#}
                 </td>
             </tr>
@@ -275,4 +295,14 @@
             });
         });
     </script>
+
+    <script>
+        // HACK!
+        $(document).ready(function () {
+            $(".btnZabaldu").on("click", function () {
+                $(".detail-icon").trigger("click");
+            });
+        });
+    </script>
+
 {% endblock %}

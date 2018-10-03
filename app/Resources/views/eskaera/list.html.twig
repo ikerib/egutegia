@@ -81,12 +81,12 @@
                 <tr>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.name" data-sortable="true">{{ "Izaera" | trans }}</th>
-                    <th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>
+                    {#<th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>#}
                     <th data-halign="center" data-align="left" data-field="eskaera.type.name " data-sortable="true">{{ "Mota" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="eskaera.noiz" data-sortable="true">{{ "table.eskaera" | trans }}</th>
-                    {#<th data-halign="center" data-align="left" data-field="eskaera.hasi" data-sortable="true">{{ "Hasi" | trans }}</th>#}
-                    {#<th data-halign="center" data-align="left" data-field="eskaera.amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>#}
-                    {#<th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak" | trans }}</th>#}
+                    {#<th data-halign="center" data-align="center" data-field="eskaera.noiz" data-sortable="true">{{ "table.eskaera" | trans }}</th>#}
+                    <th data-halign="center" data-align="left" data-field="eskaera.hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="eskaera.amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="eskaera.orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="eskaera.abiatua" data-sortable="false">{{ "Bideratua" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="eskaera.amaitua" data-sortable="false">{{ "Gauzatua" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="eskaera.egutegian" data-sortable="false">{{ "Egutegian" | trans }}</th>
@@ -105,24 +105,26 @@
                                 {{ eskaera.name }}
                             </a>
                         </td>
-                        <td>
-                            <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.user.department }}">
-                                {{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}
-                            </span>
-                        </td>
+                        {#<td>#}
+                            {#<span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.user.department }}">#}
+                                {#{{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}#}
+                            {#</span>#}
+                        {#</td>#}
                         <td>
                             <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
                                 {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}
                             </span>
                         </td>
-                        <td>
-                            {% if eskaera.noiz %}
-                                <label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"
-                                       title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">
-                                    {{ eskaera.noiz|date('Y-m-d') }}
-                                </label>
-                            {% endif %}
+                        <td>{{ eskaera.hasi | date('Y-m-d') }}
+                            {#{% if eskaera.noiz %}#}
+                                {#<label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"#}
+                                       {#title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">#}
+                                    {#{{ eskaera.noiz|date('Y-m-d') }}#}
+                                {#</label>#}
+                            {#{% endif %}#}
                         </td>
+                        <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
+                        <td>{{ eskaera.total }}</td>
                         <td>
                             <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
                                 {% if eskaera.abiatua == true %}

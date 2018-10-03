@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\EventType;
 
 /**
  * Event controller.
@@ -28,7 +29,7 @@ class EventController extends Controller
      * @Route("/", name="admin_event_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): \Symfony\Component\HttpFoundation\Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -44,11 +45,14 @@ class EventController extends Controller
      *
      * @Route("/new", name="admin_event_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
         $event = new Event();
-        $form = $this->createForm('AppBundle\Form\EventType', $event);
+        $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -70,8 +74,11 @@ class EventController extends Controller
      *
      * @Route("/{id}", name="admin_event_show")
      * @Method("GET")
+     * @param Event $event
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Event $event)
+    public function showAction(Event $event): \Symfony\Component\HttpFoundation\Response
     {
         $deleteForm = $this->createDeleteForm($event);
 
@@ -86,11 +93,15 @@ class EventController extends Controller
      *
      * @Route("/{id}/edit", name="admin_event_edit")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Event   $event
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Event $event)
     {
         $deleteForm = $this->createDeleteForm($event);
-        $editForm = $this->createForm('AppBundle\Form\EventType', $event);
+        $editForm = $this->createForm(EventType::class, $event);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -111,8 +122,12 @@ class EventController extends Controller
      *
      * @Route("/{id}", name="admin_event_delete")
      * @Method("DELETE")
+     * @param Request $request
+     * @param Event   $event
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, Event $event)
+    public function deleteAction(Request $request, Event $event): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $form = $this->createDeleteForm($event);
         $form->handleRequest($request);
@@ -131,7 +146,7 @@ class EventController extends Controller
      *
      * @param Event $event The event entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Event $event)
     {

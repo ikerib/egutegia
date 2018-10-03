@@ -245,8 +245,7 @@
                                     <select id="cmbTypeSelect" name="event-type" class="form-control">
                                         <option selected value="-1">Aukeratu bat</option>
                                         {% for type in types %}
-                                            <option data-color="{{ type.color }}"
-                                                    value="{{ type.id }}">{{ type.name }}</option>
+                                            <option data-color="{{ type.color }}" value="{{ type.id }}">{{ type.name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -275,8 +274,7 @@
                             <div class="form-group">
                                 <label for="txtJornada" class="col-sm-3 control-label">Jornada orduak: </label>
                                 <div class="col-sm-9">
-                                    <input disabled name="txtJornada" id="txtJornada" type="text"
-                                           value="{{ calendar.hoursDay }}">
+                                    <input disabled name="txtJornada" id="txtJornada" type="text" value="{{ calendar.hoursDay }}">
                                 </div>
                             </div>
 

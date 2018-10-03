@@ -111,19 +111,42 @@ class EskaeraController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
+        $obj = (object) [
+            'name' => 'Eskaeratik: '.$eskaera->getName(),
+            'type' => $eskaera->getType(),
+            'hours'=> $eskaera->getTotal(),
+            'startDate' =>$eskaera->getHasi(),
+            'endDate' => $eskaera->getAmaitu()
+        ];
+
+        $event = json_encode($obj);
+
+
+//        if ( dataSource[i].id === event.id ) {
+//            dataSource[i].name = event.name;
+//            dataSource[i].type = event.type;
+//            dataSource[i].egunorduak = event.egunorduak;
+//            dataSource[i].hours = parseFloat(event.hours);
+//            dataSource[i].color = event.color;
+//            dataSource[i].startDate = event.startDate;
+//            dataSource[i].endDate = event.endDate;
+//            // hoursCalc(event);
+//        }
         // Eskuratu langilearen egutegia
 
         /** @var Calendar $calendar */
         $calendar = $em->getRepository('AppBundle:Calendar')->find($eskaera->getCalendar()->getId());
 
-        $ev = new Event();
-        $ev->setCalendar($calendar);
-        $ev->setName('Eskaeratik: '.$eskaera->getName());
-        $ev->setStartDate($eskaera->getHasi());
-        $ev->setEndDate($eskaera->getAmaitu());
-        $ev->setHours($eskaera->getTotal());
-        $ev->setType($eskaera->getType());
-        $em->persist($ev);
+//        $ev = new Event();
+//        $ev->setCalendar($calendar);
+//        $ev->setName('Eskaeratik: '.$eskaera->getName());
+//        $ev->setStartDate($eskaera->getHasi());
+//        $ev->setEndDate($eskaera->getAmaitu());
+//        $ev->setHours($eskaera->getTotal());
+//        $ev->setType($eskaera->getType());
+//        $em->persist($ev);
+
+
 
         $eskaera->setEgutegian(true);
         $em->persist($eskaera);
@@ -288,36 +311,36 @@ class EskaeraController extends Controller
                 $amaitu = $eskaera->getAmaitu()->format('Y-m-d');
             }
 
-            $name = $user->getUsername().'-'.$eskaera->getType().'-'.$noiz.'-'.$amaitu.'.pdf';
-
-            $filepath = '/'.$user->getUsername().'/'.$eskaera->getNoiz()->format('Y').'/';
-
-            $filename = $filepath.$name;
-
-            $tmpPath = $this->getParameter('app.dir_tmp_pdf');
-
-            $nirepath = $tmpPath.$filename;
-
-            if (!file_exists($nirepath)) {
-                $this->get('knp_snappy.pdf')->generateFromHtml(
-                    $this->renderView(
-                        'eskaera/print.html.twig',
-                        array(
-                            'eskaera' => $eskaera,
-                        )
-                    ),
-                    $nirepath
-                );
-            }
-
+//            $name = $user->getUsername().'-'.$eskaera->getType().'-'.$noiz.'-'.$amaitu.'.pdf';
+//
+//            $filepath = '/'.$user->getUsername().'/'.$eskaera->getNoiz()->format('Y').'/';
+//
+//            $filename = $filepath.$name;
+//
+//            $tmpPath = $this->getParameter('app.dir_tmp_pdf');
+//
+//            $nirepath = $tmpPath.$filename;
+//
+//            if (!file_exists($nirepath)) {
+//                $this->get('knp_snappy.pdf')->generateFromHtml(
+//                    $this->renderView(
+//                        'eskaera/print.html.twig',
+//                        array(
+//                            'eskaera' => $eskaera,
+//                        )
+//                    ),
+//                    $nirepath
+//                );
+//            }
+//
             $em->persist($eskaera);
-
-            $doc = new Document();
-            $doc->setFilename($name);
-            $doc->setFilenamepath($nirepath);
-            $doc->setCalendar($eskaera->getCalendar());
-            $doc->setEskaera($eskaera);
-            $em->persist($doc);
+//
+//            $doc = new Document();
+//            $doc->setFilename($name);
+//            $doc->setFilenamepath($nirepath);
+//            $doc->setCalendar($eskaera->getCalendar());
+//            $doc->setEskaera($eskaera);
+//            $em->persist($doc);
 
             $em->flush();
 

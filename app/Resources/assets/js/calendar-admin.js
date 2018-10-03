@@ -230,7 +230,7 @@ $(function () {
 
         if ( event.id ) {
             for ( var i in dataSource ) {
-                if ( dataSource[i].id == event.id ) {
+                if ( dataSource[i].id === event.id ) {
                     dataSource[i].name = event.name;
                     dataSource[i].type = event.type;
                     dataSource[i].egunorduak = event.egunorduak;

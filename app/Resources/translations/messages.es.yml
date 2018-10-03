@@ -160,4 +160,21 @@ table.eskaera: Fecha
 Ikusi: __Ikusi
 Ezabatu: __Ezabatu
 Bideratu: __Bideratu
-'Eskaera editatzen': '__Eskaera editatzen'
+'Eskaera editatzen': 'Eskaera editatzen'
+'Guztiak onartu': 'Guztiak onartu'
+'Guztiak ez onartu': 'Guztiak ez onartu'
+'Ez onartu': 'Ez onartu'
+'Azken sinadura': 'Azken sinadura'
+erantzuna.Num: Zenb.
+erantzuna.Langilea: Langilea
+erantzuna.Saila: Saila
+erantzuna.Mota: Mota
+erantzuna.Hasi: Hasi
+erantzuna.Amaitu: Amaitu
+erantzuna.Orduak: Orduak
+erantzuna.Sinatzaileak: Orduak
+erantzuna.Noiz: Noiz
+erantzuna.firmatzailea: Firmador
+erantzuna.firmatua: 'Firmado?'
+erantzuna.erantzuna: Respuesta
+Zabaldu: 'Abrir/cerrar todas'

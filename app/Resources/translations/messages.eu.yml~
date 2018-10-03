@@ -25,7 +25,6 @@ Txantiloia: Txantiloia
 'Norberarentzako:': 'Norberarentzako:'
 'Konpentsatutakoo:': 'Konpentsatutako:'
 Egutegia: Egutegia
-Eskaerak: 'Instantzia berria'
 'Azken konexioak': 'Azken konexioak'
 Irten: Irten
 Mota: Mota
@@ -60,7 +59,6 @@ Faktorea: Faktorea
 'Orduak konpentsatzera': 'Orduak konpentsatzera'
 Saila: Saila
 Urtea: Urtea
-'Opor orduak': 'Opor orduak'
 Ordena: Ordena
 Erakutsi: Erakutsi
 Bai: Bai
@@ -129,30 +127,52 @@ msg.eskaera.ezabatu: 'Ziur zaude ezabatu nahi duzula? Hau ezabatzean, sortutako 
 'Eskaera gauzatu': 'Eskaera gauzatu'
 Zerrendak: Zerrendak
 'Jakinarazpen guztiak': 'Jakinarazpen guztiak'
-error.udaltzaina: "Sistemak ez du erabiltzailea ezagutzen."
+error.udaltzaina: 'Sistemak ez du erabiltzailea ezagutzen.'
 error.no.calendar: 'Ez daukazu Egutegirik sortuta aplikazioan'
 error.call.personal: 'Deitu Pertsonal sailera'
-Lanpostua: 'Lanpostua'
-Datak: 'Datak'
-Orduak Guztira: 'Orduak Guztira'
-Izaera: 'Langilea'
+Lanpostua: Lanpostua
+Datak: Datak
+'Orduak Guztira': 'Orduak Guztira'
+Izaera: Langilea
 Eskaera: 'Instantzia berria'
-Orduak/Egunak: 'Orduak/Egunak'
-Bideratua: 'Bideatua'
-Gauzatua: 'Gauzatua'
-Egutegian: 'Egutegian'
-Sinatzaile taldea: 'Sinatzaileak'
-Guztiak: 'Guztiak'
+Eskaerak: 'Instantzien mantenua'
+Orduak/Egunak: Orduak/Egunak
+Bideratua: Bideatua
+Gauzatua: Gauzatua
+Egutegian: Egutegian
+'Sinatzaile taldea': Sinatzaileak
+Guztiak: Guztiak
 'Bideratu gabeak': 'Bideratu gabeak'
 'Gauzatu gabeak': 'Gauzatu gabeak'
 'Egutean sartu gabe': 'Egutean sartu gabe'
-Fitxategia: 'Fitxategia'
-Eskaera berria: 'Instantzia berria'
-Egunak: 'Egunak'
+Fitxategia: Fitxategia
+'Eskaera berria': 'Instantzia berria'
+Egunak: Egunak
 Lanaldia: Lanaldia
 msg.ezabatu: 'ziur zaude ezabatu nahi duzula?'
-Eskaera eguna: 'Eskaera eguna'
-main_menu.eskaerak: 'Eskaerak'
-user_menu.eskaerak: 'Instantziak'
+'Eskaera eguna': 'Eskaera eguna'
+main_menu.eskaerak: Eskaerak
+user_menu.eskaerak: Instantziak
 Ekintzak: Ekintzak
-table.eskaera: 'Data'
+table.eskaera: Data
+'eskaera berria': 'eskaera berria'
+Ikusi: Ikusi
+Ezabatu: Ezabatu
+Bideratu: Bideratu
+'Eskaera editatzen': 'Editando instancia'
+'Guztiak onartu': 'Aceptar todas'
+'Guztiak ez onartu': 'No aceptar todas'
+'Ez onartu': 'No aceptar'
+'Azken sinadura': Aceptar
+erantzuna.Num: Num
+erantzuna.Langilea: Trabajador
+erantzuna.Saila: Departamento
+erantzuna.Mota: Tipo
+erantzuna.Hasi: Comienzo
+erantzuna.Amaitu: Fin
+erantzuna.Orduak: Horas
+erantzuna.Sinatzaileak: Firmantes
+erantzuna.Noiz: 'Fec. instancía'
+erantzuna.firmatzailea: Firmatzailea
+erantzuna.firmatua: 'Firmatua?'
+erantzuna.erantzuna: Erantzuna

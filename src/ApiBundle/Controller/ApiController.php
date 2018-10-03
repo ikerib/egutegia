@@ -124,14 +124,13 @@ class ApiController extends FOSRestController
      *   }
      * )
      *
-     * @var Request
      * @Annotations\View()
      *
      * @param Request $request
      *
      * @return View
      */
-    public function postTemplateEventsAction( Request $request )
+    public function postTemplateEventsAction( Request $request ): View
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -183,7 +182,7 @@ class ApiController extends FOSRestController
      * @return View
      */
 
-    public function deleteTemplateEventsAction( $templateid )
+    public function deleteTemplateEventsAction( $templateid ): ?View
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -256,7 +255,7 @@ class ApiController extends FOSRestController
      * @Rest\Put("/events/{id}")
      */
 
-    public function putEventAction( Request $request, $id )
+    public function putEventAction( Request $request, $id ): View
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -265,7 +264,7 @@ class ApiController extends FOSRestController
         // find event
         $event = $em->getRepository( 'AppBundle:Event' )->find( $id );
         if ( !$event ) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('Ez da topatu');
         }
 
         // find calendar
@@ -290,14 +289,14 @@ class ApiController extends FOSRestController
         $newValue = (float)$jsonData[ 'hours' ];
 
         $oldType = $jsonData[ 'oldType' ];
-        $hours   = (float)( $event->getHours() ) - (float)$oldValue;
+        $hours   = (float)$event->getHours() - $oldValue;
 
         if ( $type->getRelated() ) {
             if ( $type->getId() === (int)$oldType ) { // Mota berdinekoak badira, zuzenketa
                 /** @var Type $t */
                 $t = $event->getType();
                 if ( $t->getRelated() === 'hours_free' ) {
-                    $calendar->setHoursFree( (float)( $calendar->getHoursFree() ) + $hours );
+                    $calendar->setHoursFree( (float)$calendar->getHoursFree() + $hours );
                 }
                 if ( $t->getRelated() === 'hours_self' ) {
                     if ( $oldValue > 0 ) {
@@ -816,7 +815,12 @@ class ApiController extends FOSRestController
 
 
             // Oharrak grabatu
-            $eskaera->setOharra( $oharrak );
+            if ('' === $eskaera->getOharra()) {
+                $eskaera->setOharra($oharrak);
+            } else {
+                $eskaera->setOharra( $eskaera->getOharra() .'   '. $oharrak );
+            }
+
             $em->persist( $eskaera );
 
 
@@ -918,7 +922,7 @@ class ApiController extends FOSRestController
         $user = $this->getUser();
 
 
-        if ( $firma->getCompleted() === false ) {
+//        if ( $firma->getCompleted() === false ) {
 
 
             /**
@@ -999,7 +1003,7 @@ class ApiController extends FOSRestController
                 $this->get( 'mailer' )->send( $message );
 
             }
-        }
+//        }
         $em->flush();
 
         $view = View::create();
