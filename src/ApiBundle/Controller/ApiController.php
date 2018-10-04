@@ -780,95 +780,131 @@ class ApiController extends FOSRestController
         $user = $em->getRepository( 'AppBundle:User' )->find( $userid );
 
 
-//        if ( $firma->getCompleted() === false ) {
 
 
-            /**
-             * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
-             *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
-             */
+        /**
+         * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
+         *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
+         */
+        $unekoSinatzailea =null; // nork sinatzen duen momentu honetan
+        //Firmatu
+        /** @var Firmadet $firmadets */
+        $firmadets = $firma->getFirmadet();
+        /** @var Firmadet $fd */
+        foreach ( $firmadets as $fd ) {
+            /** @var Sinatzaileakdet $sd */
+            $sd = $fd->getSinatzaileakdet();
 
-            //Firmatu
-            /** @var Firmadet $firmadets */
-            $firmadets = $firma->getFirmadet();
-            /** @var Firmadet $fd */
-            foreach ( $firmadets as $fd ) {
-                /** @var Sinatzaileakdet $sd */
-                $sd = $fd->getSinatzaileakdet();
+            /** @var User $su */
+            $su = $sd->getUser();
 
-                /** @var User $su */
-                $su = $sd->getUser();
-
-                if ( $user->getId() === $su->getId() ) {
-                    $fd->setFirmatua( true );
-                    $fd->setFirmatzailea( $user );
-                    $fd->setNoiz( New \DateTime() );
-                    $em->persist( $fd );
-                    $em->flush();
-                    break;
-                }
+            if ( $user->getId() === $su->getId() ) {
+                $fd->setFirmatua( true );
+                $fd->setFirmatzailea( $user );
+                $fd->setNoiz( New \DateTime() );
+                $em->persist( $fd );
+                $em->flush();
+                $unekoSinatzailea = $su;
+                break;
             }
+        }
 
 
+        /** @var Eskaera $eskaera */
+        $eskaera = $firma->getEskaera();
+
+
+        // Oharrak grabatu
+        if ('' === $eskaera->getOharra()) {
+            $eskaera->setOharra($oharrak);
+        } else {
+            $eskaera->setOharra( $eskaera->getOharra() .'   '. $oharrak );
+        }
+
+        $em->persist( $eskaera );
+
+
+        // BETI DA ONARTUA
+
+        $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
+
+        if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
+            $firma->setCompleted( true );
+            $eskaera->setEmaitza(true);
+        } else {
+            $firma->setCompleted( false );
+        }
+        $em->persist( $firma );
+
+        /**
+         * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
+         */
+        if ( $firma->getCompleted() === true ) {
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
-
-
-            // Oharrak grabatu
-            if ('' === $eskaera->getOharra()) {
-                $eskaera->setOharra($oharrak);
-            } else {
-                $eskaera->setOharra( $eskaera->getOharra() .'   '. $oharrak );
-            }
-
+            $eskaera->setAmaitua( true );
             $em->persist( $eskaera );
 
+            $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
+            $bideratzaileak     = [];
+            /** @var User $b */
+            foreach ( $bideratzaileakfind as $b ) {
 
-            $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
-
-            if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
-                $firma->setCompleted( true );
-                $eskaera->setEmaitza(true);
-            } else {
-                $firma->setCompleted( false );
+                $bideratzaileak[] = $b->getEmail();
             }
-            $em->persist( $firma );
-            $em->persist( $eskaera );
+            $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
 
-            /**
-             * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
-             */
-            if ( $firma->getCompleted() === true ) {
-                /** @var Eskaera $eskaera */
-                $eskaera = $firma->getEskaera();
-                $eskaera->setAmaitua( true );
-                $em->persist( $eskaera );
+            $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname() ) )
+                ->setFrom( $bailtzailea )
+                ->setTo( $bideratzaileak )
+                ->setBody(
+                    $this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'Emails/eskaera_onartua.html.twig',
+                        array( 'eskaera' => $eskaera )
+                    ),
+                    'text/html'
+                );
 
-                $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
-                $bideratzaileak     = [];
-                /** @var User $b */
-                foreach ( $bideratzaileakfind as $b ) {
+            $this->get( 'mailer' )->send( $message );
 
-                    $bideratzaileak[] = $b->getEmail();
+        } else {
+            $hurrengoSinatzailea = null;
+            // Firmak falta dituenez, Sinatzaile zerrengako hurrengoari jakinarazpena bidali
+
+            $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
+            $length = \count($sinatzaileusers);
+            for($i = 0; $i < $length - 1; ++$i) {
+                if ($unekoSinatzailea->getId() === $sinatzaileusers[$i]->getUser()->getId()) {
+                    if ($i + 1 <= $length) {
+                        $hurrengoSinatzailea = $sinatzaileusers[$i+1]->getUser();
+                    }
                 }
-                $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
-
-                $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname() ) )
-                    ->setFrom( $bailtzailea )
-                    ->setTo( $bideratzaileak )
-                    ->setBody(
-                        $this->renderView(
-                        // app/Resources/views/Emails/registration.html.twig
-                            'Emails/eskaera_onartua.html.twig',
-                            array( 'eskaera' => $eskaera )
-                        ),
-                        'text/html'
-                    );
-
-                $this->get( 'mailer' )->send( $message );
-
             }
-//        }
+            if ($hurrengoSinatzailea !== null) {
+                $notify = New Notification();
+                $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
+
+                $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
+                    'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
+                    'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
+
+                if ($eskaera->getAmaitu() !== null) {
+                    $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
+                }
+
+                $notify->setDescription($desc);
+                $notify->setEskaera($eskaera);
+                $notify->setFirma($firma);
+                $notify->setReaded(false);
+                $notify->setUser($hurrengoSinatzailea);
+                $em->persist($notify);
+            }
+        }
+
+
+
+
         $em->flush();
 
         $view = View::create();
