@@ -87,7 +87,7 @@
                 <thead>
                 <tr>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>
-                    <th data-visible="true" data-halign="center" data-align="left" data-field="eskaera.emaitza" data-sortable="true">ID</th>
+                    <th data-visible="false" data-halign="center" data-align="left" data-field="eskaera.emaitza" data-sortable="true">Emaitza</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.name" data-sortable="true">{{ "Izaera" | trans }}</th>
                     {#<th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>#}
                     <th data-halign="center" data-align="left" data-field="eskaera.type.name " data-sortable="true">{{ "Mota" | trans }}</th>
@@ -222,7 +222,7 @@
                                 {% endif %}
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
 
-                                {% if eskaera.amaitua %}
+                                {% if eskaera.amaitua and eskaera.emaitza == true  %}
 
                                     <li>
                                         <a href="javascript:void(0);" class="btnEskaeraEgutegira"
@@ -504,11 +504,5 @@
             });
         });
     </script>
-    <script>
-        function rowStyle(row, index) {
-            if ( row["eskaera.emaitza"] === "1") {
-                return { classes: "danger"};
-            }
-        }
-    </script>
+
 {% endblock %}

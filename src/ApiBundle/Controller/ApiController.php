@@ -828,10 +828,12 @@ class ApiController extends FOSRestController
 
             if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
                 $firma->setCompleted( true );
+                $eskaera->setEmaitza(true);
             } else {
                 $firma->setCompleted( false );
             }
             $em->persist( $firma );
+            $em->persist( $eskaera );
 
             /**
              * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
