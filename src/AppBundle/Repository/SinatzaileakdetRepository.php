@@ -18,4 +18,16 @@ class SinatzaileakdetRepository extends \Doctrine\ORM\EntityRepository
 
         return $qm->getQuery()->getResult();
     }
+
+
+    public function findAllByIdSorted ( $sinatzaileakid )
+    {
+        $qm = $this->createQueryBuilder( 'sd' )
+                   ->where( 'sd.sinatzaileak=:sinatzaileakid' )
+                   ->setParameter( 'sinatzaileakid', $sinatzaileakid )
+                    ->orderBy('sd.orden','ASC');
+
+        return $qm->getQuery()->getResult();
+    }
+
 }

@@ -922,88 +922,96 @@ class ApiController extends FOSRestController
         $user = $this->getUser();
 
 
-//        if ( $firma->getCompleted() === false ) {
 
+        /**
+         * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
+         *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
+         */
 
-            /**
-             * 1-. Firmatzen badu begiratu ea firma guztiak dituen, ala badu complete=true jarri
-             *      Ez badu firmatu, firmatu eta begiratu eta complete jarri behar duen
-             */
+        $unekoSinatzailea =null; // nork sinatzen duen momentu honetan
+        //Firmatu
+        /** @var Firmadet $firmadets */
+        $firmadets = $firma->getFirmadet();
+        /** @var Firmadet $fd */
+        foreach ( $firmadets as $fd ) {
+            /** @var Sinatzaileakdet $sd */
+            $sd = $fd->getSinatzaileakdet();
 
-            //Firmatu
-            /** @var Firmadet $firmadets */
-            $firmadets = $firma->getFirmadet();
-            /** @var Firmadet $fd */
-            foreach ( $firmadets as $fd ) {
-                /** @var Sinatzaileakdet $sd */
-                $sd = $fd->getSinatzaileakdet();
+            /** @var User $su */
+            $su = $sd->getUser();
 
-                /** @var User $su */
-                $su = $sd->getUser();
-
-                if ( $user->getId() === $su->getId() ) {
-                    $fd->setFirmatua( $onartua );
-                    $fd->setFirmatzailea( $user );
-                    $fd->setNoiz( New \DateTime() );
-                    $em->persist( $fd );
-                    $em->flush();
-                    break;
-                }
+            if ( $user->getId() === $su->getId() ) {
+                $fd->setFirmatua( $onartua );
+                $fd->setFirmatzailea( $user );
+                $fd->setNoiz( New \DateTime() );
+                $em->persist( $fd );
+                $em->flush();
+                $unekoSinatzailea = $su;
+                break;
             }
+        }
 
 
+        /** @var Eskaera $eskaera */
+        $eskaera = $firma->getEskaera();
+
+
+        // Oharrak grabatu
+        $eskaera->setOharra( $oharrak );
+        $em->persist( $eskaera );
+
+
+        $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
+
+        if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
+            $firma->setCompleted( true );
+        } else {
+            $firma->setCompleted( false );
+        }
+        $em->persist( $firma );
+
+        /**
+         * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
+         */
+        if ( $firma->getCompleted() === true ) {
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
-
-
-            // Oharrak grabatu
-            $eskaera->setOharra( $oharrak );
+            $eskaera->setAmaitua( true );
             $em->persist( $eskaera );
 
+            $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
+            $bideratzaileak     = [];
+            /** @var User $b */
+            foreach ( $bideratzaileakfind as $b ) {
 
-            $zenbatFirmaFaltaDira = $em->getRepository( 'AppBundle:Firma' )->checkFirmaComplete( $firma->getId() );
-
-            if ( \count( $zenbatFirmaFaltaDira ) === 0 ) { // firma guztiak lortu dira
-                $firma->setCompleted( true );
-            } else {
-                $firma->setCompleted( false );
+                $bideratzaileak[] = $b->getEmail();
             }
-            $em->persist( $firma );
+            $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
 
-            /**
-             * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
-             */
-            if ( $firma->getCompleted() === true ) {
-                /** @var Eskaera $eskaera */
-                $eskaera = $firma->getEskaera();
-                $eskaera->setAmaitua( true );
-                $em->persist( $eskaera );
+            $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname() ) )
+                ->setFrom( $bailtzailea )
+                ->setTo( $bideratzaileak )
+                ->setBody(
+                    $this->renderView(
+                    // app/Resources/views/Emails/registration.html.twig
+                        'Emails/eskaera_onartua.html.twig',
+                        array( 'eskaera' => $eskaera )
+                    ),
+                    'text/html'
+                );
 
-                $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
-                $bideratzaileak     = [];
-                /** @var User $b */
-                foreach ( $bideratzaileakfind as $b ) {
+            $this->get( 'mailer' )->send( $message );
 
-                    $bideratzaileak[] = $b->getEmail();
+        } else {
+            // Firmak falta dituenez, Sinatzaile zerrengako hurrengoari jakinarazpena bidali
+            $length = \count($firmadets);
+            for($i = 0; $i < $length - 1; ++$i) {
+                if ($unekoSinatzailea->getId() == $firmadets[$i]->getId()) {
+
                 }
-                $bailtzailea = $this->container->getParameter( 'mailer_bidaltzailea' );
-
-                $message = ( new \Swift_Message( '[Egutegia][Janirazpen berria][Onartua] :' . $eskaera->getUser()->getDisplayname() ) )
-                    ->setFrom( $bailtzailea )
-                    ->setTo( $bideratzaileak )
-                    ->setBody(
-                        $this->renderView(
-                        // app/Resources/views/Emails/registration.html.twig
-                            'Emails/eskaera_onartua.html.twig',
-                            array( 'eskaera' => $eskaera )
-                        ),
-                        'text/html'
-                    );
-
-                $this->get( 'mailer' )->send( $message );
-
             }
-//        }
+        }
+
         $em->flush();
 
         $view = View::create();

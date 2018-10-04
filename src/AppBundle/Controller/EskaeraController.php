@@ -534,7 +534,10 @@ class EskaeraController extends Controller
                     $eskaera->setAbiatua(true);
 
 
-                    $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
+//                    $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
+                    $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
+                    /** @var Sinatzaileakdet $lehenSinatzaile */
+                    $lehenSinatzaile = $sinatzaileusers[ 0 ];
                     /** @var Sinatzaileakdet $s */
                     foreach ($sinatzaileusers as $s) {
 
@@ -563,30 +566,34 @@ class EskaeraController extends Controller
                             $fd->setFirmatzailea($firmatzailea);
                             $fd->setNoiz(new \DateTime());
                             $em->persist($fd);
-                        } else {
-
-                            $notify = New Notification();
-                            $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
-
-                            $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
-                                'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
-                                'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
-
-                            if ($eskaera->getAmaitu() !== null) {
-                                $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
-                            }
-
-                            $notify->setDescription($desc);
-                            $notify->setEskaera($eskaera);
-                            $notify->setFirma($firma);
-                            $notify->setReaded(false);
-                            $notify->setUser($s->getUser());
-                            $em->persist($notify);
                         }
-
-                        $em->persist($fd);
-
                     }
+
+
+                    // SOILIK LEHENA NOTIFIKATU
+
+                    $notify = New Notification();
+                    $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
+
+                    $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
+                        'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
+                        'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
+
+                    if ($eskaera->getAmaitu() !== null) {
+                        $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
+                    }
+
+                    $notify->setDescription($desc);
+                    $notify->setEskaera($eskaera);
+                    $notify->setFirma($firma);
+                    $notify->setReaded(false);
+                    $notify->setUser($lehenSinatzaile->getUser());
+                    $em->persist($notify);
+
+
+                    $em->persist($fd);
+
+
 
                     $eskaera->setBideratua(true);
                     $em->persist($eskaera);
