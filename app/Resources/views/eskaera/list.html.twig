@@ -333,6 +333,7 @@
                         "<table class='table table-bordered table-striped table-hover table-condensed'>" +
                         "<thead>" +
                         "       <tr>" +
+                        "           <th><strong>Orden</strong></th>" +
                         "           <th><strong>Langilea</strong></th>" +
                         "           <th><strong>Firmatua</strong></th>" +
                         "           <th><strong>Erantzuna</strong></th>" +
@@ -361,7 +362,11 @@
                             }
                         });
 
-                        html = html + "<tr'><td>" + obj.user.username + "</td>";
+                        var nireOrdena = parseInt(obj.ordena);
+                        nireOrdena = nireOrdena + 1;
+
+                        html = html + "<tr'><td>" + nireOrdena + "</td>";
+                        html = html + "<td>" + obj.user.username + "</td>";
                         var sinatua = false;
 
                         /** Null baldin bada ez duelako firmatu. Firmatzean, 0 edo 1 sartzen da, erantzunaren arabera */

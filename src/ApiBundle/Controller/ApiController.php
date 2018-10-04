@@ -1227,6 +1227,7 @@ class ApiController extends FOSRestController
 
 
             $r = array(
+                'ordena'    => $f->getOrden(),
                 'user'      => $user,
                 'notify'    => $notify,
                 'postit'    => $f->getPostit(),
