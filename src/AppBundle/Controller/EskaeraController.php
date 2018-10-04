@@ -565,8 +565,9 @@ class EskaeraController extends Controller
                             $fd->setFirmatua(true);
                             $fd->setFirmatzailea($firmatzailea);
                             $fd->setNoiz(new \DateTime());
-                            $em->persist($fd);
+
                         }
+                        $em->persist($fd);
                     }
 
 

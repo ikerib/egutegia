@@ -1003,12 +1003,36 @@ class ApiController extends FOSRestController
             $this->get( 'mailer' )->send( $message );
 
         } else {
+            $hurrengoSinatzailea = null;
             // Firmak falta dituenez, Sinatzaile zerrengako hurrengoari jakinarazpena bidali
-            $length = \count($firmadets);
-            for($i = 0; $i < $length - 1; ++$i) {
-                if ($unekoSinatzailea->getId() == $firmadets[$i]->getId()) {
 
+            $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
+            $length = \count($sinatzaileusers);
+            for($i = 0; $i < $length - 1; ++$i) {
+                if ($unekoSinatzailea->getId() === $sinatzaileusers[$i]->getUser()->getId()) {
+                    if ($i + 1 <= $length) {
+                        $hurrengoSinatzailea = $sinatzaileusers[$i+1]->getUser();
+                    }
                 }
+            }
+            if ($hurrengoSinatzailea !== null) {
+                $notify = New Notification();
+                $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
+
+                $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
+                    'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
+                    'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
+
+                if ($eskaera->getAmaitu() !== null) {
+                    $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
+                }
+
+                $notify->setDescription($desc);
+                $notify->setEskaera($eskaera);
+                $notify->setFirma($firma);
+                $notify->setReaded(false);
+                $notify->setUser($hurrengoSinatzailea);
+                $em->persist($notify);
             }
         }
 
