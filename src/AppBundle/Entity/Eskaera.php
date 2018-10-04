@@ -125,6 +125,12 @@ class Eskaera
     private $konfliktoa=false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="emaitza", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $emaitza=true;
+
+    /**
      * @var string
      * @ORM\Column(name="oharra", type="string", nullable=true)
      */
@@ -817,5 +823,29 @@ class Eskaera
     public function getKonfliktoa()
     {
         return $this->konfliktoa;
+    }
+
+    /**
+     * Set emaitza.
+     *
+     * @param bool|null $emaitza
+     *
+     * @return Eskaera
+     */
+    public function setEmaitza($emaitza = null)
+    {
+        $this->emaitza = $emaitza;
+
+        return $this;
+    }
+
+    /**
+     * Get emaitza.
+     *
+     * @return bool|null
+     */
+    public function getEmaitza()
+    {
+        return $this->emaitza;
     }
 }

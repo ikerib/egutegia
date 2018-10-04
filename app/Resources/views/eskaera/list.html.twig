@@ -65,6 +65,9 @@
                    data-show-toggle="true"
                    data-show-columns="true"
                    data-toolbar="#toolbar"
+
+                   data-row-style="rowStyle"
+
                    data-show-export="true"
                    data-export-types="['csv','excel', 'pdf']"
                    data-export-options='{
@@ -84,6 +87,7 @@
                 <thead>
                 <tr>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true">ID</th>
+                    <th data-visible="true" data-halign="center" data-align="left" data-field="eskaera.emaitza" data-sortable="true">ID</th>
                     <th data-halign="center" data-align="left" data-field="eskaera.name" data-sortable="true">{{ "Izaera" | trans }}</th>
                     {#<th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>#}
                     <th data-halign="center" data-align="left" data-field="eskaera.type.name " data-sortable="true">{{ "Mota" | trans }}</th>
@@ -104,6 +108,7 @@
                 {% for eskaera in eskaeras %}
                     <tr>
                         <td>{{ eskaera.id }}</td>
+                        <td>{{ eskaera.emaitza }}</td>
                         <td>
                             <a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera" data-id="{{ eskaera.id }}">
                                 {{ eskaera.name }}
@@ -420,13 +425,11 @@
                 });
             });
 
-
             $(".saveEditModal").on("click", function () {
                 var miid = $(this).data("id");
                 var mifrm = $("#frmEditEskaera" + miid);
                 $(mifrm).submit();
             });
-
 
             $(".btnRemoveRow").on("click", function () {
                 var that = $(this);
@@ -489,6 +492,8 @@
 
             });
 
+
+
         });
     </script>
     <script>
@@ -498,5 +503,12 @@
                 $(".detail-icon").trigger("click");
             });
         });
+    </script>
+    <script>
+        function rowStyle(row, index) {
+            if ( row["eskaera.emaitza"] === "1") {
+                return { classes: "danger"};
+            }
+        }
     </script>
 {% endblock %}
