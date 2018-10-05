@@ -1303,6 +1303,7 @@ class ApiController extends FOSRestController
                 'autofirma' => $f->getAutofirma(),
                 'firmaid'   => $firma->getId(),
                 'firmatua'  => $f->getFirmatua(),
+                'noiz'      => $f->getNoiz()
             );
 
             $users[] = $r;

@@ -342,6 +342,7 @@
                         "           <th><strong>Langilea</strong></th>" +
                         "           <th><strong>Firmatua</strong></th>" +
                         "           <th><strong>Erantzuna</strong></th>" +
+                        "           <th><strong>Data</strong></th>" +
                         "           <th><strong></strong></th>" +
                         "       </tr>" +
                         "   </thead>" +
@@ -388,6 +389,8 @@
                             }
                         }
 
+                        html = html + "<td>" + moment(obj.noiz).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+
                         /** Sinadura badu ez du postit botoia behar */
                         if ( sinatua === false ) {
                             html = html + "<td>" +
@@ -402,9 +405,7 @@
                                 html = html + "<td></td>";
                             }
                         }
-
                         html = html + "</tr>";
-
 
                     });
 
@@ -412,6 +413,7 @@
                     html = html + "</tbody></table>" +
                         "<div class='col-md-2'></div>" +
                         "</div>";
+
 
 
                     $detail.html(html);
