@@ -843,6 +843,7 @@ class ApiController extends FOSRestController
             /** @var Eskaera $eskaera */
             $eskaera = $firma->getEskaera();
             $eskaera->setAmaitua( true );
+            $eskaera->setEmaitza(true);
             $em->persist( $eskaera );
 
             $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
@@ -1043,6 +1044,7 @@ class ApiController extends FOSRestController
                 /** @var Eskaera $eskaera */
                 $eskaera = $firma->getEskaera();
                 $eskaera->setAmaitua( true );
+                $eskaera->setEmaitza(true);
                 $em->persist( $eskaera );
 
                 $bideratzaileakfind = $em->getRepository( 'AppBundle:User' )->findByRole( 'ROLE_BIDERATZAILEA' );
