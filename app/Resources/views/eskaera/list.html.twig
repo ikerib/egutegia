@@ -21,7 +21,7 @@
                 <a class="btn {% if app.request.get('q') == 'unsigned' %}   btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'unsigned'}) }}">{{ 'Gauzatu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unadded' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">{{ 'Egutean sartu gabe' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">{{ 'Egutegian sartu gabe' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'conflict' %}    btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'conflict'}) }}">{{ 'Bateraezinak' | trans }}</a>
             </div>

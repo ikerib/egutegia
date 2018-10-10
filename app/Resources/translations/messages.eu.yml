@@ -144,7 +144,7 @@ Egutegian: Egutegian
 Guztiak: Guztiak
 'Bideratu gabeak': 'Bideratu gabeak'
 'Gauzatu gabeak': 'Gauzatu gabeak'
-'Egutean sartu gabe': 'Egutean sartu gabe'
+'Egutegian sartu gabe': 'Egutean sartu gabe'
 Fitxategia: Fitxategia
 'Eskaera berria': 'Instantzia berria'
 Egunak: Egunak
@@ -177,6 +177,6 @@ erantzuna.firmatzailea: Firmatzailea
 erantzuna.firmatua: 'Firmatua?'
 erantzuna.erantzuna: Erantzuna
 Zabaldu: 'Zabaldu/Itxi guztiak'
-'Irakurri gabeak': '__Irakurri gabeak'
-Irakurritakoak: __Irakurritakoak
-'Erantzun gabeak': '__Erantzun gabeak'
+'Irakurri gabeak': 'Irakurri gabeak'
+Irakurritakoak: Irakurritakoak
+'Erantzun gabeak': 'Erantzun gabeak'

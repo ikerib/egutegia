@@ -151,7 +151,7 @@ class Builder implements ContainerAwareInterface
                     array(
                         'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications).'</span>',
                         'route'  => 'notification_index',
-                        'routeParameters' => array('q'=>'unread'),
+                        'routeParameters' => array('q'=>'unanswered'),
                         'icon'   => 'bullhorn',
                         'extras' => array('safe_label' => true),
                     )
