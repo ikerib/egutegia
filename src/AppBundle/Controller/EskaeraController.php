@@ -86,8 +86,6 @@ class EskaeraController extends Controller
             $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
 
-        dump($eskaeras);
-
         return $this->render(
             'eskaera/list.html.twig',
             array(
