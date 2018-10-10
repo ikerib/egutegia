@@ -28,13 +28,13 @@
     <div id="toolbar">
         <div class="btn-group" role="group" aria-label="...">
             <a class="btn {% if (app.request.get('q') == 'all') or (app.request.get('q') is not defined) or (app.request.get('q') is null) %}        btn-info {% else %} btn-default {% endif %}"
-               href="{{ path('notification_index', { 'q': 'all'}) }}">Guztiak</a>
-            <a class="btn {% if app.request.get('q') == 'unread' %}     btn-info {% else %} btn-default {% endif %}"
-               href="{{ path('notification_index', { 'q': 'unread'}) }}">Irakurri gabeak</a>
-            <a class="btn {% if app.request.get('q') == 'readed' %}   btn-info {% else %} btn-default {% endif %}"
-               href="{{ path('notification_index', { 'q': 'readed'}) }}">Irakurritakoak</a>
+               href="{{ path('notification_index', { 'q': 'all'}) }}">{{ "Guztiak" |trans }}</a>
+            {#<a class="btn {% if app.request.get('q') == 'unread' %}     btn-info {% else %} btn-default {% endif %}"#}
+               {#href="{{ path('notification_index', { 'q': 'unread'}) }}">{{ "Irakurri gabeak" | trans }}</a>#}
+            {#<a class="btn {% if app.request.get('q') == 'readed' %}   btn-info {% else %} btn-default {% endif %}"#}
+               {#href="{{ path('notification_index', { 'q': 'readed'}) }}">{{ "Irakurritakoak" | trans }}</a>#}
             <a class="btn {% if app.request.get('q') == 'unanswered' %}    btn-info {% else %} btn-default {% endif %}"
-               href="{{ path('notification_index', { 'q': 'unanswered'}) }}">Erantzun gabeak</a>
+               href="{{ path('notification_index', { 'q': 'unanswered'}) }}">{{ "Erantzun gabeak" | trans }}</a>
             {#<a class="btn {% if app.request.get('q') == 'last-signature' %}    btn-info {% else %} btn-default {% endif %}"#}
                {#href="{{ path('notification_index', { 'q': 'last-signature'}) }}">{{ 'Azken sinadura' | trans }}</a>#}
         </div>
@@ -80,8 +80,8 @@
         <tr>
             <th data-halign="center" data-align="center" data-field="id" data-visible="true" data-sortable="true">{{ 'Nº Jakinarazpena' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="eskaera.id" data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="readed" data-sortable="true">{{ 'Irakurria' | trans }}</th>
-            <th data-halign="center" data-align="center" data-field="completed" data-sortable="true">{{ 'Erantzunda' | trans }}</th>
+            {#<th data-halign="center" data-align="center" data-field="readed" data-sortable="true">{{ 'Irakurria' | trans }}</th>#}
+            {#<th data-halign="center" data-align="center" data-field="completed" data-sortable="true">{{ 'Erantzunda' | trans }}</th>#}
             <th data-halign="center" data-align="center" data-field="result" data-sortable="true">{{ 'Erantzuna' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="eskaera.user.username" data-sortable="true">{{ 'Langilea' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ 'Saila' | trans }}</th>
@@ -98,30 +98,30 @@
             <tr>
                 <td>{{ notification.id }}</td>
                 <td>{{ notification.eskaera.id }}</td>
-                <td>
-                    <a href="javascript:void(0);" class="btnReaded" data-id="{{ notification.id }}">
-                        {% if notification.readed %}
-                            <span class="label label-success"> Bai</span>
-                        {% else %}
-                            <span class="label label-danger"> Ez</span>
-                        {% endif %}
-                    </a>
-                </td>
-                <td>
-                    <a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">
-                        {% if notification.completed %}
-                            <span class="label label-success"> Bai</span>
-                        {% else %}
-                            <span class="label label-danger"> Ez</span>
-                        {% endif %}
-                    </a>
-                </td>
+                {#<td>#}
+                    {#<a href="javascript:void(0);" class="btnReaded" data-id="{{ notification.id }}">#}
+                        {#{% if notification.readed %}#}
+                            {#<span class="label label-success"> Bai</span>#}
+                        {#{% else %}#}
+                            {#<span class="label label-danger"> Ez</span>#}
+                        {#{% endif %}#}
+                    {#</a>#}
+                {#</td>#}
+                {#<td>#}
+                    {#<a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">#}
+                        {#{% if notification.completed %}#}
+                            {#<span class="label label-success"> Bai</span>#}
+                        {#{% else %}#}
+                            {#<span class="label label-danger"> Ez</span>#}
+                        {#{% endif %}#}
+                    {#</a>#}
+                {#</td>#}
                 <td>
                     <a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">
                         {% if notification.result %}
-                            <span class="label label-success"> Bai</span>
+                            <span class="label label-success"> {{ "Bai" | trans }}</span>
                         {% else %}
-                            <span class="label label-danger"> Ez</span>
+                            <span class="label label-danger"> {{ "Ez" | trans }}</span>
                         {% endif %}
                     </a>
                 </td>

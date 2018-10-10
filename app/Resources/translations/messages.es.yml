@@ -77,8 +77,8 @@ msg.zatitu: 'Se pueden dividir:'
 msg.egun.osoak: 'Días completos:'
 'Sinatzaileen zerrenda': 'Lista firmantes'
 Jakinarazpenak: Notificaciones
-Irakurria: Leidos
-Erantzunda: Respondidos
+Irakurria: Leido
+Erantzunda: Respondido
 Erantzuna: Respuesta
 Gaia: Tema
 Hasi: Empieza
@@ -178,3 +178,6 @@ erantzuna.firmatzailea: Firmador
 erantzuna.firmatua: 'Firmado?'
 erantzuna.erantzuna: Respuesta
 Zabaldu: 'Abrir/cerrar todas'
+'Irakurri gabeak': 'Sin leer'
+Irakurritakoak: 'Leidos'
+'Erantzun gabeak': 'Sin Responder'
