@@ -231,6 +231,13 @@
                                         </a>
                                     </li>
 
+                                    <li>
+                                        <a href="javascript:void(0);" class="btnEskaeraGauzatuaMarkatu"
+                                           data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+
 
                                 {% endif %}
 
@@ -284,7 +291,8 @@
                 $(this).delay(2500).fadeOut();
             });
 
-            $(".btnEskaeraEgutegira").on("click", function () {
+            $(document).on('click', '.btnEskaeraEgutegira', function() {
+            // $(".btnEskaeraEgutegira").on("click", function () {
 
                 var egutegian = $(this).data("egutegian");
 
@@ -317,7 +325,33 @@
                 });
             });
 
-            $(".btnEskaera").on("click", function () {
+            $(document).on('click', '.btnEskaeraGauzatuaMarkatu', function() {
+            // $(".btnEskaeraGauzatuaMarkatu").on("click", function () {
+                var egutegian = $(this).data("egutegian");
+                var datoak = {};
+                if ( egutegian === 1 ) {
+                    datoak.egutegian = 0;
+                } else {
+                    datoak.egutegian = 1;
+                }
+                var miid = $(this).data("id");
+                var url = Routing.generate("put_eskaera_egutegian_marka", { "id": miid });
+
+                $.ajax({
+                    url: url,
+                    type: 'PUT',
+                    data: datoak,
+                    success: function ( data ) {
+                        location.reload();
+                    },
+                    error: function ( err ) {
+                        alert("Errore bat egon da egutegian sartua dagoela markatzerakoan.")
+                    }
+                })
+            });
+
+            $(document).on('click', '.btnEskaera', function() {
+            // $(".btnEskaera").on("click", function () {
                 var url = $(this).data("myurl");
                 $(".my-modal-cont").load(url, function () {
                     $("#myModal").modal({ show: true });
@@ -427,13 +461,15 @@
                 });
             });
 
-            $(".saveEditModal").on("click", function () {
+            $(document).on('click', '.saveEditModal', function() {
+            // $(".saveEditModal").on("click", function () {
                 var miid = $(this).data("id");
                 var mifrm = $("#frmEditEskaera" + miid);
                 $(mifrm).submit();
             });
 
-            $(".btnRemoveRow").on("click", function () {
+            $(document).on('click', '.btnRemoveRow', function() {
+            // $(".btnRemoveRow").on("click", function () {
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",

@@ -141,6 +141,7 @@ fos_js_routing:
         - get_firmatzaileak
         - get_firmatzaileakfromjakinarazpena
         - eskaera_add_to_calendar
+        - put_eskaera_egutegian_marka
 
 
 mopa_bootstrap:

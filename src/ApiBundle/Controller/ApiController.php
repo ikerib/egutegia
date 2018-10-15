@@ -25,6 +25,7 @@ use AppBundle\Entity\TemplateEvent;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -1117,6 +1118,52 @@ class ApiController extends FOSRestController
 
         return $view;
     }
+
+    /**
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Eskaera egutegian dagoela markatu/desmarkatu",
+     *   statusCodes = {
+     *     200 = "OK"
+     *   }
+     * )
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return View
+     * @throws EntityNotFoundException
+     * @Rest\View(statusCode=200)
+     * @Rest\Put("/eskaeraegutegian/{id}")
+     */
+    public function putEskaeraEgutegianMarkaAction (Request $request, $id): ?View
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository( 'AppBundle:Eskaera' )->find( $id );
+
+        if ( !$eskaera ) {
+            throw new EntityNotFoundException('Ez da eskaera topatu');
+        }
+
+        $egutegian = false;
+        if (( $request->request->get('egutegian') === "1" ) || ($request->request->get('egutegian') === 1 )){
+            $egutegian = true;
+        }
+
+        $eskaera->setEgutegian($egutegian);
+        $em->persist($eskaera);
+        $em->flush();
+
+        $view = View::create();
+        $view->setData( $eskaera );
+        header( 'content-type: application/json; charset=utf-8' );
+        header( 'access-control-allow-origin: *' );
+
+        return $view;
+
+    } // "put_eskaera_egutegian_marka"             [PUT] /eskaeraegutegian/{id}
 
     /******************************************************************************************************************/
     /******************************************************************************************************************/

@@ -78,7 +78,7 @@ $(document).ready(function () {
             })
     })
 
-    $(document).on('click', '.btnEskaeraOnartu', function(){
+    $(document).on('click', '.btnEskaeraOnartu', function() {
         const firmaid = $(this).data("firmaid");
         const jakinarazpenaid = $(this).data("notifyid");
         const userid = null;
