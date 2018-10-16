@@ -83,6 +83,8 @@ $(document).ready(function () {
         const jakinarazpenaid = $(this).data("notifyid");
         const userid = null;
         const url = Routing.generate("put_firma", { "id": firmaid, "userid": null });
+        const $tr = $(this).closest('tr'); //here we hold a reference to the clicked tr which will be later used to delete the row
+
         $.ajax({
             url: url,
             method: 'PUT',
@@ -95,8 +97,9 @@ $(document).ready(function () {
                     method: 'PUT',
                     data: {onartua: 1}
                 }).done(function (data) {
-                    console.log(data);
-                    location.reload()
+                    $tr.find('td').fadeOut(1000,function(){
+                        $tr.remove();
+                    });
                 }).fail(function (xhr) {
                     bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
                 })
@@ -110,6 +113,8 @@ $(document).ready(function () {
         const firmaid = $(this).data('firmaid');
         const jakinarazpenaid = $(this).data('notifyid');
         const url = Routing.generate('put_firma', {'id': firmaid});
+        const $tr = $(this).closest('tr'); //here we hold a reference to the clicked tr which will be later used to delete the row
+
         $.ajax({
             url: url,
             method: 'PUT',
@@ -122,7 +127,9 @@ $(document).ready(function () {
                     method: 'PUT',
                     data: {onartua: 0}
                 }).done(function (data) {
-                    location.reload()
+                    $tr.find('td').fadeOut(1000,function(){
+                        $tr.remove();
+                    });
                 }).fail(function (xhr) {
                     bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
                 })
