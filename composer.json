@@ -22,11 +22,12 @@
     "require": {
         "php": ">=5.5.9",
         "ext-json": "*",
+        "ext-ldap": "*",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
-        "egeloen/ckeditor-bundle": "^5.0",
         "eightpoints/guzzle-bundle": "^7.3",
         "fr3d/ldap-bundle": "^3.0",
+        "friendsofsymfony/ckeditor-bundle": "^1.2",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "friendsofsymfony/rest-bundle": "^2.1",
         "friendsofsymfony/user-bundle": "~2.0",
@@ -46,8 +47,7 @@
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
         "twig/twig": "^1.0||^2.0",
-        "vich/uploader-bundle": "^1.8",
-        "ext-ldap": "*"
+        "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^2.3",

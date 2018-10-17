@@ -21,7 +21,7 @@ class AppKernel extends Kernel
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 
-            new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
+
             new Vich\UploaderBundle\VichUploaderBundle(),
 
             new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
@@ -36,6 +36,7 @@ class AppKernel extends Kernel
 
             new FR3D\LdapBundle\FR3DLdapBundle(),
             new FOS\UserBundle\FOSUserBundle(),
+            new FOS\CKEditorBundle\FOSCKEditorBundle(),
 
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
 
