@@ -9,16 +9,7 @@
 
             <!-- Single button -->
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{ "Eskaera berria" | trans }} <span class="caret"></span>
-                </button>
-
-                <ul class="dropdown-menu">
-                    {% for t in types %}
-                        <li><a href="{{ path('eskaera_new', { 'q': t.id}) }}">{{ t.name }}</a></li>
-                        <li role="separator" class="divider"></li>
-                    {% endfor %}
-                </ul>
+                <a class="btn btn-primary" href="{{ path('eskaera_instantziak') }}">{{ "Eskaera berria" | trans }} </a>
             </div>
         </div>
         <div class="col-md-10"></div>

@@ -60,6 +60,30 @@ class EskaeraController extends Controller
     }
 
     /**
+     *
+     * @Route("/instantziak", name="eskaera_instantziak")
+     * @Method("GET")
+     */
+    public function eskaerainstantziakAction(): \Symfony\Component\HttpFoundation\Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $types = $em->getRepository('AppBundle:Type')->findEskaerak();
+
+        return $this->render(
+            'eskaera/instantziak.html.twig',
+            array(
+                'types'    => $types,
+            )
+        );
+    }
+
+    /**
      * @Route("/lista", name="admin_eskaera_list")
      * @Method("GET")
      * @param Request $request

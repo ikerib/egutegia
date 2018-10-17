@@ -43,6 +43,14 @@ class Type
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Expose()
+     */
+    private $description;
+
+    /**
      * @Gedmo\Slug(fields={"name"})
      * @ORM\Column(length=105, unique=true)
      * @Expose()
@@ -501,5 +509,29 @@ class Type
     public function getEskaera()
     {
         return $this->eskaera;
+    }
+
+    /**
+     * Set description.
+     *
+     * @param string|null $description
+     *
+     * @return Type
+     */
+    public function setDescription($description = null)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description.
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }
