@@ -26,7 +26,7 @@
                                 {{ t.name }}
                             </div>
                             <div class="panel-body">
-                                {{ t.description }}
+                                {{ t.description |raw }}
                             </div>
                             <div class="panel-footer text-right aurrerabotoia" style="display: none;">
                                 <a href="{{ path('eskaera_new', { 'q': t.id}) }}">
