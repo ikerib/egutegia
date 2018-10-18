@@ -1,18 +1,4 @@
 
-{% extends 'base.html.twig' %}
-
-{% block head_style %}
-    {{ parent() }}
-    <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
-{% endblock %}
-{% block headline %}{{ 'Motak' | trans }} {% endblock  %}
-{% block content_row %}
-
-    {#{{ form_start(edit_form) }}#}
-    {#{{ form_widget(edit_form) }}#}
-        {#<input class="btn btn-primary" type="submit">#}
-    {#{{ form_end(edit_form) }}#}
-
 {{ form_start(edit_form, {'attr': {'id': 'form_type_edit'}}) }}
 <div class="form-group">
     <label for="min-date" class="col-sm-4 control-label">{{ 'Izena' | trans }}</label>
@@ -23,7 +9,7 @@
 <div class="form-group">
     <label for="min-date" class="col-sm-4 control-label">{{ 'Deskribapena' | trans }}</label>
     <div class="col-sm-7">
-        {{ form_widget(edit_form.description, { 'attr': {'class': 'form-control'} }) }}
+        {#{{ form_widget(edit_form.description, { 'attr': {'class': 'form-control'} }) }}#}
         {{ form_widget(edit_form.description, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
@@ -51,22 +37,6 @@
     </div>
 </div>
 
-    {{ form_rest(edit_form) }}
-
-    <div class="row text-center">
-        <input class="btn btn-primary" type="submit" value="{{ 'Gorde'|trans }}">
-    </div>
 
 {{ form_end(edit_form) }}
 
-{% endblock %}
-{% block foot_script %}
-    {{ parent() }}
-    <script src="/js/bootstrap-colorpicker.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#appbundle_type_color").colorpicker();
-        });
-    </script>
-
-{% endblock %}

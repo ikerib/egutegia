@@ -10,6 +10,7 @@
 namespace AppBundle\Form;
 
 
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -27,9 +28,14 @@ class TypeType extends AbstractType
         $builder
             ->add('name')
 
+//            ->add(
+//                'description',
+//                TextareaType::class
+//            )
             ->add(
                 'description',
-                TextareaType::class
+                CKEditorType::class,
+                ['config_name' => 'simple_config']
             )
             ->add('hours')
             ->add('color', null, [
