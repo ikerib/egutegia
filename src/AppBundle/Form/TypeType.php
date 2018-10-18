@@ -47,6 +47,7 @@ class TypeType extends AbstractType
              * Zein eremutatik kendu behar dituen orduak
              **/
             ->add('related', ChoiceType::class, [
+                'required' => false,
                 'label' => 'Erlazionatua',
                 'placeholder' => 'Aukeratu bat',
                 'choices' => [
@@ -57,10 +58,12 @@ class TypeType extends AbstractType
                 ],
             ])
             ->add('erakutsi', CheckboxType::class, [
+                'required' => false,
                 'label' => 'Erakutsi',
                 'translation_domain' => 'messages',
             ])
             ->add('erakutsiEskaera', CheckboxType::class, [
+                'required' => false,
                 'label' => 'Erakutsi eskaeretan',
                 'translation_domain' => 'messages',
             ])
