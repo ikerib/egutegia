@@ -194,15 +194,6 @@ fr3d_ldap:
    service:
       user_hydrator: app.ldap.user_hydrator
 
-#ivory_ck_editor:
-#    input_sync: true
-#    default_config: simple_config
-#    configs:
-#        simple_config:
-#            toolbar:
-#                - { name: "styles", items: ['Bold', 'Italic','Underline', 'BulletedList','NumberedList','Outdent','Indent', 'Link', 'PasteText', 'TextColor', 'BGColor'] }
-#            jquery: true
-#            forcePasteAsPlainText: true;
 
 vich_uploader:
     db_driver: orm # or mongodb or propel or phpcr

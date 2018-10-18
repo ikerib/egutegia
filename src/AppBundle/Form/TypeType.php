@@ -9,7 +9,7 @@
 
 namespace AppBundle\Form;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -29,8 +29,7 @@ class TypeType extends AbstractType
 
             ->add(
                 'description',
-                CKEditorType::class,
-                ['config_name' => 'simple_config']
+                TextareaType::class
             )
             ->add('hours')
             ->add('color', null, [

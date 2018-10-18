@@ -9,8 +9,8 @@
 
 namespace AppBundle\Form;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,8 +21,7 @@ class CalendarNoteType extends AbstractType
         $builder
             ->add(
                 'note',
-                CKEditorType::class,
-                ['config_name' => 'simple_config']
+                TextareaType::class
             );
     }
 
