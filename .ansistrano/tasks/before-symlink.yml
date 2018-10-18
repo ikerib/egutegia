@@ -12,9 +12,3 @@
   command: /usr/bin/gulp prod
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
-
-- name: Run ckeditor install
-    #  command: /root/.nvm/versions/node/v6.10.1/bin/gulp prod
-  command: php bin/console ckedit:install
-  args:
-      chdir: "{{ ansistrano_release_path.stdout }}"
