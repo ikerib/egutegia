@@ -18,61 +18,67 @@ class NotifyCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName( 'app:notify' )
-            ->setDescription( 'Jakinarazpenak bidali' );
+            ->setName('app:notify')
+            ->setDescription('Jakinarazpenak bidali');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute( InputInterface $input, OutputInterface $output )
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln( [
-                              'Notifikazioak bilatzen',
-                              '======================',
-                              '',
-                          ] );
+        $output->writeln(
+            [
+                'Notifikazioak bilatzen',
+                '======================',
+                '',
+            ]
+        );
 
-        $em = $this->getContainer()->get( 'doctrine' )->getManager();
-        $notifications = $em->getRepository( 'AppBundle:Notification' )->getSinatzaileNotification();
+        $em            = $this->getContainer()->get('doctrine')->getManager();
+        $notifications = $em->getRepository('AppBundle:Notification')->getSinatzaileNotification();
 
-        $temp = "";
-        $berria =0;
-        $sendTo="";
+        $temp   = "";
+        $berria = 0;
+        $sendTo = "";
 
-        if ( $notifications ) {
+        if ($notifications) {
 
-            $textua = "";
+            $textua = '';
 
             foreach ($notifications as $notify) {
 
-                if ($temp == "") {
-                    $temp = $notify[ 'email' ];
-                    $berria=1;
+                if ($temp === '') {
+                    $temp   = $notify[ 'email' ];
+                    $berria = 1;
                     $sendTo = $temp;
                 } else {
-                    if ( $temp != $notify[ 'email' ] ) {
-                        $this->bidaliEmail( $sendTo, $textua );
-                        $textua ="";
-                        $temp = $notify[ 'email' ];
-                        $berria=1;
+                    if ($temp !== $notify[ 'email' ]) {
+                        $this->bidaliEmail($sendTo, $textua);
+                        $textua = '';
+                        $temp   = $notify[ 'email' ];
+                        $berria = 1;
                         $sendTo = $temp;
 
                     }
                 }
 
-                $fHasi = DateTime::createFromFormat('Y-m-d h:m:s', $notify['hasi']);
-                $hasi = $fHasi->format( 'Y-m-d' );
-                $fFin = DateTime::createFromFormat('Y-m-d h:m:s', $notify['amaitu']);
-                $amaitu = $fFin->format( 'Y-m-d' );
+                $fHasi = DateTime::createFromFormat('Y-m-d h:m:s', $notify[ 'hasi' ]);
+                $hasi  = $fHasi->format('Y-m-d');
+                if ($notify[ 'amaitu' ] !==null) {
+                    $fFin   = DateTime::createFromFormat('Y-m-d h:m:s', $notify[ 'amaitu' ]);
+                    $amaitu = $fFin->format('Y-m-d');
+                } else {
+                    $amaitu = null;
+                }
 
-                if ($berria == 1) {
+
+                if ($berria === 1) {
                     $berria = 0;
-                    $textua = $sendTo. "=>". $notify[ 'name' ] . " langilearen eskaera berria. Hasi: " . $hasi . " Amaitu: " . $amaitu;
+                    $textua = $sendTo.'=>'.$notify[ 'name' ].' langilearen eskaera berria. Hasi: '.$hasi.' Amaitu: '.$amaitu;
 
                 } else {
-
-                    $textua .= "<br />".$sendTo. "=>".$notify[ 'name' ] . " langilearen eskaera berria. Hasi: " . $hasi . " Amaitu: " . $amaitu;
+                    $textua .= '<br />'.$sendTo.'=>'.$notify[ 'name' ].' langilearen eskaera berria. Hasi: '.$hasi.' Amaitu: '.$amaitu;
                 }
 
 
@@ -80,31 +86,32 @@ class NotifyCommand extends ContainerAwareCommand
                 * Markatu jakinarazpena bidalia bezela
                 */
                 /** @var Notification $not */
-                $not = $em->getRepository( 'AppBundle:Notification' )->find( $notify[ 'id' ] );
+                $not = $em->getRepository('AppBundle:Notification')->find($notify[ 'id' ]);
                 if ($not) {
-                    $not->setNotified( 1 );
-                    $em->persist( $not );
+                    $not->setNotified(1);
+                    $em->persist($not);
                     $em->flush();
                 }
 
 
             }
-            $this->bidaliEmail( $sendTo, $textua );
-
+            $this->bidaliEmail($sendTo, $textua);
 
 
         }
         $output->writeln("FIN!");
 
     }
-    private  function bidaliEmail($sendTo, $testua) {
-        $bidaltzailea = $this->getContainer()->getParameter( 'mailer_bidaltzailea' );
-        $message = ( new \Swift_Message( '[Egutegia][Eskaera berriak]' ) )
-                    ->setFrom( $bidaltzailea )
-                    ->setTo($sendTo)
-                    ->setBody( $testua, 'text/html');
+
+    private function bidaliEmail($sendTo, $testua)
+    {
+        $bidaltzailea = $this->getContainer()->getParameter('mailer_bidaltzailea');
+        $message      = (new \Swift_Message('[Egutegia][Eskaera berriak]'))
+            ->setFrom($bidaltzailea)
+            ->setTo($sendTo)
+            ->setBody($testua, 'text/html');
 
 
-        $this->getContainer()->get( 'mailer' )->send( $message );
+        $this->getContainer()->get('mailer')->send($message);
     }
 }
