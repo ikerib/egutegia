@@ -369,30 +369,30 @@ class EskaeraController extends Controller
             $em->flush();
 
 
-            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
-            $bideratzaileak     = [];
-            /** @var User $b */
-            foreach ($bideratzaileakfind as $b) {
-                $bideratzaileak[] = $b->getEmail();
-            }
-            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+//            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
+//            $bideratzaileak     = [];
+//            /** @var User $b */
+//            foreach ($bideratzaileakfind as $b) {
+//                $bideratzaileak[] = $b->getEmail();
+//            }
+//            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
             /**
              * Behin grabatuta bidali jakinarazpen emaila Ruth-i
              */
-            $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
-                ->setFrom($bailtzailea)
-                ->setTo($bideratzaileak)
-                ->setBody(
-                    $this->renderView(
-                    // app/Resources/views/Emails/registration.html.twig
-                        'Emails/eskaera_berria.html.twig',
-                        array('eskaera' => $eskaera)
-                    ),
-                    'text/html'
-                );
-
-            $this->get('mailer')->send($message);
+//            $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
+//                ->setFrom($bailtzailea)
+//                ->setTo($bideratzaileak)
+//                ->setBody(
+//                    $this->renderView(
+//                    // app/Resources/views/Emails/registration.html.twig
+//                        'Emails/eskaera_berria.html.twig',
+//                        array('eskaera' => $eskaera)
+//                    ),
+//                    'text/html'
+//                );
+//
+//            $this->get('mailer')->send($message);
 
 
             return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
