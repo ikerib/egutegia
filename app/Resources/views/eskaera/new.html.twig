@@ -37,7 +37,7 @@
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>egunak</strong>' | trans|raw }}</label>
                 <div class="col-sm-4">
-                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
                 </div>
                 <div class="col-sm-3">
                     <p class="">Dituzun egunak: {{ (calendar.hoursSelf / calendar.hoursDay) | round (2) }} egun ( {{ calendar.hoursSelf }} ordu ) </p>
