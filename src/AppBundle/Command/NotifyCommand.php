@@ -63,11 +63,15 @@ class NotifyCommand extends ContainerAwareCommand
                     }
                 }
 
-                $fHasi = DateTime::createFromFormat('Y-m-d h:m:s', $notify[ 'hasi' ]);
-                $hasi  = $fHasi->format('Y-m-d');
+                $dtHasi = new \DateTime($notify[ 'hasi' ]);
+//                $fHasi = DateTime::createFromFormat('Y-m-d h:m:s', $dtHasi);
+//                $hasi  = $fHasi->format('Y-m-d');
+                $hasi  = $dtHasi->format('Y-m-d');
                 if ($notify[ 'amaitu' ] !==null) {
-                    $fFin   = DateTime::createFromFormat('Y-m-d h:m:s', $notify[ 'amaitu' ]);
-                    $amaitu = $fFin->format('Y-m-d');
+                    $dtFin = new \DateTime($notify[ 'amaitu' ]);
+//                    $fFin   = DateTime::createFromFormat('Y-m-d h:m:s', $dtFin);
+//                    $amaitu = $fFin->format('Y-m-d');
+                    $amaitu = $dtFin->format('Y-m-d');
                 } else {
                     $amaitu = null;
                 }
