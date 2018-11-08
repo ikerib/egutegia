@@ -324,6 +324,7 @@ class EskaeraController extends Controller
              * PDF Fitxategia sortu
              */
 
+            /** @var User $user */
             $user = $this->getUser();
             $noiz = date('Y-m-d');
             if ($eskaera->getNoiz()->format('Y-m-d') !== null) {
@@ -335,65 +336,8 @@ class EskaeraController extends Controller
                 $amaitu = $eskaera->getAmaitu()->format('Y-m-d');
             }
 
-//            $name = $user->getUsername().'-'.$eskaera->getType().'-'.$noiz.'-'.$amaitu.'.pdf';
-//
-//            $filepath = '/'.$user->getUsername().'/'.$eskaera->getNoiz()->format('Y').'/';
-//
-//            $filename = $filepath.$name;
-//
-//            $tmpPath = $this->getParameter('app.dir_tmp_pdf');
-//
-//            $nirepath = $tmpPath.$filename;
-//
-//            if (!file_exists($nirepath)) {
-//                $this->get('knp_snappy.pdf')->generateFromHtml(
-//                    $this->renderView(
-//                        'eskaera/print.html.twig',
-//                        array(
-//                            'eskaera' => $eskaera,
-//                        )
-//                    ),
-//                    $nirepath
-//                );
-//            }
-//
             $em->persist($eskaera);
-//
-//            $doc = new Document();
-//            $doc->setFilename($name);
-//            $doc->setFilenamepath($nirepath);
-//            $doc->setCalendar($eskaera->getCalendar());
-//            $doc->setEskaera($eskaera);
-//            $em->persist($doc);
-
             $em->flush();
-
-
-//            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
-//            $bideratzaileak     = [];
-//            /** @var User $b */
-//            foreach ($bideratzaileakfind as $b) {
-//                $bideratzaileak[] = $b->getEmail();
-//            }
-//            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
-
-            /**
-             * Behin grabatuta bidali jakinarazpen emaila Ruth-i
-             */
-//            $message = (new \Swift_Message('[Egutegia][Eskaera berria] :'.$eskaera->getUser()->getDisplayname()))
-//                ->setFrom($bailtzailea)
-//                ->setTo($bideratzaileak)
-//                ->setBody(
-//                    $this->renderView(
-//                    // app/Resources/views/Emails/registration.html.twig
-//                        'Emails/eskaera_berria.html.twig',
-//                        array('eskaera' => $eskaera)
-//                    ),
-//                    'text/html'
-//                );
-//
-//            $this->get('mailer')->send($message);
-
 
             return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
 

@@ -1062,7 +1062,6 @@ class ApiController extends FOSRestController
                     ->setTo( $bideratzaileak )
                     ->setBody(
                         $this->renderView(
-                        // app/Resources/views/Emails/registration.html.twig
                             'Emails/eskaera_onartua.html.twig',
                             array( 'eskaera' => $eskaera )
                         ),
@@ -1078,10 +1077,8 @@ class ApiController extends FOSRestController
                 $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
                 $length = \count($sinatzaileusers);
                 for($i = 0; $i < $length - 1; ++$i) {
-                    if ($unekoSinatzailea->getId() === $sinatzaileusers[$i]->getUser()->getId()) {
-                        if ($i + 1 <= $length) {
-                            $hurrengoSinatzailea = $sinatzaileusers[$i+1]->getUser();
-                        }
+                    if (($unekoSinatzailea->getId() === $sinatzaileusers[ $i ]->getUser()->getId()) && $i + 1 <= $length) {
+                        $hurrengoSinatzailea = $sinatzaileusers[$i+1]->getUser();
                     }
                 }
                 if ($hurrengoSinatzailea !== null) {
