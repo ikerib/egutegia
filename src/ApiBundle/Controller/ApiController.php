@@ -25,8 +25,10 @@ use AppBundle\Entity\TemplateEvent;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
+use AppBundle\Service\CalendarService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\ORMException;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -397,110 +399,43 @@ class ApiController extends FOSRestController
      * @Annotations\View()
      *
      * @return View
+     * @throws ORMException
      */
-
-    public function postEventsAction( Request $request )
+    public function postEventsAction( Request $request ): View
     {
-        $em       = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $jsonData = json_decode( $request->getContent(), true );
 
-        // find calendar
-        /** @var Calendar $calendar */
-
-        $calendar = $em->getRepository( 'AppBundle:Calendar' )->find( $jsonData[ 'calendarid' ] );
-
-        // find type
-        /** @var Type $type */
-        $type = $em->getRepository( 'AppBundle:Type' )->find( $jsonData[ 'type' ] );
-
-        /** @var Event $event */
-        $event = new Event();
-        $event->setCalendar( $calendar );
-        $event->setName( $jsonData[ 'name' ] );
         $tempini = new \DateTime( $jsonData[ 'startDate' ] );
-        $event->setStartDate( $tempini );
         $tempfin = new \DateTime( $jsonData[ 'endDate' ] );
-        $event->setEndDate( $tempfin );
-        $event->setHours( $jsonData[ 'hours' ] );
-        $event->setType( $type );
 
-        if ( $type->getId() == 5 ) {  // TODO: Norbere arazoetarako
-            $event->setNondik( $jsonData[ "egunorduak" ] );
-            $event->setHoursSelfBefore( $jsonData[ "HoursSelfBefore" ] );
-            $event->setHoursSelfHalfBefore( $jsonData[ "HoursSelfHalfBefore" ] );
+        $aData = array(
+            'calendar_id'                   => $jsonData[ 'calendarid' ],
+            'type_id'                       => $jsonData[ 'type' ],
+            'event_name'                    => $jsonData[ 'name' ],
+            'event_start'                   => $tempini,
+            'event_fin'                     => $tempfin,
+            'event_hours'                   => $jsonData[ 'hours' ],
+            'event_nondik'                  => $jsonData[ 'egunorduak' ],
+            'event_hours_self_before'       => $jsonData[ 'HoursSelfBefore' ],
+            'event_hours_self_half_before'  => $jsonData[ 'HoursSelfHalfBefore' ],
+        );
+
+        /** @var CalendarService $niresrv */
+        $niresrv = $this->get('app.calendar.service');
+        $niresrv->addEvent($aData);
+
+        if ($niresrv['result'] === -1) {
+            $view    = View::create();
+            $errorea = array( "Result" => "Ez ditu nahikoa ordu" );
+            $view->setData( $errorea );
+            header( 'content-type: application/json; charset=utf-8' );
+            header( 'access-control-allow-origin: *' );
+
+            return $view;
         }
 
-        $em->persist( $event );
-
-        if ( $type->getRelated() ) {
-            /** @var Type $t */
-            $t = $event->getType();
-            if ( $t->getRelated() === 'hours_free' ) {
-                $calendar->setHoursFree( (float)( $calendar->getHoursFree() ) - (float)( $jsonData[ 'hours' ] ) );
-            }
-            if ( $t->getRelated() === 'hours_self' ) {
-
-                /**
-                 * 1-. Begiratu eskatuta orduak jornada bat baino gehiago direla edo berdin,
-                 * horrela bada hours_self-etik kendu bestela ordueta hours_self_half
-                 */
-                $jornada = floatval( $calendar->getHoursDay() );
-                $orduak  = floatval( $jsonData[ 'hours' ] );
-                $nondik  = $jsonData[ 'egunorduak' ];
-
-                $partziala           = 0;
-                $egunOsoaOrduak      = 0;
-                $egutegiaOrduakTotal = floatval( $calendar->getHoursSelf() ) + floatval( $calendar->getHoursSelfHalf() );
-
-
-                if ( $nondik == "orduak" ) {
-                    // Begiratu nahiko ordu dituen
-                    if ( $calendar->getHoursSelfHalf() >= $orduak ) {
-                        $partziala = $calendar->getHoursSelfHalf();
-                    } else {
-                        $view    = View::create();
-                        $errorea = array( "Result" => "Ez ditu nahikoa ordu" );
-                        $view->setData( $errorea );
-                        header( 'content-type: application/json; charset=utf-8' );
-                        header( 'access-control-allow-origin: *' );
-
-                        return $view;
-                    }
-
-                } else {
-                    // Begiratu nahiko ordu dituen Egunetan
-                    // Eskatutako ordu adina edo gehiago baditu
-                    if ( $calendar->getHoursSelf() >= $orduak ) {
-                        $egunOsoaOrduak = $orduak;
-                    } else if ( $egutegiaOrduakTotal >= $orduak ) {
-                        $zenbatEgun = $orduak / $jornada;
-                        // Egun osoen kenketa
-                        $egunOsoak = (int)$zenbatEgun;
-                        // Orduen kenketa
-                        $gainontzekoa = $zenbatEgun - (int)$zenbatEgun;
-
-                        $egunOsoaOrduak = $egunOsoak * $jornada;
-                        $partziala      = $gainontzekoa * $jornada;
-                    }
-                }
-
-                $calendar->setHoursSelf( $calendar->getHoursSelf() - $egunOsoaOrduak );
-                $calendar->setHoursSelfHalf( $calendar->getHoursSelfHalf() - $partziala );
-            }
-            if ( $t->getRelated() === 'hours_compensed' ) {
-                $calendar->setHoursCompensed(
-                    (float)( $calendar->getHoursCompensed() ) - (float)( $jsonData[ 'hours' ] )
-                );
-            }
-            if ( $t->getRelated() === 'hours_sindical' ) {
-                $calendar->setHoursSindikal(
-                    (float)( $calendar->getHoursSindikal() ) - (float)( $jsonData[ 'hours' ] )
-                );
-            }
-            $em->persist( $calendar );
-        }
-
-        $em->flush();
+        $event = $em->getRepository('AppBundle:Event')->find($niresrv[ 'id' ]);
 
         $view = View::create();
         $view->setData( $event );
