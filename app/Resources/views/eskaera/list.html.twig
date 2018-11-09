@@ -265,6 +265,24 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
+        $(document).ready(function(){
+            $(document).on('click', '#btnSend', function() {
+                $eskaeraid = $("#eskaeraid").val();
+                if ( $eskaeraid === "5") {
+                    $egunorduak = $("#appbundle_eskaera_nondik").val();
+                    if (!$egunorduak) {
+                        alert("Nondik eremua zehaztea beharrezkoa da.");
+                    }
+                }
+                $sinatzaileak = $("#appbundle_eskaera_sinatzaileak").val();
+                if (!$sinatzaileak) {
+                    alert("Sinatzaile zerrenda zehaztea beharrezkoa da.");
+                }
+                $('#frmEditEskaera').submit()
+            })
+        })
+    </script>
+    <script>
         var $table = $("#tableEskaerak");
 
         $(document).ready(function () {

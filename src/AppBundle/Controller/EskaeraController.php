@@ -13,6 +13,7 @@ use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\Notification;
 use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\User;
+use AppBundle\Service\CalendarService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -78,7 +79,7 @@ class EskaeraController extends Controller
         return $this->render(
             'eskaera/instantziak.html.twig',
             array(
-                'types'    => $types,
+                'types' => $types,
             )
         );
     }
@@ -135,65 +136,35 @@ class EskaeraController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $obj = (object) [
-            'name' => 'Eskaeratik: '.$eskaera->getName(),
-            'type' => $eskaera->getType(),
-            'hours'=> $eskaera->getTotal(),
-            'startDate' =>$eskaera->getHasi(),
-            'endDate' => $eskaera->getAmaitu()
-        ];
+        $aData = array(
+            'calendar_id' => $eskaera->getCalendar()->getId(),
+            'type_id'     => $eskaera->getType(),
+            'event_name'  => 'Eskaeratik: Id: '.$eskaera->getId(),
+            'event_start' => $eskaera->getHasi(),
+            'event_fin'   => $eskaera->getAmaitu(),
+            'event_hours' => $eskaera->getTotal(),
+        );
 
-        $event = json_encode($obj);
+        if ($eskaera->getType()->getId() === 5) {
+            $aData[ 'event_nondik' ]                 = $eskaera->getNondik();
+            $aData[ 'event_hours_self_before' ]      = $eskaera->getCalendar()->getHoursSelf();
+            $aData[ 'event_hours_self_half_before' ] = $eskaera->getCalendar()->getHoursSelfHalf();
+        }
 
+        /** @var CalendarService $niresrv */
+        $niresrv = $this->get('app.calendar.service');
+        $resp = $niresrv->addEvent($aData);
 
-//        if ( dataSource[i].id === event.id ) {
-//            dataSource[i].name = event.name;
-//            dataSource[i].type = event.type;
-//            dataSource[i].egunorduak = event.egunorduak;
-//            dataSource[i].hours = parseFloat(event.hours);
-//            dataSource[i].color = event.color;
-//            dataSource[i].startDate = event.startDate;
-//            dataSource[i].endDate = event.endDate;
-//            // hoursCalc(event);
-//        }
-        // Eskuratu langilearen egutegia
+        if ($resp['result'] === -1) {
 
-        /** @var Calendar $calendar */
-        $calendar = $em->getRepository('AppBundle:Calendar')->find($eskaera->getCalendar()->getId());
+            $this->addFlash('error', 'Ez ditu nahikoa ordu.');
 
-//        $ev = new Event();
-//        $ev->setCalendar($calendar);
-//        $ev->setName('Eskaeratik: '.$eskaera->getName());
-//        $ev->setStartDate($eskaera->getHasi());
-//        $ev->setEndDate($eskaera->getAmaitu());
-//        $ev->setHours($eskaera->getTotal());
-//        $ev->setType($eskaera->getType());
-//        $em->persist($ev);
-
-
+            return $this->redirectToRoute('admin_eskaera_list');
+        }
 
         $eskaera->setEgutegian(true);
         $em->persist($eskaera);
 
-        /**
-         * Mugitu dokumentua beharrezko lekura
-         */
-        /** @var Document $doc */
-        $doc      = $eskaera->getDocuments()[ 0 ];
-        $pdfPath  = $this->getParameter('app.dir_base_pdf');
-        $docuser  = $doc->getEskaera()->getUser();
-        $pathFrom = $doc->getFilenamepath();
-        $pathTo   = $pdfPath.'/'.$docuser->getUsername().'/'.$eskaera->getCalendar()->getYear().'/'.$doc->getFilename();
-        $doc->setFilenamepath($pathTo);
-        $doc->setEgutegian(true);
-        $em->persist($eskaera);
-
-        if (!is_dir(\dirname($pathTo)) && !mkdir($concurrentDirectory = \dirname($pathTo), 0777, true) && !is_dir($concurrentDirectory)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
-        }
-        rename($pathFrom, $pathTo);
-
-        $em->flush();
 
         $this->addFlash('success', 'Datuak ongi gordeak izan dira.');
 
@@ -560,7 +531,6 @@ class EskaeraController extends Controller
 
 
                     $em->persist($fd);
-
 
 
                     $eskaera->setBideratua(true);

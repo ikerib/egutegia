@@ -78,6 +78,14 @@
                                 {{ form_widget(edit_form.sinatzaileak, { 'attr': {'class': 'form-control'} }) }}
                             </div>
                         </div>
+                        {% if eskaera.type.id == 5 %}
+                            <div class="form-group">
+                                <label for="min-date" class="col-sm-4 control-label">{{ 'Nondik kendu' | trans }}</label>
+                                <div class="col-sm-7">
+                                    {{ form_widget(edit_form.nondik, { 'attr': {'class': 'form-control'} }) }}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -88,16 +96,14 @@
             </div>
             <div class="modal-footer">
                 <button class="btn" data-dismiss="modal">Close</button>
-                <button id='btnSend' class="btn btn-primary" data-dismiss="modal">Gorde</button>
+                {#<button id='btnSend' class="btn btn-primary" data-dismiss="modal">Gorde</button>#}
+                <button id='btnSend' class="btn btn-primary" >Gorde</button>
+                <input id="eskaeraid" type="hidden" value="{{ eskaera.type.id }}">
             </div>
         </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function(){
-        $('#btnSend').on('click', function(){
-            $('#frmEditEskaera').submit()
-        })
-    })
-</script>
+
+
+

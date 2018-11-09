@@ -136,6 +136,12 @@ class Eskaera
      */
     private $oharra;
 
+    /**
+     * @var string
+     * @ORM\Column(name="nondik", type="string", nullable=true)
+     */
+    private $nondik;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -847,5 +853,29 @@ class Eskaera
     public function getEmaitza()
     {
         return $this->emaitza;
+    }
+
+    /**
+     * Set nondik.
+     *
+     * @param string|null $nondik
+     *
+     * @return Eskaera
+     */
+    public function setNondik($nondik = null)
+    {
+        $this->nondik = $nondik;
+
+        return $this;
+    }
+
+    /**
+     * Get nondik.
+     *
+     * @return string|null
+     */
+    public function getNondik()
+    {
+        return $this->nondik;
     }
 }
