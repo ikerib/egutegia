@@ -43,12 +43,10 @@ class CalendarService
      */
     public function addEvent($datuak): array
     {
-        /** @var EntityManager $em */
-        $em = $this->get('doctrine')->getEntityManager();
         /** @var Calendar $calendar */
-        $calendar = $em->getRepository('AppBundle:Calendar')->find('calendar_id');
+        $calendar = $this->em->getRepository('AppBundle:Calendar')->find($datuak['calendar_id']);
         /** @var Type $type */
-        $type = $em->getRepository('AppBundle:Type')->find('type_id');
+        $type = $this->em->getRepository('AppBundle:Type')->find($datuak['type_id']);
         /** @var Event $event */
         $event = new Event();
 
@@ -68,7 +66,7 @@ class CalendarService
                 $event->setHoursSelfHalfBefore( $datuak[ 'event_hours_self_half_before' ] );
         }
 
-        $em->persist($event);
+        $this->em->persist($event);
 
         if ( $type->getRelated() ) {
             /** @var Type $t */
@@ -134,10 +132,10 @@ class CalendarService
                     (float)$calendar->getHoursSindikal() - (float)$datuak[ 'event_hours' ]
                 );
             }
-            $em->persist( $calendar );
+            $this->em->persist( $calendar );
         }
 
-        $em->flush();
+        $this->em->flush();
 
         return array(
             'result'=> 1,

@@ -415,19 +415,22 @@ class ApiController extends FOSRestController
             'event_name'                    => $jsonData[ 'name' ],
             'event_start'                   => $tempini,
             'event_fin'                     => $tempfin,
-            'event_hours'                   => $jsonData[ 'hours' ],
-            'event_nondik'                  => $jsonData[ 'egunorduak' ],
-            'event_hours_self_before'       => $jsonData[ 'HoursSelfBefore' ],
-            'event_hours_self_half_before'  => $jsonData[ 'HoursSelfHalfBefore' ],
+            'event_hours'                   => $jsonData[ 'hours' ]
         );
+
+        if (array_key_exists('egunorduak', $jsonData) && array_key_exists('HoursSelfBefore', $jsonData) && array_key_exists('HoursSelfHalfBefore', $jsonData)) {
+            $aData['event_nondik'] = $jsonData[ 'egunorduak' ];
+            $aData['event_hours_self_before'] = $jsonData[ 'HoursSelfBefore' ];
+            $aData[ 'event_hours_self_half_before' ] = $jsonData[ 'HoursSelfHalfBefore' ];
+        }
 
         /** @var CalendarService $niresrv */
         $niresrv = $this->get('app.calendar.service');
-        $niresrv->addEvent($aData);
+        $resp = $niresrv->addEvent($aData);
 
-        if ($niresrv['result'] === -1) {
+        if ($resp['result'] === -1) {
             $view    = View::create();
-            $errorea = array( "Result" => "Ez ditu nahikoa ordu" );
+            $errorea = array( 'Result' => 'Ez ditu nahikoa ordu' );
             $view->setData( $errorea );
             header( 'content-type: application/json; charset=utf-8' );
             header( 'access-control-allow-origin: *' );
@@ -435,7 +438,7 @@ class ApiController extends FOSRestController
             return $view;
         }
 
-        $event = $em->getRepository('AppBundle:Event')->find($niresrv[ 'id' ]);
+        $event = $em->getRepository('AppBundle:Event')->find($resp[ 'id' ]);
 
         $view = View::create();
         $view->setData( $event );
