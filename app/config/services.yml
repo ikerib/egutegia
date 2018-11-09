@@ -79,3 +79,8 @@ services:
 #        arguments: ["@doctrine.orm.entity_manager"]
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
 
+
+    app.calendar.service:
+        public: true
+        class: AppBundle\Service\CalendarService
+        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
