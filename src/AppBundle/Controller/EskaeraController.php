@@ -13,12 +13,14 @@ use AppBundle\Entity\Gutxienekoakdet;
 use AppBundle\Entity\Notification;
 use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\User;
+use AppBundle\Form\EskaeraJustifyType;
 use AppBundle\Service\CalendarService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use GuzzleHttp\Client;
@@ -102,7 +104,7 @@ class EskaeraController extends Controller
         if (($q === null) || ($q === 'all')) {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
         } else {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list($q);
+            $eskaeras = $this->get('app.eskaera.repository')->list($q);
         }
 
         $deleteForms = [];
@@ -129,6 +131,7 @@ class EskaeraController extends Controller
      * @param Eskaera $eskaera
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
      */
     public function addToCalendarAction(Eskaera $eskaera)
     {
@@ -153,9 +156,9 @@ class EskaeraController extends Controller
 
         /** @var CalendarService $niresrv */
         $niresrv = $this->get('app.calendar.service');
-        $resp = $niresrv->addEvent($aData);
+        $resp    = $niresrv->addEvent($aData);
 
-        if ($resp['result'] === -1) {
+        if ($resp[ 'result' ] === -1) {
 
             $this->addFlash('error', 'Ez ditu nahikoa ordu.');
 
@@ -553,6 +556,55 @@ class EskaeraController extends Controller
                 'eskaera'     => $eskaera,
                 'edit_form'   => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
+            )
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing eskaera entity.
+     *
+     * @Route("/{id}/justify", name="eskaera_justify")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function justifyAction(Request $request, Eskaera $eskaera)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
+        $editForm   = $this->createForm(
+            EskaeraJustifyType::class,
+            $eskaera,
+            array(
+                'action' => $this->generateUrl('eskaera_justify', array('id' => $eskaera->getId())),
+                'method' => 'POST',
+            )
+        );
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($eskaera->getJustifikanteFile() !== null) {
+                $eskaera->setJustifikatua(true);
+                $em->persist($eskaera);
+                $em->flush();
+
+
+                $url = $request->get('nondik');
+                return new RedirectResponse($url);
+
+            }
+
+
+        }
+
+        return $this->render(
+            'eskaera/justify.html.twig',
+            array(
+                'eskaera'     => $eskaera,
+                'edit_form'   => $editForm->createView(),
             )
         );
     }

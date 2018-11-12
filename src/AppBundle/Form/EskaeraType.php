@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 
 class EskaeraType extends AbstractType
 {
@@ -65,6 +66,8 @@ class EskaeraType extends AbstractType
                 'attr' => ['class' => 'js-datepicker', 'data-provide' => 'datepicker'],
             ])
 
+
+            ->add('justifikanteFile', VichFileType::class)
 
             ->add('user')
             ->add('calendar')

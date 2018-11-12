@@ -13,6 +13,15 @@ use Doctrine\ORM\QueryBuilder;
  */
 class EskaeraRepository extends EntityRepository
 {
+    /**
+     * @var
+     */
+    protected $lizentziaType;
+
+    public function setLizentziaType($lizentziaType): void
+    {
+        $this->lizentziaType = $lizentziaType;
+    }
     public function list($q) {
         $em = $this->getEntityManager();
         $dql = '';
@@ -24,6 +33,7 @@ class EskaeraRepository extends EntityRepository
                       FROM AppBundle:Eskaera e
                       WHERE e.abiatua = 0
                 ';
+                $query = $em->createQuery($dql);
                 break;
             case 'unsigned':
                 $dql = '
@@ -31,6 +41,7 @@ class EskaeraRepository extends EntityRepository
                       FROM AppBundle:Eskaera e
                       WHERE e.amaitua = 0
                 ';
+                $query = $em->createQuery($dql);
                 break;
             case 'unadded':
                 $dql = '
@@ -38,6 +49,7 @@ class EskaeraRepository extends EntityRepository
                       FROM AppBundle:Eskaera e
                       WHERE e.egutegian = 0 and e.amaitua = 1
                 ';
+                $query = $em->createQuery($dql);
                 break;
             case 'conflict':
                 $dql = '
@@ -45,6 +57,31 @@ class EskaeraRepository extends EntityRepository
                       FROM AppBundle:Eskaera e
                       WHERE e.egutegian = 0 and e.amaitua = 1 and e.bideratua = 0 and e.konfliktoa = 1
                 ';
+                $query = $em->createQuery($dql);
+                break;
+            case 'justify':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                        INNER JOIN e.type t
+                      WHERE t.id = :lizentzia_type
+                ';
+
+                $query = $em->createQuery($dql);
+                $query->setParameter('lizentzia_type', $this->lizentziaType);
+
+                break;
+            case 'nojustified':
+                $dql = '
+                      SELECT e
+                      FROM AppBundle:Eskaera e
+                        INNER JOIN e.type t
+                      WHERE t.id = :lizentzia_type and e.justifikatua=0
+                ';
+
+                $query = $em->createQuery($dql);
+                $query->setParameter('lizentzia_type', $this->lizentziaType);
+
                 break;
             default:
                 $dql = '
@@ -54,7 +91,7 @@ class EskaeraRepository extends EntityRepository
                 break;
         }
 
-        $query = $em->createQuery($dql);
+
         return $query->getResult();
     }
 

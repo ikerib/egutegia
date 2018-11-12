@@ -30,6 +30,7 @@
                     <th>{{ "Orduak Guztira" | trans }}</th>
                     <th>{{ "Bideratua" | trans }}</th>
                     <th>{{ "Gauzatua" | trans }}</th>
+                    <th>{{ "Justifikatea" | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -63,9 +64,30 @@
                             </a>
                         </td>
                         <td>
+                            {% if eskaera.type.id != type_lizentzia %}
+                                -
+                            {% else %}
+                                {% if eskaera.justifikatua == true %}
+                                    <span class="label label-success">{{ "Bai" | trans }}</span>
+                                {% else %}
+                                    <span class="label label-success">{{ "Ez" | trans }}</span>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                        <td>
                             <ul>
+                                {% if eskaera.type.id == type_lizentzia %}
+                                    <li>
+                                        <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+
                                 <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">Ikusi</a>
+                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                    </a>
                                 </li>
                             </ul>
                         </td>

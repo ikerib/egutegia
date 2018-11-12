@@ -7,11 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * Eskaera
  *
  * @ORM\Table(name="eskaera")
+ * @Vich\Uploadable
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EskaeraRepository")
  */
 class Eskaera
@@ -142,6 +145,35 @@ class Eskaera
      */
     private $nondik;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="justifikatua", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $justifikatua=false;
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="justifikanteName", size="justifikanteSize")
+     *
+     * @var File
+     */
+    private $justifikanteFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $justifikanteName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $justifikanteSize;
+
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -219,6 +251,53 @@ class Eskaera
         return $this->getName();
     }
 
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     *
+     * @throws \Exception
+     */
+    public function setJustifikanteFile(?File $image = null): void
+    {
+        $this->justifikanteFile = $image;
+
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new \DateTimeImmutable();
+        }
+    }
+
+    public function getJustifikanteFile(): ?File
+    {
+        return $this->justifikanteFile;
+    }
+
+    public function setJustifikanteName(?string $justifikanteName): void
+    {
+        $this->justifikanteName = $justifikanteName;
+    }
+
+    public function getJustifikanteName(): ?string
+    {
+        return $this->justifikanteName;
+    }
+
+    public function setJustifikanteSize(?int $justifikanteSize): void
+    {
+        $this->justifikanteSize = $justifikanteSize;
+    }
+
+    public function getJustifikanteSize(): ?int
+    {
+        return $this->justifikanteSize;
+    }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
@@ -877,5 +956,29 @@ class Eskaera
     public function getNondik()
     {
         return $this->nondik;
+    }
+
+    /**
+     * Set justifikatua.
+     *
+     * @param bool|null $justifikatua
+     *
+     * @return Eskaera
+     */
+    public function setJustifikatua($justifikatua = null)
+    {
+        $this->justifikatua = $justifikatua;
+
+        return $this;
+    }
+
+    /**
+     * Get justifikatua.
+     *
+     * @return bool|null
+     */
+    public function getJustifikatua()
+    {
+        return $this->justifikatua;
     }
 }

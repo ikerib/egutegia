@@ -84,3 +84,11 @@ services:
         public: true
         class: AppBundle\Service\CalendarService
         arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+
+    app.eskaera.repository:
+        public: true
+        class: AppBundle\Repository\EskaeraRepository
+        factory: ["@doctrine", "getRepository"]
+        arguments: ['AppBundle:Eskaera']
+        calls:
+            - ["setLizentziaType", ["%type_lizentzia%"]]

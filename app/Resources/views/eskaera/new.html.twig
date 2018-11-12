@@ -87,6 +87,26 @@
                 </div>
             </div>
 
+            {% if eskaera.type.id == type_lizentzia %}
+                <hr>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8"><p>{{ 'lizentzia_text' | trans }}</p></div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row">&nbsp;</div>
+                    <label for="min-date" class="col-sm-4 control-label">{{ "Justifikantea gehitu" | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.justifikanteFile, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
+                <hr>
+            {% endif %}
+
+
             <div class="form-group">
                 <div class="col-md-4"></div>
                 <div class="col-md-4">

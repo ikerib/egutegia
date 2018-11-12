@@ -31,3 +31,7 @@ parameters:
     dir_base_pdf: /var/whatever
     dir_tmp_pdf: /var/whatever
     api_url: "http://egutegia.test/app_dev.php/api"
+
+    type_konpentsatuak: id
+    type_norbere: id
+    type_lizentzia: id
