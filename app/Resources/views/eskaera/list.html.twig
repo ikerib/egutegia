@@ -51,6 +51,7 @@
         <div class="col-md-4"></div>
     </div>
     <div class="row">&nbsp;</div>
+
     <div class="row">
 
         <div class="col-md-12">
@@ -110,150 +111,169 @@
                 </thead>
                 <tbody>
                 {% for eskaera in eskaeras %}
-                    <tr>
-                        <td>{{ eskaera.id }}</td>
-                        <td>{{ eskaera.emaitza }}</td>
-                        <td>
-                            <a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {{ eskaera.name }}
-                            </a>
-                        </td>
-                        {#<td>#}
+                    {% set jarraitu = true %}
+                    {% if app.request.get('q') == 'unadded' and eskaera.type.id == type_lizentzia %}
+                        {% if eskaera.justifikatua == false %}
+                            {% set jarraitu=false %}
+                        {% endif %}
+                    {% endif %}
+
+                    {% if jarraitu == true %}
+                        <tr>
+                            <td>{{ eskaera.id }}</td>
+                            <td>{{ eskaera.emaitza }}</td>
+                            <td>
+                                <a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                    {{ eskaera.name }}
+                                </a>
+                            </td>
+                            {#<td>#}
                             {#<span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.user.department }}">#}
-                                {#{{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}#}
+                            {#{{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}#}
                             {#</span>#}
-                        {#</td>#}
-                        <td>
+                            {#</td>#}
+                            <td>
                             <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
                                 {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}
                             </span>
-                        </td>
-                        <td>{{ eskaera.hasi | date('Y-m-d') }}
-                            {#{% if eskaera.noiz %}#}
+                            </td>
+                            <td>{{ eskaera.hasi | date('Y-m-d') }}
+                                {#{% if eskaera.noiz %}#}
                                 {#<label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"#}
-                                       {#title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">#}
-                                    {#{{ eskaera.noiz|date('Y-m-d') }}#}
+                                {#title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">#}
+                                {#{{ eskaera.noiz|date('Y-m-d') }}#}
                                 {#</label>#}
-                            {#{% endif %}#}
-                        </td>
-                        <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
-                        <td>{{ eskaera.total }}</td>
-                        <td>
-                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {% if eskaera.abiatua == true %}
-                                    <label class="label label-success">Bai</label>
-                                {% else %}
-                                    <label class="label label-danger">Ez</label>
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {% if eskaera.amaitua == true %}
-                                    <label class="label label-success">Bai</label>
-                                {% else %}
-                                    <label class="label label-danger">Ez</label>
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td>
-                            {% if eskaera.amaitua == true %}
-                                <a href="javascript:void(0);" class="btnEskaeraEgutegira" data-id="{{ eskaera.id }}"
-                                   data-egutegian="{{ eskaera.egutegian }}">
-                                    {% if eskaera.egutegian == true %}
+                                {#{% endif %}#}
+                            </td>
+                            <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
+                            <td>{{ eskaera.total }}</td>
+                            <td>
+                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                    {% if eskaera.abiatua == true %}
                                         <label class="label label-success">Bai</label>
                                     {% else %}
                                         <label class="label label-danger">Ez</label>
                                     {% endif %}
                                 </a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if eskaera.sinatzaileak %}
-                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
-                                   target="_blank">{{ eskaera.sinatzaileak }}</a>
-                            {% else %}
-                                Bideratu gabe.
-                            {% endif %}
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                    {% if eskaera.amaitua == true %}
+                                        <label class="label label-success">Bai</label>
+                                    {% else %}
+                                        <label class="label label-danger">Ez</label>
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td>
+                                {% if eskaera.amaitua == true %}
+                                    <a href="javascript:void(0);" class="btnEskaeraEgutegira" data-id="{{ eskaera.id }}"
+                                       data-egutegian="{{ eskaera.egutegian }}">
+                                        {% if eskaera.egutegian == true %}
+                                            <label class="label label-success">Bai</label>
+                                        {% else %}
+                                            <label class="label label-danger">Ez</label>
+                                        {% endif %}
+                                    </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if eskaera.sinatzaileak %}
+                                    <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
+                                       target="_blank">{{ eskaera.sinatzaileak }}</a>
+                                {% else %}
+                                    Bideratu gabe.
+                                {% endif %}
 
-                        </td>
+                            </td>
 
-                        <td>
-                            {% if eskaera.konfliktoa == true %}
-                                <label class="label label-danger">Bai</label>
-                            {% else %}
-                                <label class="label label-success">Ez</label>
-                            {% endif %}
-                        </td>
+                            <td>
+                                {% if eskaera.konfliktoa == true %}
+                                    <label class="label label-danger">Bai</label>
+                                {% else %}
+                                    <label class="label label-success">Ez</label>
+                                {% endif %}
+                            </td>
 
-                        <td>
+                            <td>
                             <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.oharra }}">
                                 {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra }}
                             </span>
-                        </td>
+                            </td>
 
-                        <td>
-                            <ul class="list text-left">
-                                <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                        <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
-                                    </a>
-                                </li>
-
-                                {% if eskaera.egutegian == false %}
+                            <td>
+                                <ul class="list text-left">
                                     <li>
-                                        {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
-                                        <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
-                                           href="#eskaeraEditModal{{ eskaera.id }}">
-                                            <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
+                                        <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
+                                            <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                         </a>
-                                        {{ form_end(deleteForms[eskaera.id]) }}
                                     </li>
-                                {% endif %}
-                                {% if eskaera.amaitua != true %}
-                                    <li>
-                                        {% if eskaera.bideratua %}
-                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                        {% else %}
-                                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
-                                               data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
-                                                <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
-                                            </a>
+
+                                    {% if eskaera.type.id == type_lizentzia %}
+                                        {% if eskaera.justifikanteName != null and eskaera.justifikatua == true %}
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                                    <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                                </a>
+                                            </li>
                                         {% endif %}
+                                        <li>
+                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
 
-                                    </li>
-                                {% endif %}
 
-                                {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
-                                {% if eskaera.amaitua and eskaera.emaitza == true  %}
+                                    {% if eskaera.egutegian == false %}
+                                        <li>
+                                            {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
+                                            <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
+                                               href="#eskaeraEditModal{{ eskaera.id }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
+                                            </a>
+                                            {{ form_end(deleteForms[eskaera.id]) }}
+                                        </li>
+                                    {% endif %}
+                                    {% if eskaera.amaitua != true %}
+                                        <li>
+                                            {% if eskaera.bideratua %}
+                                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                            {% else %}
+                                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
+                                                   data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                                    <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
+                                                </a>
+                                            {% endif %}
 
-                                    <li>
-                                        <a href="javascript:void(0);" class="btnEskaeraEgutegira"
-                                           data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
-                                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
+                                        </li>
+                                    {% endif %}
 
-                                    <li>
-                                        <a href="javascript:void(0);" class="btnEskaeraGauzatuaMarkatu"
-                                           data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
-                                        </a>
-                                    </li>
+                                    {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
+                                    {% if eskaera.amaitua and eskaera.emaitza == true %}
 
-                                {% endif %}
+                                        <li>
+                                            <a href="javascript:void(0);" class="btnEskaeraEgutegira"
+                                               data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
 
-                            </ul>
-                        </td>
-                    </tr>
+                                        <li>
+                                            <a href="javascript:void(0);" class="btnEskaeraGauzatuaMarkatu"
+                                               data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+
+                                    {% endif %}
+
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% else %}
                     <tr>
                         <td colspan="6"> Ez dago daturik</td>
@@ -274,22 +294,22 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
-        $(document).ready(function(){
-            $(document).on('click', '#btnSend', function() {
+        $(document).ready(function () {
+            $(document).on("click", "#btnSend", function () {
                 $eskaeraid = $("#eskaeraid").val();
-                if ( $eskaeraid === "5") {
+                if ( $eskaeraid === "5" ) {
                     $egunorduak = $("#appbundle_eskaera_nondik").val();
-                    if (!$egunorduak) {
+                    if ( !$egunorduak ) {
                         alert("Nondik eremua zehaztea beharrezkoa da.");
                     }
                 }
                 $sinatzaileak = $("#appbundle_eskaera_sinatzaileak").val();
-                if (!$sinatzaileak) {
+                if ( !$sinatzaileak ) {
                     alert("Sinatzaile zerrenda zehaztea beharrezkoa da.");
                 }
-                $('#frmEditEskaera').submit()
-            })
-        })
+                $("#frmEditEskaera").submit();
+            });
+        });
     </script>
     <script>
         var $table = $("#tableEskaerak");
@@ -318,8 +338,8 @@
                 $(this).delay(2500).fadeOut();
             });
 
-            $(document).on('click', '.btnEskaeraEgutegira', function() {
-            // $(".btnEskaeraEgutegira").on("click", function () {
+            $(document).on("click", ".btnEskaeraEgutegira", function () {
+                // $(".btnEskaeraEgutegira").on("click", function () {
 
                 var egutegian = $(this).data("egutegian");
 
@@ -352,8 +372,8 @@
                 });
             });
 
-            $(document).on('click', '.btnEskaeraGauzatuaMarkatu', function() {
-            // $(".btnEskaeraGauzatuaMarkatu").on("click", function () {
+            $(document).on("click", ".btnEskaeraGauzatuaMarkatu", function () {
+                // $(".btnEskaeraGauzatuaMarkatu").on("click", function () {
                 var egutegian = $(this).data("egutegian");
                 var datoak = {};
                 if ( egutegian === 1 ) {
@@ -366,19 +386,19 @@
 
                 $.ajax({
                     url: url,
-                    type: 'PUT',
+                    type: "PUT",
                     data: datoak,
                     success: function ( data ) {
                         location.reload();
                     },
                     error: function ( err ) {
-                        alert("Errore bat egon da egutegian sartua dagoela markatzerakoan.")
+                        alert("Errore bat egon da egutegian sartua dagoela markatzerakoan.");
                     }
-                })
+                });
             });
 
-            $(document).on('click', '.btnEskaera', function() {
-            // $(".btnEskaera").on("click", function () {
+            $(document).on("click", ".btnEskaera", function () {
+                // $(".btnEskaera").on("click", function () {
                 var url = $(this).data("myurl");
                 $(".my-modal-cont").load(url, function () {
                     $("#myModal").modal({ show: true });
@@ -450,7 +470,7 @@
                             }
                         }
 
-                        html = html + "<td>" + moment(obj.noiz).format('YYYY-MM-DD HH:mm:ss') + "</td>";
+                        html = html + "<td>" + moment(obj.noiz).format("YYYY-MM-DD HH:mm:ss") + "</td>";
 
                         /** Sinadura badu ez du postit botoia behar */
                         if ( sinatua === false ) {
@@ -476,7 +496,6 @@
                         "</div>";
 
 
-
                     $detail.html(html);
                 }).fail(function () {
                     bootbox.alert({
@@ -488,15 +507,15 @@
                 });
             });
 
-            $(document).on('click', '.saveEditModal', function() {
-            // $(".saveEditModal").on("click", function () {
+            $(document).on("click", ".saveEditModal", function () {
+                // $(".saveEditModal").on("click", function () {
                 var miid = $(this).data("id");
                 var mifrm = $("#frmEditEskaera" + miid);
                 $(mifrm).submit();
             });
 
-            $(document).on('click', '.btnRemoveRow', function() {
-            // $(".btnRemoveRow").on("click", function () {
+            $(document).on("click", ".btnRemoveRow", function () {
+                // $(".btnRemoveRow").on("click", function () {
                 var that = $(this);
                 bootbox.confirm({
                     title: "{{ 'Adi!' | trans }}",
@@ -556,7 +575,6 @@
 
 
             });
-
 
 
         });

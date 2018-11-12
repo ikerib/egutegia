@@ -69,6 +69,9 @@
                             {% else %}
                                 {% if eskaera.justifikatua == true %}
                                     <span class="label label-success">{{ "Bai" | trans }}</span>
+                                    <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                        <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                    </a>
                                 {% else %}
                                     <span class="label label-success">{{ "Ez" | trans }}</span>
                                 {% endif %}
