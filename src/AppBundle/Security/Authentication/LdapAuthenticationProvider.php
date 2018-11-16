@@ -88,6 +88,7 @@ class LdapAuthenticationProvider extends BaseProvider
             $user = $this->userProvider->loadUserByUsername($username);
 
             if ($this->userProvider instanceof ChainUserProvider) {
+
                 /** @var ChainUserProvider $userProvider */
                 $userProvider = $this->userProvider;
                 foreach ($userProvider->getProviders() as $provider) {
