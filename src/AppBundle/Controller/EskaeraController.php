@@ -475,14 +475,12 @@ class EskaeraController extends Controller
 
                     $eskaera->setAbiatua(true);
 
-
-//                    $sinatzaileusers = $firma->getSinatzaileak()->getSinatzaileakdet();
                     $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
                     /** @var Sinatzaileakdet $lehenSinatzaile */
                     $lehenSinatzaile = $sinatzaileusers[ 0 ];
                     /** @var Sinatzaileakdet $s */
                     foreach ($sinatzaileusers as $s) {
-
+                        /** @var Firmadet $fd */
                         $fd = new Firmadet();
                         $fd->setFirma($firma);
                         $fd->setSinatzaileakdet($s);
@@ -496,7 +494,7 @@ class EskaeraController extends Controller
 
                             /** @var \GuzzleHttp\Client $client */
                             $client = $this->get('eight_points_guzzle.client.api_put_firma');
-//                            $url = "/app_dev.php/api/firma/".$firma->getId()."/".$eskatzaile_id.".json?XDEBUG_SESSION_START=PHPSTORM";
+                            // $url = "/app_dev.php/api/firma/".$firma->getId()."/".$eskatzaile_id.".json?XDEBUG_SESSION_START=PHPSTORM";
                             $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json';
 
                             $client->request('PUT', $url, ['json' => $eskaera,]);

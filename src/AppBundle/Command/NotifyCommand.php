@@ -64,13 +64,9 @@ class NotifyCommand extends ContainerAwareCommand
                 }
 
                 $dtHasi = new \DateTime($notify[ 'hasi' ]);
-//                $fHasi = DateTime::createFromFormat('Y-m-d h:m:s', $dtHasi);
-//                $hasi  = $fHasi->format('Y-m-d');
                 $hasi  = $dtHasi->format('Y-m-d');
                 if ($notify[ 'amaitu' ] !==null) {
                     $dtFin = new \DateTime($notify[ 'amaitu' ]);
-//                    $fFin   = DateTime::createFromFormat('Y-m-d h:m:s', $dtFin);
-//                    $amaitu = $fFin->format('Y-m-d');
                     $amaitu = $dtFin->format('Y-m-d');
                 } else {
                     $amaitu = null;
@@ -79,10 +75,10 @@ class NotifyCommand extends ContainerAwareCommand
 
                 if ($berria === 1) {
                     $berria = 0;
-                    $textua = $sendTo.'=>'.$notify[ 'name' ].' langilearen eskaera berria. Hasi: '.$hasi.' Amaitu: '.$amaitu;
+                    $textua = ' - Eskaera berria: Nº '. $notify['id'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
 
                 } else {
-                    $textua .= '<br />'.$sendTo.'=>'.$notify[ 'name' ].' langilearen eskaera berria. Hasi: '.$hasi.' Amaitu: '.$amaitu;
+                    $textua .= '<br />- Eskaera berria: Nº '. $notify['id'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
                 }
 
 

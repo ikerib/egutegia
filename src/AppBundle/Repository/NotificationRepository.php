@@ -19,16 +19,22 @@ class NotificationRepository extends EntityRepository
 
     public function getSinatzaileNotification()
     {
-        $sql = 'SELECT  notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email '.
-            'FROM notification '.
-            '  INNER JOIN eskaera ON eskaera.id = notification.eskaera_id '.
-            '  INNER JOIN firma ON firma.eskaera_id = eskaera.id '.
-            '  INNER JOIN firmadet on firmadet.firma_id = firma.id '.
-            '  INNER JOIN sinatzaileakdet ON sinatzaileakdet.id = firmadet.sinatzaileakdet_id '.
-            '  INNER JOIN user ON user.id = sinatzaileakdet.user_id '.
-            'WHERE notification.notified = 0 '.
-            'ORDER BY user.id;'
-        ;
+//        $sql = 'SELECT  notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email '.
+//            'FROM notification '.
+//            '  INNER JOIN eskaera ON eskaera.id = notification.eskaera_id '.
+//            '  INNER JOIN firma ON firma.eskaera_id = eskaera.id '.
+//            '  INNER JOIN firmadet on firmadet.firma_id = firma.id '.
+//            '  INNER JOIN sinatzaileakdet ON sinatzaileakdet.id = firmadet.sinatzaileakdet_id '.
+//            '  INNER JOIN user ON user.id = sinatzaileakdet.user_id '.
+//            'WHERE notification.notified = 0 '.
+//            'ORDER BY user.id;'
+//        ;
+
+        $sql = 'SELECT notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email
+                FROM notification
+                    INNER JOIN eskaera ON eskaera.id = notification.eskaera_id 
+                    INNER JOIN user on notification.user_id = user.id
+                WHERE notification.notified = 0';
 
 
         /** @var EntityManager $em */
