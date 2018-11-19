@@ -85,6 +85,13 @@
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
                                         </a>
                                     </li>
+                                    {% if eskaera.justifikanteName != null %}
+                                        <li>
+                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
 
                                 <li>
