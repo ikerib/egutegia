@@ -179,7 +179,7 @@ fr3d_ldap:
       host: '%ldap_domain%'
       username: '%ldap_username%'
       password: '%ldap_password%'
-      useSsl:   false
+      useSsl:   '%ldap_ssl%'
       accountDomainName: donibane.pasaia.net
       accountDomainNameShort: pasaia
       bindRequiresDn: false # Ez du gordetzen DN-a datu basean. SE SUPONE
