@@ -152,8 +152,10 @@ class DefaultController extends Controller
             }
         }
 
-        $selfHoursPartial  = (float)$calendar->getHoursSelfHalf() - $selfHoursPartial;
-        $selfHoursComplete = (float)$calendar->getHoursSelf() - $selfHoursPartial;
+        //        $selfHoursPartial = round($calendar->getHoursSelfHalf() - $selfHoursPartial,2);
+        $selfHoursPartial = round($calendar->getHoursSelfHalf(), 2);
+        //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
+        $selfHoursComplete = round($calendar->getHoursSelf(), 2);
 
 
         return $this->render(

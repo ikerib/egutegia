@@ -29,10 +29,7 @@ services:
         tags: ['controller.service_arguments']
 
 
-#    Legacy code compatibility
-#    app.main_menu: '@Knp\Menu\MenuItem'
-#    app.menu_builder: '@AppBundle\Menu\Builder'
-    app.menu_builder: '@AppBundle\Menu\MenuBuilder'
+
 
     fr3d_ldap.security.authentication.provider:
         class: "%fr3d_ldap.security.authentication.provider.class%"
@@ -49,20 +46,7 @@ services:
         public: true
         class: AppBundle\Ldap\UserHydrator
 
-#    AppBundle\Menu\Builder:
-#        public: true
-#        arguments: ["@service_container"]
-#
-##    app.main_menu:
-#    Knp\Menu\MenuItem:
-#        public: true
-##        class: Knp\Menu\MenuItem # the service definition requires setting the class
-#        factory: ["@app.menu_builder", createMainMenu]
-#        arguments: ["@request_stack"]
-#        tags:
-#            - { name: knp_menu.menu, alias: main } # The alias is what is used to retrieve the menu
-
-#    app.menu_builder:
+    app.menu_builder: '@AppBundle\Menu\MenuBuilder'
     AppBundle\Menu\MenuBuilder:
         arguments: ["@knp_menu.factory"]
         tags:
