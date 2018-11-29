@@ -695,9 +695,11 @@ class ApiController extends FOSRestController
      */
     public function putPostitAction(Request $request, $id, $userid): View
     {
-        /**
+        /************************************************************************************************************************
+         ************************************************************************************************************************
          * OHARRA: PUT_FIRMA MODIFIKATZEN BADA, PUT_POSTIT MODIFIKATU BEHAR DA ETA ALDERANTZIZ.
-         */
+         ************************************************************************************************************************
+         ***********************************************************************************************************************/
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode($request->getContent(), true);
@@ -816,9 +818,14 @@ class ApiController extends FOSRestController
             $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
             $length = \count($sinatzaileusers);
             for ($i = 0; $i < $length - 1; ++$i) {
-                if ($unekoSinatzailea->getId() === $sinatzaileusers[$i]->getUser()->getId()) {
-                    if ($i + 1 <= $length) {
-                        $hurrengoSinatzailea = $sinatzaileusers[$i + 1]->getUser();
+                if (($unekoSinatzailea->getId() === $sinatzaileusers[$i]->getUser()->getId()) && $i + 1 <= $length) {
+                    $sinatzaileid=$sinatzaileusers[$i + 1]->getUser();
+                    $sinatudu = $em->getRepository('AppBundle:Firmadet')->checkIfUserHasSigned($firma->getId(), $sinatzaileid);
+
+                    if (!$sinatudu) {
+                        $hurrengoSinatzailea = $sinatzaileid;
+                    } else {
+                        $unekoSinatzailea = $sinatzaileusers[ $i+1 ]->getUser();
                     }
                 }
             }
@@ -875,9 +882,11 @@ class ApiController extends FOSRestController
      */
     public function putFirmaAction(Request $request, $id): View
     {
-        /**
+        /************************************************************************************************************************
+         ************************************************************************************************************************
          * OHARRA: PUT_FIRMA MODIFIKATZEN BADA, PUT_POSTIT MODIFIKATU BEHAR DA ETA ALDERANTZIZ.
-         */
+         ************************************************************************************************************************
+         ***********************************************************************************************************************/
         $em = $this->getDoctrine()->getManager();
 
         $jsonData = json_decode($request->getContent(), true);
@@ -927,7 +936,11 @@ class ApiController extends FOSRestController
         $eskaera = $firma->getEskaera();
 
         // Oharrak grabatu
-        $eskaera->setOharra($oharrak);
+        if ('' === $eskaera->getOharra()) {
+            $eskaera->setOharra($oharrak);
+        } else {
+            $eskaera->setOharra($eskaera->getOharra().'   '.$oharrak);
+        }
         $em->persist($eskaera);
 
         if (false === $onartua) {
@@ -1124,7 +1137,7 @@ class ApiController extends FOSRestController
      * @Rest\View(statusCode=200)
      * @Rest\Put("/jakinarazpenareaded/{id}")
      */
-    public function putJakinarazpenaReadedAction(Request $request, $id)
+    public function putJakinarazpenaReadedAction(Request $request, $id): View
     {
         $em = $this->getDoctrine()->getManager();
 
