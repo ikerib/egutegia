@@ -10,10 +10,11 @@ namespace AppBundle\Repository;
  */
 class FirmadetRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getFirmatuaDutenErabiltzaileak($firmaid) {
-        $qm = $this->createQueryBuilder( 'fd' )
-            ->innerJoin( 'fd.firma','f')
-            ->where( 'f.id = :firmaid' )
+    public function getFirmatuaDutenErabiltzaileak($firmaid)
+    {
+        $qm = $this->createQueryBuilder('fd')
+            ->innerJoin('fd.firma', 'f')
+            ->where('f.id = :firmaid')
             ->setParameter('firmaid', $firmaid)
         ;
 
@@ -21,22 +22,24 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
         return $qm->getQuery()->getResult();
     }
 
-    public function getFirmatzaileak ( $eskaeraid ) {
-        $qb = $this->createQueryBuilder( 'fd' )
-            ->select('fd','sd','u')
-            ->innerJoin( 'fd.firma', 'f' )
-            ->innerJoin( 'f.eskaera', 'e' )
-            ->innerJoin('fd.sinatzaileakdet','sd')
-            ->innerJoin('sd.user','u')
-            ->where( 'e.id=:id' )
+    public function getFirmatzaileak($eskaeraid)
+    {
+        $qb = $this->createQueryBuilder('fd')
+            ->select('fd', 'sd', 'u')
+            ->innerJoin('fd.firma', 'f')
+            ->innerJoin('f.eskaera', 'e')
+            ->innerJoin('fd.sinatzaileakdet', 'sd')
+            ->innerJoin('sd.user', 'u')
+            ->where('e.id=:id')
             ->orderBy('sd.orden')
-            ->setParameter( 'id', $eskaeraid );
+            ->setParameter('id', $eskaeraid);
 
 
         return $qb->getQuery()->getResult();
     }
 
-    public function bilatuDenak() {
+    public function bilatuDenak()
+    {
         $qb = $this->createQueryBuilder('fd')
                    ->select('f', 'fd', 'sd', 's', 'u')
                    ->innerJoin('fd.firma', 'f')
@@ -46,8 +49,20 @@ class FirmadetRepository extends \Doctrine\ORM\EntityRepository
                    ->innerJoin('sd.sinatzaileak', 's')
                 ->andWhere('e.amaitua = 0')
                    ->orderBy('e.id', 'desc');
-//        dump($qb->getQuery()->getSQL());
+
         return $qb->getQuery()->getResult();
     }
 
+    public function checkIfUserHasSigned($firmaid, $userid)
+    {
+        $qb = $this->createQueryBuilder('fd')
+                   ->select('fd')
+                   ->andWhere('fd.firmatzailea = :userid')
+                    ->andWhere('fd.firma = :firmaid')
+                   ;
+        $qb->setParameter('firmaid', $firmaid);
+        $qb->setParameter('userid', $userid);
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -26,7 +26,6 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use GuzzleHttp\Client;
 use AppBundle\Form\EskaeraType;
 
-
 /**
  * Eskaera controller.
  *
@@ -159,7 +158,6 @@ class EskaeraController extends Controller
         $resp    = $niresrv->addEvent($aData);
 
         if ($resp[ 'result' ] === -1) {
-
             $this->addFlash('error', 'Ez ditu nahikoa ordu.');
 
             return $this->redirectToRoute('admin_eskaera_list');
@@ -172,7 +170,6 @@ class EskaeraController extends Controller
         $this->addFlash('success', 'Datuak ongi gordeak izan dira.');
 
         return $this->redirectToRoute('admin_eskaera_list');
-
     }
 
     /**
@@ -263,7 +260,6 @@ class EskaeraController extends Controller
                         }
                     }
                 }
-
             }
 
             /**
@@ -314,7 +310,6 @@ class EskaeraController extends Controller
             $em->flush();
 
             return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
-
         }
 
         $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->findBy(
@@ -406,8 +401,6 @@ class EskaeraController extends Controller
         }
 
         return new BinaryFileResponse($nirepath);
-
-
     }
 
     /**
@@ -464,8 +457,7 @@ class EskaeraController extends Controller
                  * 2-. Begiratu firma entitaterik ez duela (abiatua = false) eta firma entitatea bete
                  */
                 if ($eskaera->getAbiatua() === false) {
-
-                    $firma = New Firma();
+                    $firma = new Firma();
                     $firma->setName($eskaera->getName());
                     $firma->setSinatzaileak($eskaera->getSinatzaileak());
                     $firma->setEskaera($eskaera);
@@ -494,17 +486,16 @@ class EskaeraController extends Controller
 
                             /** @var \GuzzleHttp\Client $client */
                             $client = $this->get('eight_points_guzzle.client.api_put_firma');
-                            // $url = "/app_dev.php/api/firma/".$firma->getId()."/".$eskatzaile_id.".json?XDEBUG_SESSION_START=PHPSTORM";
-                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json';
+                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
+//                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json';
 
-                            $client->request('PUT', $url, ['json' => $eskaera,]);
+                            $client->request('PUT', $url, ['json' => $eskaera,'autofirma'=>1]);
 
                             $firmatzailea = $em->getRepository('AppBundle:User')->find($eskatzaile_id);
 
                             $fd->setAutofirma(true);
                             $fd->setFirmatua(true);
                             $fd->setFirmatzailea($firmatzailea);
-
                         }
                         $em->persist($fd);
                     }
@@ -512,7 +503,7 @@ class EskaeraController extends Controller
 
                     // SOILIK LEHENA NOTIFIKATU
 
-                    $notify = New Notification();
+                    $notify = new Notification();
                     $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
 
                     $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
@@ -536,12 +527,9 @@ class EskaeraController extends Controller
 
                     $eskaera->setBideratua(true);
                     $em->persist($eskaera);
-
                 } elseif ($eskaera->getAmaitua() === false) {
                     echo 'kaka';
                 }
-
-
             }
             $em->flush();
 
@@ -592,10 +580,7 @@ class EskaeraController extends Controller
 
                 $url = $request->get('nondik');
                 return new RedirectResponse($url);
-
             }
-
-
         }
 
         return $this->render(

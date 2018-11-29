@@ -539,7 +539,8 @@
             $("#tableEskaerak").on("click", ".btnPostIt", function () {
                 var userid = $(this).data("userid");
                 var firmaid = $(this).data("firmaid");
-                var jakinarazpenaid = $(this).data("notifyid");
+                var jakinarazpenaid="";
+                jakinarazpenaid = $(this).data("notifyid");
                 var url = Routing.generate("put_postit", { id: firmaid, userid: userid });
 
                 bootbox.prompt({
@@ -554,16 +555,21 @@
                                 data: { onartua: 1, oharra: result }
                             })
                              .done(function () {
-                                 var url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
-                                 $.ajax({
-                                     url: url2,
-                                     method: "PUT",
-                                     data: { onartua: 1 }
-                                 }).done(function () {
+                                 if ((jakinarazpenaid !=="") && (jakinarazpenaid !==0) ){
+                                     var url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                                     $.ajax({
+                                         url: url2,
+                                         method: "PUT",
+                                         data: { onartua: 1 }
+                                     }).done(function () {
+                                         location.reload();
+                                     }).fail(function () {
+                                         bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.");
+                                     });
+                                 } else {
                                      location.reload();
-                                 }).fail(function () {
-                                     bootbox.alert("Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.");
-                                 });
+                                 }
+
                              })
                              .fail(function () {
                                  bootbox.alert("Akats bat gertatu da firmatzerakoan.");

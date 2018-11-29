@@ -22,7 +22,9 @@ class EskaeraRepository extends EntityRepository
     {
         $this->lizentziaType = $lizentziaType;
     }
-    public function list($q) {
+
+    public function list($q)
+    {
         $em = $this->getEntityManager();
         $dql = '';
 
@@ -95,7 +97,8 @@ class EskaeraRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findAllByUser($id) {
+    public function findAllByUser($id)
+    {
         $em = $this->getEntityManager();
 
         $dql = '
@@ -111,44 +114,47 @@ class EskaeraRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findBideratugabeak() {
+    public function findBideratugabeak()
+    {
         $em = $this->getEntityManager();
-        $dql = "
+        $dql = '
             SELECT e
             FROM AppBundle:Eskaera e
             WHERE e.abiatua = false AND e.amaitua = false
-        ";
+        ';
         $query = $em->createQuery($dql);
 
         return $query->getResult();
     }
 
-    public function checkErabiltzaileaBateraezinZerrendan($userid) {
+    public function checkErabiltzaileaBateraezinZerrendan($userid)
+    {
         $qb = $this->_em->createQueryBuilder()
-            ->select( 'g' )
+            ->select('g')
 
-            ->from( 'AppBundle:Gutxienekoak', 'g' )
+            ->from('AppBundle:Gutxienekoak', 'g')
             ->innerJoin('g.gutxienekoakdet', 'gd')
-            ->innerJoin( 'gd.user', 'u' )
+            ->innerJoin('gd.user', 'u')
 
             ->where('u.id = :userid')
 
-            ->setParameter('userid',$userid)
+            ->setParameter('userid', $userid)
             ;
 
         return $qb->getQuery()->getResult();
     }
 
-    public function checkCollision($userid, $fini, $ffin) {
-        $qb = $this->createQueryBuilder( 'e' );
+    public function checkCollision($userid, $fini, $ffin)
+    {
+        $qb = $this->createQueryBuilder('e');
 
-        $qb->innerJoin('e.calendar','c')
+        $qb->innerJoin('e.calendar', 'c')
            ->innerJoin('c.user', 'u')
            ->where('u.id=:userid')
            ->andWhere('(:fini BETWEEN e.hasi AND e.amaitu) OR (:ffin BETWEEN e.hasi AND e.amaitu)')
-           ->setParameter('userid',$userid)
-           ->setParameter('fini',$fini)
-           ->setParameter('ffin',$ffin)
+           ->setParameter('userid', $userid)
+           ->setParameter('fini', $fini)
+           ->setParameter('ffin', $ffin)
         ;
 
         return $qb->getQuery()->getResult();

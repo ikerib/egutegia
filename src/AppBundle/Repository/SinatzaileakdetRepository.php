@@ -10,24 +10,23 @@ namespace AppBundle\Repository;
  */
 class SinatzaileakdetRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getSinatuBeharDutenErabiltzaileak ( $sinatzaileakid )
+    public function getSinatuBeharDutenErabiltzaileak($sinatzaileakid)
     {
-        $qm = $this->createQueryBuilder( 'sd' )
-            ->where( 'sd.sinatzaileak=:sinatzaileakid' )
-            ->setParameter( 'sinatzaileakid', $sinatzaileakid );
+        $qm = $this->createQueryBuilder('sd')
+            ->where('sd.sinatzaileak=:sinatzaileakid')
+            ->setParameter('sinatzaileakid', $sinatzaileakid);
 
         return $qm->getQuery()->getResult();
     }
 
 
-    public function findAllByIdSorted ( $sinatzaileakid )
+    public function findAllByIdSorted($sinatzaileakid)
     {
-        $qm = $this->createQueryBuilder( 'sd' )
-                   ->where( 'sd.sinatzaileak=:sinatzaileakid' )
-                   ->setParameter( 'sinatzaileakid', $sinatzaileakid )
-                    ->orderBy('sd.orden','ASC');
+        $qm = $this->createQueryBuilder('sd')
+                   ->where('sd.sinatzaileak=:sinatzaileakid')
+                   ->setParameter('sinatzaileakid', $sinatzaileakid)
+                   ->orderBy('sd.orden', 'ASC');
 
         return $qm->getQuery()->getResult();
     }
-
 }
