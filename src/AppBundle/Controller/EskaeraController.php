@@ -165,7 +165,7 @@ class EskaeraController extends Controller
 
         $eskaera->setEgutegian(true);
         $em->persist($eskaera);
-
+        $em->flush();
 
         $this->addFlash('success', 'Datuak ongi gordeak izan dira.');
 

@@ -23,7 +23,7 @@ class Builder implements ContainerAwareInterface
 
     use ContainerAwareTrait;
 
-    public function mainMenu(FactoryInterface $factory, array $options)
+    public function mainMenu(FactoryInterface $factory, array $options): \Knp\Menu\ItemInterface
     {
         $checker = $this->container->get('security.authorization_checker');
         $menu    = $factory->createItem('root', ['navbar' => true]);
