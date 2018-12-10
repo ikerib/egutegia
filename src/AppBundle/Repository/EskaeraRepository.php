@@ -160,4 +160,13 @@ class EskaeraRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAbsentismo($fini, $ffin)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where('(:fini BETWEEN e.hasi AND e.amaitu) OR (:ffin BETWEEN e.hasi AND e.amaitu)')
+            ->setParameter('fini', $fini)
+            ->setParameter('ffin', $ffin)
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }
