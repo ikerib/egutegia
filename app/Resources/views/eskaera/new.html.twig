@@ -30,24 +30,34 @@
             <div class="form-group">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Noiz arte' | trans }}</label>
                 <div class="col-sm-7">
-                    {{ form_widget(form.amaitu, { 'attr': {'class': 'form-control cmbFetxaKalc', 'autocomplete': 'null'} }) }}
+                    {{ form_widget(form.amaitu, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
+                <label for="min-date" class="col-sm-4 control-label">{{ 'Aukeratu bat' | trans }}</label>
+                <div class="btn-group col-sm-7" role="group">
+                    <button type="button" class="btn btn-default" id="cmdDivOrduak">{{ "Orduak" | trans }}</button>
+                    <button type="button" class="btn btn-default" id="cmdDivEgunak">{{ "Egunak" | trans }}</button>
+                </div>
+            </div>
+
+            <div class="row">&nbsp;</div>
+
+            <div class="form-group" id="divEgunak" style="display: none;">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>egunak</strong>' | trans|raw }}</label>
                 <div class="col-sm-4">
-                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                    {{ form_widget(form.egunak, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
                 </div>
                 <div class="col-sm-3">
                     <p class="">Dituzun egunak: {{ (calendar.hoursSelf / calendar.hoursDay) | round (2) }} egun ( {{ calendar.hoursSelf }} ordu ) </p>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="divOrduak" style="display: none;">
                 <label for="min-date" class="col-sm-4 control-label">{{ 'Eskatutako <strong>orduak</strong>' | trans | raw }}</label>
                 <div class="col-sm-4">
-                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control cmbFetxaKalc'} }) }}
+                    {{ form_widget(form.orduak, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
                 </div>
                 <div class="col-sm-3">
                     <p class="">Dituzun egunak: {{ (calendar.hoursSelfHalf / calendar.hoursDay) | round (2) }} egun ( {{ calendar.hoursSelfHalf }} ordu ) </p>
@@ -75,7 +85,7 @@
                     <label for="appbundle_eskaera_oharra" class="col-sm-4 control-label">{{ 'Azalpena' | trans }}</label>
                 {% endif %}
                 <div class="col-sm-7">
-                    {{ form_widget(form.oharra, { 'attr': {'class': 'form-control'} }) }}
+                    {{ form_widget(form.oharra, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
                 </div>
             </div>
 
@@ -133,6 +143,38 @@
 {% block foot_script %}
     {{ parent() }}
     <script language="JavaScript">
+
+        $("#cmdDivOrduak").on("click", function () {
+            $("#appbundle_eskaera_total").val(0);
+            $(this).addClass("btn-primary");
+            $("#cmdDivEgunak").removeClass("btn-primary");
+            $("#divOrduak").show();
+            $("#divEgunak").hide();
+            $("#appbundle_eskaera_egunak").val(0);
+            console.log("xxxx");
+        });
+
+        $("#cmdDivEgunak").on("click", function () {
+            $("#appbundle_eskaera_total").val(0);
+            $(this).addClass("btn-primary");
+            $("#cmdDivOrduak").removeClass("btn-primary");
+            $("#divOrduak").hide();
+            $("#divEgunak").show();
+            $("#appbundle_eskaera_orduak").val(0);
+            calc();
+            console.log("sssssssssssss");
+        });
+
+        $("#appbundle_eskaera_orduak").blur(function () {
+            var orduak = $("#appbundle_eskaera_orduak").val();
+            var lanaldi= $("#txtJornada").val();
+
+            var resul = orduak * lanaldi;
+            resul = parseFloat(resul);
+
+            $("#appbundle_eskaera_total").val(resul.toFixed(2));
+        });
+
         $("#btnSubmit").on("click", function () {
             var ongi = true;
             var eskaeramota = $("#eskaeramota").val();
@@ -287,33 +329,40 @@
             return erantzuna;
         }
 
-
-        $(".cmbFetxaKalc").change(function () {
+        function calc() {
             $("#appbundle_eskaera_total").val(0);
             const txtEgunak = $("#appbundle_eskaera_egunak").val();
+            console.log("txtEgunak" + txtEgunak);
             var d;
-            if ( txtEgunak === "0" ) {
+            d = 0;
+
+            const hasi = $("#appbundle_eskaera_hasi").val();
+            console.log("hasi" + hasi);
+            const amaitu = $("#appbundle_eskaera_amaitu").val();
+            console.log("amaitu"+amaitu);
+            d = workday_count(hasi, amaitu);
+            if ( isNaN(d) ) {
                 d = 0;
-                // return
-            } else {
-                const hasi = $("#appbundle_eskaera_hasi").val();
-                const amaitu = $("#appbundle_eskaera_amaitu").val();
-                d = workday_count(hasi, amaitu);
-                if ( isNaN(d) ) {
-                    d = 0;
-                }
             }
+            console.log("d " +d);
+
 
             const orduak = $("#appbundle_eskaera_orduak").val();
+            console.log("orduak " + orduak);
             const egunOrduak = $("#txtJornada").val();
+            console.log("egunorduak " + egunOrduak);
 
             $("#appbundle_eskaera_egunak").val(d.toFixed(2));
             var tmp = $("#appbundle_eskaera_egunak").val() * egunOrduak;
 
             tmp = parseFloat(tmp) + parseFloat(orduak);
+            console.log(tmp);
 
             $("#appbundle_eskaera_total").val(tmp.toFixed(2));
+        }
 
+        $(".cmbFetxaKalc").change(function () {
+            calc()
         });
 
     </script>
