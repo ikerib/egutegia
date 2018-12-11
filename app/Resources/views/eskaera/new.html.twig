@@ -151,7 +151,6 @@
             $("#divOrduak").show();
             $("#divEgunak").hide();
             $("#appbundle_eskaera_egunak").val(0);
-            console.log("xxxx");
         });
 
         $("#cmdDivEgunak").on("click", function () {
@@ -162,17 +161,17 @@
             $("#divEgunak").show();
             $("#appbundle_eskaera_orduak").val(0);
             calc();
-            console.log("sssssssssssss");
         });
 
         $("#appbundle_eskaera_orduak").blur(function () {
             var orduak = $("#appbundle_eskaera_orduak").val();
-            var lanaldi= $("#txtJornada").val();
+            // var lanaldi= $("#txtJornada").val();
 
-            var resul = orduak * lanaldi;
-            resul = parseFloat(resul);
+            // var resul = orduak * lanaldi;
+            // resul = parseFloat(resul);
+            orduak = parseFloat(orduak);
 
-            $("#appbundle_eskaera_total").val(resul.toFixed(2));
+            $("#appbundle_eskaera_total").val(orduak.toFixed(2));
         });
 
         $("#btnSubmit").on("click", function () {
