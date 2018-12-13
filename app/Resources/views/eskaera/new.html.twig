@@ -250,6 +250,12 @@
                 return;
             }
 
+            var orduakGuztira = $("#appbundle_eskaera_total").val();
+            if (orduakGuztira === 0) {
+                bootbox.alert("Zerbait ez dago ondi. Guztira zenbat ordu > 0 izan behar du.");
+                ongi = false;
+                return;
+            }
 
             if ( ongi ) {
                 $("#frmEskaeraNew").submit();
