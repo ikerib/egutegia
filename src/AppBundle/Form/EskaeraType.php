@@ -56,7 +56,7 @@ class EskaeraType extends AbstractType
             ->add('orduak')
             ->add('total',null, array(
                 'attr' => array(
-                    'readonly' => true,
+                    'readonly' => false,
                 ),
             ))
             ->add('oharra')
