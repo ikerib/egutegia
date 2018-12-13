@@ -15,6 +15,7 @@
 {% block headline %}{{ eskaera.type.name ~ ' ' ~ 'eskaera berria' | trans  | lower }} {% endblock %}
 
 {% block content_row %}
+    <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
@@ -251,7 +252,7 @@
             }
 
             var orduakGuztira = $("#appbundle_eskaera_total").val();
-            if (orduakGuztira === 0) {
+            if ((orduakGuztira === 0) || (orduakGuztira==="0") || (orduakGuztira==="0.00")) {
                 bootbox.alert("Zerbait ez dago ondi. Guztira zenbat ordu > 0 izan behar du.");
                 ongi = false;
                 return;
