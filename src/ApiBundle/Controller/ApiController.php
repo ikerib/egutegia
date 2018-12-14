@@ -195,6 +195,13 @@ class ApiController extends FOSRestController
             $em->remove($t);
         }
         $em->flush();
+        $view = View::create();
+        $view->setData($template);
+
+        header('content-type: application/json; charset=utf-8');
+        header('access-control-allow-origin: *');
+
+        return $view;
     }
 
     /******************************************************************************************************************/
@@ -524,6 +531,14 @@ class ApiController extends FOSRestController
 
         $em->remove($event);
         $em->flush();
+
+        $view = View::create();
+        $view->setData($event);
+
+        header('content-type: application/json; charset=utf-8');
+        header('access-control-allow-origin: *');
+
+        return $view;
     }
 
     /**
