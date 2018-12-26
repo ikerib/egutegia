@@ -82,4 +82,4 @@ services:
     app.gelf_formatter:
         class: Monolog\Formatter\GelfMessageFormatter
         arguments:
-            - "Nire graylog server"
+            - "egutegia.pasaia.net"
