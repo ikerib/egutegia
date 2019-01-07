@@ -28,7 +28,7 @@ class AdminController extends Controller
      *
      * @internal param Request $request
      */
-    public function dashboardAction()
+    public function dashboardAction(): \Symfony\Component\HttpFoundation\Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -64,7 +64,7 @@ class AdminController extends Controller
             );
             $u['calendar'] = $calendar;
 
-            $egutegiguztiak = $em->getRepository( 'AppBundle:Calendar' )->findAllCalendarsByUsername( $user->getUsername() );
+            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user->getUsername());
             $u[ 'egutegiak' ] = $egutegiguztiak;
 
             /** @var $usernotes User */
@@ -73,7 +73,7 @@ class AdminController extends Controller
             if ($usernotes) {
                 $user->setNotes($usernotes->getNotes());
             }
-            array_push($userdata, $u);
+            $userdata[] = $u;
         }
 
         $user = new User();
@@ -87,5 +87,4 @@ class AdminController extends Controller
             ]
         );
     }
-
 }

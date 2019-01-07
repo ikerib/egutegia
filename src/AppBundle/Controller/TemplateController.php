@@ -29,7 +29,7 @@ class TemplateController extends Controller
      * @Route("/", name="admin_template_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): \Symfony\Component\HttpFoundation\Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -100,7 +100,7 @@ class TemplateController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Template $template)
+    public function showAction(Template $template): \Symfony\Component\HttpFoundation\Response
     {
         $deleteForm = $this->createDeleteForm($template);
 
@@ -127,7 +127,7 @@ class TemplateController extends Controller
     public function editAction(Request $request, Template $template)
     {
         $deleteForm = $this->createDeleteForm($template);
-        $editForm = $this->createForm('AppBundle\Form\TemplateType', $template);
+        $editForm = $this->createForm(TemplateType::class, $template);
         $editForm->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
@@ -161,7 +161,7 @@ class TemplateController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteAction(Request $request, Template $template)
+    public function deleteAction(Request $request, Template $template): \Symfony\Component\HttpFoundation\RedirectResponse
     {
         $form = $this->createDeleteForm($template);
         $form->handleRequest($request);
@@ -180,7 +180,7 @@ class TemplateController extends Controller
      *
      * @param Template $template The template entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
     private function createDeleteForm(Template $template)
     {
