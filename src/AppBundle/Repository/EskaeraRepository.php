@@ -23,78 +23,119 @@ class EskaeraRepository extends EntityRepository
         $this->lizentziaType = $lizentziaType;
     }
 
-    public function list($q)
+    public function list($q, $history)
     {
         $em = $this->getEntityManager();
         $dql = '';
+        $qb = '';
 
         switch ($q) {
             case 'no-way':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                      WHERE e.abiatua = 0
-                ';
-                $query = $em->createQuery($dql);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->where('e.abiatua=0')
+                ;
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                      WHERE e.abiatua = 0
+//                ';
+//                $query = $em->createQuery($dql);
                 break;
             case 'unsigned':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                      WHERE e.amaitua = 0
-                ';
-                $query = $em->createQuery($dql);
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                      WHERE e.amaitua = 0
+//                ';
+//                $query = $em->createQuery($dql);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->where('e.amaitua=0');
                 break;
             case 'unadded':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                      WHERE e.egutegian = 0 and e.amaitua = 1
-                ';
-                $query = $em->createQuery($dql);
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                      WHERE e.egutegian = 0 and e.amaitua = 1
+//                ';
+//                $query = $em->createQuery($dql);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->where('e.egutegian=0')->andWhere('e.amaitua=1');
                 break;
             case 'conflict':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                      WHERE e.egutegian = 0 and e.amaitua = 1 and e.bideratua = 0 and e.konfliktoa = 1
-                ';
-                $query = $em->createQuery($dql);
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                      WHERE e.egutegian = 0 and e.amaitua = 1 and e.bideratua = 0 and e.konfliktoa = 1
+//                ';
+//                $query = $em->createQuery($dql);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.bideratua=0')->andWhere('e.konfliktoa=1')
+                ;
                 break;
             case 'justify':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                        INNER JOIN e.type t
-                      WHERE t.id = :lizentzia_type
-                ';
-
-                $query = $em->createQuery($dql);
-                $query->setParameter('lizentzia_type', $this->lizentziaType);
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                        INNER JOIN e.type t
+//                      WHERE t.id = :lizentzia_type
+//                ';
+//
+//                $query = $em->createQuery($dql);
+//                $query->setParameter('lizentzia_type', $this->lizentziaType);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->innerJoin('e.type', 't')
+                                ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)
+                ;
 
                 break;
             case 'nojustified':
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                        INNER JOIN e.type t
-                      WHERE t.id = :lizentzia_type and e.justifikatua=0
-                ';
-
-                $query = $em->createQuery($dql);
-                $query->setParameter('lizentzia_type', $this->lizentziaType);
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                        INNER JOIN e.type t
+//                      WHERE t.id = :lizentzia_type and e.justifikatua=0
+//                ';
+//
+//                $query = $em->createQuery($dql);
+//                $query->setParameter('lizentzia_type', $this->lizentziaType);
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                                ->innerJoin('e.type', 't')
+                                ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)->andWhere('e.justifikatua=0')
+                ;
 
                 break;
             default:
-                $dql = '
-                      SELECT e
-                      FROM AppBundle:Eskaera e
-                ';
+//                $dql = '
+//                      SELECT e
+//                      FROM AppBundle:Eskaera e
+//                ';
+                $qb = $this->_em->createQueryBuilder()
+                                ->select('e')
+                                ->from('AppBundle:Eskaera', 'e')
+                ;
                 break;
         }
 
+        if ($history === '0') {
+            $currentYEAR = date('Y');
+            $qb->innerJoin('e.calendar', 'c')->andWhere('c.year = :year')->setParameter('year', $currentYEAR);
+        }
 
-        return $query->getResult();
+
+//        return $query->getResult();
+        return $qb->getQuery()->getResult();
     }
 
     public function findAllByUser($id)

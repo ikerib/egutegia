@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace AppBundle\Controller;
 
@@ -98,12 +98,13 @@ class EskaeraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $q = $request->query->get('q');
+        $history = $request->query->get('history','1');
 
 
-        if (($q === null) || ($q === 'all')) {
+        if ((($q === null) || ($q === 'all')) && $history ==='1') {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
         } else {
-            $eskaeras = $this->get('app.eskaera.repository')->list($q);
+            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history);
         }
 
         $deleteForms = [];

@@ -54,7 +54,7 @@ class Builder implements ContainerAwareInterface
                     'Eskaerak',
                     array(
                         'route'           => 'admin_eskaera_list',
-                        'routeParameters' => array('q' => 'no-way'),
+                        'routeParameters' => array('q' => 'no-way', 'history'=>'0'),
                         'icon'            => 'inbox',
                         'label'           => $this->container->get('translator')->trans('main_menu.eskaerak')." <span class='badge badge-error'>".\count($eskaerak)."</span>",
                         'extras'          => array('safe_label' => true),

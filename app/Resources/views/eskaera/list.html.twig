@@ -14,20 +14,29 @@
         </div>
         <div class="col-md-10">
             <div class="btn-group" role="group" aria-label="...">
+                {% set q = app.request.get('q') %}
+                {% set history = app.request.get('history') %}
                 <a class="btn {% if app.request.get('q') == 'all' %}        btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'all'}) }}">{{ 'Guztiak' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'all', 'history':history}) }}">{{ 'Guztiak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'no-way' %}     btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'no-way'}) }}">{{ 'Bideratu gabeak' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'no-way', 'history':history}) }}">{{ 'Bideratu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unsigned' %}   btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'unsigned'}) }}">{{ 'Gauzatu gabeak' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'unsigned', 'history':history}) }}">{{ 'Gauzatu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unadded' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'unadded'}) }}">{{ 'Egutegian sartu gabe' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'unadded', 'history':history}) }}">{{ 'Egutegian sartu gabe' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'conflict' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'conflict'}) }}">{{ 'Bateraezinak' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'conflict', 'history':history}) }}">{{ 'Bateraezinak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'justify' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'justify'}) }}">{{ 'Lizentziak' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'justify', 'history':history}) }}">{{ 'Lizentziak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'nojustified' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'nojustified'}) }}">{{ 'Lizentziak (Justifikatu gabe)' | trans }}</a>
+                   href="{{ path('admin_eskaera_list', { 'q': 'nojustified', 'history':history}) }}">{{ 'Lizentziak (Justifikatu gabe)' | trans }}</a>
+
+                {% if app.request.get('history') == '0' or app.request.get('history') is null %}
+                    <a class="btn btn-default" href="{{ path('admin_eskaera_list', { 'q':q, 'history': '1'}) }}">{{ 'Aktibatu historikoa' | trans }}</a>
+                    {% else %}
+                        <a class="btn btn-warning" href="{{ path('admin_eskaera_list', { 'q':q,'history': '0'}) }}">{{ 'Desaktibatu historikoa' | trans }}</a>
+                {% endif %}
+
             </div>
 
         </div>
