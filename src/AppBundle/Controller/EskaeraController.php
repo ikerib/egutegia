@@ -559,7 +559,7 @@ class EskaeraController extends Controller
      */
     public function justifyAction(Request $request, Eskaera $eskaera)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
+//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $editForm   = $this->createForm(
             EskaeraJustifyType::class,
             $eskaera,
