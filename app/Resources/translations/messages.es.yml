@@ -179,13 +179,22 @@ erantzuna.firmatua: 'Firmado?'
 erantzuna.erantzuna: Respuesta
 Zabaldu: 'Abrir/cerrar todas'
 'Irakurri gabeak': 'Sin leer'
-Irakurritakoak: 'Leidos'
+Irakurritakoak: Leidos
 'Erantzun gabeak': 'Sin Responder'
-Justifikantea gehitu: 'Añadir justificante'
+'Justifikantea gehitu': 'Añadir justificante'
 lizentziatext: 'Puedes añadir el justificante ahora o bien adjuntarlo más tarde, aunque también es posible enviarlo por email.'
-Lizentziak: 'Licencias'
-Lizentziak (Justifikatu gabe): 'Licencias (Sin justificar)'
-Emaitza: 'Resultado'
-Nº: 'Nº'
-Edit: 'Editar'
-Justifikatea: 'Justificante'
+Lizentziak: Licencias
+'Lizentziak (Justifikatu gabe)': 'Licencias (Sin justificar)'
+Emaitza: Resultado
+Nº: Nº
+Edit: Editar
+Justifikatea: Justificante
+'Aukeratu instantzia mota': ' Selecciona tipo instancia'
+'Aukeratu eta jarraitu': ' Seleccionar y continuar'
+'Aktibatu historikoa': ' Activar historico'
+'Desaktibatu historikoa': ' Desactivar historico'
+'Ikusi justifikatea': ' Ver justificante'
+'Aukeratu bat': ' Sekecciona'
+lizentzia_text: lizentzia_text
+'Justifikatea bidali': ' Enviar justificante'
+'Ezabatu justifikatea': ' Eliminar justificante'

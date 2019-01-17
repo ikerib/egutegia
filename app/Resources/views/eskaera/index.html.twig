@@ -48,18 +48,18 @@
                         <td>
                             <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
                                 {% if eskaera.abiatua == true %}
-                                    <label class="label label-success">Bai</label>
+                                    <label class="label label-success">{{ "Bai" | trans }}</label>
                                 {% else %}
-                                    <label class="label label-danger">Ez</label>
+                                    <label class="label label-danger">{{ "Ez" | trans }}</label>
                                 {% endif %}
                             </a>
                         </td>
                         <td>
                             <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
                                 {% if eskaera.amaitua == true %}
-                                    <label class="label label-success">Bai</label>
+                                    <label class="label label-success">{{ "Bai" | trans }}</label>
                                 {% else %}
-                                    <label class="label label-danger">Ez</label>
+                                    <label class="label label-danger">{{ "Ez" | trans }}</label>
                                 {% endif %}
                             </a>
                         </td>
@@ -73,7 +73,7 @@
                                         {#<i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}#}
                                     {#</a>#}
                                 {% else %}
-                                    <span class="label label-success">{{ "Ez" | trans }}</span>
+                                    <span class="label label-danger">{{ "Ez" | trans }}</span>
                                 {% endif %}
                             {% endif %}
                         </td>

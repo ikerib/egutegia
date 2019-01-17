@@ -146,7 +146,7 @@ Egutegian: Importado
 Guztiak: Todos
 'Bideratu gabeak': 'Sin asignar'
 'Gauzatu gabeak': 'Sin completar'
-'Egutean sartu gabe': 'Sin añadir al calendario'
+'Egutegian sartu gabe': 'Sin añadir al calendario'
 Fitxategia: Fichero
 'Eskaera berria': 'Nueva instancia'
 Egunak: Días
@@ -178,3 +178,14 @@ erantzuna.firmatzailea: Firmador
 erantzuna.firmatua: 'Firmado?'
 erantzuna.erantzuna: Respuesta
 Zabaldu: 'Abrir/cerrar todas'
+'Irakurri gabeak': 'Sin leer'
+Irakurritakoak: 'Leidos'
+'Erantzun gabeak': 'Sin Responder'
+Justifikantea gehitu: 'Añadir justificante'
+lizentziatext: 'Puedes añadir el justificante ahora o bien adjuntarlo más tarde, aunque también es posible enviarlo por email.'
+Lizentziak: 'Licencias'
+Lizentziak (Justifikatu gabe): 'Licencias (Sin justificar)'
+Emaitza: 'Resultado'
+Nº: 'Nº'
+Edit: 'Editar'
+Justifikatea: 'Justificante'

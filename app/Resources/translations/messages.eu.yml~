@@ -137,14 +137,14 @@ Izaera: Langilea
 Eskaera: 'Instantzia berria'
 Eskaerak: 'Instantzien mantenua'
 Orduak/Egunak: Orduak/Egunak
-Bideratua: Bideatua
-Gauzatua: Gauzatua
+Bideratua: Bideratua
+Gauzatua: 'Prozesatua'
 Egutegian: Egutegian
 'Sinatzaile taldea': Sinatzaileak
 Guztiak: Guztiak
 'Bideratu gabeak': 'Bideratu gabeak'
 'Gauzatu gabeak': 'Gauzatu gabeak'
-'Egutean sartu gabe': 'Egutean sartu gabe'
+'Egutegian sartu gabe': 'Egutean sartu gabe'
 Fitxategia: Fitxategia
 'Eskaera berria': 'Instantzia berria'
 Egunak: Egunak
@@ -177,3 +177,14 @@ erantzuna.firmatzailea: Firmatzailea
 erantzuna.firmatua: 'Firmatua?'
 erantzuna.erantzuna: Erantzuna
 Zabaldu: 'Zabaldu/Itxi guztiak'
+'Irakurri gabeak': 'Irakurri gabeak'
+Irakurritakoak: Irakurritakoak
+'Erantzun gabeak': 'Erantzun gabeak'
+Justifikantea gehitu: 'Justifikantea gehitu'
+lizentzia_text: 'Justikantea orain gehitu dezakezu edo aurrerago bestela. Emailez bidal dezakezu ere.'
+Lizentziak: 'Lizentziak'
+Lizentziak (Justifikatu gabe): 'Lizentziak (Justifikatu gabe)'
+Emaitza: 'Emaitza'
+Nº: 'Nº'
+Edit: 'Editatu'
+Justifikatea: 'Justifikantea'

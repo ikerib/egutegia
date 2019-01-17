@@ -138,7 +138,7 @@ Eskaera: 'Instantzia berria'
 Eskaerak: 'Instantzien mantenua'
 Orduak/Egunak: Orduak/Egunak
 Bideratua: Bideratua
-Gauzatua: 'Prozesatua'
+Gauzatua: Prozesatua
 Egutegian: Egutegian
 'Sinatzaile taldea': Sinatzaileak
 Guztiak: Guztiak
@@ -180,11 +180,19 @@ Zabaldu: 'Zabaldu/Itxi guztiak'
 'Irakurri gabeak': 'Irakurri gabeak'
 Irakurritakoak: Irakurritakoak
 'Erantzun gabeak': 'Erantzun gabeak'
-Justifikantea gehitu: 'Justifikantea gehitu'
+'Justifikantea gehitu': 'Justifikantea gehitu'
 lizentzia_text: 'Justikantea orain gehitu dezakezu edo aurrerago bestela. Emailez bidal dezakezu ere.'
-Lizentziak: 'Lizentziak'
-Lizentziak (Justifikatu gabe): 'Lizentziak (Justifikatu gabe)'
-Emaitza: 'Emaitza'
-Nº: 'Nº'
-Edit: 'Editatu'
-Justifikatea: 'Justifikantea'
+Lizentziak: Lizentziak
+'Lizentziak (Justifikatu gabe)': 'Lizentziak (Justifikatu gabe)'
+Emaitza: Emaitza
+Nº: Nº
+Edit: Editatu
+Justifikatea: Justifikantea
+'Aukeratu instantzia mota': ' Aukeratu instantzia mota'
+'Aukeratu eta jarraitu': ' Aukeratu eta jarraitu'
+'Aktibatu historikoa': ' Aktibatu historikoa'
+'Desaktibatu historikoa': ' Desaktibatu historikoa'
+'Ikusi justifikatea': ' Ikusi justifikatea'
+'Aukeratu bat': ' Aukeratu bat'
+'Justifikatea bidali': ' Justifikatea bidali'
+'Ezabatu justifikatea': ' Ezabatu justifikatea'
