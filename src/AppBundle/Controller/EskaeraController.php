@@ -593,6 +593,32 @@ class EskaeraController extends Controller
         );
     }
 
+
+    /**
+     * Deletes a Justify file.
+     *
+     * @Route("/justity/file/{id}", name="eskaera_justify_file_delete")
+     * @Method("GET")
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteJustifyFileAction(Request $request, Eskaera $eskaera)
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $em = $this->getDoctrine()->getManager();
+        $this->get('vich_uploader.upload_handler')->remove($eskaera, 'justifikanteFile');
+        $eskaera->setJustifikanteFile(null);
+        $eskaera->setJustifikanteName(null);
+        $eskaera->setJustifikanteSize(null);
+        $eskaera->setJustifikatua(false);
+        $em->persist($eskaera);
+        $em->flush();
+
+        return $this->redirectToRoute('eskaera_index');
+    }
+
     /**
      * Deletes a eskaera entity.
      *

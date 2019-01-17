@@ -69,9 +69,9 @@
                             {% else %}
                                 {% if eskaera.justifikatua == true %}
                                     <span class="label label-success">{{ "Bai" | trans }}</span>
-                                    <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
-                                        <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
-                                    </a>
+                                    {#<a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">#}
+                                        {#<i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}#}
+                                    {#</a>#}
                                 {% else %}
                                     <span class="label label-success">{{ "Ez" | trans }}</span>
                                 {% endif %}
@@ -80,25 +80,25 @@
                         <td>
                             <ul>
                                 {% if eskaera.type.id == type_lizentzia %}
-                                    <li>
-                                        <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
-                                        </a>
-                                    </li>
-                                    {% if eskaera.justifikanteName != null %}
+                                    {% if eskaera.justifikanteName == null %}
+                                        <li>
+                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea bidali" | trans }}
+                                            </a>
+                                        </li>
+                                    {% else %}
                                         <li>
                                             <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
                                             </a>
                                         </li>
+                                        <li>
+                                            <a href="{{ path('eskaera_justify_file_delete', {'id': eskaera.id}) }}">
+                                                <i class="fa fa-trash" aria-hidden="true"></i> {{ "Ezabatu justifikatea" | trans }}
+                                            </a>
+                                        </li>
                                     {% endif %}
                                 {% endif %}
-
-                                <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
-                                    </a>
-                                </li>
                             </ul>
                         </td>
                     </tr>
