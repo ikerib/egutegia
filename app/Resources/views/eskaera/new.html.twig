@@ -220,12 +220,13 @@
                     return;
                 }
             } else {
-                var oharra = $("input[name='appbundle_eskaera[oharra]']").val();
-                if ( oharra.length === 0 ) {
-                    bootbox.alert("Azalpena zehaztea beharrezkoa da.");
-                    ongi = false;
-                    return;
-                }
+                // ESKATU DA KONPENTSATUETAN AZALPENA BEHARREZKOA EZ IZATEA
+                // var oharra = $("input[name='appbundle_eskaera[oharra]']").val();
+                // if ( oharra.length === 0 ) {
+                //     bootbox.alert("Azalpena zehaztea beharrezkoa da.");
+                //     ongi = false;
+                //     return;
+                // }
             }
 
             if ( lizentziada === true ) {
