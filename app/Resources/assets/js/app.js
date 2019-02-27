@@ -91,18 +91,19 @@ $(document).ready(function () {
             data: {onartua: 1}
         })
             .done(function (data) {
-                const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
-                $.ajax({
-                    url: url2,
-                    method: 'PUT',
-                    data: {onartua: 1}
-                }).done(function (data) {
+              console.log("bagoaz");
+                // const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
+                // $.ajax({
+                //     url: url2,
+                //     method: 'PUT',
+                //     data: {onartua: 1}
+                // }).done(function (data) {
                     $tr.find('td').fadeOut(1000,function(){
                         $tr.remove();
                     });
-                }).fail(function (xhr) {
-                    bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-                })
+                // }).fail(function (xhr) {
+                //     bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
+                // })
             })
             .fail(function (xhr) {
                 bootbox.alert('Akats bat gertatu da firmatzerakoan.')

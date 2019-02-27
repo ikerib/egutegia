@@ -77,9 +77,3 @@ services:
         arguments: ['AppBundle:Eskaera']
         calls:
             - ["setLizentziaType", ["%type_lizentzia%"]]
-
-
-    app.gelf_formatter:
-        class: Monolog\Formatter\GelfMessageFormatter
-        arguments:
-            - "egutegia.pasaia.net"

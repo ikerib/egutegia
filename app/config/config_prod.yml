@@ -9,13 +9,6 @@ imports:
 
 monolog:
     handlers:
-        gelf:
-            type: gelf
-            publisher:
-                hostname: 172.28.64.136
-                port: 12201
-            level: debug
-            formatter: app.gelf_formatter
         main:
             type: fingers_crossed
             action_level: error
