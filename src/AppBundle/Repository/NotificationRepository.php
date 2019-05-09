@@ -73,7 +73,7 @@ class NotificationRepository extends EntityRepository
         $qb = $this->createQueryBuilder('n')
                    ->innerJoin('n.user', 'u')
                    ->where('u.id=:userid')
-                   ->andWhere('n.readed=false')
+                   ->andWhere('n.result=false')
                    ->setParameter('userid', $userid);
 
         return $qb->getQuery()->getResult();
