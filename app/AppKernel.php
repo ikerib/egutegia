@@ -43,6 +43,7 @@ class AppKernel extends Kernel
 
             new AppBundle\AppBundle(),
             new ApiBundle\ApiBundle(),
+            new SunCat\MobileDetectBundle\MobileDetectBundle(),
 
         ];
 

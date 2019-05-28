@@ -256,3 +256,5 @@ fos_ck_editor:
                 - { name: "styles", items: ['Bold', 'Italic','Underline', 'BulletedList','NumberedList','Outdent','Indent', 'Link', 'PasteText', 'TextColor', 'BGColor'] }
             jquery: true
             forcePasteAsPlainText: true;
+
+mobile_detect:

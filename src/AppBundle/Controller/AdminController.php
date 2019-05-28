@@ -11,8 +11,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin controller.
@@ -24,11 +25,11 @@ class AdminController extends Controller
     /**
      * @Route("/dashboard", name="dashboard")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * @internal param Request $request
      */
-    public function dashboardAction(): \Symfony\Component\HttpFoundation\Response
+    public function dashboardAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 

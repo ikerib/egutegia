@@ -15,6 +15,7 @@ use AppBundle\Service\Sinatzeke;
 use AppBundle\Service\SinatzekeService;
 use Doctrine\ORM\EntityManager;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -23,7 +24,7 @@ class Builder implements ContainerAwareInterface
 
     use ContainerAwareTrait;
 
-    public function mainMenu(FactoryInterface $factory, array $options): \Knp\Menu\ItemInterface
+    public function mainMenu(FactoryInterface $factory, array $options): ItemInterface
     {
         $checker = $this->container->get('security.authorization_checker');
         $menu    = $factory->createItem('root', ['navbar' => true]);
@@ -74,9 +75,9 @@ class Builder implements ContainerAwareInterface
      * @param FactoryInterface $factory
      * @param array            $options
      *
-     * @return \Knp\Menu\ItemInterface
+     * @return ItemInterface
      */
-    public function userMenu(FactoryInterface $factory, array $options): \Knp\Menu\ItemInterface
+    public function userMenu(FactoryInterface $factory, array $options): ItemInterface
     {
         /*
         * Sinatze ditu eskaerak??
@@ -162,6 +163,114 @@ class Builder implements ContainerAwareInterface
 
 
             $menu[ 'User' ]->addChild(
+                'Irten',
+                array(
+                    'route' => 'fos_user_security_logout',
+                    'icon'  => 'log-out',
+                )
+            )->setExtra('translation_domain', 'messages');
+
+        } else {
+            $menu->addChild('login', ['route' => 'fos_user_security_login']);
+        }
+
+
+        return $menu;
+    }
+
+
+    /**
+     * @param FactoryInterface $factory
+     * @param array            $options
+     *
+     * @return ItemInterface
+     */
+    public function movuserMenu(FactoryInterface $factory, array $options): ItemInterface
+    {
+        /*
+        * Sinatze ditu eskaerak??
+        */
+        /** @var NotificationService $zerbitzua */
+        $zerbitzua     = $this->container->get('app.sinatzeke');
+        $notifications = $zerbitzua->GetNotifications();
+
+        $checker = $this->container->get('security.authorization_checker');
+        /** @var $user User */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+        $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
+
+        if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
+            $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
+            $menu->addChild(
+                'Exit',
+                array(
+                    'label'           => 'Modu arruntera izuli',
+                    'route'           => 'dashboard',
+                    'routeParameters' => array('_switch_user' => '_exit'),
+                    'icon'            => 'exit',
+                )
+            );
+        }
+
+        if ($checker->isGranted('ROLE_USER')) {
+            if (\count($notifications) === 0) {
+                $menu->addChild('User', array('label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));
+            } else {
+                $menu->addChild(
+                    'User',
+                    array(
+                        'pull-right' => true,
+                        'label'      => $user->getDisplayname()." <span class='badge badge-error'>".\count($notifications).'</span>',
+                        'dropdown'   => true,
+                        'icon'       => 'user',
+                        'extras'     => array('safe_label' => true),
+                    )
+                );
+            }
+
+            $menu->addChild(
+                'Egutegia',
+                [
+                    'route' => 'user_homepage',
+                    'icon'  => 'calendar',
+                ]
+            )->setExtra('translation_domain', 'messages');
+
+            $menu->addChild(
+                'Fitxategiak',
+                array(
+                    'route' => 'user_documents',
+                    'icon'  => 'folder-open',
+                )
+            )->setExtra('translation_domain', 'messages');
+
+            $menu->addChild(
+                'user_menu.eskaerak',
+                array(
+                    'route' => 'eskaera_index',
+                    'icon'  => 'send',
+                )
+            )->setExtra('translation_domain', 'messages');
+
+            $menu->addChild('divider', ['divider' => true]);
+
+            if ($checker->isGranted('ROLE_SINATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
+                $menu->addChild(
+                    'Jakinarazpenak',
+                    array(
+                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications).'</span>',
+                        'route'  => 'notification_index',
+                        'routeParameters' => array('q'=>'unanswered'),
+                        'icon'   => 'bullhorn',
+                        'extras' => array('safe_label' => true),
+                    )
+                )->setExtra('translation_domain', 'messages');
+                $menu->addChild('divider2', ['divider' => true]);
+            }
+
+
+            $menu->addChild(
                 'Irten',
                 array(
                     'route' => 'fos_user_security_logout',
