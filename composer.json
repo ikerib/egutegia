@@ -1,5 +1,5 @@
 {
-    "name": "Pasaiako Udal Egutegien kudeaketa",
+    "name": "pasaia/egutegia",
     "license": "MIT",
     "type": "project",
     "autoload": {

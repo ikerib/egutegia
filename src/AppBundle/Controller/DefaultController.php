@@ -12,6 +12,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
+use function count;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +24,7 @@ class DefaultController extends Controller
     /**
      * @Route("/", name="homepage")
      */
-    public function homepageAction()
+    public function homepageAction(): RedirectResponse
     {
         return $this->redirectToRoute('user_homepage');
     }
@@ -29,7 +32,7 @@ class DefaultController extends Controller
     /**
      * @Route("/mycalendar", name="user_homepage")
      */
-    public function userhomepageAction(): \Symfony\Component\HttpFoundation\Response
+    public function userhomepageAction(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -52,7 +55,7 @@ class DefaultController extends Controller
 
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
-        if ((!$calendar) || (\count($calendar) > 1)) {
+        if ((!$calendar) || (count($calendar) > 1)) {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('dashboard');
             }
@@ -105,7 +108,7 @@ class DefaultController extends Controller
     /**
      * @Route("/fitxategiak", name="user_documents")
      */
-    public function userdocumetsAction(): \Symfony\Component\HttpFoundation\Response
+    public function userdocumetsAction(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -115,7 +118,7 @@ class DefaultController extends Controller
         /** @var Calendar $calendar */
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
-        if ((!$calendar) || (\count($calendar) > 1)) {
+        if ((!$calendar) || (count($calendar) > 1)) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [

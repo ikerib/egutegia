@@ -31,8 +31,8 @@ use AppBundle\Form\EskaeraType;
  *
  * @Route("eskaera")
  */
-class EskaeraController extends Controller
-{
+class EskaeraController extends Controller {
+
     /**
      * Lists all eskaera entities.
      *
@@ -97,18 +97,21 @@ class EskaeraController extends Controller
         $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
 
-        $q = $request->query->get('q');
-        $history = $request->query->get('history','1');
+        $q       = $request->query->get('q');
+        $history = $request->query->get('history', '1');
 
 
-        if ((($q === null) || ($q === 'all')) && $history ==='1') {
+        if ((($q === null) || ($q === 'all')) && $history === '1')
+        {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
-        } else {
+        } else
+        {
             $eskaeras = $this->get('app.eskaera.repository')->list($q, $history);
         }
 
         $deleteForms = [];
-        foreach ($eskaeras as $e) {
+        foreach ($eskaeras as $e)
+        {
             /** @var Eskaera $e */
             $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
@@ -148,7 +151,8 @@ class EskaeraController extends Controller
             'event_hours' => $eskaera->getTotal(),
         );
 
-        if ($eskaera->getType()->getId() === 5) {
+        if ($eskaera->getType()->getId() === 5)
+        {
             $aData[ 'event_nondik' ]                 = $eskaera->getNondik();
             $aData[ 'event_hours_self_before' ]      = $eskaera->getCalendar()->getHoursSelf();
             $aData[ 'event_hours_self_half_before' ] = $eskaera->getCalendar()->getHoursSelfHalf();
@@ -158,7 +162,8 @@ class EskaeraController extends Controller
         $niresrv = $this->get('app.calendar.service');
         $resp    = $niresrv->addEvent($aData);
 
-        if ($resp[ 'result' ] === -1) {
+        if ($resp[ 'result' ] === - 1)
+        {
             $this->addFlash('error', 'Ez ditu nahikoa ordu.');
 
             return $this->redirectToRoute('admin_eskaera_list');
@@ -199,7 +204,8 @@ class EskaeraController extends Controller
             date('Y')
         );
 
-        if (!$calendar) {
+        if (!$calendar)
+        {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
@@ -230,8 +236,10 @@ class EskaeraController extends Controller
         );
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em   = $this->getDoctrine()->getManager();
+            /** @var Eskaera $data */
             $data = $form->getData();
 
             $user       = $data->getUser();
@@ -248,14 +256,18 @@ class EskaeraController extends Controller
             /**
              * 2-. Bateraezinik badu, begiratu ea koinzidentziarik dagoen
              */
-            if ($gutxienekoak > 0) {
+            if ($gutxienekoak > 0)
+            {
 
                 /** @var Gutxienekoak $g */
-                foreach ($gutxienekoak as $g) {
+                foreach ($gutxienekoak as $g)
+                {
                     $gutxienekoakdet = $g->getGutxienekoakdet();
-                    foreach ($gutxienekoakdet as $gd) {
+                    foreach ($gutxienekoakdet as $gd)
+                    {
                         /** @var Gutxienekoakdet $gd */
-                        if ($gd->getUser() !== $user) {
+                        if ($gd->getUser() !== $user)
+                        {
                             $collision1 = $em->getRepository('AppBundle:Event')->checkCollision($gd->getUser()->getId(), $fini, $ffin);
                             $collision2 = $em->getRepository('AppBundle:Eskaera')->checkCollision($gd->getUser()->getId(), $fini, $ffin);
                         }
@@ -267,21 +279,26 @@ class EskaeraController extends Controller
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if (($collision1 !== '') || ($collision2 !== '')) {
-                if (\count($collision1) > 0) {
+            if (($collision1 !== '') || ($collision2 !== ''))
+            {
+                if (\count($collision1) > 0)
+                {
                     $txt = '';
                     /** @var Event $e */
-                    foreach ($collision1 as $e) {
+                    foreach ($collision1 as $e)
+                    {
                         $txt = $txt.' - '.$e->getCalendar()->getUser();
                     }
                     $txtOharra = $eskaera->getOharra().' ADI!!  '.$txt.' langileekin koinzidentziak ditu';
                     $eskaera->setOharra($txtOharra);
                     $eskaera->setKonfliktoa(true);
                 }
-                if (\count($collision2) > 0) {
+                if (\count($collision2) > 0)
+                {
                     $txt = '';
                     /** @var Event $e */
-                    foreach ($collision2 as $e) {
+                    foreach ($collision2 as $e)
+                    {
                         $txt = $txt.' - '.$e->getCalendar()->getUser();
                     }
                     $txtOharra = $eskaera->getOharra().' ADI!!  '.$txt.' langileekin koinzidentziak ditu';
@@ -298,15 +315,20 @@ class EskaeraController extends Controller
             /** @var User $user */
             $user = $this->getUser();
             $noiz = date('Y-m-d');
-            if ($eskaera->getNoiz()->format('Y-m-d') !== null) {
+            if ($eskaera->getNoiz()->format('Y-m-d') !== null)
+            {
                 $noiz = $eskaera->getNoiz()->format('Y-m-d');
             }
 
             $amaitu = '';
-            if ($eskaera->getAmaitu() !== null) {
+            if ($eskaera->getAmaitu() !== null)
+            {
                 $amaitu = $eskaera->getAmaitu()->format('Y-m-d');
             }
 
+            if ($data->getJustifikanteFile() !== null) {
+                $eskaera->setJustifikatua(1);
+            }
             $em->persist($eskaera);
             $em->flush();
 
@@ -384,7 +406,8 @@ class EskaeraController extends Controller
 
         $nirepath = $tmpPath.$filename;
 
-        if (!file_exists($nirepath)) {
+        if (!file_exists($nirepath))
+        {
             $this->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView(
                     'eskaera/print.html.twig',
@@ -450,14 +473,17 @@ class EskaeraController extends Controller
         );
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isSubmitted() && $editForm->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
-            if ($eskaera->getSinatzaileak()) {
+            if ($eskaera->getSinatzaileak())
+            {
 
                 /*
                  * 2-. Begiratu firma entitaterik ez duela (abiatua = false) eta firma entitatea bete
                  */
-                if ($eskaera->getAbiatua() === false) {
+                if ($eskaera->getAbiatua() === false)
+                {
                     $firma = new Firma();
                     $firma->setName($eskaera->getName());
                     $firma->setSinatzaileak($eskaera->getSinatzaileak());
@@ -472,7 +498,8 @@ class EskaeraController extends Controller
                     /** @var Sinatzaileakdet $lehenSinatzaile */
                     $lehenSinatzaile = $sinatzaileusers[ 0 ];
                     /** @var Sinatzaileakdet $s */
-                    foreach ($sinatzaileusers as $s) {
+                    foreach ($sinatzaileusers as $s)
+                    {
                         /** @var Firmadet $fd */
                         $fd = new Firmadet();
                         $fd->setFirma($firma);
@@ -482,15 +509,16 @@ class EskaeraController extends Controller
 
                         $eskatzaile_id = $eskaera->getUser()->getId();
 
-                        if ($s->getUser()->getId() === $eskatzaile_id) {
+                        if ($s->getUser()->getId() === $eskatzaile_id)
+                        {
                             // Autofirmatu. Eskatzailea eta sinatzaile zerrendako user berdinak direnez, firmatu
 
                             /** @var \GuzzleHttp\Client $client */
                             $client = $this->get('eight_points_guzzle.client.api_put_firma');
-                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
+                            $url    = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
 //                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json';
 
-                            $client->request('PUT', $url, ['json' => $eskaera,'autofirma'=>1]);
+                            $client->request('PUT', $url, ['json' => $eskaera, 'autofirma' => 1]);
 
                             $firmatzailea = $em->getRepository('AppBundle:User')->find($eskatzaile_id);
 
@@ -511,7 +539,8 @@ class EskaeraController extends Controller
                         'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
                         'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
 
-                    if ($eskaera->getAmaitu() !== null) {
+                    if ($eskaera->getAmaitu() !== null)
+                    {
                         $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
                     }
 
@@ -528,7 +557,8 @@ class EskaeraController extends Controller
 
                     $eskaera->setBideratua(true);
                     $em->persist($eskaera);
-                } elseif ($eskaera->getAmaitua() === false) {
+                } elseif ($eskaera->getAmaitua() === false)
+                {
                     echo 'kaka';
                 }
             }
@@ -560,7 +590,7 @@ class EskaeraController extends Controller
     public function justifyAction(Request $request, Eskaera $eskaera)
     {
 //        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
-        $editForm   = $this->createForm(
+        $editForm = $this->createForm(
             EskaeraJustifyType::class,
             $eskaera,
             array(
@@ -570,16 +600,19 @@ class EskaeraController extends Controller
         );
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isSubmitted() && $editForm->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
 
-            if ($eskaera->getJustifikanteFile() !== null) {
+            if ($eskaera->getJustifikanteFile() !== null)
+            {
                 $eskaera->setJustifikatua(true);
                 $em->persist($eskaera);
                 $em->flush();
 
 
                 $url = $request->get('nondik');
+
                 return new RedirectResponse($url);
             }
         }
@@ -587,8 +620,8 @@ class EskaeraController extends Controller
         return $this->render(
             'eskaera/justify.html.twig',
             array(
-                'eskaera'     => $eskaera,
-                'edit_form'   => $editForm->createView(),
+                'eskaera'   => $eskaera,
+                'edit_form' => $editForm->createView(),
             )
         );
     }
@@ -635,7 +668,8 @@ class EskaeraController extends Controller
         $form = $this->createDeleteForm($eskaera);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
             $em->remove($eskaera);
             $em->flush();

@@ -22,6 +22,7 @@
                 <tr>
                     {#<th>Id</th>#}
                     {#<th>{{ "Izaera" | trans }}</th>#}
+                    <th>{{ "# Eskaera" | trans }}</th>
                     <th>{{ "Mota" | trans }}</th>
                     <th>{{ "Hasi" | trans }}</th>
                     <th>{{ "Amaitu" | trans }}</th>
@@ -37,6 +38,7 @@
                 <tbody>
                 {% for eskaera in eskaeras %}
                     <tr>
+                        <td>{{ eskaera.id }}</td>
                         {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>#}
                         {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>#}
                         <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></td>
