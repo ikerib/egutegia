@@ -19,10 +19,18 @@ use AppBundle\Form\CalendarNoteType;
 use AppBundle\Form\CalendarType;
 use AppBundle\Form\DocumentType;
 use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use LdapTools\Exception\EmptyResultException;
+use LdapTools\Exception\MultiResultException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Calendar controller.
@@ -34,10 +42,9 @@ class CalendarController extends Controller
     /**
      * Lists all calendar entities.
      *
-     * @Route("/", name="admin_calendar_index")
-     * @Method("GET")
+     * @Route("/", name="admin_calendar_index", methods={"GET"})
      */
-    public function indexAction(): \Symfony\Component\HttpFoundation\Response
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -54,18 +61,20 @@ class CalendarController extends Controller
     /**
      * Creates a new calendar entity.
      *
-     * @Route("/new/{username}", name="admin_calendar_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{username}", name="admin_calendar_new", methods={"GET", "POST"})
      *
      * @param Request $request
      * @param mixed   $username
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \LdapTools\Exception\EmptyResultException
-     * @throws \LdapTools\Exception\MultiResultException
+     * @return RedirectResponse|Response
+     * @throws EmptyResultException
+     * @throws MultiResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function newAction(Request $request, $username = '')
     {
+        /** @var EntityManager $em */
         $em       = $this->getDoctrine()->getManager();
         $year     = date('Y');
         $calendar = new Calendar();
@@ -180,13 +189,12 @@ class CalendarController extends Controller
     /**
      * Finds and displays a calendar entity.
      *
-     * @Route("/{id}", name="admin_calendar_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_calendar_show", methods={"GET"})
      * @param Calendar $calendar
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Calendar $calendar): \Symfony\Component\HttpFoundation\Response
+    public function showAction(Calendar $calendar): Response
     {
         $deleteForm = $this->createDeleteForm($calendar);
 
@@ -202,14 +210,14 @@ class CalendarController extends Controller
     /**
      * Displays a form to edit an existing calendar entity.
      *
-     * @Route("/{id}/edit", name="admin_calendar_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_calendar_edit", methods={"GET", "POST"})
+     *
      * @param Request       $request
      * @param Calendar|null $calendar
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function editAction(Request $request, Calendar $calendar = null): \Symfony\Component\HttpFoundation\Response
+    public function editAction(Request $request, Calendar $calendar = null): Response
     {
         if ($calendar === null) {
             $this->addFlash('danger', 'Ez da egutegia topatu');
@@ -306,14 +314,14 @@ class CalendarController extends Controller
     /**
      * Deletes a calendar entity.
      *
-     * @Route("/{id}", name="admin_calendar_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_calendar_delete", methods={"DELETE"})
+     *
      * @param Request  $request
      * @param Calendar $calendar
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Calendar $calendar): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function deleteAction(Request $request, Calendar $calendar): RedirectResponse
     {
         $form = $this->createDeleteForm($calendar);
         $form->handleRequest($request);
@@ -332,7 +340,7 @@ class CalendarController extends Controller
      *
      * @param Calendar $calendar The calendar entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Calendar $calendar)
     {
@@ -347,7 +355,7 @@ class CalendarController extends Controller
      *
      * @param Document $doc The calendar entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDocumentDeleteForm(Document $doc)
     {
@@ -362,7 +370,7 @@ class CalendarController extends Controller
      *
      * @param Hour $h The calendar entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createHourDeleteForm(Hour $h)
     {
@@ -375,13 +383,13 @@ class CalendarController extends Controller
     /**
      * Compare calendars
      *
-     * @Route("/compare", name="admin_calendar_compare")
-     * @Method("post")
+     * @Route("/compare", name="admin_calendar_compare", methods={"POST"})
+     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function compareAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function compareAction(Request $request): Response
     {
         $em             = $this->getDoctrine()->getManager();
         $postdata       = $request->get('users');
@@ -396,7 +404,7 @@ class CalendarController extends Controller
             ++$index;
             /** @var Calendar $calendar */
             $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($u, date("Y"));
-            if (\count($calendar) > 0) {
+            if (count($calendar) > 0) {
                 /** @var Calendar $calendar */
                 $calendar    = $calendar[ 0 ];
                 $calendars[] = $calendar->getId();
@@ -412,7 +420,8 @@ class CalendarController extends Controller
                     $temp[ 'id' ]        = $e->getId();
                     $temp[ 'template' ]  = $calendar->getTemplate()->getId();
                     $temp[ 'name' ]      = $u.' => '.$e->getName();
-                    $temp[ 'startDate' ] = $e->getStartDate()->format('Y-m-d');;
+                    $temp[ 'startDate' ] = $e->getStartDate()->format('Y-m-d');
+                    ;
                     $temp[ 'type' ] = $e->getType()->getId();
                     $events[]       = $temp;
                 }
@@ -422,8 +431,6 @@ class CalendarController extends Controller
                     'username' => $u,
                     'color'    => $colors[ $index ],
                 );
-
-
             } //if ( count( $calendar ) > 0 ) {
         }
 
