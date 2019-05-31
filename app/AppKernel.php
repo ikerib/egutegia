@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new Mopa\Bundle\BootstrapBundle\MopaBootstrapBundle(),
 
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-
+            new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle(),
 
             new Vich\UploaderBundle\VichUploaderBundle(),
 

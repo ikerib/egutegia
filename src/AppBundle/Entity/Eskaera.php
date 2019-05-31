@@ -233,6 +233,15 @@ class Eskaera
      */
     protected $firma;
 
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lizentziamota", inversedBy="eskaerak")
+     * @ORM\JoinColumn(name="lizentziamota_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
+     */
+    private $lizentziamota;
+
     /**
     * Constructor.
     */
@@ -240,7 +249,7 @@ class Eskaera
     {
         $this->orduak = 0;
         $this->egunak = 0;
-        $this->noiz = New \DateTime();
+        $this->noiz = new \DateTime();
         $this->abiatua = false;
         $this->amaitua = false;
         $this->konfliktoa = false;
@@ -980,5 +989,29 @@ class Eskaera
     public function getJustifikatua()
     {
         return $this->justifikatua;
+    }
+
+    /**
+     * Set lizentziamota.
+     *
+     * @param \AppBundle\Entity\Lizentziamota|null $lizentziamota
+     *
+     * @return Eskaera
+     */
+    public function setLizentziamota(\AppBundle\Entity\Lizentziamota $lizentziamota = null)
+    {
+        $this->lizentziamota = $lizentziamota;
+
+        return $this;
+    }
+
+    /**
+     * Get lizentziamota.
+     *
+     * @return \AppBundle\Entity\Lizentziamota|null
+     */
+    public function getLizentziamota()
+    {
+        return $this->lizentziamota;
     }
 }
