@@ -2,12 +2,17 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -36,21 +41,21 @@ class Eskaera
     private $name;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="noiz", type="datetime")
      */
     private $noiz;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="hasi", type="datetime")
      */
     private $hasi;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="amaitu", type="datetime", nullable=true)
      */
@@ -179,63 +184,46 @@ class Eskaera
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\User
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="eskaera")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $user;
 
     /**
-     * @var \AppBundle\Entity\Type
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="eskaera")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $type;
 
     /**
-     * @var \AppBundle\Entity\Calendar
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Calendar", inversedBy="eskaeras")
      * @ORM\JoinColumn(name="calendar_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $calendar;
 
     /**
-     * @var documents[]
-     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Document", mappedBy="eskaera",cascade={"persist", "remove"})
      * @ORM\OrderBy({"orden"="ASC"})
      */
     private $documents;
 
     /**
-     * @var \AppBundle\Entity\Sinatzaileak
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sinatzaileak", inversedBy="eskaera")
      * @ORM\JoinColumn(name="sinatzaileak_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $sinatzaileak;
 
     /**
-     * @var \AppBundle\Entity\Notification
-     *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="eskaera")
      */
     protected $notifications;
 
-
     /**
-     * @var \AppBundle\Entity\Firma
-     *
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="eskaera")
      */
     protected $firma;
 
-
     /**
-     *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Lizentziamota", inversedBy="eskaerak")
      * @ORM\JoinColumn(name="lizentziamota_id", referencedColumnName="id",onDelete="CASCADE")
      * @Expose()
@@ -249,7 +237,7 @@ class Eskaera
     {
         $this->orduak = 0;
         $this->egunak = 0;
-        $this->noiz = new \DateTime();
+        $this->noiz = new DateTime();
         $this->abiatua = false;
         $this->amaitua = false;
         $this->konfliktoa = false;
@@ -268,9 +256,9 @@ class Eskaera
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param File|UploadedFile $image
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setJustifikanteFile(?File $image = null): void
     {
@@ -279,7 +267,7 @@ class Eskaera
         if (null !== $image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updated = new \DateTimeImmutable();
+            $this->updated = new DateTimeImmutable();
         }
     }
 
@@ -350,7 +338,7 @@ class Eskaera
     /**
      * Set hasi
      *
-     * @param \DateTime $hasi
+     * @param DateTime $hasi
      *
      * @return Eskaera
      */
@@ -364,7 +352,7 @@ class Eskaera
     /**
      * Get hasi
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getHasi()
     {
@@ -374,7 +362,7 @@ class Eskaera
     /**
      * Set amaitu
      *
-     * @param \DateTime $amaitu
+     * @param DateTime $amaitu
      *
      * @return Eskaera
      */
@@ -388,7 +376,7 @@ class Eskaera
     /**
      * Get amaitu
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getAmaitu()
     {
@@ -422,7 +410,7 @@ class Eskaera
     /**
      * Set created
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Eskaera
      */
@@ -436,7 +424,7 @@ class Eskaera
     /**
      * Get created
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -446,7 +434,7 @@ class Eskaera
     /**
      * Set updated
      *
-     * @param \DateTime $updated
+     * @param DateTime $updated
      *
      * @return Eskaera
      */
@@ -460,7 +448,7 @@ class Eskaera
     /**
      * Get updated
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -494,11 +482,11 @@ class Eskaera
     /**
      * Set user
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return Eskaera
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -508,7 +496,7 @@ class Eskaera
     /**
      * Get user
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -518,7 +506,7 @@ class Eskaera
     /**
      * Set noiz
      *
-     * @param \DateTime $noiz
+     * @param DateTime $noiz
      *
      * @return Eskaera
      */
@@ -532,7 +520,7 @@ class Eskaera
     /**
      * Get noiz
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getNoiz()
     {
@@ -542,11 +530,11 @@ class Eskaera
     /**
      * Set type
      *
-     * @param \AppBundle\Entity\Type $type
+     * @param Type $type
      *
      * @return Eskaera
      */
-    public function setType(\AppBundle\Entity\Type $type = null)
+    public function setType(Type $type = null)
     {
         $this->type = $type;
 
@@ -556,7 +544,7 @@ class Eskaera
     /**
      * Get type
      *
-     * @return \AppBundle\Entity\Type
+     * @return Type
      */
     public function getType()
     {
@@ -566,11 +554,11 @@ class Eskaera
     /**
      * Set calendar
      *
-     * @param \AppBundle\Entity\Calendar $calendar
+     * @param Calendar $calendar
      *
      * @return Eskaera
      */
-    public function setCalendar(\AppBundle\Entity\Calendar $calendar = null)
+    public function setCalendar(Calendar $calendar = null)
     {
         $this->calendar = $calendar;
 
@@ -580,7 +568,7 @@ class Eskaera
     /**
      * Get calendar
      *
-     * @return \AppBundle\Entity\Calendar
+     * @return Calendar
      */
     public function getCalendar()
     {
@@ -662,11 +650,11 @@ class Eskaera
     /**
      * Set sinatzaileak
      *
-     * @param \AppBundle\Entity\Sinatzaileak $sinatzaileak
+     * @param Sinatzaileak $sinatzaileak
      *
      * @return Eskaera
      */
-    public function setSinatzaileak(\AppBundle\Entity\Sinatzaileak $sinatzaileak = null)
+    public function setSinatzaileak(Sinatzaileak $sinatzaileak = null)
     {
         $this->sinatzaileak = $sinatzaileak;
 
@@ -676,7 +664,7 @@ class Eskaera
     /**
      * Get sinatzaileak
      *
-     * @return \AppBundle\Entity\Sinatzaileak
+     * @return Sinatzaileak
      */
     public function getSinatzaileak()
     {
@@ -686,11 +674,11 @@ class Eskaera
     /**
      * Add firma
      *
-     * @param \AppBundle\Entity\Firma $firma
+     * @param Firma $firma
      *
      * @return Eskaera
      */
-    public function addFirma(\AppBundle\Entity\Firma $firma)
+    public function addFirma(Firma $firma)
     {
         $this->firma[] = $firma;
 
@@ -700,9 +688,9 @@ class Eskaera
     /**
      * Remove firma
      *
-     * @param \AppBundle\Entity\Firma $firma
+     * @param Firma $firma
      */
-    public function removeFirma(\AppBundle\Entity\Firma $firma)
+    public function removeFirma(Firma $firma)
     {
         $this->firma->removeElement($firma);
     }
@@ -710,7 +698,7 @@ class Eskaera
     /**
      * Get firma
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getFirma()
     {
@@ -720,11 +708,11 @@ class Eskaera
     /**
      * Set firma
      *
-     * @param \AppBundle\Entity\Firma $firma
+     * @param Firma $firma
      *
      * @return Eskaera
      */
-    public function setFirma(\AppBundle\Entity\Firma $firma = null)
+    public function setFirma(Firma $firma = null)
     {
         $this->firma = $firma;
 
@@ -734,11 +722,11 @@ class Eskaera
     /**
      * Add notification
      *
-     * @param \AppBundle\Entity\Notification $notification
+     * @param Notification $notification
      *
      * @return Eskaera
      */
-    public function addNotification(\AppBundle\Entity\Notification $notification)
+    public function addNotification(Notification $notification)
     {
         $this->notifications[] = $notification;
 
@@ -748,9 +736,9 @@ class Eskaera
     /**
      * Remove notification
      *
-     * @param \AppBundle\Entity\Notification $notification
+     * @param Notification $notification
      */
-    public function removeNotification(\AppBundle\Entity\Notification $notification)
+    public function removeNotification(Notification $notification)
     {
         $this->notifications->removeElement($notification);
     }
@@ -758,7 +746,7 @@ class Eskaera
     /**
      * Get notifications
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getNotifications()
     {
@@ -840,11 +828,11 @@ class Eskaera
     /**
      * Add document
      *
-     * @param \AppBundle\Entity\Document $document
+     * @param Document $document
      *
      * @return Eskaera
      */
-    public function addDocument(\AppBundle\Entity\Document $document)
+    public function addDocument(Document $document)
     {
         $this->documents[] = $document;
 
@@ -854,9 +842,9 @@ class Eskaera
     /**
      * Remove document
      *
-     * @param \AppBundle\Entity\Document $document
+     * @param Document $document
      */
-    public function removeDocument(\AppBundle\Entity\Document $document)
+    public function removeDocument(Document $document)
     {
         $this->documents->removeElement($document);
     }
@@ -864,7 +852,7 @@ class Eskaera
     /**
      * Get documents
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getDocuments()
     {
@@ -994,11 +982,11 @@ class Eskaera
     /**
      * Set lizentziamota.
      *
-     * @param \AppBundle\Entity\Lizentziamota|null $lizentziamota
+     * @param Lizentziamota|null $lizentziamota
      *
      * @return Eskaera
      */
-    public function setLizentziamota(\AppBundle\Entity\Lizentziamota $lizentziamota = null)
+    public function setLizentziamota(Lizentziamota $lizentziamota = null)
     {
         $this->lizentziamota = $lizentziamota;
 
@@ -1008,7 +996,7 @@ class Eskaera
     /**
      * Get lizentziamota.
      *
-     * @return \AppBundle\Entity\Lizentziamota|null
+     * @return Lizentziamota|null
      */
     public function getLizentziamota()
     {

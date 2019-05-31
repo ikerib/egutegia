@@ -14,7 +14,11 @@ use AppBundle\Form\TypeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Type controller.
@@ -29,7 +33,7 @@ class TypeController extends Controller
      * @Route("/", name="admin_type_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -54,9 +58,9 @@ class TypeController extends Controller
      *
      * @param mixed $calendarid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function listAction($calendarid)
+    public function listAction($calendarid): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -78,9 +82,9 @@ class TypeController extends Controller
      *
      * @param mixed $templateid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function listtemplatetypesAction($templateid)
+    public function listtemplatetypesAction($templateid): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -96,15 +100,21 @@ class TypeController extends Controller
      *
      * @Route("/new", name="admin_type_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $type = new Type();
         $form = $this->createForm(
-            TypeType::class, $type, [
+            TypeType::class,
+            $type,
+            [
             'action' => $this->generateUrl('admin_type_new'),
             'method' => 'POST',
-        ]);
+        ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -129,16 +139,19 @@ class TypeController extends Controller
      * @param Request $request
      * @param Type    $type
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Type $type)
     {
         $deleteForm = $this->createDeleteForm($type);
         $editForm = $this->createForm(
-            TypeType::class, $type, [
+            TypeType::class,
+            $type,
+            [
             'action' => $this->generateUrl('admin_type_edit', ['id' => $type->getId()]),
             'method' => 'POST',
-        ]);
+        ]
+        );
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -160,7 +173,7 @@ class TypeController extends Controller
      * @Route("/{id}", name="admin_type_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, Type $type)
+    public function deleteAction(Request $request, Type $type): RedirectResponse
     {
         $form = $this->createDeleteForm($type);
         $form->handleRequest($request);
@@ -179,7 +192,7 @@ class TypeController extends Controller
      *
      * @param Type $type The type entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Type $type)
     {

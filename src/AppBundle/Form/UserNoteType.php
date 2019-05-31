@@ -12,6 +12,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AppBundle\Entity\User;
 
 class UserNoteType extends AbstractType
 {
@@ -19,14 +20,15 @@ class UserNoteType extends AbstractType
     {
         $builder
             ->add(
-                'notes')
+                'notes'
+            )
             ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\User',
+            'data_class' => User::class,
             'csrf_protection' => false,
         ]);
     }
