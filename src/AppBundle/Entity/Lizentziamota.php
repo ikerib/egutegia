@@ -26,7 +26,7 @@ class Lizentziamota
     /**
      * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=200)
      */
     private $name;
 
