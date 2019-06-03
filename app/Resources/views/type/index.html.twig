@@ -4,12 +4,12 @@
     {{ parent() }}
     <link rel="stylesheet" href="/css/bootstrap-colorpicker.min.css">
 {% endblock %}
-{% block headline %}{{ 'Motak' | trans }} {% endblock  %}
+{% block headline %}{{ 'Instantzia Motak' | trans }} {% endblock  %}
 
 
 {% block content_row %}
         <div id="toolbar">
-            <button id="btnBerria" class="btn btn-default">Mota berria</button>
+            <button id="btnBerria" class="btn btn-default">Instantzia mota berria</button>
         </div>
         <table data-toggle="table"
                data-classes="table table-hover table-condensed"
@@ -52,6 +52,7 @@
                     <th data-halign="center" data-align="center" data-field="erakutsi" data-sortable="true" >{{ 'Erakutsi' | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="erakutsiEskaera" data-sortable="true" >{{ 'Eskaeretan' | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="related" data-sortable="true">{{ 'Erlazioa' | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="lizentziamotabehar" data-sortable="true">{{ 'Lizentzia Motak' | trans }}</th>
                     <th data-halign="center" data-align="center"></th>
                 </tr>
             </thead>
@@ -77,6 +78,13 @@
                         {% endif %}
                     </td>
                     <td>{{ type.related }}</td>
+                    <td>
+                        {% if type.lizentziamotabehar == true %}
+                            <span class="label label-success">{{ 'Bai'|trans }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ 'Ez'|trans }}</span>
+                        {% endif %}
+                    </td>
                     <td>
                         <ul class="list-unstyled list-inline">
                             <li>

@@ -27,11 +27,6 @@ class TypeType extends AbstractType
     {
         $builder
             ->add('name')
-
-//            ->add(
-//                'description',
-//                TextareaType::class
-//            )
             ->add(
                 'description',
                 CKEditorType::class,
@@ -65,6 +60,11 @@ class TypeType extends AbstractType
             ->add('erakutsiEskaera', CheckboxType::class, [
                 'required' => false,
                 'label' => 'Erakutsi eskaeretan',
+                'translation_domain' => 'messages',
+            ])
+            ->add('lizentziamotabehar', CheckboxType::class, [
+                'required' => false,
+                'label' => 'Lizentzia Motak',
                 'translation_domain' => 'messages',
             ])
 

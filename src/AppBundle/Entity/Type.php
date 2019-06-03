@@ -109,6 +109,12 @@ class Type
      */
     private $related;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="lizentziamotabehar", type="boolean", nullable=true)
+     */
+    private $lizentziamotabehar;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -533,5 +539,29 @@ class Type
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * Set lizentziamotabehar.
+     *
+     * @param bool|null $lizentziamotabehar
+     *
+     * @return Type
+     */
+    public function setLizentziamotabehar($lizentziamotabehar = null)
+    {
+        $this->lizentziamotabehar = $lizentziamotabehar;
+
+        return $this;
+    }
+
+    /**
+     * Get lizentziamotabehar.
+     *
+     * @return bool|null
+     */
+    public function getLizentziamotabehar()
+    {
+        return $this->lizentziamotabehar;
     }
 }

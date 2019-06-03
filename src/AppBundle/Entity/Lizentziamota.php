@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -56,7 +58,7 @@ class Lizentziamota
     /*****************************************************************************************************************/
 
     /**
-     * @var \AppBundle\Entity\Eskaera
+     * @var Eskaera
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="lizentziamota")
      */
@@ -141,7 +143,7 @@ class Lizentziamota
     /**
      * Set created.
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Lizentziamota
      */
@@ -155,7 +157,7 @@ class Lizentziamota
     /**
      * Get created.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -165,7 +167,7 @@ class Lizentziamota
     /**
      * Set updated.
      *
-     * @param \DateTime $updated
+     * @param DateTime $updated
      *
      * @return Lizentziamota
      */
@@ -179,7 +181,7 @@ class Lizentziamota
     /**
      * Get updated.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -189,11 +191,11 @@ class Lizentziamota
     /**
      * Add eskaerak.
      *
-     * @param \AppBundle\Entity\Eskaera $eskaerak
+     * @param Eskaera $eskaerak
      *
      * @return Lizentziamota
      */
-    public function addEskaerak(\AppBundle\Entity\Eskaera $eskaerak)
+    public function addEskaerak(Eskaera $eskaerak)
     {
         $this->eskaerak[] = $eskaerak;
 
@@ -203,11 +205,11 @@ class Lizentziamota
     /**
      * Remove eskaerak.
      *
-     * @param \AppBundle\Entity\Eskaera $eskaerak
+     * @param Eskaera $eskaerak
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeEskaerak(\AppBundle\Entity\Eskaera $eskaerak)
+    public function removeEskaerak(Eskaera $eskaerak)
     {
         return $this->eskaerak->removeElement($eskaerak);
     }
@@ -215,7 +217,7 @@ class Lizentziamota
     /**
      * Get eskaerak.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getEskaerak()
     {
