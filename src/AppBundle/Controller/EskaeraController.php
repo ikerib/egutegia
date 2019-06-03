@@ -85,7 +85,8 @@ class EskaeraController extends Controller {
         );
     }
 
-    /**
+
+      /**
      * @Route("/lista", name="admin_eskaera_list")
      * @Method("GET")
      * @param Request $request
