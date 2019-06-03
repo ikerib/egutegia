@@ -26,8 +26,19 @@
                    href="{{ path('admin_eskaera_list', { 'q': 'unadded', 'history':history}) }}">{{ 'Egutegian sartu gabe' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'conflict' %}    btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'conflict', 'history':history}) }}">{{ 'Bateraezinak' | trans }}</a>
-                <a class="btn {% if app.request.get('q') == 'justify' %}    btn-info {% else %} btn-default {% endif %}"
-                   href="{{ path('admin_eskaera_list', { 'q': 'justify', 'history':history}) }}">{{ 'Lizentziak' | trans }}</a>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn {% if app.request.get('q') == 'justify' %} btn-info {% else %} btn-default {% endif %} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Lizentziak
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for lm  in lizentziamotak %}
+                            <li><a href="{{ path('admin_eskaera_list', { 'q': 'justify', 'history':history, 'lm': lm.id }) }}">{{ lm }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                 <a class="btn {% if app.request.get('q') == 'nojustified' %}    btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'nojustified', 'history':history}) }}">{{ 'Lizentziak (Justifikatu gabe)' | trans }}</a>
 
@@ -103,9 +114,8 @@
                     <th data-visible="true" data-halign="center" data-align="left" data-field="id" data-sortable="true">{{ "Nº" | trans }}</th>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="emaitza" data-sortable="true">{{ "Emaitza" |trans }}</th>
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ "Izaera" | trans }}</th>
-                    {#<th data-halign="center" data-align="left" data-field="eskaera.user.department" data-sortable="true">{{ "Saila" | trans }}</th>#}
                     <th data-halign="center" data-align="left" data-field="type " data-sortable="true">{{ "Mota" | trans }}</th>
-                    {#<th data-halign="center" data-align="center" data-field="eskaera.noiz" data-sortable="true">{{ "table.eskaera" | trans }}</th>#}
+                    <th data-visible="false" data-halign="center" data-align="left" data-field="kostua " data-sortable="true">{{ "Kostua" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
@@ -129,16 +139,13 @@
                                 {{ eskaera.name }}
                             </a>
                         </td>
-                        {#<td>#}
-                        {#<span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.user.department }}">#}
-                        {#{{ eskaera.user.department |length > 10 ? eskaera.user.department |slice(0, 10) ~ '...' : eskaera.user.department }}#}
-                        {#</span>#}
-                        {#</td>#}
                         <td>
                         <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
                             {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}
+                            {% if eskaera.lizentziamota %}({{ eskaera.lizentziamota }}){% endif %}
                         </span>
                         </td>
+                        <td>{{ eskaera.kostua ~ " €" }}</td>
                         <td>{{ eskaera.hasi | date('Y-m-d') }}
                             {#{% if eskaera.noiz %}#}
                             {#<label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"#}

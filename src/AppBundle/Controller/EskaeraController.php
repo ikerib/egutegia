@@ -100,14 +100,15 @@ class EskaeraController extends Controller {
 
         $q       = $request->query->get('q');
         $history = $request->query->get('history', '1');
-
+        $lm = $request->query->get('lm');
 
         if ((($q === null) || ($q === 'all')) && $history === '1')
         {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
-        } else
+        }
+        else
         {
-            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history);
+            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history, $lm);
         }
 
         $deleteForms = [];
@@ -117,11 +118,14 @@ class EskaeraController extends Controller {
             $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
 
+        $lizentziamotak = $em->getRepository('AppBundle:Lizentziamota')->findAll();
+
         return $this->render(
             'eskaera/list.html.twig',
             array(
-                'eskaeras'    => $eskaeras,
-                'deleteForms' => $deleteForms,
+                'eskaeras'      => $eskaeras,
+                'deleteForms'   => $deleteForms,
+                'lizentziamotak'=> $lizentziamotak
             )
         );
     }
