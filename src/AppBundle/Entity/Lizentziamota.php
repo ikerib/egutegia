@@ -42,6 +42,14 @@ class Lizentziamota
 
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="kostuabehar", type="boolean", nullable=true)
+     */
+    private $kostuabehar;
+
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      */
@@ -222,5 +230,29 @@ class Lizentziamota
     public function getEskaerak()
     {
         return $this->eskaerak;
+    }
+
+    /**
+     * Set kostuabehar.
+     *
+     * @param bool|null $kostuabehar
+     *
+     * @return Lizentziamota
+     */
+    public function setKostuabehar($kostuabehar = null)
+    {
+        $this->kostuabehar = $kostuabehar;
+
+        return $this;
+    }
+
+    /**
+     * Get kostuabehar.
+     *
+     * @return bool|null
+     */
+    public function getKostuabehar()
+    {
+        return $this->kostuabehar;
     }
 }

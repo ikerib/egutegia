@@ -82,6 +82,14 @@ class Eskaera
      */
     private $total = 0;
 
+
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="kostua", type="decimal", precision=10, scale=2)
+     */
+    private $kostua = 0;
+
     /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
@@ -1001,5 +1009,29 @@ class Eskaera
     public function getLizentziamota()
     {
         return $this->lizentziamota;
+    }
+
+    /**
+     * Set kostua.
+     *
+     * @param string $kostua
+     *
+     * @return Eskaera
+     */
+    public function setKostua($kostua)
+    {
+        $this->kostua = $kostua;
+
+        return $this;
+    }
+
+    /**
+     * Get kostua.
+     *
+     * @return string
+     */
+    public function getKostua()
+    {
+        return $this->kostua;
     }
 }
