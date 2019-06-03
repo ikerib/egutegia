@@ -3,12 +3,14 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Template;
+use Doctrine\DBAL\Types\DecimalType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -121,6 +123,12 @@ class EskaeraType extends AbstractType
             ->add(
                 'lizentziamota'
             )
+            ->add('kostua', MoneyType::class, [
+                'label' => 'Kostua',
+                'divisor' => 100,
+                'required' => false,
+
+            ])
         ;
     }
 

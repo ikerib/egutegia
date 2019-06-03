@@ -108,6 +108,13 @@
                     </div>
                 </div>
 
+                <div class="form-group divkostua">
+                    <label for="appbundle_eskaera_lizentziamota" class="col-sm-4 control-label">{{ 'Kostua' | trans }}</label>
+                    <div class="col-sm-7">
+                        {{ form_widget(form.kostua, { 'attr': {'class': 'form-control'} }) }}
+                    </div>
+                </div>
+
                 <div class="form-group">
 
                     <label for="min-date" class="col-sm-4 control-label">{{ "Justifikantea gehitu" | trans }}</label>
@@ -154,7 +161,32 @@
 
 {% block foot_script %}
     {{ parent() }}
-    <script language="JavaScript">
+
+    <script>
+        var kostuabehar = false;
+        $("#appbundle_eskaera_lizentziamota").on("change", function () {
+            if (this.value !== "" ) {
+                var url = Routing.generate("get_lizentziamota", { id: this.value });
+                $.get(url, function(data, status){
+                    if ( status === "success") {
+                        if ( data.kostuabehar === true ) {
+                            kostuabehar = true;
+                            $(".divkostua").show();
+                        } else {
+                            kostuabehar = false;
+                            $(".divkostua").hide();
+                        }
+                    } else {
+                        kostuabehar = false;
+                        $(".divkostua").hide();
+                    }
+                });
+            } else {
+                kostuabehar = false;
+                $(".divkostua").hide();
+            }
+
+        });
 
         $("#cmdDivOrduak").on("click", function () {
             $("#appbundle_eskaera_total").val(0);
