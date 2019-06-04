@@ -15,6 +15,7 @@ use AppBundle\Entity\Sinatzaileakdet;
 use AppBundle\Entity\User;
 use AppBundle\Form\EskaeraJustifyType;
 use AppBundle\Service\CalendarService;
+use AppBundle\Service\NotificationService;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -537,24 +538,9 @@ class EskaeraController extends Controller {
 
                     // SOILIK LEHENA NOTIFIKATU
 
-                    $notify = new Notification();
-                    $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
-
-                    $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
-                        'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
-                        'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
-
-                    if ($eskaera->getAmaitu() !== null)
-                    {
-                        $desc .= 'Amaitu: '.$eskaera->getAmaitu()->format('Y-m-d');
-                    }
-
-                    $notify->setDescription($desc);
-                    $notify->setEskaera($eskaera);
-                    $notify->setFirma($firma);
-                    $notify->setReaded(false);
-                    $notify->setUser($lehenSinatzaile->getUser());
-                    $em->persist($notify);
+                    /** @var NotificationService $notifysrv */
+                    $notifysrv = $this->container->get('app.sinatzeke');
+                    $notifysrv->sendNotificationToFirst($eskaera, $firma, $lehenSinatzaile);
 
 
                     $em->persist($fd);

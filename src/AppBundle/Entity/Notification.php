@@ -63,6 +63,13 @@ class Notification
     /**
      * @var bool
      *
+     * @ORM\Column(name="sinatzeprozesua", type="boolean", nullable=true,options={"default" : true}))
+     */
+    private $sinatzeprozesua;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="result", type="boolean")
      */
     private $result;
@@ -99,6 +106,7 @@ class Notification
         $this->readed = false;
         $this->result = false;
         $this->notified = false;
+        $this->sinatzeprozesua = true;
     }
 
     /**
@@ -431,5 +439,29 @@ class Notification
     public function getNotified()
     {
         return $this->notified;
+    }
+
+    /**
+     * Set sinatzeprozesua.
+     *
+     * @param bool|null $sinatzeprozesua
+     *
+     * @return Notification
+     */
+    public function setSinatzeprozesua($sinatzeprozesua = null)
+    {
+        $this->sinatzeprozesua = $sinatzeprozesua;
+
+        return $this;
+    }
+
+    /**
+     * Get sinatzeprozesua.
+     *
+     * @return bool|null
+     */
+    public function getSinatzeprozesua()
+    {
+        return $this->sinatzeprozesua;
     }
 }

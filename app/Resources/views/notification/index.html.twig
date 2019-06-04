@@ -58,6 +58,7 @@
            data-show-toggle="true"
            data-show-columns="true"
 
+
            data-toolbar="#toolbar"
            data-show-export="true"
            data-export-types="['csv','excel', 'pdf']"
@@ -74,10 +75,12 @@
                }'
            data-detail-view="true"
            data-detail-formatter="detailFormatter"
+           data-row-style="rowStyle"
     >
 
         <thead>
         <tr>
+            <th data-visible="false" data-field="sinatzeprozesua"></th>
             <th data-halign="center" data-align="center" data-field="id" data-visible="true" data-sortable="true">{{ 'Nº Jakinarazpena' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="eskaera.id" data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="result" data-sortable="true">{{ 'Erantzuna' | trans }}</th>
@@ -95,6 +98,7 @@
         <tbody>
         {% for notification in notifications %}
             <tr>
+                <td>{{ notification.sinatzeprozesua }}</td>
                 <td>{{ notification.id }}</td>
                 <td>{{ notification.eskaera.id }}</td>
 
@@ -144,6 +148,23 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
+
+        function rowStyle(row, index) {
+            if ((row.sinatzeprozesua !== "") && (row.sinatzeprozesua !== undefined) ){
+                console.log(row.sinatzeprozesua);
+                var classes = ["nosig"];
+                if ( row.sinatzeprozesua === "1") {
+                    return {
+                        classes: 'nosign'
+                    }
+                }
+            }
+
+            return {
+                classes: ''
+            }
+
+        }
 
         var $table = $("#tableJakinarazpena");
 
@@ -205,6 +226,8 @@
                     $detail.html(html);
                 });
             });
+
+
         });
     </script>
 

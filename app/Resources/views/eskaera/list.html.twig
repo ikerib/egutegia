@@ -246,18 +246,31 @@
                                         {{ form_end(deleteForms[eskaera.id]) }}
                                     </li>
                                 {% endif %}
-                                {% if eskaera.amaitua != true %}
-                                    <li>
-                                        {% if eskaera.bideratua %}
-                                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                        {% else %}
-                                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
-                                               data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
-                                                <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
-                                            </a>
-                                        {% endif %}
 
-                                    </li>
+                                {% if eskaera.amaitua != true %}
+                                    {% set sinatzeprozesua = true %}
+                                    {% if eskaera.type %}
+                                        {%  if eskaera.type.id == type_lizentzia %}
+                                            {% if eskaera.lizentziamota %}
+                                                {% if eskaera.lizentziamota.sinatubehar == false %}
+                                                    {% set sinatzeprozesua = false %}
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if sinatzeprozesua ==true %}
+                                        <li>
+                                            {% if eskaera.bideratua %}
+                                                <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                                            {% else %}
+                                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
+                                                   data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                                    <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
+                                                </a>
+                                            {% endif %}
+
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
 
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
