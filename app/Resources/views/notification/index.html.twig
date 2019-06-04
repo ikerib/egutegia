@@ -113,7 +113,7 @@
                 </td>
                 <td>{{ notification.eskaera.user.displayname }}</td>
                 <td>{{ notification.eskaera.user.department }}</td>
-                <td>{{ notification.eskaera.type }}</td>
+                <td>{{ notification.eskaera.type }}{% if notification.eskaera.lizentziamota %}({{ notification.eskaera.lizentziamota }}){% endif %}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.total }}</td>
@@ -121,22 +121,23 @@
                 <td>{{ notification.eskaera.oharra|length > 50 ? notification.eskaera.oharra|slice(0, 50) ~ '...' : notification.eskaera.oharra  }}</td>
                 
                 <td>
-                    <ul class="list list-inline">
-                        <li><button type="button" class="btn btn-xs btn-danger btnEskaeraEzOnartu"
-                                    data-firmaid="{{ notification.firma.id }}"
-                                    data-userid="{{ user.id }}"
-                                    data-notifyid="{{ notification.id }}">EZ onartu
-                            </button>
-                        </li>
-                        <li>
-                            <button type="button" class="btn btn-xs btn-primary btnEskaeraOnartu"
-                                    data-firmaid="{{ notification.firma.id }}"
-                                    data-userid="{{ user.id }}"
-                                    data-notifyid="{{ notification.id }}">Onartu
-                            </button>
-                        </li>
-                    </ul>
-
+                    {% if notification.sinatzeprozesua is same as(true) or notification.sinatzeprozesua is null %}
+                        <ul class="list list-inline">
+                            <li><button type="button" class="btn btn-xs btn-danger btnEskaeraEzOnartu"
+                                        data-firmaid="{{ notification.firma.id }}"
+                                        data-userid="{{ user.id }}"
+                                        data-notifyid="{{ notification.id }}">EZ onartu
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn-xs btn-primary btnEskaeraOnartu"
+                                        data-firmaid="{{ notification.firma.id }}"
+                                        data-userid="{{ user.id }}"
+                                        data-notifyid="{{ notification.id }}">Onartu
+                                </button>
+                            </li>
+                        </ul>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -150,14 +151,12 @@
     <script>
 
         function rowStyle(row, index) {
-            if ((row.sinatzeprozesua !== "") && (row.sinatzeprozesua !== undefined) ){
-                console.log(row.sinatzeprozesua);
-                var classes = ["nosig"];
-                if ( row.sinatzeprozesua === "1") {
+            if (row.sinatzeprozesua === "") {
+                
                     return {
                         classes: 'nosign'
                     }
-                }
+
             }
 
             return {

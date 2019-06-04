@@ -38,6 +38,7 @@ class NotificationService
     public function sendNotificationToFirst($eskaera, $firma, $lehenSinatzaile): void
     {
         $notify = new Notification();
+        $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
         $desc = '';
         /** @var Eskaera $eskaera */
         if ($eskaera->getLizentziamota()) {
@@ -48,8 +49,7 @@ class NotificationService
                     'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
                     'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
             } else {
-                $notify->setName('Eskaera berria sinatzeke: '.$eskaera->getUser()->getDisplayname());
-
+                $notify->setSinatzeprozesua(true);
                 $desc = $eskaera->getUser()->getDisplayname()." langilearen eskaera berria daukazu sinatzeke.\n".
                     'Egutegia: '.$eskaera->getCalendar()->getName().'\n'.
                     'Hasi: '.$eskaera->getHasi()->format('Y-m-d').'\n';
