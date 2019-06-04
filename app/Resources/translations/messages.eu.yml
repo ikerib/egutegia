@@ -153,6 +153,7 @@ msg.ezabatu: 'ziur zaude ezabatu nahi duzula?'
 'Eskaera eguna': 'Eskaera eguna'
 main_menu.eskaerak: Eskaerak
 user_menu.eskaerak: Instantziak
+user_menu.eskaera.new: 'Instantzia berria'
 Ekintzak: Ekintzak
 table.eskaera: Data
 'eskaera berria': 'eskaera berria'

@@ -155,6 +155,7 @@ msg.ezabatu: '¿Seguro de que deseas eliminar?'
 'Eskaera eguna': 'Fecha petición'
 main_menu.eskaerak: Peticiones
 user_menu.eskaerak: Instancias
+user_menu.eskaera.new: 'Nueva instancia'
 Ekintzak: '  Acciones  '
 table.eskaera: Fecha
 Ikusi: __Ikusi

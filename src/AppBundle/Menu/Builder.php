@@ -107,6 +107,9 @@ class Builder implements ContainerAwareInterface
         }
 
         if ($checker->isGranted('ROLE_USER')) {
+
+            $menu->addChild('user_menu.eskaera.new', ['icon' => 'send', 'route' => 'eskaera_instantziak'])->setExtra('translation_domain', 'messages');
+
             if (\count($notifications) === 0) {
                 $menu->addChild('User', array('label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));
             } else {

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -110,7 +111,7 @@ class Notification
     }
 
     /**
-     * @var \AppBundle\Entity\Firma
+     * @var Firma
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Firma", inversedBy="notifications")
      * @ORM\JoinColumn(name="firma_id", referencedColumnName="id",onDelete="CASCADE")
@@ -118,7 +119,7 @@ class Notification
     private $firma;
 
     /**
-     * @var \AppBundle\Entity\Eskaera
+     * @var Eskaera
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="notifications")
      * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
@@ -126,7 +127,7 @@ class Notification
     private $eskaera;
 
     /**
-     * @var \AppBundle\Entity\User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="notifications")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id",onDelete="CASCADE")
@@ -276,7 +277,7 @@ class Notification
     /**
      * Set created
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Notification
      */
@@ -290,7 +291,7 @@ class Notification
     /**
      * Get created
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -300,7 +301,7 @@ class Notification
     /**
      * Set updated
      *
-     * @param \DateTime $updated
+     * @param DateTime $updated
      *
      * @return Notification
      */
@@ -314,7 +315,7 @@ class Notification
     /**
      * Get updated
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdated()
     {
@@ -348,11 +349,11 @@ class Notification
     /**
      * Set firma
      *
-     * @param \AppBundle\Entity\Firma $firma
+     * @param Firma $firma
      *
      * @return Notification
      */
-    public function setFirma(\AppBundle\Entity\Firma $firma = null)
+    public function setFirma(Firma $firma = null)
     {
         $this->firma = $firma;
 
@@ -362,7 +363,7 @@ class Notification
     /**
      * Get firma
      *
-     * @return \AppBundle\Entity\Firma
+     * @return Firma
      */
     public function getFirma()
     {
@@ -372,11 +373,11 @@ class Notification
     /**
      * Set eskaera
      *
-     * @param \AppBundle\Entity\Eskaera $eskaera
+     * @param Eskaera $eskaera
      *
      * @return Notification
      */
-    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    public function setEskaera(Eskaera $eskaera = null)
     {
         $this->eskaera = $eskaera;
 
@@ -386,7 +387,7 @@ class Notification
     /**
      * Get eskaera
      *
-     * @return \AppBundle\Entity\Eskaera
+     * @return Eskaera
      */
     public function getEskaera()
     {
@@ -396,11 +397,11 @@ class Notification
     /**
      * Set user
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return Notification
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -410,7 +411,7 @@ class Notification
     /**
      * Get user
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

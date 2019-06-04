@@ -264,7 +264,7 @@
                                                 <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                             {% else %}
                                                 <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}"
-                                                   data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id}) }}">
+                                                   data-myURL="{{ path('admin_eskaera_edit', {'id': eskaera.id, 'q': q, 'history': history, 'lm': lm}) }}">
                                                     <i class="fa fa-paper-plane" aria-hidden="true"></i> {{ "Bideratu" | trans }}
                                                 </a>
                                             {% endif %}

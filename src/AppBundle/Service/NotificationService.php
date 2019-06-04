@@ -62,9 +62,13 @@ class NotificationService
 
         $notify->setDescription($desc);
         $notify->setEskaera($eskaera);
-        $notify->setFirma($firma);
+        if ($firma) {
+            $notify->setFirma($firma);
+        }
+
         $notify->setReaded(false);
         $notify->setUser($lehenSinatzaile->getUser());
         $this->em->persist($notify);
+        $this->em->flush();
     }
 }

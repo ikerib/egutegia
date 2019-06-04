@@ -126,7 +126,10 @@ class EskaeraController extends Controller {
             array(
                 'eskaeras'      => $eskaeras,
                 'deleteForms'   => $deleteForms,
-                'lizentziamotak'=> $lizentziamotak
+                'lizentziamotak'=> $lizentziamotak,
+                'q'             => $q,
+                'history'       => $history,
+                'lm'            => $lm
             )
         );
     }
@@ -468,15 +471,26 @@ class EskaeraController extends Controller {
     public function editAction(Request $request, Eskaera $eskaera)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
+        $q       = $request->query->get('q');
+        $history = $request->query->get('history', '0');
+        $lm = $request->query->get('lm');
+
         $deleteForm = $this->createDeleteForm($eskaera);
         $editForm   = $this->createForm(
             EskaeraType::class,
             $eskaera,
             array(
-                'action' => $this->generateUrl('admin_eskaera_edit', array('id' => $eskaera->getId())),
+                'action' => $this->generateUrl('admin_eskaera_edit', array(
+                    'id' => $eskaera->getId(),
+                    'q'=>$q,
+                    'history'=>$history,
+                    'lm'=>$lm
+                    )
+                ),
                 'method' => 'POST',
             )
         );
+
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid())
@@ -490,72 +504,91 @@ class EskaeraController extends Controller {
                  */
                 if ($eskaera->getAbiatua() === false)
                 {
-                    $firma = new Firma();
-                    $firma->setName($eskaera->getName());
-                    $firma->setSinatzaileak($eskaera->getSinatzaileak());
-                    $firma->setEskaera($eskaera);
-                    $firma->setCompleted(0);
-                    $em->persist($firma);
-                    $em->flush();
-
                     $eskaera->setAbiatua(true);
+                    $sinatubeharda = true;
+                    /** @var NotificationService $notifysrv */
+                    $notifysrv = $this->container->get('app.sinatzeke');
 
-                    $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($firma->getSinatzaileak()->getId());
-                    /** @var Sinatzaileakdet $lehenSinatzaile */
-                    $lehenSinatzaile = $sinatzaileusers[ 0 ];
-                    /** @var Sinatzaileakdet $s */
-                    foreach ($sinatzaileusers as $s)
-                    {
-                        /** @var Firmadet $fd */
-                        $fd = new Firmadet();
-                        $fd->setFirma($firma);
-                        $fd->setSinatzaileakdet($s);
-
-                        /* TODO: Eskatzailea sinatzaile zerrendan badago autofirmatu */
-
-                        $eskatzaile_id = $eskaera->getUser()->getId();
-
-                        if ($s->getUser()->getId() === $eskatzaile_id)
+                    $firma = new Firma();
+                    if ($eskaera->getLizentziamota()){
+                        if ($eskaera->getLizentziamota()->getSinatubehar() === false)
                         {
-                            // Autofirmatu. Eskatzailea eta sinatzaile zerrendako user berdinak direnez, firmatu
-
-                            /** @var \GuzzleHttp\Client $client */
-                            $client = $this->get('eight_points_guzzle.client.api_put_firma');
-                            $url    = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
-//                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json';
-
-                            $client->request('PUT', $url, ['json' => $eskaera, 'autofirma' => 1]);
-
-                            $firmatzailea = $em->getRepository('AppBundle:User')->find($eskatzaile_id);
-
-                            $fd->setAutofirma(true);
-                            $fd->setFirmatua(true);
-                            $fd->setFirmatzailea($firmatzailea);
+                            $sinatubeharda = false;
                         }
-                        $em->persist($fd);
                     }
 
 
-                    // SOILIK LEHENA NOTIFIKATU
+                    $sinatzaileusers = $em->getRepository('AppBundle:Sinatzaileakdet')->findAllByIdSorted($eskaera->getSinatzaileak()->getId());
+                    /** @var Sinatzaileakdet $lehenSinatzaile */
+                    $lehenSinatzaile = $sinatzaileusers[ 0 ];
 
-                    /** @var NotificationService $notifysrv */
-                    $notifysrv = $this->container->get('app.sinatzeke');
-                    $notifysrv->sendNotificationToFirst($eskaera, $firma, $lehenSinatzaile);
+                    if ($sinatubeharda) {
 
+                        $firma->setName($eskaera->getName());
+                        $firma->setSinatzaileak($eskaera->getSinatzaileak());
+                        $firma->setEskaera($eskaera);
+                        $firma->setCompleted(0);
+                        $em->persist($firma);
+//                        $em->flush();
 
-                    $em->persist($fd);
+                        /** @var Sinatzaileakdet $s */
+                        foreach ($sinatzaileusers as $s)
+                        {
+                            /** @var Firmadet $fd */
+                            $fd = new Firmadet();
+                            $fd->setFirma($firma);
+                            $fd->setSinatzaileakdet($s);
 
+                            /* TODO: Eskatzailea sinatzaile zerrendan badago autofirmatu */
 
-                    $eskaera->setBideratua(true);
-                    $em->persist($eskaera);
+                            $eskatzaile_id = $eskaera->getUser()->getId();
+
+                            if ($s->getUser()->getId() === $eskatzaile_id)
+                            {
+                                // Autofirmatu. Eskatzailea eta sinatzaile zerrendako user berdinak direnez, firmatu
+
+                                /** @var \GuzzleHttp\Client $client */
+                                $client = $this->get('eight_points_guzzle.client.api_put_firma');
+//                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
+                                $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1';
+
+                                $client->request('PUT', $url, ['json' => $eskaera, 'autofirma' => 1]);
+
+                                $firmatzailea = $em->getRepository('AppBundle:User')->find($eskatzaile_id);
+
+                                $fd->setAutofirma(true);
+                                $fd->setFirmatua(true);
+                                $fd->setFirmatzailea($firmatzailea);
+                            }
+                            $em->persist($fd);
+                        }
+                        $em->persist($fd);
+                        $eskaera->setBideratua(true);
+                        $em->persist($eskaera);
+                        $em->flush();
+                        // SOILIK LEHENA NOTIFIKATU
+                        $notifysrv->sendNotificationToFirst($eskaera, $firma, $lehenSinatzaile);
+                    } else {
+                        $eskaera->setBideratua(true);
+                        $eskaera->setAmaitua(true);
+                        $em->persist($eskaera);
+                        $em->flush();
+                        // SOILIK LEHENA NOTIFIKATU
+                        $notifysrv->sendNotificationToFirst($eskaera, null, $lehenSinatzaile);
+                    }
+
                 } elseif ($eskaera->getAmaitua() === false)
                 {
                     echo 'kaka';
                 }
             }
-            $em->flush();
 
-            return $this->redirectToRoute('admin_eskaera_list');
+
+            return $this->redirectToRoute('admin_eskaera_list', [
+                'q'=>$q,
+                'history'=> $history,
+                'lm'=>$lm
+            ]);
         }
 
         return $this->render(
