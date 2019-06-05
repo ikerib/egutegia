@@ -59,6 +59,12 @@ class User extends BaseUser implements LdapUserInterface
     protected $nan;
 
     /**
+     * @ORM\Column(type="boolean", length=255, nullable=true, options={"default": false})
+     * @Expose
+     */
+    protected $sailburuada;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
@@ -472,5 +478,29 @@ class User extends BaseUser implements LdapUserInterface
     public function getHizkuntza()
     {
         return $this->hizkuntza;
+    }
+
+    /**
+     * Set sailburuada.
+     *
+     * @param bool|null $sailburuada
+     *
+     * @return User
+     */
+    public function setSailburuada($sailburuada = null)
+    {
+        $this->sailburuada = $sailburuada;
+
+        return $this;
+    }
+
+    /**
+     * Get sailburuada.
+     *
+     * @return bool|null
+     */
+    public function getSailburuada()
+    {
+        return $this->sailburuada;
     }
 }

@@ -11,6 +11,7 @@ namespace AppBundle\Security\Authentication;
 
 use AppBundle\Entity\Log;
 use AppBundle\Entity\User;
+use AppBundle\Service\LdapService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
@@ -45,16 +46,19 @@ class LdapAuthenticationProvider extends BaseProvider
 
     private $em;
 
+    private $ldapservice;
+
     /**
      * Constructor.
      *
-     * @param UserCheckerInterface $userChecker An UserCheckerInterface interface
-     * @param string $providerKey A provider key
-     * @param UserProviderInterface $userProvider An UserProviderInterface interface
-     * @param LdapManagerInterface $ldapManager An LdapProviderInterface interface
-     * @param UserManagerInterface $userManager
-     * @param bool $hideUserNotFoundExceptions Whether to hide user not found exception or not
+     * @param UserCheckerInterface   $userChecker                An UserCheckerInterface interface
+     * @param string                 $providerKey                A provider key
+     * @param UserProviderInterface  $userProvider               An UserProviderInterface interface
+     * @param LdapManagerInterface   $ldapManager                An LdapProviderInterface interface
+     * @param UserManagerInterface   $userManager
+     * @param bool                   $hideUserNotFoundExceptions Whether to hide user not found exception or not
      * @param EntityManagerInterface $em
+     * @param                        $ldap_service
      */
     public function __construct(
         UserCheckerInterface $userChecker,
@@ -63,7 +67,8 @@ class LdapAuthenticationProvider extends BaseProvider
         LdapManagerInterface $ldapManager,
         UserManagerInterface $userManager,
         $hideUserNotFoundExceptions = true,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        $ldap_service
     ) {
         parent::__construct($userChecker, $providerKey, $userProvider, $ldapManager, $hideUserNotFoundExceptions);
 
@@ -71,6 +76,7 @@ class LdapAuthenticationProvider extends BaseProvider
         $this->ldapManager = $ldapManager;
         $this->userManager = $userManager;
         $this->em = $em;
+        $this->ldapservice = $ldap_service;
     }
 
     /**
@@ -116,6 +122,12 @@ class LdapAuthenticationProvider extends BaseProvider
                         if ($ldapUser->getHizkuntza()) {
                             $user->setHizkuntza($ldapUser->getHizkuntza());
                         }
+                        /** @var LdapService $ldapsrv */
+                        $ldapsrv = $this->ldapservice;
+
+                        $sail = $ldapsrv->getSailburuada($user->getUsername());
+
+                        $user->setSailburuada($sail);
                         $this->userManager->updateUser($user);
                     }
                 }
@@ -127,6 +139,9 @@ class LdapAuthenticationProvider extends BaseProvider
             $log->setDescription($user->getUsername());
             $this->em->persist($log);
             $this->em->flush();
+
+
+
 
             return $user;
         } catch (UsernameNotFoundException $notFound) {

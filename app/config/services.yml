@@ -41,7 +41,9 @@ services:
             - '@fos_user.user_manager'
             - "%security.authentication.hide_user_not_found%"
             - "@doctrine.orm.entity_manager"
+            - "@app.ldap.service"
             - '@logger'
+
     app.ldap.user_hydrator:
         public: true
         class: AppBundle\Ldap\UserHydrator
@@ -77,3 +79,8 @@ services:
         arguments: ['AppBundle:Eskaera']
         calls:
             - ["setLizentziaType", ["%type_lizentzia%"]]
+
+    app.ldap.service:
+        public: true
+        class: AppBundle\Service\LdapService
+
