@@ -32,6 +32,7 @@
                     <th>{{ "Bideratua" | trans }}</th>
                     <th>{{ "Gauzatua" | trans }}</th>
                     <th>{{ "Justifikatea" | trans }}</th>
+                    <th>{{ "Oharrak" }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -78,6 +79,11 @@
                                     <span class="label label-danger">{{ "Ez" | trans }}</span>
                                 {% endif %}
                             {% endif %}
+                        </td>
+                        <td>
+                            <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.oharra }}">
+                            {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra }}
+                        </span>
                         </td>
                         <td>
                             <ul>
