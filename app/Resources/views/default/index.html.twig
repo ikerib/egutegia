@@ -48,7 +48,7 @@
         <thead>
         <tr>
             <th data-checkbox="true"></th>
-            {#<th data-visible="false" data-switchable="false" data-field="id"></th>#}
+            <th data-visible="false" data-switchable="false" data-field="id"></th>
             {% if is_granted('ROLE_BIDERATZAILEA') or is_granted('ROLE_SUPER_ADMIN') %}
                 <th data-halign="center" data-align="center"></th>
             {% endif %}
@@ -71,7 +71,7 @@
         {% for user in userdata if user.user.has('firstName') and user.user.has('lastName') %}
             <tr>
                 <td></td>
-
+                <td>{% if user.user.has('username') %}{{ user.user.get('username') }}{% endif %}</td>
                 {% if is_granted('ROLE_BIDERATZAILEA') or is_granted('ROLE_SUPER_ADMIN') %}
                     <td class="nireTD">
                         <a href="{{ path('homepage', { _switch_user: user.user.get('username') }) }}">
