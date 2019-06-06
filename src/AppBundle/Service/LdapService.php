@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Ldap\Adapter\ExtLdap\Adapter;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Zend\Ldap\Exception\LdapException;
 
 class LdapService
 {
@@ -29,16 +30,22 @@ class LdapService
     /** @var string extracts group name from dn string */
     private $groupNameRegExp = '/^CN=(?P<group>[^,]+)/i'; // You might want to change it to match your ldap server
 
+    private $ip;
+    private $searchdn;
+    private $basedn;
+    private $passwd;
 
 
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct($ip, $searchdn, $basedn, $passwd)
     {
-
+        $this->ip = $ip;
+        $this->searchdn = $searchdn;
+        $this->basedn = $basedn;
+        $this->passwd = $passwd;
     }
 
     public function getSailburuada($username)
     {
-
         $result = $this->getLdapInfo($username);
         $count = count($result);
 
@@ -72,31 +79,63 @@ class LdapService
         }
 
         return $this->sailburuada;
-
     }
 
 
     public function getLdapInfo($username)
     {
-        /** Irakurri .env datuak  **/
-//        $ip       = $this->getParameter('172.28.64.23');
-        $ip       = '172.28.64.23';
-//        $searchdn = $this->getParameter('CN=izfeprint,CN=Users,DC=pasaia,DC=net');
-        $searchdn = 'CN=izfeprint,CN=Users,DC=pasaia,DC=net';
-//        $basedn   = $this->getParameter('DC=pasaia,DC=net');
-        $basedn   = 'DC=pasaia,DC=net';
-//        $passwd   = $this->getParameter('izfeprint');
-        $passwd   = 'izfeprint';
+        $ip       = $this->ip;
+        $searchdn = $this->searchdn;
+        $basedn   = $this->basedn;
+        $passwd   = $this->passwd;
 
 
         /**
          * LDAP KONTSULTA EGIN erabiltzailearen bila
          */
         $ldap = new Adapter(array( 'host' => $ip ));
-        $ldap->getConnection()->bind($searchdn, $passwd);
+        try {
+            $ldap->getConnection()->bind($searchdn, $passwd);
+        } catch (LdapException $e) {
+            throwException($e);
+        }
+
+
+        if (!$ldap) {
+            die('Ezin da LDAP-ekin konektatu');
+        }
+
         $query = $ldap->createQuery($basedn, "(sAMAccountName=$username)", array());
 
         return $query->execute();
+    }
+
+    public function getGroupUsersRecurive($groupname)
+    {
+        $ip       = $this->ip;
+        $searchdn = $this->searchdn;
+        $basedn   = $this->basedn;
+        $passwd   = $this->passwd;
+
+
+        $ldap = ldap_connect($ip) or die('Could not connect to LDAP');
+
+        ldap_bind($ldap, $searchdn, $passwd) or die('Could not bind to LDAP');
+
+
+        $gFilter = '(&(objectClass=posixAccount)(memberOf:1.2.840.113556.1.4.1941:=CN=Taldea-Hirigintza,CN=Users,DC=pasaia,DC=net))';
+        $gAttr = array('samAccountName');
+        $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
+        $ldapusers = ldap_get_entries($ldap, $result);
+        $users = [];
+        foreach ($ldapusers as $key => $value) {
+            if ($key !== "count") {
+                $username = $value[ 'samaccountname' ][ 0 ];
+                $users[]  = $username;
+            }
+        }
+
+        return $users;
     }
 
 

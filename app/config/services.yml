@@ -83,4 +83,9 @@ services:
     app.ldap.service:
         public: true
         class: AppBundle\Service\LdapService
+        arguments:
+            - '%ldap_server%'
+            - '%ldap_searchdn%'
+            - '%ldap_base_dn%'
+            - '%ldap_password%'
 

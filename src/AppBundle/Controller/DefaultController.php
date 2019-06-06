@@ -12,6 +12,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
+use AppBundle\Service\LdapService;
 use function count;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -112,6 +113,10 @@ class DefaultController extends Controller
         //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round($calendar->getHoursSelf(), 2);
 
+
+        /** @var LdapService $ldapsrv */
+        $ldapsrv = $this->get('app.ldap.service');
+        $users = $ldapsrv->getGroupUsersRecurive('OU=Taldea-Hirigintza,DC=Pasaia,DC=Net');
 
         return $this->render(
             'default/user_homepage.html.twig',
