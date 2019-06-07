@@ -151,6 +151,20 @@ class Builder implements ContainerAwareInterface
 
             $menu[ 'User' ]->addChild('divider', ['divider' => true]);
 
+            if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
+                $menu[ 'User' ]->addChild(
+                    'Saila',
+                    array(
+                        'label'  => $this->container->get('translator')->trans('Saila'),
+                        'route'  => 'saila_dashboard',
+                        'icon'   => 'bullhorn',
+                        'extras' => array('safe_label' => true),
+                    )
+                )->setExtra('translation_domain', 'messages');
+                $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
+            }
+
+
             if ($checker->isGranted('ROLE_SINATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
                 $menu[ 'User' ]->addChild(
                     'Jakinarazpenak',
@@ -163,20 +177,6 @@ class Builder implements ContainerAwareInterface
                     )
                 )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
-            }
-
-            if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
-                $menu[ 'User' ]->addChild(
-                    'Saila',
-                    array(
-                        'label'  => $this->container->get('translator')->trans('Saila'),
-                        'route'  => 'notification_index',
-                        'routeParameters' => array('q'=>'unanswered'),
-                        'icon'   => 'bullhorn',
-                        'extras' => array('safe_label' => true),
-                    )
-                )->setExtra('translation_domain', 'messages');
-                $menu[ 'User' ]->addChild('divider3', ['divider' => true]);
             }
 
             $menu[ 'User' ]->addChild(

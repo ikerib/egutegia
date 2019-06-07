@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,7 @@ class AdminController extends Controller
      */
     public function dashboardAction(): Response
     {
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
         $ldap = $this->get('ldap_tools.ldap_manager');
@@ -89,4 +91,7 @@ class AdminController extends Controller
             ]
         );
     }
+
+
+
 }

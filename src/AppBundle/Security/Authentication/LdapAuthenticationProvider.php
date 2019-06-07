@@ -127,9 +127,10 @@ class LdapAuthenticationProvider extends BaseProvider
 
                         $sail = $ldapsrv->checkSailburuada($user->getUsername());
 
-                        $user->setSailburuada($sail);
-                        if ($user->getSailburuada()) {
+                        $user->setSailburuada($sail['sailburuada']);
+                        if ($sail['sailburuada']) {
                             $user->addRole('ROLE_SAILBURUA');
+                            $user->setLdapsaila($sail[ 'saila' ]);
                         }
                         $this->userManager->updateUser($user);
                     }
