@@ -125,7 +125,7 @@ class LdapAuthenticationProvider extends BaseProvider
                         /** @var LdapService $ldapsrv */
                         $ldapsrv = $this->ldapservice;
 
-                        $sail = $ldapsrv->getSailburuada($user->getUsername());
+                        $sail = $ldapsrv->checkSailburuada($user->getUsername());
 
                         $user->setSailburuada($sail);
                         if ($user->getSailburuada()) {

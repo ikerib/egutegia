@@ -68,6 +68,12 @@ class User extends BaseUser implements LdapUserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
+    protected $ldapsaila;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Expose
+     */
     protected $hizkuntza;
 
     /**
@@ -502,5 +508,29 @@ class User extends BaseUser implements LdapUserInterface
     public function getSailburuada()
     {
         return $this->sailburuada;
+    }
+
+    /**
+     * Set ldapsaila.
+     *
+     * @param string|null $ldapsaila
+     *
+     * @return User
+     */
+    public function setLdapsaila($ldapsaila = null)
+    {
+        $this->ldapsaila = $ldapsaila;
+
+        return $this;
+    }
+
+    /**
+     * Get ldapsaila.
+     *
+     * @return string|null
+     */
+    public function getLdapsaila()
+    {
+        return $this->ldapsaila;
     }
 }

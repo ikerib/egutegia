@@ -54,7 +54,6 @@ services:
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
 
-
     app.document.directory_namer:
         public: true
         class: AppBundle\Service\DirectoryNamer
@@ -85,7 +84,7 @@ services:
         class: AppBundle\Service\LdapService
         arguments:
             - '%ldap_server%'
-            - '%ldap_searchdn%'
+            - '%ldap_username%'
             - '%ldap_base_dn%'
             - '%ldap_password%'
 
