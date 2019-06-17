@@ -174,7 +174,6 @@ class DefaultController extends Controller
             $userdata[] = $u;
         }
 
-        dump($userdata);
 
         return $this->render(
             'default/saila.html.twig',
