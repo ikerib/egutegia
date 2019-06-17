@@ -154,7 +154,7 @@ class DefaultController extends Controller
         $ldapsrv = $this->get('app.ldap.service');
         /** @var User $user */
         $user = $this->getUser();
-        $users = $ldapsrv->getGroupUsersRecurive('Taldea-'.$user->getLdapsaila());
+        $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());
         $userdata = [];
         foreach ($users as $username) {
             /** @var User $user */
@@ -174,7 +174,7 @@ class DefaultController extends Controller
             $userdata[] = $u;
         }
 
-
+        dump($userdata);
 
         return $this->render(
             'default/saila.html.twig',

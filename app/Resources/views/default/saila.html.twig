@@ -65,33 +65,44 @@
     <tr>
         <td></td>
         <td>{{ user.user.username }}</td>
+        <td>{{ user.user.username }}</td>
         <td>{{ user.user.displayName }}</td>
         <td>{{ user.user.department }}</td>
         <td>
-            {{ user.calendar[0].hoursYear }} /
-            {% if user.calendar[0].template is not null %}
-                {{ user.calendar[0].template.hoursYear }}
-            {% else %}
-                -
-            {% endif %}
+            {%  for c in user.calendar %}
+                {{ c.hoursYear }} /
+                {% if c.template is not null %}
+                    {{ c.template.hoursYear }}
+                {% else %}
+                    -
+                {% endif %}
+            {% endfor %}
         </td>
         <td>
-            {{ user.calendar[0].hoursFree }} /
-            {% if user.calendar[0].template is not null %}
-                {{ user.calendar[0].template.hoursFree }}
-            {% else %}
-                -
-            {% endif %}
+            {% for c in user.calendar %}
+                {{ c.hoursFree }} /
+                {% if c.template is not null %}
+                    {{ c.template.hoursFree }}
+                {% else %}
+                    -
+                {% endif %}
+            {% endfor %}
         </td>
         <td>
-            {{ user.calendar[0].hoursSelf }} /
-            {% if user.calendar[0].template is not null %}
-                {{ user.calendar[0].template.hoursSelf }}
-            {% else %}
-                -
-            {% endif %}
+            {% for c in user.calendar %}
+                {{ c.hoursSelf }} /
+                {% if c.template is not null %}
+                    {{ c.template.hoursSelf }}
+                {% else %}
+                    -
+                {% endif %}
+            {% endfor %}
         </td>
-        <td>{{ user.calendar[0].hoursCompensed }} </td>
+        <td>
+            {% for c in user.calendar %}
+                {{ c.hoursCompensed }}
+            {% endfor %}
+        </td>
     </tr>
     {% endfor %}
     </tbody>
