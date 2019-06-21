@@ -154,11 +154,37 @@ class DefaultController extends Controller
         $ldapsrv = $this->get('app.ldap.service');
         /** @var User $user */
         $user = $this->getUser();
-        $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());
+        if ($this->isGranted('ROLE_ALKATEA')) {
+//            $ldap = $this->get('ldap_tools.ldap_manager');
+//
+//            $users = $ldap->buildLdapQuery()
+//                              ->select(
+//                                  [
+//                                      'name',
+//                                      'guid',
+//                                      'username',
+//                                      'emailAddress',
+//                                      'firstName',
+//                                      'lastName',
+//                                      'dn',
+//                                      'department',
+//                                      'description',
+//                                  ]
+//                              )
+//                              ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+            $users = $ldapsrv->getAllUsers();
+        } else {
+            $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());
+        }
+
         $userdata = [];
         foreach ($users as $username) {
             /** @var User $user */
             $sailauser = $em->getRepository('AppBundle:User')->getByUsername($username);
+
+            if (!$sailauser) {
+                continue;
+            }
 
             $u = [];
             $u['user'] = $sailauser;
@@ -166,6 +192,9 @@ class DefaultController extends Controller
                 $username,
                 date('Y')
             );
+            if (!$calendar) {
+                continue;
+            }
             $u['calendar'] = $calendar;
 
             $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($username);

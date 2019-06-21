@@ -27,6 +27,34 @@ class LdapService
     }
 
 
+    public function getAllUsers(): array
+    {
+        $ip       = $this->ip;
+        $ldap_username = $this->ldap_username;
+        $basedn   = $this->basedn;
+        $passwd   = $this->passwd;
+
+
+        $ldap = ldap_connect($ip) or die('Could not connect to LDAP');
+
+        ldap_bind($ldap, $ldap_username, $passwd) or die('Could not bind to LDAP');
+
+
+//        $gFilter = '(&(objectClass=posixAccount)(CN=^*,CN=Users,DC=pasaia,DC=net))';
+        $gFilter = '(&(objectCategory=person)(objectClass=user))';
+        $gAttr = array('samAccountName');
+        $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
+        $ldapusers = ldap_get_entries($ldap, $result);
+        $users = [];
+        foreach ($ldapusers as $key => $value) {
+            if ($key !== 'count') {
+                $username = $value[ 'samaccountname' ][ 0 ];
+                $users[]  = $username;
+            }
+        }
+
+        return $users;
+    }
 
     public function getGroupUsersRecurive($groupname): array
     {
@@ -88,6 +116,27 @@ class LdapService
                 }
             }
         }
+
+        return $resp;
+    }
+
+    public function checkAlkateada($username): array
+    {
+        $ip       = $this->ip;
+        $ldap_username = $this->ldap_username;
+        $basedn   = $this->basedn;
+        $passwd   = $this->passwd;
+        $resp = [];
+
+        $ldap = ldap_connect($ip) or die('Could not connect to LDAP');
+        ldap_bind($ldap, $ldap_username, $passwd) or die('Could not bind to LDAP');
+
+        // Sailburuada
+        $gFilter = "(&(samAccountName=$username)(memberOf:1.2.840.113556.1.4.1941:=CN=ROL-Alkatetza_Alkatea,CN=Users,DC=pasaia,DC=net))";
+        $gAttr = array('samAccountName');
+        $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
+        $result = ldap_get_entries($ldap, $result);
+        $resp[ 'alkateada' ] = $result[ 'count' ];
 
         return $resp;
     }
