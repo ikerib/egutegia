@@ -6,7 +6,11 @@ use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Sinatzaileakdet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Form\SinatzaileakType;
 
 /**
  * Sinatzaileak controller.
@@ -28,9 +32,9 @@ class SinatzaileakController extends Controller
         $sinatzaileaks = $em->getRepository('AppBundle:Sinatzaileak')->findAll();
 
         $deleteForms = [];
-        foreach ( $sinatzaileaks as $e ) {
+        foreach ($sinatzaileaks as $e) {
             /** @var Sinatzaileak $e */
-            $deleteForms[ $e->getId() ] = $this->createDeleteForm( $e )->createView();
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
 
         return $this->render('sinatzaileak/index.html.twig', array(
@@ -75,16 +79,16 @@ class SinatzaileakController extends Controller
      * @Method("GET")
      * @param Sinatzaileak $sinatzaileak
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Sinatzaileak $sinatzaileak)
+    public function showAction(Sinatzaileak $sinatzaileak): Response
     {
         $deleteForm = $this->createDeleteForm($sinatzaileak);
 
         $deleteForms = [];
         /** @var Sinatzaileakdet $sd */
         $sd = $sinatzaileak->getSinatzaileakdet();
-        foreach ($sd as $s ) {
+        foreach ($sd as $s) {
             /** @var Sinatzaileakdet $s */
             $deleteForms[$s->getId()] = $this->createDeleteFormSinatzaileakkDet($s)->createView();
         }
@@ -101,11 +105,15 @@ class SinatzaileakController extends Controller
      *
      * @Route("/{id}/edit", name="admin_sinatzaileak_edit")
      * @Method({"GET", "POST"})
+     * @param Request      $request
+     * @param Sinatzaileak $sinatzaileak
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
     public function editAction(Request $request, Sinatzaileak $sinatzaileak)
     {
         $deleteForm = $this->createDeleteForm($sinatzaileak);
-        $editForm = $this->createForm('AppBundle\Form\SinatzaileakType', $sinatzaileak);
+        $editForm = $this->createForm(SinatzaileakType::class, $sinatzaileak);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -146,7 +154,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileak $sinatzaileak The sinatzaileak entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(Sinatzaileak $sinatzaileak)
     {
@@ -162,7 +170,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileakdet $sd
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      *
      */
     private function createDeleteFormSinatzaileakkDet(Sinatzaileakdet $sd)

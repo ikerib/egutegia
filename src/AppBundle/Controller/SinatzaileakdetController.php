@@ -7,7 +7,11 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Sinatzaileakdet controller.
@@ -22,7 +26,7 @@ class SinatzaileakdetController extends Controller
      * @Route("/", name="admin_sinatzaileakdet_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -41,7 +45,7 @@ class SinatzaileakdetController extends Controller
      * @param Request $request
      * @param         $sinatzaileid
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws EntityNotFoundException
      */
     public function newAction(Request $request, $sinatzaileid)
@@ -49,7 +53,7 @@ class SinatzaileakdetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $sina = $em->getRepository('AppBundle:Sinatzaileak')->find($sinatzaileid);
         if (!$sina) {
-            throw New EntityNotFoundException('Ez da sinatzaile zerrenda topatu');
+            throw new EntityNotFoundException('Ez da sinatzaile zerrenda topatu');
         }
         $sinatzaileakdet = new Sinatzaileakdet();
         $sinatzaileakdet->setSinatzaileak($sina);
@@ -72,17 +76,16 @@ class SinatzaileakdetController extends Controller
             'sinatzaileakdet' => $sinatzaileakdet,
             'form' => $form->createView(),
         ));
-
     }
 
     /**
      * Finds and displays a sinatzaileakdet entity.
      *
-     * @Route("/{id}", name="admin_sinatzaileakdet_show")
+     * @Route("/{id}/show", name="admin_sinatzaileakdet_show")
      * @Method("GET")
      * @param Sinatzaileakdet $sinatzaileakdet
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Sinatzaileakdet $sinatzaileakdet)
     {
@@ -147,7 +150,7 @@ class SinatzaileakdetController extends Controller
      *
      * @param Sinatzaileakdet $sinatzaileakdet The sinatzaileakdet entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Sinatzaileakdet $sinatzaileakdet)
     {
@@ -163,9 +166,10 @@ class SinatzaileakdetController extends Controller
      * @Route("/{id}/up", options={"expose"=true}, name="admin_sinatzaileakdet_up")
      * @Method({"GET"})
      * @param Sinatzaileakdet $sinatzaileakdet
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function upAction(Sinatzaileakdet $sinatzaileakdet) {
+    public function upAction(Sinatzaileakdet $sinatzaileakdet)
+    {
         $em = $this->getDoctrine()->getManager();
         $sinatzaileakdet->setOrden(
             $sinatzaileakdet->getOrden() - 1
@@ -182,9 +186,10 @@ class SinatzaileakdetController extends Controller
      * @Route("/{id}/down", options={"expose"=true}, name="admin_sinatzaileakdet_down")
      * @Method({"GET"})
      * @param Sinatzaileakdet $sinatzaileakdet
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function downAction(Sinatzaileakdet $sinatzaileakdet) {
+    public function downAction(Sinatzaileakdet $sinatzaileakdet)
+    {
         $em = $this->getDoctrine()->getManager();
         $sinatzaileakdet->setOrden(
             $sinatzaileakdet->getOrden() + 1
