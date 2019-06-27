@@ -872,7 +872,13 @@ class ApiController extends FOSRestController {
             /** @var User $b */
             foreach ($bideratzaileakfind as $b)
             {
-                $bideratzaileak[] = $b->getEmail();
+                // igomez baldin bada, jakinarazpenak Ayelen -i bidali
+                if ( $user->getUsername() === 'igomez') {
+                    $bideratzaileak[] = 'atorrado@pasaia.net';
+                } else {
+                    $bideratzaileak[] = $b->getEmail();
+                }
+
             }
             $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
@@ -1045,7 +1051,12 @@ class ApiController extends FOSRestController {
             /** @var User $b */
             foreach ($bideratzaileakfind as $b)
             {
-                $bideratzaileak[] = $b->getEmail();
+                // igomez baldin bada, jakinarazpenak Ayelen -i bidali
+                if ( $b->getUsername() === 'igomez') {
+                    $bideratzaileak[] = 'atorrado@pasaia.net';
+                } else {
+                    $bideratzaileak[] = $b->getEmail();
+                }
             }
             $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
@@ -1091,7 +1102,12 @@ class ApiController extends FOSRestController {
                 /** @var User $b */
                 foreach ($bideratzaileakfind as $b)
                 {
-                    $bideratzaileak[] = $b->getEmail();
+                    // igomez baldin bada, jakinarazpenak Ayelen -i bidali
+                    if ( $user->getUsername() === 'igomez') {
+                        $bideratzaileak[] = 'atorrado@pasaia.net';
+                    } else {
+                        $bideratzaileak[] = $b->getEmail();
+                    }
                 }
                 $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 

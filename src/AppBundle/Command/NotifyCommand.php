@@ -105,6 +105,9 @@ class NotifyCommand extends ContainerAwareCommand
 
     private function bidaliEmail($sendTo, $testua)
     {
+        if ($sendTo === 'igomez@pasaia.net') {
+            $sendTo = 'atorrado@pasaia.net';
+        }
         $bidaltzailea = $this->getContainer()->getParameter('mailer_bidaltzailea');
         $message      = (new \Swift_Message('[Egutegia][Eskaera berriak]'))
             ->setFrom($bidaltzailea)

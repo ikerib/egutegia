@@ -150,8 +150,6 @@ class LdapAuthenticationProvider extends BaseProvider
             $this->em->flush();
 
 
-
-
             return $user;
         } catch (UsernameNotFoundException $notFound) {
             throw $notFound;

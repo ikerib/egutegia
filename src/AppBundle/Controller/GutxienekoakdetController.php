@@ -7,7 +7,10 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Gutxienekoakdet controller.
@@ -41,19 +44,19 @@ class GutxienekoakdetController extends Controller
      * @param Request $request
      * @param         $gutxiid
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws EntityNotFoundException
      */
     public function newAction(Request $request, $gutxiid)
     {
         $em = $this->getDoctrine()->getManager();
-        $gutxi = $em->getRepository( 'AppBundle:Gutxienekoak' )->find( $gutxiid );
+        $gutxi = $em->getRepository('AppBundle:Gutxienekoak')->find($gutxiid);
         if (!$gutxi) {
-            throw New EntityNotFoundException('Ez da gutxieneko zerrenda aurkitu.');
+            throw new EntityNotFoundException('Ez da gutxieneko zerrenda aurkitu.');
         }
 
         $gutxienekoakdet = new Gutxienekoakdet();
-        $gutxienekoakdet->setGutxienekoak( $gutxi );
+        $gutxienekoakdet->setGutxienekoak($gutxi);
         $form = $this->createForm('AppBundle\Form\GutxienekoakdetType', $gutxienekoakdet, [
             'action' => $this->generateUrl('admin_gutxienekoakdet_new', array('gutxiid'=>$gutxiid)),
             'method' => 'POST',
@@ -82,7 +85,7 @@ class GutxienekoakdetController extends Controller
      * @Method("GET")
      * @param Gutxienekoakdet $gutxienekoakdet
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Gutxienekoakdet $gutxienekoakdet)
     {
@@ -102,7 +105,7 @@ class GutxienekoakdetController extends Controller
      * @param Request         $request
      * @param Gutxienekoakdet $gutxienekoakdet
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
     {
@@ -131,7 +134,7 @@ class GutxienekoakdetController extends Controller
      * @param Request         $request
      * @param Gutxienekoakdet $gutxienekoakdet
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
     {
@@ -154,7 +157,7 @@ class GutxienekoakdetController extends Controller
      *
      * @param Gutxienekoakdet $gutxienekoakdet The gutxienekoakdet entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
     private function createDeleteForm(Gutxienekoakdet $gutxienekoakdet)
     {

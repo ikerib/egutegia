@@ -70,7 +70,6 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_SAILBURUA';
                     $user->addRole($rol);
                 }
-
             }
             if ($user->getSailburuada()) {
                 $user->addRole('ROLE_SAILBURUA');
@@ -83,6 +82,7 @@ class UserHydrator implements HydratorInterface
         $user->setDn($ldapEntry[ 'dn' ]);
         $user->setEnabled(true);
         $user->setPassword('');
+
 
         return $user;
     }
