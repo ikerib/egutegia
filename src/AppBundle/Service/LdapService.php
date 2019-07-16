@@ -120,7 +120,7 @@ class LdapService
         return $resp;
     }
 
-    public function checkAlkateada($username): array
+    public function checkArduraduna($username): array
     {
         $ip       = $this->ip;
         $ldap_username = $this->ldap_username;
@@ -132,7 +132,7 @@ class LdapService
         ldap_bind($ldap, $ldap_username, $passwd) or die('Could not bind to LDAP');
 
         // Sailburuada
-        $gFilter = "(&(samAccountName=$username)(memberOf:1.2.840.113556.1.4.1941:=CN=ROL-Alkatetza_Alkatea,CN=Users,DC=pasaia,DC=net))";
+        $gFilter = "(&(samAccountName=$username)(memberOf:1.2.840.113556.1.4.1941:=CN=App-Web_Egutegia-Arduraduna,CN=Users,DC=pasaia,DC=net))";
         $gAttr = array('samAccountName');
         $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
         $result = ldap_get_entries($ldap, $result);

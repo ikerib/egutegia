@@ -154,24 +154,7 @@ class DefaultController extends Controller
         $ldapsrv = $this->get('app.ldap.service');
         /** @var User $user */
         $user = $this->getUser();
-        if ($this->isGranted('ROLE_ALKATEA')) {
-//            $ldap = $this->get('ldap_tools.ldap_manager');
-//
-//            $users = $ldap->buildLdapQuery()
-//                              ->select(
-//                                  [
-//                                      'name',
-//                                      'guid',
-//                                      'username',
-//                                      'emailAddress',
-//                                      'firstName',
-//                                      'lastName',
-//                                      'dn',
-//                                      'department',
-//                                      'description',
-//                                  ]
-//                              )
-//                              ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+        if ($this->isGranted('ROLE_ARDURADUNA')) {
             $users = $ldapsrv->getAllUsers();
         } else {
             $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());

@@ -133,9 +133,9 @@ class LdapAuthenticationProvider extends BaseProvider
                             $user->setLdapsaila($sail[ 'saila' ]);
                         }
 
-                        $alka =$ldapsrv->checkAlkateada($user->getUsername());
+                        $alka =$ldapsrv->checkArduraduna($user->getUsername());
                         if ($alka['alkateada']) {
-                            $user->addRole('ROLE_ALKATEA');
+                            $user->addRole('ROLE_ARDURADUNA');
                         }
                         $this->userManager->updateUser($user);
                     }
