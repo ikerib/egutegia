@@ -103,13 +103,11 @@
                 <td>{{ notification.eskaera.id }}</td>
 
                 <td>
-                    <a href="javascript:void(0);" class="btnComplete" data-id="{{ notification.id }}">
-                        {% if notification.result %}
-                            <span class="label label-success"> {{ "Bai" | trans }}</span>
-                        {% else %}
-                            <span class="label label-danger"> {{ "Ez" | trans }}</span>
-                        {% endif %}
-                    </a>
+                    {% if notification.completed %}
+                        <span class="label label-success"> {{ "Bai" | trans }}</span>
+                    {% else %}
+                        <span class="label label-danger"> {{ "Ez" | trans }}</span>
+                    {% endif %}
                 </td>
                 <td>{{ notification.eskaera.user.displayname }}</td>
                 <td>{{ notification.eskaera.user.department }}</td>
