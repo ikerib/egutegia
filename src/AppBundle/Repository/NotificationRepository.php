@@ -16,7 +16,6 @@ use Doctrine\ORM\QueryBuilder;
  */
 class NotificationRepository extends EntityRepository
 {
-
     public function getSinatzaileNotification()
     {
 //        $sql = 'SELECT  notification.id, notification.name, eskaera.hasi, eskaera.amaitu, user.email '.
@@ -45,7 +44,6 @@ class NotificationRepository extends EntityRepository
             $query = $em->getConnection()->prepare($sql);
             $query->execute();
             $clients = $query->fetchAll();
-
         } catch (DBALException $e) {
             $clients = null;
         }
@@ -81,16 +79,14 @@ class NotificationRepository extends EntityRepository
 
     public function getCurrentUserNotifications($userid, $q)
     {
-
         $qb = $this->createQueryBuilder('n')
                    ->innerJoin('n.user', 'u')
-                    ->innerJoin('n.eskaera','e')
+                    ->innerJoin('n.eskaera', 'e')
                    ->where('u.id=:userid')
 
                    ->setParameter('userid', $userid);
 
         if ($q) {
-
             if ($q === 'unread') {
                 $qb->andWhere('n.readed=false');
             } elseif ($q === 'readed') {
@@ -103,21 +99,16 @@ class NotificationRepository extends EntityRepository
         }
 
         $qb->orderBy('e.id', 'DESC');
-//        dump($userid);
-//        dump($q);
-//        dump($qb->getQuery()->getSQL());
 
         return $qb->getQuery()->getResult();
     }
 
     public function getAllUserNotifications($q)
     {
-
         $qb = $this->createQueryBuilder('n')
                    ->innerJoin('n.user', 'u');
 
         if ($q) {
-
             if ($q === 'unread') {
                 $qb->andWhere('n.readed=false');
             } elseif ($q === 'readed') {
@@ -125,7 +116,6 @@ class NotificationRepository extends EntityRepository
             } elseif ($q === 'unanswered') {
                 $qb->andWhere('n.result=false');
             }
-
         }
 
 

@@ -6,7 +6,11 @@ use AppBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 
 /**
@@ -24,9 +28,9 @@ class NotificationController extends Controller
      * @Method("GET")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function indexAction(Request $request): Response
     {
         /**
          * Parametroak baditu hauek izan daitezke:
@@ -61,9 +65,9 @@ class NotificationController extends Controller
      * @Method("GET")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function sinatzenAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function sinatzenAction(Request $request): Response
     {
 
 
@@ -95,9 +99,9 @@ class NotificationController extends Controller
      * @Method("GET")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function listAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function listAction(Request $request): Response
     {
         /**
          * Parametroak baditu hauek izan daitezke:
@@ -138,7 +142,7 @@ class NotificationController extends Controller
      * @Method("GET")
      * @param Notification $notification
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Notification $notification)
     {
@@ -159,7 +163,7 @@ class NotificationController extends Controller
      * @param Request      $request
      * @param Notification $notify
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Notification $notify)
     {
@@ -180,7 +184,7 @@ class NotificationController extends Controller
      *
      * @param Notification $notify The type entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Notification $notify)
     {

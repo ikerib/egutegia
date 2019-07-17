@@ -84,6 +84,7 @@ $(document).ready(function () {
         const userid = null;
         const url = Routing.generate("put_firma", { "id": firmaid, "userid": null });
         const $tr = $(this).closest('tr'); //here we hold a reference to the clicked tr which will be later used to delete the row
+        const nexttr = $(this).closest("tr").next("tr");
 
         $.ajax({
             url: url,
@@ -91,19 +92,14 @@ $(document).ready(function () {
             data: {onartua: 1}
         })
             .done(function (data) {
-              console.log("bagoaz");
-                // const url2 = Routing.generate("put_jakinarazpena", { "id": jakinarazpenaid });
-                // $.ajax({
-                //     url: url2,
-                //     method: 'PUT',
-                //     data: {onartua: 1}
-                // }).done(function (data) {
-                    $tr.find('td').fadeOut(1000,function(){
-                        $tr.remove();
-                    });
-                // }).fail(function (xhr) {
-                //     bootbox.alert('Firma egin da baina jakinarazpena irakurria markatzerakoan akatsa bat gertatu da.')
-                // })
+              if ( $(nexttr).hasClass('detail-view') ) {
+                nexttr.find('td').fadeOut(1000,function(){
+                  nexttr.remove();
+                });
+              }
+              $tr.find('td').fadeOut(1000,function(){
+                  $tr.remove();
+              });
             })
             .fail(function (xhr) {
                 bootbox.alert('Akats bat gertatu da firmatzerakoan.')

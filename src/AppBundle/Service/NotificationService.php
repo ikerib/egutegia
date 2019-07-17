@@ -66,7 +66,6 @@ class NotificationService
             $notify->setFirma($firma);
         }
 
-        $notify->setReaded(false);
         $notify->setUser($lehenSinatzaile->getUser());
         $this->em->persist($notify);
         $this->em->flush();
