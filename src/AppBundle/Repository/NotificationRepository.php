@@ -77,6 +77,18 @@ class NotificationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getAllUnCompleted($userid)
+    {
+        /** @var QueryBuilder $qb */
+        $qb = $this->createQueryBuilder('n')
+                   ->innerJoin('n.user', 'u')
+                   ->where('u.id=:userid')
+                   ->andWhere('n.completed=false')
+                   ->setParameter('userid', $userid);
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getCurrentUserNotifications($userid, $q)
     {
         $qb = $this->createQueryBuilder('n')
@@ -92,7 +104,7 @@ class NotificationRepository extends EntityRepository
             } elseif ($q === 'readed') {
                 $qb->andWhere('n.readed=true');
             } elseif ($q === 'unanswered') {
-                $qb->andWhere('n.result=false');
+                $qb->andWhere('n.completed=false');
             } elseif ($q === 'lastsignature') {
                 $qb->andWhere('n.result=false');
             }

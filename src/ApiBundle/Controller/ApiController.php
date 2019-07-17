@@ -940,6 +940,7 @@ class ApiController extends FOSRestController
         foreach ($firma->getNotifications() as $n) {
             if ($n->getUser() === $user) {
                 $n->setReaded(true);
+                $n->setCompleted(1); // erantzunda
                 $em->persist($n);
                 $em->flush();
             }

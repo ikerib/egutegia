@@ -30,7 +30,7 @@ class NotificationService
         /** @var User $user */
         $user = $this->u;
 
-        $notifications = $this->em->getRepository('AppBundle:Notification')->getAllUnread($user->getId());
+        $notifications = $this->em->getRepository('AppBundle:Notification')->getAllUnCompleted($user->getId());
 
         return $notifications;
     }
