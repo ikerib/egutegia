@@ -95,11 +95,6 @@ $(document).ready(function () {
               const numNotificationsLeft = data.notifications.length;
               $("#mainMenuNotificationCount").text(numNotificationsLeft);
               $('#subMenuNotificationCount').text(numNotificationsLeft);
-              $("#subMen")
-              console.log("***************************************");
-              console.log(data);
-              console.log(data.notifications.length);
-              console.log("***************************************");
 
               if ( $(nexttr).hasClass('detail-view') ) {
                 nexttr.find('td').fadeOut(1000,function(){
