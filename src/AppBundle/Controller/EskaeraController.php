@@ -531,6 +531,8 @@ class EskaeraController extends Controller {
                         $em->persist($firma);
                         $em->flush(); // Ez badago flushik, ez dado ID-rik
 
+                        $_ez_notifikatu = null; // Autofirmarekin bada, ez du jakinarazpena sortu beharrik
+
                         /** @var Sinatzaileakdet $s */
                         foreach ($sinatzaileusers as $s)
                         {
