@@ -318,11 +318,18 @@
         });
 
         $("#appbundle_eskaera_hasi").datepicker({
+            todayBtn: 1,
             autoclose: true,
             format: "yyyy-mm-dd",
             datesDisabled: arrayJaiEgunak,
             daysOfWeekDisabled: "6,0",
             language: '{{ app.request.locale }}'
+        }).on('changeDate', function ( selected ) {
+            var fin = $("#appbundle_eskaera_amaitu").val();
+            if ( fin==="") { // Ez badago datarik zehaztuta
+                var minDate = new Date(selected.date.valueOf());
+                $("#appbundle_eskaera_amaitu").datepicker('setStartDate', minDate);
+            }
         });
 
         $("#appbundle_eskaera_amaitu").datepicker({
@@ -331,6 +338,12 @@
             datesDisabled: arrayJaiEgunak,
             daysOfWeekDisabled: "6,0",
             language: '{{ app.request.locale }}'
+        }).on('changeDate', function ( selected ) {
+            var hasi = $("#appbundle_eskaera_hasi").val();
+            if ( hasi==="") { // Ez badago datarik zehaztuta
+                var maxDate = new Date(selected.date.valueOf());
+                $("#appbundle_eskaera_hasi").datepicker('setEndDate', maxDate);
+            }
         });
 
         $("#appbundle_eskaera_noiz").datepicker({
@@ -382,31 +395,24 @@
         function calc() {
             $("#appbundle_eskaera_total").val(0);
             const txtEgunak = $("#appbundle_eskaera_egunak").val();
-            console.log("txtEgunak" + txtEgunak);
             var d;
             d = 0;
 
             const hasi = $("#appbundle_eskaera_hasi").val();
-            console.log("hasi" + hasi);
             const amaitu = $("#appbundle_eskaera_amaitu").val();
-            console.log("amaitu"+amaitu);
             d = workday_count(hasi, amaitu);
             if ( isNaN(d) ) {
                 d = 0;
             }
-            console.log("d " +d);
 
 
             const orduak = $("#appbundle_eskaera_orduak").val();
-            console.log("orduak " + orduak);
             const egunOrduak = $("#txtJornada").val();
-            console.log("egunorduak " + egunOrduak);
 
             $("#appbundle_eskaera_egunak").val(d.toFixed(2));
             var tmp = $("#appbundle_eskaera_egunak").val() * egunOrduak;
 
             tmp = parseFloat(tmp) + parseFloat(orduak);
-            console.log(tmp);
 
             $("#appbundle_eskaera_total").val(tmp.toFixed(2));
         }
