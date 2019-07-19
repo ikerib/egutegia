@@ -92,6 +92,9 @@ $(document).ready(function () {
             data: {onartua: 1}
         })
             .done(function (data) {
+              console.log("***************************************");
+              console.log(data);
+              console.log("***************************************");
               if ( $(nexttr).hasClass('detail-view') ) {
                 nexttr.find('td').fadeOut(1000,function(){
                   nexttr.remove();

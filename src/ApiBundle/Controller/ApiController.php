@@ -24,6 +24,7 @@ use AppBundle\Entity\Type;
 use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Service\CalendarService;
+use AppBundle\Service\NotificationService;
 use function count;
 use DateTime;
 use Doctrine\ORM\EntityNotFoundException;
@@ -1102,8 +1103,13 @@ class ApiController extends FOSRestController
 
         $em->flush();
 
+        /** @var NotificationService $zerbitzua */
+        $zerbitzua     = $this->container->get('app.sinatzeke');
+        $notifications = $zerbitzua->GetNotifications();
+
         $resp = array(
-            'result' => 'ok',
+            'result'        => 'ok',
+            'notifications' => $notifications
         );
 
         $view = View::create();

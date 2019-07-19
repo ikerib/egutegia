@@ -529,7 +529,7 @@ class EskaeraController extends Controller {
                         $firma->setEskaera($eskaera);
                         $firma->setCompleted(0);
                         $em->persist($firma);
-//                        $em->flush();
+                        $em->flush(); // Ez badago flushik, ez dado ID-rik
 
                         /** @var Sinatzaileakdet $s */
                         foreach ($sinatzaileusers as $s)

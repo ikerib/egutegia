@@ -238,7 +238,7 @@ class Builder implements ContainerAwareInterface
                     'User',
                     array(
                         'pull-right' => true,
-                        'label'      => $user->getDisplayname()." <span class='badge badge-error'>".\count($notifications).'</span>',
+                        'label'      => $user->getDisplayname()." <span id='mainMenuNotificationCount' class='badge badge-error'>".\count($notifications).'</span>',
                         'dropdown'   => true,
                         'icon'       => 'user',
                         'extras'     => array('safe_label' => true),
@@ -276,7 +276,7 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild(
                     'Jakinarazpenak',
                     array(
-                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span class='badge badge-error'>".\count($notifications).'</span>',
+                        'label'  => $this->container->get('translator')->trans('Jakinarazpenak')." <span id='subMenuNotificationCount' class='badge badge-error'>".\count($notifications).'</span>',
                         'route'  => 'notification_index',
                         'routeParameters' => array('q'=>'unanswered'),
                         'icon'   => 'bullhorn',
