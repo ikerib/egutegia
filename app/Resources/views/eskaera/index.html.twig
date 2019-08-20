@@ -34,6 +34,7 @@
                     <th>{{ "Justifikatea" | trans }}</th>
                     <th>{{ "Oharrak" }}</th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -109,6 +110,16 @@
                                 {% endif %}
                             </ul>
                         </td>
+                        <td>
+                            {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
+                            <input type="hidden" name="eskaerauserdelete" value="1">
+                            <a class="btnRemoveEskaera" data-id="{{ eskaera.id }}"
+                               href="javascript:void(0);">
+                                <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
+                            </a>
+                            {{ form_end(deleteForms[eskaera.id]) }}
+
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
@@ -119,5 +130,55 @@
             </table>
         </div>
     </div>
+
+{% endblock %}
+
+
+{% block foot_script %}
+    {{ parent() }}
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $("#flash").delay(500).fadeIn("normal", function () {
+                $(this).delay(2500).fadeOut();
+            });
+
+            $(document).on("click", ".btnRemoveEskaera", function () {
+                // $(".btnRemoveRow").on("click", function () {
+                var that = $(this);
+                bootbox.confirm({
+                    title: "{{ 'Adi!' | trans }}",
+                    message: "{{ 'msg.eskaera.ezabatu' | trans }}",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                        }
+                    },
+                    callback: function ( result ) {
+                        if ( result === true ) {
+                            $(that).closest("form").submit();
+                        }
+                    }
+                });
+            });
+
+
+
+        });
+    </script>
+    <script>
+        // HACK!
+        $(document).ready(function () {
+            $(".btnZabaldu").on("click", function () {
+                $(".detail-icon").trigger("click");
+            });
+        });
+    </script>
 
 {% endblock %}

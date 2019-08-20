@@ -136,6 +136,19 @@ class Eskaera
 
     /**
      * @var bool
+     * @ORM\Column(name="egutegian2", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $egutegian2=false;
+
+    /**
+     * @ORM\Column(type="integer", name="bertsioa", nullable=true, options={"default"=0})
+     *
+     * @var integer
+     */
+    private $bertsioa;
+
+    /**
+     * @var bool
      * @ORM\Column(name="konfliktoa", type="boolean", nullable=true, options={"default"=false})
      */
     private $konfliktoa=false;
@@ -239,6 +252,15 @@ class Eskaera
     private $lizentziamota;
 
     /**
+     * @var events[]
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="eskaera",cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     * @Expose()
+     */
+    private $events;
+
+    /**
     * Constructor.
     */
     public function __construct()
@@ -246,6 +268,7 @@ class Eskaera
         $this->orduak = 0;
         $this->egunak = 0;
         $this->noiz = new DateTime();
+        $this->bertsioa=1;
         $this->abiatua = false;
         $this->amaitua = false;
         $this->konfliktoa = false;
@@ -1033,5 +1056,90 @@ class Eskaera
     public function getKostua()
     {
         return $this->kostua;
+    }
+
+    /**
+     * Set egutegian2.
+     *
+     * @param bool|null $egutegian2
+     *
+     * @return Eskaera
+     */
+    public function setEgutegian2($egutegian2 = null)
+    {
+        $this->egutegian2 = $egutegian2;
+
+        return $this;
+    }
+
+    /**
+     * Get egutegian2.
+     *
+     * @return bool|null
+     */
+    public function getEgutegian2()
+    {
+        return $this->egutegian2;
+    }
+
+
+    /**
+     * Set bertsioa.
+     *
+     * @param int|null $bertsioa
+     *
+     * @return Eskaera
+     */
+    public function setBertsioa($bertsioa = null)
+    {
+        $this->bertsioa = $bertsioa;
+
+        return $this;
+    }
+
+    /**
+     * Get bertsioa.
+     *
+     * @return int|null
+     */
+    public function getBertsioa()
+    {
+        return $this->bertsioa;
+    }
+
+    /**
+     * Add event.
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return Eskaera
+     */
+    public function addEvent(\AppBundle\Entity\Event $event)
+    {
+        $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * Remove event.
+     *
+     * @param \AppBundle\Entity\Event $event
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeEvent(\AppBundle\Entity\Event $event)
+    {
+        return $this->events->removeElement($event);
+    }
+
+    /**
+     * Get events.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEvents()
+    {
+        return $this->events;
     }
 }

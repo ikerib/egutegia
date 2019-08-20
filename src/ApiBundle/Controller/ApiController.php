@@ -1155,6 +1155,7 @@ class ApiController extends FOSRestController
         }
 
         $eskaera->setEgutegian($egutegian);
+
         $em->persist($eskaera);
         $em->flush();
 

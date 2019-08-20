@@ -129,6 +129,16 @@ class Event
      */
     private $type;
 
+    /**
+     * @var \AppBundle\Entity\Eskaera
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Eskaera", inversedBy="events")
+     * @ORM\JoinColumn(name="eskaera_id", referencedColumnName="id",onDelete="CASCADE")
+     * @Expose()
+     */
+    private $eskaera;
+
+
     public function __toString()
     {
         return (string) $this->getSlug().'';
@@ -434,5 +444,29 @@ class Event
     public function getHoursSelfHalfBefore()
     {
         return $this->hoursSelfHalfBefore;
+    }
+
+    /**
+     * Set eskaera.
+     *
+     * @param \AppBundle\Entity\Eskaera|null $eskaera
+     *
+     * @return Event
+     */
+    public function setEskaera(\AppBundle\Entity\Eskaera $eskaera = null)
+    {
+        $this->eskaera = $eskaera;
+
+        return $this;
+    }
+
+    /**
+     * Get eskaera.
+     *
+     * @return \AppBundle\Entity\Eskaera|null
+     */
+    public function getEskaera()
+    {
+        return $this->eskaera;
     }
 }

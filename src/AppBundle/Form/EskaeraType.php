@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\Type;
 
 class EskaeraType extends AbstractType
 {
@@ -34,7 +35,7 @@ class EskaeraType extends AbstractType
                     'label'         => 'Mota',
                     'required'      => true,
                     'expanded'      => true,
-                    'class'         => 'AppBundle\Entity\Type',
+                    'class'         => Type::class,
                     'attr'          => array('class' => 'type_label'),
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')

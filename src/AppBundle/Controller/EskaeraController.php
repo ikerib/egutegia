@@ -53,11 +53,19 @@ class EskaeraController extends Controller {
 
         $types = $em->getRepository('AppBundle:Type')->findEskaerak();
 
+        $deleteForms = [];
+        foreach ($eskaeras as $e)
+        {
+            /** @var Eskaera $e */
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
+        }
+
         return $this->render(
             'eskaera/index.html.twig',
             array(
                 'eskaeras' => $eskaeras,
                 'types'    => $types,
+                'deleteForms'   => $deleteForms,
             )
         );
     }
@@ -158,6 +166,7 @@ class EskaeraController extends Controller {
             'event_start' => $eskaera->getHasi(),
             'event_fin'   => $eskaera->getAmaitu(),
             'event_hours' => $eskaera->getTotal(),
+            'eskaera_id'  => $eskaera->getId()
         );
 
         if ($eskaera->getType()->getId() === 5)
@@ -340,6 +349,28 @@ class EskaeraController extends Controller {
             }
             $em->persist($eskaera);
             $em->flush();
+
+            // Sartu datuak egutegian
+            $aData = array(
+                'calendar_id' => $eskaera->getCalendar()->getId(),
+                'type_id'     => $eskaera->getType(),
+                'event_name'  => 'Eskaeratik: Id: '.$eskaera->getId(),
+                'event_start' => $eskaera->getHasi(),
+                'event_fin'   => $eskaera->getAmaitu(),
+                'event_hours' => $eskaera->getTotal(),
+                'eskaera_id'  => $eskaera->getId()
+            );
+
+            if ($eskaera->getType()->getId() === 5)
+            {
+                $aData[ 'event_nondik' ]                 = $eskaera->getNondik();
+                $aData[ 'event_hours_self_before' ]      = $eskaera->getCalendar()->getHoursSelf();
+                $aData[ 'event_hours_self_half_before' ] = $eskaera->getCalendar()->getHoursSelfHalf();
+            }
+
+            /** @var CalendarService $niresrv */
+            $niresrv = $this->get('app.calendar.service');
+            $resp    = $niresrv->addEvent($aData);
 
             return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
         }
@@ -694,14 +725,27 @@ class EskaeraController extends Controller {
         $form = $this->createDeleteForm($eskaera);
         $form->handleRequest($request);
 
+        $urlToRedirect = 'admin_eskaera_list';
+
         if ($form->isSubmitted() && $form->isValid())
         {
+            // Ezabatu egutegitik
+            /** @var CalendarService $niresrv */
+            $niresrv = $this->get('app.calendar.service');
+            $resp    = $niresrv->removeEventsByEskaera($eskaera);
+
+            if ($request->request->has('eskaerauserdelete')) {
+                if ($request->request->get('eskaerauserdelete')==="1") {
+                    $urlToRedirect = 'eskaera_index';
+                }
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->remove($eskaera);
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_eskaera_list');
+        return $this->redirectToRoute($urlToRedirect);
     }
 
     /**
