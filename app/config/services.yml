@@ -69,7 +69,7 @@ services:
     app.calendar.service:
         public: true
         class: AppBundle\Service\CalendarService
-        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
+        arguments: ["@doctrine.orm.entity_manager"]
 
     app.eskaera.repository:
         public: true

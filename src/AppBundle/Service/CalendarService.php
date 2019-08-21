@@ -19,13 +19,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class CalendarService
 {
-    protected $u;
     protected $em;
 
-    public function __construct(EntityManager $em, TokenStorage $tokenStorage)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->u = $tokenStorage->getToken()->getUser();
     }
 
     /**
@@ -77,9 +75,23 @@ class CalendarService
         if ($type->getRelated()) {
             /** @var Type $t */
             $t = $event->getType();
+
+            // OPORRAK
             if ($t->getRelated() === 'hours_free') {
-                $calendar->setHoursFree((float)$calendar->getHoursFree() - (float)$datuak[ 'event_hours' ]);
+                // Check egun nahikoa dituen, bestela akatsa
+                if ($calendar->getHoursFree() >= $datuak['event_hours']) {
+                    $calendar->setHoursFree((float)$calendar->getHoursFree() - (float)$datuak[ 'event_hours' ]);
+                } else {
+                    $resp = array(
+                        'result' => -1,
+                        'text'   => 'Ez ditu nahikoa ordu.',
+                    );
+
+                    return $resp;
+                }
             }
+
+            // Norbere arazoetarako egunak
             if ($t->getRelated() === 'hours_self') {
 
                 /**
@@ -127,15 +139,34 @@ class CalendarService
                 $calendar->setHoursSelf($calendar->getHoursSelf() - $egunOsoaOrduak);
                 $calendar->setHoursSelfHalf($calendar->getHoursSelfHalf() - $partziala);
             }
+
+            // Konpentsatuak
             if ($t->getRelated() === 'hours_compensed') {
-                $calendar->setHoursCompensed(
-                    (float)$calendar->getHoursCompensed() - (float)$datuak[ 'event_hours' ]
-                );
+                if ($calendar->getHoursCompensed()>=(float)$datuak[ 'event_hours' ]) {
+                    $calendar->setHoursCompensed((float)$calendar->getHoursCompensed() - (float)$datuak[ 'event_hours' ]);
+                } else {
+                    $resp = array(
+                        'result' => -1,
+                        'text'   => 'Ez ditu nahikoa ordu.',
+                    );
+
+                    return $resp;
+                }
             }
+
+            // Sindikalak
             if ($t->getRelated() === 'hours_sindical') {
-                $calendar->setHoursSindikal(
-                    (float)$calendar->getHoursSindikal() - (float)$datuak[ 'event_hours' ]
-                );
+                // Begiratu ordu nahikoa dituela
+                if ($calendar->getHoursSindikal() >= (float)$datuak[ 'event_hours' ]) {
+                    $calendar->setHoursSindikal((float)$calendar->getHoursSindikal() - (float)$datuak[ 'event_hours' ]);
+                } else {
+                    $resp = array(
+                        'result' => -1,
+                        'text'   => 'Ez ditu nahikoa ordu.',
+                    );
+
+                    return $resp;
+                }
             }
             $this->em->persist($calendar);
         }
