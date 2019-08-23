@@ -12,10 +12,9 @@ use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Type;
-use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class CalendarService
 {
@@ -119,21 +118,17 @@ class CalendarService
 
                         return $resp;
                     }
-                } else {
-                    // Begiratu nahiko ordu dituen Egunetan
-                    // Eskatutako ordu adina edo gehiago baditu
-                    if ($calendar->getHoursSelf() >= $orduak) {
-                        $egunOsoaOrduak = $orduak;
-                    } elseif ($egutegiaOrduakTotal >= $orduak) {
-                        $zenbatEgun = $orduak / $jornada;
-                        // Egun osoen kenketa
-                        $egunOsoak = (int)$zenbatEgun;
-                        // Orduen kenketa
-                        $gainontzekoa = $zenbatEgun - (int)$zenbatEgun;
+                } elseif ($calendar->getHoursSelf() >= $orduak) {
+                    $egunOsoaOrduak = $orduak;
+                } elseif ($egutegiaOrduakTotal >= $orduak) {
+                    $zenbatEgun = $orduak / $jornada;
+                    // Egun osoen kenketa
+                    $egunOsoak = (int)$zenbatEgun;
+                    // Orduen kenketa
+                    $gainontzekoa = $zenbatEgun - (int)$zenbatEgun;
 
-                        $egunOsoaOrduak = $egunOsoak * $jornada;
-                        $partziala      = $gainontzekoa * $jornada;
-                    }
+                    $egunOsoaOrduak = $egunOsoak * $jornada;
+                    $partziala      = $gainontzekoa * $jornada;
                 }
 
                 $calendar->setHoursSelf($calendar->getHoursSelf() - $egunOsoaOrduak);
@@ -202,10 +197,20 @@ class CalendarService
             if ($t->getRelated() === 'hours_sindical') {
                 $calendar->setHoursSindikal((float)$calendar->getHoursSindikal() + $event->getHours());
             }
-            $this->em->persist($calendar);
-        }
-        $this->em->flush();
+            try {
+                $this->em->persist($calendar);
+                $this->em->remove($event);
+            } catch (ORMException $e) {
+            }
 
+        }
+        try {
+            $this->em->flush();
+        } catch (OptimisticLockException $e) {
+        } catch (ORMException $e) {
+        }
+
+        $this->em->flush();
 
         return array(
             'result'=> 1,

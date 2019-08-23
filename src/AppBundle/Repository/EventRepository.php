@@ -27,7 +27,7 @@ class EventRepository extends EntityRepository
         $query = $em->createQuery('
             SELECT e
                 FROM AppBundle:Event e 
-                  LEFT JOIN e.eskaera esk
+                  INNER JOIN e.eskaera esk
                 WHERE esk.id = :eskaera_id
         ');
 

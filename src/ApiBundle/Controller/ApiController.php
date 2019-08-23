@@ -25,7 +25,6 @@ use AppBundle\Entity\User;
 use AppBundle\Form\CalendarNoteType;
 use AppBundle\Service\CalendarService;
 use AppBundle\Service\NotificationService;
-use function count;
 use DateTime;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\ORMException;
@@ -34,6 +33,7 @@ use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\View\View;
 use LdapTools\Exception\EmptyResultException;
 use LdapTools\Exception\MultiResultException;
@@ -42,6 +42,7 @@ use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use function count;
 
 class ApiController extends FOSRestController
 {
@@ -1109,11 +1110,11 @@ class ApiController extends FOSRestController
 
         $resp = array(
             'result'        => 'ok',
-            'notifications' => $notifications
+            'notifications' => $notifications,
         );
 
         $view = View::create();
-//        $view->setData($firma);
+        //        $view->setData($firma);
         $view->setData($resp);
         header('content-type: application/json; charset=utf-8');
         header('access-control-allow-origin: *');
@@ -1425,7 +1426,7 @@ class ApiController extends FOSRestController
         $lm = $em->getRepository('AppBundle:Lizentziamota')->find($id);
 
         if (null === $lm) {
-            return new View('Ez da ' . $id . ' lizentzia mota aurkitzen.', Response::HTTP_NOT_FOUND);
+            return new View('Ez da '.$id.' lizentzia mota aurkitzen.', Response::HTTP_NOT_FOUND);
         }
 
         return $lm;
