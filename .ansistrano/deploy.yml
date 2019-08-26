@@ -27,7 +27,8 @@
     symfony_cache_options: ''
 
     ansistrano_deploy_from: "{{ playbook_dir }}/../"
-    ansistrano_git_repo: "git@github.com:PasaiakoUdala/egutegia.git"
+    #ansistrano_git_repo: "git@github.com:PasaiakoUdala/egutegia.git"
+    ansistrano_git_repo: "https://github.com/PasaiakoUdala/egutegia.git"
     ansistrano_git_branch: "{{ git_branch_default }}"
     ansistrano_deploy_to: "{{ deploy_path }}"
     ansistrano_deploy_via: "git"

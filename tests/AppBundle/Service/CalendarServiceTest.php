@@ -67,6 +67,16 @@ class CalendarServiceTest extends KernelTestCase
             $this->assertEquals($srv[ 'result' ], - 1);
         } catch (ORMException $e) {
         }
+        // garbitu
+        $events = $this->entityManager->getRepository('AppBundle:Event')->findBy(
+            [
+                'eskaera' => 1188,
+            ]
+        );
+        foreach ($events as $e) {
+            $this->entityManager->remove($e);
+            $this->entityManager->flush();
+        }
     }
 
     public function testOporrak(): void
@@ -158,13 +168,23 @@ class CalendarServiceTest extends KernelTestCase
             'event_start' => new DateTime('2019-08-26 00:00:00'),
             'event_fin'   => new DateTime('2019-08-26 00:00:00'),
             'event_hours' => 1000,
-            'eskaera_id'  => 1188,
+            'eskaera_id'  => 1189,
         );
 
         try {
             $srv = $this->niresrv->addEvent($aData);
             $this->assertEquals($srv[ 'result' ], - 1);
         } catch (ORMException $e) {
+        }
+        // garbitu
+        $events = $this->entityManager->getRepository('AppBundle:Event')->findBy(
+            [
+                'eskaera' => 1189,
+            ]
+        );
+        foreach ($events as $e) {
+            $this->entityManager->remove($e);
+            $this->entityManager->flush();
         }
     }
 
@@ -254,17 +274,27 @@ class CalendarServiceTest extends KernelTestCase
         $aData = array(
             'calendar_id' => 253,
             'type_id'     => 6,
-            'event_name'  => 'Test eskaeratik: Id: ',
+            'event_name'  => 'Test konpentsatu nahikoak: ',
             'event_start' => new DateTime('2019-08-26 00:00:00'),
             'event_fin'   => new DateTime('2019-08-26 00:00:00'),
             'event_hours' => 1000,
-            'eskaera_id'  => 1188,
+            'eskaera_id'  => 1190,
         );
 
         try {
             $srv = $this->niresrv->addEvent($aData);
             $this->assertEquals($srv[ 'result' ], - 1);
         } catch (ORMException $e) {
+        }
+        // garbitu
+        $events = $this->entityManager->getRepository('AppBundle:Event')->findBy(
+            [
+                'eskaera' => 1190,
+            ]
+        );
+        foreach ($events as $e) {
+            $this->entityManager->remove($e);
+            $this->entityManager->flush();
         }
     }
 
@@ -299,7 +329,7 @@ class CalendarServiceTest extends KernelTestCase
         $aData = array(
             'calendar_id' => 253,
             'type_id'     => 6,
-            'event_name'  => 'Test eskaeratik: Id: ',
+            'event_name'  => 'Test konpentsatuak',
             'event_start' => new DateTime('2019-08-26 00:00:00'),
             'event_fin'   => new DateTime('2019-08-26 00:00:00'),
             'event_hours' => 1,
@@ -312,15 +342,75 @@ class CalendarServiceTest extends KernelTestCase
         } catch (ORMException $e) {
         }
 
-
         /** @var Calendar $calendar2 */
         $calendar2 = $this->entityManager->getRepository('AppBundle:Calendar')->find(253);
-
         $this->assertEquals($calendar2->getHoursFree(), $this->HOURSFREE);
         $this->assertEquals($calendar2->getHoursSelf(), $this->HOURSSELF);
         $this->assertEquals($calendar2->getHoursSelfHalf(), $this->HOURSSELFHALF);
         $this->assertEquals($calendar2->getHoursCompensed(), $this->HOURSCOMPENSED - 1);
         $this->assertEquals($calendar2->getHoursSindikal(), $this->HOURSSINDICAL);
+
+        // Orain oporrak kendu
+        /** @var Eskaera $eskaera */
+        $eskaera = $this->entityManager->getRepository('AppBundle:Eskaera')->find(1190);
+        $srb     = $this->niresrv->removeEventsByEskaera($eskaera);
+        /** @var Calendar $calendarOri */
+        $calendarOri = $this->entityManager->getRepository('AppBundle:Calendar')->find(253);
+        $this->assertEquals($calendarOri->getHoursFree(), $this->HOURSFREE);
+        $this->assertEquals($calendarOri->getHoursSelf(), $this->HOURSSELF);
+        $this->assertEquals($calendarOri->getHoursSelfHalf(), $this->HOURSSELFHALF);
+        $this->assertEquals($calendarOri->getHoursCompensed(), $this->HOURSCOMPENSED);
+        $this->assertEquals($calendarOri->getHoursSindikal(), $this->HOURSSINDICAL);
+
+    }
+
+    public function testNAEOrduNahikoak(): void
+    {
+        // set default data
+        /** @var Calendar $oriCalendar */
+        $oriCalendar = $this->entityManager->getRepository('AppBundle:Calendar')->find(253);
+        $oriCalendar->setHoursFree($this->HOURSFREE);
+        $oriCalendar->setHoursSelf($this->HOURSSELF);
+        $oriCalendar->setHoursSelfHalf($this->HOURSSELFHALF);
+        $oriCalendar->setHoursCompensed($this->HOURSCOMPENSED);
+        $oriCalendar->setHoursSindikal($this->HOURSSINDICAL);
+        try {
+            $this->entityManager->persist($oriCalendar);
+            $this->entityManager->flush();
+        } catch (ORMException $e) {
+        }
+
+
+        // Sartu datuak egutegian
+        $aData = array(
+            'calendar_id' => 253,
+            'type_id'     => 5,
+            'event_name'  => 'Test eskaeratik: Id: ',
+            'event_start' => new DateTime('2019-08-26 00:00:00'),
+            'event_fin'   => new DateTime('2019-08-26 00:00:00'),
+            'event_hours' => 200,
+            'eskaera_id'  => 1191,
+            'event_nondik'=> 'orduak',
+            'event_hours_self_before' => 100,
+            'event_hours_self_half_before' => 1
+        );
+
+        try {
+            $srv = $this->niresrv->addEvent($aData);
+            $this->assertEquals($srv[ 'result' ], - 1);
+        } catch (ORMException $e) {
+        }
+
+        // garbitu
+        $events = $this->entityManager->getRepository('AppBundle:Event')->findBy(
+            [
+                'eskaera' => 1191,
+            ]
+        );
+        foreach ($events as $e) {
+            $this->entityManager->remove($e);
+            $this->entityManager->flush();
+        }
     }
 
     protected function tearDown(): void
