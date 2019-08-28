@@ -91,18 +91,18 @@
                                 {% if eskaera.type.id == type_lizentzia %}
                                     {% if eskaera.justifikanteName == null %}
                                         <li>
-                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                            <a class="btnFileSend-{{ eskaera.id }}" href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
                                                 <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea bidali" | trans }}
                                             </a>
                                         </li>
                                     {% else %}
                                         <li>
-                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                            <a class="btnFileView-{{ eskaera.id }}" href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ path('eskaera_justify_file_delete', {'id': eskaera.id}) }}">
+                                            <a class="btnFileDelete-{{ eskaera.id }}" href="{{ path('eskaera_justify_file_delete', {'id': eskaera.id}) }}">
                                                 <i class="fa fa-trash" aria-hidden="true"></i> {{ "Ezabatu justifikatea" | trans }}
                                             </a>
                                         </li>

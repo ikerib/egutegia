@@ -410,11 +410,13 @@
             const egunOrduak = $("#txtJornada").val();
 
             $("#appbundle_eskaera_egunak").val(d.toFixed(2));
+            $("#appbundle_eskaera_egunak").text(d.toFixed(2));
             var tmp = $("#appbundle_eskaera_egunak").val() * egunOrduak;
 
             tmp = parseFloat(tmp) + parseFloat(orduak);
 
             $("#appbundle_eskaera_total").val(tmp.toFixed(2));
+            $("#appbundle_eskaera_total").text(tmp.toFixed(2));
         }
 
         $(".cmbFetxaKalc").change(function () {

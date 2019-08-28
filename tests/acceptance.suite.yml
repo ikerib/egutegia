@@ -1,0 +1,27 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+                url: http://egutegia.test/app_dev.php/
+                window_size: maximize
+                port: 9515
+                browser: chrome
+                capabilities:
+                    "goog:chromeOptions": # additional chrome options
+
+        - Doctrine2:
+                depends: Symfony
+#        - WebDriver:
+#              url: 'https://egutegia.tes/app_dev.php/' # put your local url
+#              browser: chrome
+#        - PhpBrowser:
+#              url: 'https://egutegia.tes/app_dev.php/'
+        - \Helper\Acceptance
+        -   Db:
+                dsn: 'mysql:host=localhost;dbname=egutegia'
+                user: 'root'
+                password: 'pasaia'
+                populate: true # load dump before all tests
+                cleanup: true # load dump for each test
+        #            dump: 'tests/_data/dump.sql'
+                populator: 'mysql -u $user -ppasaia egutegia < tests/_data/egutegia_20190827_123247.sql'
