@@ -69,31 +69,111 @@
 {% endblock body_start %}
 
 {% block body %}
-{% block navbar %}
-    {% embed '@MopaBootstrap/Navbar/navbar.html.twig' with {'fixedTop': true, 'inverse': true , 'fluid': true } %}
-{% block brand %}
-    {% if is_granted('ROLE_ADMIN') %}
-    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
-    {% else %}
-    <a class="navbar-brand" href="{{ path('user_homepage') }}">Egutegiak</a>
-    {% endif %}
-{% endblock %}
 
-{% block menu %}
-    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}
-        {{ mopa_bootstrap_menu('AppBundle:Builder:mainMenu', {'automenu':'navbar', 'currentClass': ''}) }}
-    {% endif %}
-    <div class="pull-right">
-        {#<div >#}
-        {% if is_mobile() %}
-            {{ mopa_bootstrap_menu('AppBundle:Builder:movuserMenu', {'automenu':'navbar', 'currentClass': ''}) }}
-        {% else %}
-            {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
-        {% endif %}
-    </div>
-{% endblock %}
-    {% endembed %}
-{% endblock navbar %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('user_homepage') }}">Egutegiak</a>
+                {% endif %}
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ path('dashboard') }}"><i class="fa fa-home"></i> {{'Hasiera'|trans}} <span class="sr-only">(current)</span></a></li>
+
+                    {% if is_granted('ROLE_BIDERATZAILEA') or is_granted('ROLE_SUPER_ADMIN') %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-th-list"></i> {{ 'Taula Laguntzaileak' |trans }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('admin_type_index') }}"><i class="fa fa-tag"></i> {{ "Instantzia Motak" | trans}}</a></li>
+                                <li><a href="{{ path('admin_template_index') }}"><i class="fa fa-bookmark"></i> {{ "Txantiloiak" | trans}}</a></li>
+                                <li><a href="{{ path('admin_lizentziamota_index') }}"><i class="fa fa-briefcase"></i> {{ "Lizentzia Motak" | trans}}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('admin_gutxienekoak_index') }}"><i class="fa fa-lock"></i> {{ "Bateraezinak" | trans}}</a></li>
+                                <li><a href="{{ path('admin_sinatzaileak_index') }}"><i class="fa fa-pencil"></i> {{ "Sinatzaileak" | trans}}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('admin_log_index') }}"><i class="fa fa-time"></i> {{ "Azken konexioak" | trans}}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('app_zerrenda_konpentsatuak') }}"><i class="fa fa-list"></i> {{ "Zerrendak->Konpentsatuak" | trans}}</a></li>
+                                <li><a href="{{ path('app_zerrenda_absentismo') }}"><i class="fa fa-list"></i> {{ "Zerrendak->Absentismo" | trans}}</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('notification_list') }}"><i class="fa fa-notify"></i> {{ "Jakinarazpen guztiak" | trans}}</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                </ul>
+
+{#                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}#}
+{#                    {{ knp_menu_render('main', {'currentClass': 'active', 'template': 'knp_menu.html.twig'}) }}#}
+{#                {% endif %}#}
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Link</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+{#<div {% if id|default(false) %}id="{{ id }}" {% endif %}role="navigation" class="navbar{{ inverse|default(false) ? ' navbar-inverse' : ' navbar-default' }}{{ fixedTop|default(false) ? ' navbar-fixed-top' : '' }}{{ staticTop|default(false) ? ' navbar-static-top' : '' }}{{ fixedBottom|default(false) ? ' navbar-fixed-bottom' : '' }}{{ staticBottom|default(false) ? ' navbar-static-bottom' : '' }}">#}
+{#    <div class="container{{ fluid|default(false) ? '-fluid' : '' }}">#}
+{#        {% block navheader %}#}
+{#            <div class="navbar-header">#}
+{#                {% block toggle %}#}
+{#                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse{% if id|default(false) %}-{{ id }}{% endif %}" >#}
+{#                        <span class="sr-only">Toggle navigation</span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                        <span class="icon-bar"></span>#}
+{#                    </button>#}
+{#                {% endblock toggle %}#}
+{#                {% block brand %}#}
+{#                    {% if is_granted('ROLE_ADMIN') %}#}
+{#                        <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>#}
+{#                    {% else %}#}
+{#                        <a class="navbar-brand" href="{{ path('user_homepage') }}">Egutegiak</a>#}
+{#                    {% endif %}{% endblock brand %}#}
+{#            </div>#}
+{#        {% endblock navheader %}#}
+{#        {% block menu_container %}#}
+{#            <div class="collapse navbar-collapse navbar-responsive-collapse{% if id|default(false) %}-{{ id }}{% endif %}">#}
+{#                {% block menu %}#}
+{#                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}#}
+{#                        {{ knp_menu_render('main') }}#}
+{#                    {% endif %}#}
+{#                    <div class="pull-right">#}
+{#                    {% if is_mobile() %}#}
+{#                        #}{#            {{ mopa_bootstrap_menu('AppBundle:Builder:movuserMenu', {'automenu':'navbar', 'currentClass': ''}) }}#}
+{#                    {% else %}#}
+{#                        #}{#            {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}#}
+{#                    {% endif %}#}
+{#                    </div>#}
+{#                {% endblock %}#}
+{#            </div>#}
+{#        {% endblock %}#}
+{#    </div>#}
+{#</div>#}
+
 
 {% block container %}
 {% block container_div_start %}<div class="{% block container_class %}container-fluid{% endblock container_class %}">{% endblock container_div_start %}

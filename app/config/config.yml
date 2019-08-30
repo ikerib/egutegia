@@ -10,6 +10,7 @@ parameters:
     locale: eu
     app.dir_base_pdf: '%dir_base_pdf%'
     app.dir_tmp_pdf: '%dir_tmp_pdf%'
+#    container.autowiring.stric_mode: true
 
 framework:
     ide: "phpstorm://open?file=%%f&line=%%l"
@@ -147,11 +148,6 @@ fos_js_routing:
         - get_firmatzaileakfromjakinarazpena
         - eskaera_add_to_calendar
         - put_eskaera_egutegian_marka
-
-
-mopa_bootstrap:
-    form: ~ # Adds twig form theme support
-    menu: ~ # enables twig helpers for menu
 
 ldap_tools:
     domains:
