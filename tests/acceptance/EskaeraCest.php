@@ -2,6 +2,7 @@
 
 class EskaeraCest
 {
+
     public function _before(AcceptanceTester $I): void
     {
     }
@@ -30,7 +31,6 @@ class EskaeraCest
         $I->see('Oporrak eskaera berria ');
 
 
-
         $I->fillField('#appbundle_eskaera_hasi', '2019-08-19');
         $I->pressKey('#appbundle_eskaera_hasi', WebDriverKeys::TAB);
         $I->fillField('#appbundle_eskaera_amaitu', '2019-08-19');
@@ -38,7 +38,7 @@ class EskaeraCest
         $I->click('//*[@id="cmdDivOrduak"]');
         $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera oporrk orduak');
         $I->fillField('#appbundle_eskaera_orduak', '2');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -95,7 +95,7 @@ class EskaeraCest
 
         $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera oporrak egunak');
 
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -150,7 +150,7 @@ class EskaeraCest
         $I->click('//*[@id="cmdDivOrduak"]');
         $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera oporrk orduak');
         $I->fillField('#appbundle_eskaera_orduak', '2');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -205,7 +205,7 @@ class EskaeraCest
         $I->see('2.00', '#appbundle_eskaera_egunak');
         $I->see('14.52', '#appbundle_eskaera_total');
         $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera sindikal egunak');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -268,7 +268,7 @@ class EskaeraCest
         $I->click('//*[@id="cmdDivOrduak"]');
         $I->fillField('#appbundle_eskaera_oharra', 'Test Lizentzia orduak');
         $I->fillField('#appbundle_eskaera_orduak', '2');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         try {
             $I->waitForElementVisible('.bootbox');
         } catch (Exception $e) {
@@ -279,7 +279,7 @@ class EskaeraCest
         $I->selectOption('#appbundle_eskaera_lizentziamota', $option);
         $I->seeInField('#appbundle_eskaera_lizentziamota', 'AZTERKETAK');
         $I->attachFile('#appbundle_eskaera_justifikanteFile_file', 'txankete.jpeg');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -370,7 +370,7 @@ class EskaeraCest
         $I->fillField('#appbundle_eskaera_oharra', 'Test Lizentzia egunak');
         $I->see('2.00', '#appbundle_eskaera_egunak');
         $I->see('14.52', '#appbundle_eskaera_total');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         try {
             $I->waitForElementVisible('.bootbox');
         } catch (Exception $e) {
@@ -381,7 +381,7 @@ class EskaeraCest
         $I->selectOption('#appbundle_eskaera_lizentziamota', $option);
         $I->seeInField('#appbundle_eskaera_lizentziamota', 'AZTERKETAK');
         $I->attachFile('#appbundle_eskaera_justifikanteFile_file', 'txankete.jpeg');
-        $I->click(['id'=>'btnSubmit']);
+        $I->click(['id' => 'btnSubmit']);
         $I->see('Eskaera gauzatu da');
 
         $I->amOnPage('/mycalendar');
@@ -432,4 +432,299 @@ class EskaeraCest
         $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
         $I->see('29.04 (4 egun)', '#selfHoursComplete');
     }
+
+    public function EskaeraKonpuntsatuakOrduakTest(AcceptanceTester $I): void
+    {
+        $I->amGoingTo('Test Ordu Konpuntsatuak Eskaera');
+        $I->amOnPage('/eskaera/instantziak');
+        $I->dontSee('Aukeratu instantzia mota');
+
+        $I->amGoingTo('Login like iibarguren');
+        $I->amOnPage('/login');
+        $I->fillField('#username', 'iibarguren');
+        $I->fillField('#password', 'pasatrin');
+        $I->click('#_submit');
+
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+        $I->click('Instantzia berria');
+        $I->see('Aukeratu instantzia mota');
+        $I->dontSee('Aukeratu eta jarraitu');
+        $I->click('#spankonpentsatuak');
+        $I->see('Aukeratu eta jarraitu');
+        $I->click('#eskaerakonpentsatuak');
+        $I->see('Konpentsatuak eskaera berria');
+
+        $I->fillField('#appbundle_eskaera_hasi', '2019-08-19');
+        $I->pressKey('#appbundle_eskaera_hasi', WebDriverKeys::TAB);
+        $I->fillField('#appbundle_eskaera_amaitu', '2019-08-20');
+        $I->pressKey('#appbundle_eskaera_amaitu', WebDriverKeys::TAB);
+
+        $I->click('//*[@id="cmdDivOrduak"]');
+        $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera konpentsatuak orduak');
+        $I->fillField('#appbundle_eskaera_orduak', '2');
+        $I->click(['id' => 'btnSubmit']);
+        $I->see('Eskaera gauzatu da');
+
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('7.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+
+        $I->amGoingTo('Remove eskaera and see if its rollback correctly');
+        $I->amOnPage('/eskaera/');
+        $I->seeNumberOfElements('tr', 2);
+        $I->click('.btnRemoveEskaera');
+        try {
+            $I->waitForElementVisible('.bootbox');
+        } catch (Exception $e) {
+        } // waiting it to show
+        $I->see('Adi!', '.bootbox'); // text inside modal
+        $I->click('.btn-primary', '.bootbox'); // clicking ok insode modal
+        $I->see('Ez dago daturik');
+
+        $I->amGoingTo('Egutegiko orduak lehengoratu direla.');
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+    }
+
+    public function EskaeraKonpuntsatuakEgunakTest(AcceptanceTester $I): void
+    {
+        $I->amGoingTo('Test Ordu Konpuntsatuak Eskaera');
+        $I->amOnPage('/eskaera/instantziak');
+        $I->dontSee('Aukeratu instantzia mota');
+
+        $I->amGoingTo('Login like iibarguren');
+        $I->amOnPage('/login');
+        $I->fillField('#username', 'iibarguren');
+        $I->fillField('#password', 'pasatrin');
+        $I->click('#_submit');
+
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+        $I->click('Instantzia berria');
+        $I->see('Aukeratu instantzia mota');
+        $I->dontSee('Aukeratu eta jarraitu');
+        $I->click('#spankonpentsatuak');
+        $I->see('Aukeratu eta jarraitu');
+        $I->click('#eskaerakonpentsatuak');
+        $I->see('Konpentsatuak eskaera berria');
+
+        $I->fillField('#appbundle_eskaera_hasi', '2019-08-19');
+        $I->pressKey('#appbundle_eskaera_hasi', WebDriverKeys::TAB);
+        $I->fillField('#appbundle_eskaera_amaitu', '2019-08-19');
+        $I->pressKey('#appbundle_eskaera_amaitu', WebDriverKeys::TAB);
+
+        $I->click('//*[@id="cmdDivEgunak"]');
+        $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera konpentsatuak egunak');
+        $I->see('1.00', '#appbundle_eskaera_egunak');
+        $I->see('7.26', '#appbundle_eskaera_total');
+        $I->click(['id' => 'btnSubmit']);
+        $I->see('Eskaera gauzatu da');
+
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('2.11', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+
+        $I->amGoingTo('Remove eskaera and see if its rollback correctly');
+        $I->amOnPage('/eskaera/');
+        $I->seeNumberOfElements('tr', 2);
+        $I->click('.btnRemoveEskaera');
+        try {
+            $I->waitForElementVisible('.bootbox');
+        } catch (Exception $e) {
+        } // waiting it to show
+        $I->see('Adi!', '.bootbox'); // text inside modal
+        $I->click('.btn-primary', '.bootbox'); // clicking ok insode modal
+        $I->see('Ez dago daturik');
+
+        $I->amGoingTo('Egutegiko orduak lehengoratu direla.');
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+    }
+
+    public function EskaeraNAEOrduakTest(AcceptanceTester $I): void
+    {
+        $I->amGoingTo('Test Orduak NAE Eskaera');
+        $I->amOnPage('/eskaera/instantziak');
+        $I->dontSee('Aukeratu instantzia mota');
+
+        $I->amGoingTo('Login like iibarguren');
+        $I->amOnPage('/login');
+        $I->fillField('#username', 'iibarguren');
+        $I->fillField('#password', 'pasatrin');
+        $I->click('#_submit');
+
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+        $I->click('Instantzia berria');
+        $I->see('Aukeratu instantzia mota');
+        $I->dontSee('Aukeratu eta jarraitu');
+        $I->click('#spannorberaren-arazoetarako-egunak');
+        $I->see('Aukeratu eta jarraitu');
+        $I->click('#eskaeranorberaren-arazoetarako-egunak');
+        $I->see('Norberaren arazoetarako egunak eskaera berria');
+
+        $I->fillField('#appbundle_eskaera_hasi', '2019-08-19');
+        $I->pressKey('#appbundle_eskaera_hasi', WebDriverKeys::TAB);
+        $I->fillField('#appbundle_eskaera_amaitu', '2019-08-20');
+        $I->pressKey('#appbundle_eskaera_amaitu', WebDriverKeys::TAB);
+
+        $I->click('//*[@id="cmdDivOrduak"]');
+        $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera NAE orduak');
+        $I->fillField('#appbundle_eskaera_orduak', '2');
+        $I->click(['id' => 'btnSubmit']);
+        $I->see('Eskaera gauzatu da');
+
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('27.04 ordu (3.72 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('27.04 (3.72 egun)', '#selfHoursComplete');
+
+        $I->amGoingTo('Remove eskaera and see if its rollback correctly');
+        $I->amOnPage('/eskaera/');
+        $I->seeNumberOfElements('tr', 2);
+        $I->click('.btnRemoveEskaera');
+        try {
+            $I->waitForElementVisible('.bootbox');
+        } catch (Exception $e) {
+        } // waiting it to show
+        $I->see('Adi!', '.bootbox'); // text inside modal
+        $I->click('.btn-primary', '.bootbox'); // clicking ok insode modal
+        $I->see('Ez dago daturik');
+
+        $I->amGoingTo('Egutegiko orduak lehengoratu direla.');
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+    }
+
+    public function EskaeraNAEEgunakTest(AcceptanceTester $I): void
+    {
+        $I->amGoingTo('Test Egunak NAE Eskaera');
+        $I->amOnPage('/eskaera/instantziak');
+        $I->dontSee('Aukeratu instantzia mota');
+
+        $I->amGoingTo('Login like iibarguren');
+        $I->amOnPage('/login');
+        $I->fillField('#username', 'iibarguren');
+        $I->fillField('#password', 'pasatrin');
+        $I->click('#_submit');
+
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+        $I->click('Instantzia berria');
+        $I->see('Aukeratu instantzia mota');
+        $I->dontSee('Aukeratu eta jarraitu');
+        $I->click('#spannorberaren-arazoetarako-egunak');
+        $I->see('Aukeratu eta jarraitu');
+        $I->click('#eskaeranorberaren-arazoetarako-egunak');
+        $I->see('Norberaren arazoetarako egunak eskaera berria');
+
+        $I->fillField('#appbundle_eskaera_hasi', '2019-08-19');
+        $I->pressKey('#appbundle_eskaera_hasi', WebDriverKeys::TAB);
+        $I->fillField('#appbundle_eskaera_amaitu', '2019-08-20');
+        $I->pressKey('#appbundle_eskaera_amaitu', WebDriverKeys::TAB);
+
+        $I->click('//*[@id="cmdDivEgunak"]');
+        $I->fillField('#appbundle_eskaera_oharra', 'Test eskaera NAE egunak');
+        $I->see('2.00', '#appbundle_eskaera_egunak');
+        $I->see('14.52', '#appbundle_eskaera_total');
+        $I->click(['id' => 'btnSubmit']);
+        $I->see('Eskaera gauzatu da');
+
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('14.52 ordu (2 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('14.52 (2 egun)', '#selfHoursComplete');
+
+        $I->amGoingTo('Remove eskaera and see if its rollback correctly');
+        $I->amOnPage('/eskaera/');
+        $I->seeNumberOfElements('tr', 2);
+        $I->click('.btnRemoveEskaera');
+        try {
+            $I->waitForElementVisible('.bootbox');
+        } catch (Exception $e) {
+        } // waiting it to show
+        $I->see('Adi!', '.bootbox'); // text inside modal
+        $I->click('.btn-primary', '.bootbox'); // clicking ok insode modal
+        $I->see('Ez dago daturik');
+
+        $I->amGoingTo('Egutegiko orduak lehengoratu direla.');
+        $I->amOnPage('/mycalendar');
+        $I->see('IKER IBARGUREN BERASALUZE');
+        $I->see('9.37', '#hoursCompensed');
+        $I->see('30.00', '#hoursSindikal');
+        $I->see('250.00 (34.44 egun)', '#hoursFree');
+        $I->see('29.04 ordu (4 egun)', '#hoursSelf');
+        $I->see('14.52', '#selfHoursPartial');
+        $I->see('( 14 ordu 31 minutu )', '#selfHoursPartialToHour');
+        $I->see('29.04 (4 egun)', '#selfHoursComplete');
+    }
+
 }

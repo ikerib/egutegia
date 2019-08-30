@@ -179,6 +179,7 @@ class CalendarService
         $events = $this->em->getRepository('AppBundle:Event')->getEventsByEskaera($eskaera->getId());
         /** @var Event $event */
         foreach ($events as $event) {
+            /** @var Calendar $calendar */
             $calendar = $event->getCalendar();
             $t = $event->getType();
             if ($t->getRelated() === 'hours_free') {
@@ -188,14 +189,15 @@ class CalendarService
                 if ($event->getNondik()==='orduak') {
                     $calendar->setHoursSelfHalf($calendar->getHoursSelfHalf + $event->getHours());
                 } else {
-                    $calendar->setHoursSelf($calendar->getHoursSelf + $event->getHours());
+                    $_hoursSelf = $calendar->getHoursSelf();
+                    $calendar->setHoursSelf((float)$_hoursSelf + (float)$event->getHours());
                 }
             }
             if ($t->getRelated() === 'hours_compensed') {
-                $calendar->setHoursCompensed($calendar->getHoursCompensed() + $event->getHours());
+                $calendar->setHoursCompensed((float)$calendar->getHoursCompensed() + (float)$event->getHours());
             }
             if ($t->getRelated() === 'hours_sindical') {
-                $calendar->setHoursSindikal((float)$calendar->getHoursSindikal() + $event->getHours());
+                $calendar->setHoursSindikal((float)$calendar->getHoursSindikal() + (float)$event->getHours());
             }
             try {
                 $this->em->persist($calendar);
@@ -210,7 +212,6 @@ class CalendarService
         } catch (ORMException $e) {
         }
 
-        $this->em->flush();
 
         return array(
             'result'=> 1,
