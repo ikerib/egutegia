@@ -11,14 +11,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Type;
 use AppBundle\Form\TypeType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Type controller.
@@ -30,8 +29,7 @@ class TypeController extends Controller
     /**
      * Lists all type entities.
      *
-     * @Route("/", name="admin_type_index")
-     * @Method("GET")
+     * @Route("/", name="admin_type_index", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -53,8 +51,7 @@ class TypeController extends Controller
     /**
      * Lists all type entities.
      *
-     * @Route("/list/{calendarid}", name="admin_type_list")
-     * @Method("GET")
+     * @Route("/list/{calendarid}", name="admin_type_list", methods={"GET"})
      *
      * @param mixed $calendarid
      *
@@ -77,8 +74,7 @@ class TypeController extends Controller
     /**
      * Lists all type entities (templates).
      *
-     * @Route("/listtemplatetypes/{templateid}", name="admin_type_listtemplates")
-     * @Method("GET")
+     * @Route("/listtemplatetypes/{templateid}", name="admin_type_listtemplates", methods={"GET"})
      *
      * @param mixed $templateid
      *
@@ -98,8 +94,7 @@ class TypeController extends Controller
     /**
      * Creates a new type entity.
      *
-     * @Route("/new", name="admin_type_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admin_type_new", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return RedirectResponse|Response
@@ -134,8 +129,7 @@ class TypeController extends Controller
     /**
      * Displays a form to edit an existing type entity.
      *
-     * @Route("/{id}/edit", name="admin_type_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_type_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param Type    $type
      *
@@ -170,8 +164,11 @@ class TypeController extends Controller
     /**
      * Deletes a type entity.
      *
-     * @Route("/{id}", name="admin_type_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_type_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Type    $type
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Type $type): RedirectResponse
     {

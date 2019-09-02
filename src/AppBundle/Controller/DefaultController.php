@@ -12,7 +12,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
-use AppBundle\Form\UserNoteType;
 use AppBundle\Service\LdapService;
 use function count;
 use Doctrine\ORM\EntityManager;

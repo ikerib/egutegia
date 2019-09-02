@@ -4,8 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Firma;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\FirmaType;
 
 /**
  * Firma controller.
@@ -17,10 +22,9 @@ class FirmaController extends Controller
     /**
      * Lists all firma entities.
      *
-     * @Route("/", name="admin_firma_index")
-     * @Method("GET")
+     * @Route("/", name="admin_firma_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -34,13 +38,15 @@ class FirmaController extends Controller
     /**
      * Creates a new firma entity.
      *
-     * @Route("/new", name="admina_firm_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admina_firm_new", methods={"GET", "POST"})
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $firma = new Firma();
-        $form = $this->createForm('AppBundle\Form\FirmaType', $firma);
+        $form = $this->createForm(FirmaType::class, $firma);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -48,7 +54,7 @@ class FirmaController extends Controller
             $em->persist($firma);
             $em->flush();
 
-            return $this->redirectToRoute('admin_firm_show', array('id' => $firma->getId()));
+            return $this->redirectToRoute('admin_firma_show', array('id' => $firma->getId()));
         }
 
         return $this->render('firma/new.html.twig', array(
@@ -60,10 +66,12 @@ class FirmaController extends Controller
     /**
      * Finds and displays a firma entity.
      *
-     * @Route("/{id}", name="admin_firma_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_firma_show", methods={"GET"})
+     * @param Firma $firma
+     *
+     * @return Response
      */
-    public function showAction(Firma $firma)
+    public function showAction(Firma $firma): Response
     {
         $deleteForm = $this->createDeleteForm($firma);
 
@@ -76,19 +84,22 @@ class FirmaController extends Controller
     /**
      * Displays a form to edit an existing firma entity.
      *
-     * @Route("/{id}/edit", name="admin_firma_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_firma_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Firma   $firma
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Firma $firma)
     {
         $deleteForm = $this->createDeleteForm($firma);
-        $editForm = $this->createForm('AppBundle\Form\FirmaType', $firma);
+        $editForm = $this->createForm(FirmaType::class, $firma);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_firm_edit', array('id' => $firma->getId()));
+            return $this->redirectToRoute('admin_firma_edit', array('id' => $firma->getId()));
         }
 
         return $this->render('firma/edit.html.twig', array(
@@ -101,10 +112,13 @@ class FirmaController extends Controller
     /**
      * Deletes a firma entity.
      *
-     * @Route("/{id}", name="admin_firma_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_firma_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Firma   $firma
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Firma $firma)
+    public function deleteAction(Request $request, Firma $firma): RedirectResponse
     {
         $form = $this->createDeleteForm($firma);
         $form->handleRequest($request);
@@ -115,7 +129,7 @@ class FirmaController extends Controller
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_firm_index');
+        return $this->redirectToRoute('admin_firma_index');
     }
 
     /**
@@ -123,12 +137,12 @@ class FirmaController extends Controller
      *
      * @param Firma $firma The firma entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Firma $firma)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_firm_delete', array('id' => $firma->getId())))
+            ->setAction($this->generateUrl('admin_firma_delete', array('id' => $firma->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

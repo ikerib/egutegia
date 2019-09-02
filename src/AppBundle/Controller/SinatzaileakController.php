@@ -5,12 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Sinatzaileakdet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\SinatzaileakType;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Sinatzaileak controller.
@@ -22,10 +23,9 @@ class SinatzaileakController extends Controller
     /**
      * Lists all sinatzaileak entities.
      *
-     * @Route("/", name="admin_sinatzaileak_index")
-     * @Method("GET")
+     * @Route("/", name="admin_sinatzaileak_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -46,16 +46,22 @@ class SinatzaileakController extends Controller
     /**
      * Creates a new sinatzaileak entity.
      *
-     * @Route("/new", name="admin_sinatzaileak_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admin_sinatzaileak_new", methods={"GET", "POST"})
+     * @param Request $request
+     *
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $sinatzaileak = new Sinatzaileak();
-        $form = $this->createForm('AppBundle\Form\SinatzaileakType', $sinatzaileak, [
+        $form = $this->createForm(
+            SinatzaileakType::class,
+            $sinatzaileak,
+            [
             'action' => $this->generateUrl('admin_sinatzaileak_new'),
             'method' => 'POST'
-        ]);
+        ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,8 +81,7 @@ class SinatzaileakController extends Controller
     /**
      * Finds and displays a sinatzaileak entity.
      *
-     * @Route("/{id}", name="admin_sinatzaileak_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_sinatzaileak_show", methods={"GET"})
      * @param Sinatzaileak $sinatzaileak
      *
      * @return Response
@@ -103,12 +108,11 @@ class SinatzaileakController extends Controller
     /**
      * Displays a form to edit an existing sinatzaileak entity.
      *
-     * @Route("/{id}/edit", name="admin_sinatzaileak_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_sinatzaileak_edit", methods={"GET", "POST"})
      * @param Request      $request
      * @param Sinatzaileak $sinatzaileak
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Sinatzaileak $sinatzaileak)
     {
@@ -132,10 +136,13 @@ class SinatzaileakController extends Controller
     /**
      * Deletes a sinatzaileak entity.
      *
-     * @Route("/{id}", name="admin_sinatzaileak_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_sinatzaileak_delete", methods={"DELETE"})
+     * @param Request      $request
+     * @param Sinatzaileak $sinatzaileak
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Sinatzaileak $sinatzaileak)
+    public function deleteAction(Request $request, Sinatzaileak $sinatzaileak): RedirectResponse
     {
         $form = $this->createDeleteForm($sinatzaileak);
         $form->handleRequest($request);
@@ -154,7 +161,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileak $sinatzaileak The sinatzaileak entity
      *
-     * @return Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Sinatzaileak $sinatzaileak)
     {
@@ -170,7 +177,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileakdet $sd
      *
-     * @return Form The form
+     * @return Form|FormInterface
      *
      */
     private function createDeleteFormSinatzaileakkDet(Sinatzaileakdet $sd)

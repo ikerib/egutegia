@@ -12,11 +12,16 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\DocumentType;
 
 /**
  * Document controller.
@@ -29,17 +34,21 @@ class DocumentController extends Controller
     /**
      * Order up
      *
-     * @Route("/up/{id}", name="admin_document_order_up")
-     * @Method("GET")
+     * @Route("/up/{id}", name="admin_document_order_up", methods={"GET"})
+     * @param Request $request
+     * @param         $id
+     *
+     * @return RedirectResponse
+     * @throws EntityNotFoundException
      */
-    public function upAction(Request $request, $id)
+    public function upAction(Request $request, $id): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         /** @var Document $doc */
         $doc = $em->getRepository('AppBundle:Document')->find($id);
 
         if (!$doc) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('doc ez da topatu');
         }
 
         /** @var Calendar $calendar */
@@ -47,52 +56,54 @@ class DocumentController extends Controller
 
         $newOrden = $doc->getOrden() - 1;
 
-        if ( $newOrden < 0 ) {
+        if ($newOrden < 0) {
             $newOrden = 0;
         }
-        $doc->setOrden( $newOrden );
-        $em->persist( $doc);
+        $doc->setOrden($newOrden);
+        $em->persist($doc);
 
         /** @var Log $log */
         $log = new Log();
         $log->setName('Fitxategia ordena gora');
-        $log->setDescription($doc->getFilename() . " fitxategiaren ordena orain da: " . $newOrden);
+        $log->setDescription($doc->getFilename() .' fitxategiaren ordena orain da: '. $newOrden);
         $em->persist($log);
         $em->flush();
 
         return $this->redirect(
             $this->generateUrl('admin_calendar_edit', ['id' => $calendar->getId()]).'#files'
         );
-
-
     }
 
     /**
      * Order down
      *
-     * @Route("/down/{id}", name="admin_document_order_down")
-     * @Method("GET")
+     * @Route("/down/{id}", name="admin_document_order_down", methods={"GET"})
+     * @param Request $request
+     * @param         $id
+     *
+     * @return RedirectResponse
+     * @throws EntityNotFoundException
      */
-    public function downAction(Request $request, $id)
+    public function downAction(Request $request, $id): RedirectResponse
     {
         $em = $this->getDoctrine()->getManager();
         /** @var Document $doc */
         $doc = $em->getRepository('AppBundle:Document')->find($id);
 
         if (!$doc) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('doc ez da topatu');
         }
 
         /** @var Calendar $calendar */
         $calendar = $doc->getCalendar();
 
-        $doc->setOrden( $doc->getOrden() + 1 );
-        $em->persist( $doc);
+        $doc->setOrden($doc->getOrden() + 1);
+        $em->persist($doc);
 
         /** @var Log $log */
         $log = new Log();
         $log->setName('Fitxategia behera gora');
-        $log->setDescription($doc->getFilename() . " fitxategiaren ordena orain da: " . $doc->getOrden());
+        $log->setDescription($doc->getFilename() .' fitxategiaren ordena orain da: '. $doc->getOrden());
         $em->persist($log);
         $em->flush();
 
@@ -104,10 +115,9 @@ class DocumentController extends Controller
     /**
      * Lists all document entities.
      *
-     * @Route("/", name="admin_document_index")
-     * @Method("GET")
+     * @Route("/", name="admin_document_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -124,14 +134,13 @@ class DocumentController extends Controller
     /**
      * Lists all User documents.
      *
-     * @Route("/list/{calendarid}", name="admin_user_document_list")
-     * @Method("GET")
+     * @Route("/list/{calendarid}", name="admin_user_document_list", methods={"GET"})
      *
      * @param $calendarid
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function listAction($calendarid)
+    public function listAction($calendarid): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -148,13 +157,12 @@ class DocumentController extends Controller
     /**
      * Creates a new document entity.
      *
-     * @Route("/new/{calendarid}", name="admin_document_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{calendarid}", name="admin_document_new", methods={"GET", "POST"})
      *
      * @param Request    $request
      * @param null|mixed $calendarid
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws EntityNotFoundException
      */
     public function newAction(Request $request, $calendarid = null)
@@ -163,13 +171,13 @@ class DocumentController extends Controller
         $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
 
         if (!$calendar) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('ez da topatu calendar');
         }
 
         $document = new Document();
         $document->setCalendar($calendar);
         $form = $this->createForm(
-            'AppBundle\Form\DocumentType',
+            DocumentType::class,
             $document,
             ['action' => $this->generateUrl('admin_document_new', ['calendarid' => $calendarid])]
         );
@@ -181,7 +189,9 @@ class DocumentController extends Controller
             /** @var Log $log */
             $log = new Log();
             $log->setCalendar($calendar);
-            $log->setUser($this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $log->setUser($user);
             $log->setName('Fitxategi berria');
             $log->setDescription($document->getFilename().' fitxategia sortua izan da.');
             $em->persist($log);
@@ -206,13 +216,16 @@ class DocumentController extends Controller
     /**
      * Displays a form to edit an existing document entity.
      *
-     * @Route("/{id}/edit", name="admin_document_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_document_edit", methods={"GET", "POST"})
+     * @param Request  $request
+     * @param Document $document
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Document $document)
     {
         $deleteForm = $this->createDeleteForm($document);
-        $editForm = $this->createForm('AppBundle\Form\DocumentType', $document);
+        $editForm = $this->createForm(DocumentType::class, $document);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -234,10 +247,13 @@ class DocumentController extends Controller
     /**
      * Deletes a document entity.
      *
-     * @Route("/{id}", name="admin_document_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_document_delete", methods={"DELETE"})
+     * @param Request  $request
+     * @param Document $document
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Document $document)
+    public function deleteAction(Request $request, Document $document): RedirectResponse
     {
         $form = $this->createDeleteForm($document);
         $form->handleRequest($request);
@@ -251,16 +267,15 @@ class DocumentController extends Controller
             /** @var Log $log */
             $log = new Log();
             $log->setCalendar($calendar);
-            $log->setUser($this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $log->setUser($user);
             $log->setName('Fitxategia ezabatua');
             $log->setDescription($document->getFilename().' fitxategia ezabatua izan da.');
             $em->persist($log);
 
             $em->flush();
         }
-
-        //return $this->redirectToRoute( 'admin_document_index' );
-        //return $this->redirectToRoute('admin_calendar_edit',array('id' => $calendar->getId()));
 
         return $this->redirect(
             $this->generateUrl('admin_calendar_edit', ['id' => $calendar->getId()]).'#files'
@@ -272,7 +287,7 @@ class DocumentController extends Controller
      *
      * @param Document $document The document entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Document $document)
     {

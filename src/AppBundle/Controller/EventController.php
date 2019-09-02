@@ -10,11 +10,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Event;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\EventType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Event controller.
@@ -26,10 +29,9 @@ class EventController extends Controller
     /**
      * Lists all event entities.
      *
-     * @Route("/", name="admin_event_index")
-     * @Method("GET")
+     * @Route("/", name="admin_event_index", methods={"GET"})
      */
-    public function indexAction(): \Symfony\Component\HttpFoundation\Response
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -43,11 +45,10 @@ class EventController extends Controller
     /**
      * Creates a new event entity.
      *
-     * @Route("/new", name="admin_event_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admin_event_new", methods={"GET", "POST"})
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -72,13 +73,12 @@ class EventController extends Controller
     /**
      * Finds and displays a event entity.
      *
-     * @Route("/{id}", name="admin_event_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_event_show", methods={"GET"})
      * @param Event $event
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Event $event): \Symfony\Component\HttpFoundation\Response
+    public function showAction(Event $event): Response
     {
         $deleteForm = $this->createDeleteForm($event);
 
@@ -91,12 +91,11 @@ class EventController extends Controller
     /**
      * Displays a form to edit an existing event entity.
      *
-     * @Route("/{id}/edit", name="admin_event_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_event_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param Event   $event
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Event $event)
     {
@@ -120,14 +119,13 @@ class EventController extends Controller
     /**
      * Deletes a event entity.
      *
-     * @Route("/{id}", name="admin_event_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_event_delete", methods={"DELETE"})
      * @param Request $request
      * @param Event   $event
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Event $event): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function deleteAction(Request $request, Event $event): RedirectResponse
     {
         $form = $this->createDeleteForm($event);
         $form->handleRequest($request);
@@ -146,7 +144,7 @@ class EventController extends Controller
      *
      * @param Event $event The event entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Event $event)
     {

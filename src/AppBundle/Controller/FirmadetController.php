@@ -4,10 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Firmadet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\FirmadetType;
 
 /**
  * Firmadet controller.
@@ -19,8 +22,7 @@ class FirmadetController extends Controller
     /**
      * Lists all firmadet entities.
      *
-     * @Route("/", name="erantzunak_index")
-     * @Method("GET")
+     * @Route("/", name="erantzunak_index", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -39,16 +41,15 @@ class FirmadetController extends Controller
     /**
      * Creates a new firmadet entity.
      *
-     * @Route("/new", name="erantzunak_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="erantzunak_new", methods={"GET", "POST"})
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $firmadet = new Firmadet();
-        $form     = $this->createForm('AppBundle\Form\FirmadetType', $firmadet);
+        $form     = $this->createForm(FirmadetType::class, $firmadet);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -71,10 +72,12 @@ class FirmadetController extends Controller
     /**
      * Finds and displays a firmadet entity.
      *
-     * @Route("/{id}", name="erantzunak_show")
-     * @Method("GET")
+     * @Route("/{id}", name="erantzunak_show", methods={"GET"})
+     * @param Firmadet $firmadet
+     *
+     * @return Response
      */
-    public function showAction(Firmadet $firmadet)
+    public function showAction(Firmadet $firmadet): Response
     {
         $deleteForm = $this->createDeleteForm($firmadet);
 
@@ -90,13 +93,16 @@ class FirmadetController extends Controller
     /**
      * Displays a form to edit an existing firmadet entity.
      *
-     * @Route("/{id}/edit", name="erantzunak_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="erantzunak_edit", methods={"GET", "POST"})
+     * @param Request  $request
+     * @param Firmadet $firmadet
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Firmadet $firmadet)
     {
         $deleteForm = $this->createDeleteForm($firmadet);
-        $editForm   = $this->createForm('AppBundle\Form\FirmadetType', $firmadet);
+        $editForm   = $this->createForm(FirmadetType::class, $firmadet);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -118,10 +124,13 @@ class FirmadetController extends Controller
     /**
      * Deletes a firmadet entity.
      *
-     * @Route("/{id}", name="erantzunak_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="erantzunak_delete", methods={"DELETE"})
+     * @param Request  $request
+     * @param Firmadet $firmadet
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Firmadet $firmadet)
+    public function deleteAction(Request $request, Firmadet $firmadet): RedirectResponse
     {
         $form = $this->createDeleteForm($firmadet);
         $form->handleRequest($request);
@@ -140,7 +149,7 @@ class FirmadetController extends Controller
      *
      * @param Firmadet $firmadet The firmadet entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Firmadet $firmadet)
     {

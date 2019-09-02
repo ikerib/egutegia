@@ -4,13 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 /**
@@ -24,8 +23,7 @@ class NotificationController extends Controller
     /**
      * Lists all notification entities.
      *
-     * @Route("/", name="notification_index")
-     * @Method("GET")
+     * @Route("/", name="notification_index", methods={"GET"})
      * @param Request $request
      *
      * @return Response
@@ -61,8 +59,7 @@ class NotificationController extends Controller
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
      *
-     * @Route("/sinatzen", name="notification_sinatzen")
-     * @Method("GET")
+     * @Route("/sinatzen", name="notification_sinatzen", methods={"GET"})
      * @param Request $request
      *
      * @return Response
@@ -95,8 +92,7 @@ class NotificationController extends Controller
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
      *
-     * @Route("/list", name="notification_list")
-     * @Method("GET")
+     * @Route("/list", name="notification_list", methods={"GET"})
      * @param Request $request
      *
      * @return Response
@@ -138,13 +134,12 @@ class NotificationController extends Controller
     /**
      * Finds and displays a notification entity.
      *
-     * @Route("/{id}", name="notification_show")
-     * @Method("GET")
+     * @Route("/{id}", name="notification_show", methods={"GET"})
      * @param Notification $notification
      *
      * @return Response
      */
-    public function showAction(Notification $notification)
+    public function showAction(Notification $notification): Response
     {
 
         return $this->render(
@@ -158,14 +153,13 @@ class NotificationController extends Controller
     /**
      * Deletes a type entity.
      *
-     * @Route("/{id}", name="notification_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="notification_delete", methods={"DELETE"})
      * @param Request      $request
      * @param Notification $notify
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Notification $notify)
+    public function deleteAction(Request $request, Notification $notify): RedirectResponse
     {
         $form = $this->createDeleteForm($notify);
         $form->handleRequest($request);

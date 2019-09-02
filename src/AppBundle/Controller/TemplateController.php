@@ -11,10 +11,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Template;
 use AppBundle\Form\TemplateType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Template controller.
@@ -26,10 +29,9 @@ class TemplateController extends Controller
     /**
      * Lists all template entities.
      *
-     * @Route("/", name="admin_template_index")
-     * @Method("GET")
+     * @Route("/", name="admin_template_index", methods={"GET"})
      */
-    public function indexAction(): \Symfony\Component\HttpFoundation\Response
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -53,12 +55,11 @@ class TemplateController extends Controller
     /**
      * Creates a new template entity.
      *
-     * @Route("/new", name="admin_template_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admin_template_new", methods={"GET", "POST"})
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
@@ -93,14 +94,13 @@ class TemplateController extends Controller
     /**
      * Finds and displays a template entity.
      *
-     * @Route("/{id}", name="admin_template_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_template_show", methods={"GET"})
      *
      * @param Template $template
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Template $template): \Symfony\Component\HttpFoundation\Response
+    public function showAction(Template $template): Response
     {
         $deleteForm = $this->createDeleteForm($template);
 
@@ -116,13 +116,12 @@ class TemplateController extends Controller
     /**
      * Displays a form to edit an existing template entity.
      *
-     * @Route("/{id}/edit", name="admin_template_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_template_edit", methods={"GET", "POST"})
      *
      * @param Request  $request
      * @param Template $template
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Template $template)
     {
@@ -153,15 +152,14 @@ class TemplateController extends Controller
     /**
      * Deletes a template entity.
      *
-     * @Route("/{id}", name="admin_template_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_template_delete", methods={"DELETE"})
      *
      * @param Request  $request
      * @param Template $template
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Template $template): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function deleteAction(Request $request, Template $template): RedirectResponse
     {
         $form = $this->createDeleteForm($template);
         $form->handleRequest($request);
@@ -180,7 +178,7 @@ class TemplateController extends Controller
      *
      * @param Template $template The template entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Template $template)
     {

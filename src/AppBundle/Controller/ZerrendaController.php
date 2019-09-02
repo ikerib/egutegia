@@ -3,8 +3,9 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Eskaera controller.
@@ -13,10 +14,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ZerrendaController extends Controller
 {
+
     /**
      * @Route("/absentismo")
+     * @param Request $request
+     *
+     * @return Response
      */
-    public function absentismoAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function absentismoAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $urteak = $em->getRepository('AppBundle:Calendar')->getEgutegiUrteak();
@@ -45,9 +50,9 @@ class ZerrendaController extends Controller
      * @Route("/konpentsatuak")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function konpentsatuakAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function konpentsatuakAction(Request $request): Response
     {
         //        FORM POST PARAMETERS
         $hasi      = $request->request->get('data_hasi');
@@ -74,21 +79,21 @@ class ZerrendaController extends Controller
 
         $testua = $urtea.'-ko datuak erakusten ';
         if ($hasi) {
-            $testua = $testua.$hasi.'-tik hasita ';
+            $testua .= $hasi.'-tik hasita ';
         }
         if ($fin) {
-            $testua = $testua.$fin.'-erarte. ';
+            $testua .= $fin.'-erarte. ';
         }
         if ($saila) {
-            $testua = $testua.' Saila:'.$saila;
+            $testua .= ' Saila:'.$saila;
         }
         if ($lanpostua) {
-            $testua = $testua.' Lanpostua:'.$lanpostua;
+            $testua .= ' Lanpostua:'.$lanpostua;
         }
         if ($mota) {
             $motatest = $em->getRepository('AppBundle:Type')->find($mota);
             if ($motatest) {
-                $testua = $testua.' Mota:'.$motatest->getName();
+                $testua .= ' Mota:'.$motatest->getName();
             }
 
         }

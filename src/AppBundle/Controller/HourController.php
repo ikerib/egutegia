@@ -9,15 +9,19 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Hour;
 use AppBundle\Entity\Log;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityNotFoundException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\HourType;
 
 /**
  * Hour controller.
@@ -29,10 +33,9 @@ class HourController extends Controller
     /**
      * Lists all hour entities.
      *
-     * @Route("/", name="admin_hour_index")
-     * @Method("GET")
+     * @Route("/", name="admin_hour_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -46,15 +49,14 @@ class HourController extends Controller
     /**
      * Creates a new hour entity.
      *
-     * @Route("/new/{calendarid}", name="admin_hour_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{calendarid}", name="admin_hour_new", methods={"GET", "POST"})
      *
      * @param Request $request
      * @param         $calendarid
      *
-     * @throws EntityNotFoundException
+     * @return RedirectResponse|Response
+     *@throws EntityNotFoundException
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request, $calendarid)
     {
@@ -62,17 +64,21 @@ class HourController extends Controller
         $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
 
         if (!$calendar) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException('ez da topatu egutegia');
         }
 
         $hour = new Hour();
         $hour->setFactor(1.75);
         $hour->setCalendar($calendar);
 
-        $form = $this->createForm('AppBundle\Form\HourType', $hour, [
+        $form = $this->createForm(
+            HourType::class,
+            $hour,
+            [
             'action' => $this->generateUrl('admin_hour_new', ['calendarid' => $calendarid]),
             'method' => 'POST',
-        ]);
+        ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -86,7 +92,9 @@ class HourController extends Controller
             $log->setCalendar($calendar);
             $log->setName('Ordu konpentsatuak gehitu');
             $log->setDescription('Fetxa: '.date_format($hour->getDate(), 'Y/m/d').' Orduak: '.$hour->getHours().' Minutuak: '.$hour->getMinutes().' Total: '.$hour->getTotal());
-            $log->setUser($this->getUser());
+            /** @var User $user */
+            $user = $this->getUser();
+            $log->setUser($user);
 
             $em->persist($log);
             $em->persist($calendar);
@@ -105,24 +113,28 @@ class HourController extends Controller
         ]);
     }
 
-    public function ahaldu() {
-
-    }
 
     /**
      * Displays a form to edit an existing hour entity.
      *
-     * @Route("/{id}/edit", name="admin_hour_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_hour_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @param Hour    $hour
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Hour $hour)
     {
         $deleteForm = $this->createDeleteForm($hour);
         //$editForm = $this->createForm('AppBundle\Form\HourType', $hour);
-        $editForm = $this->createForm('AppBundle\Form\HourType', $hour, [
+        $editForm = $this->createForm(
+            HourType::class,
+            $hour,
+            [
             'action' => $this->generateUrl('admin_hour_edit', ['id' => $hour->getId()]),
             'method' => 'POST',
-        ]);
+        ]
+        );
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -135,13 +147,15 @@ class HourController extends Controller
             $OriginalEntityData = $uow->getOriginalEntityData($hour);
 
             $data = $editForm->getData();
-            $temp = (float) ($OriginalEntityData['total']);
+            $temp = (float)$OriginalEntityData['total'];
 
-            $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed()) - $temp + (float) ($data->getTotal()));
+            $calendar->setHoursCompensed((float)$calendar->getHoursCompensed() - $temp + (float)$data->getTotal());
 
             /** @var Log $log */
             $log = new Log();
-            $log->setUser($this->getUser());
+            /** @var User $u */
+            $u = $this->getUser();
+            $log->setUser($u);
             $log->setName('Ordu Konpentsatuak. Zuzenketa.');
             $log->setDescription('Fetxa: '.date_format($hour->getDate(), 'Y/m/d').' Orduak: '.$hour->getHours().' Minutuak: '.$hour->getMinutes().' Total: '.$hour->getTotal());
             $log->setCalendar($calendar);
@@ -166,10 +180,13 @@ class HourController extends Controller
     /**
      * Deletes a hour entity.
      *
-     * @Route("/{id}", name="admin_hour_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_hour_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Hour    $hour
+     *
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Hour $hour)
+    public function deleteAction(Request $request, Hour $hour): RedirectResponse
     {
         $form = $this->createDeleteForm($hour);
         $form->handleRequest($request);
@@ -180,12 +197,14 @@ class HourController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed() - (float) ($hour->getTotal())));
+            $calendar->setHoursCompensed((float) ($calendar->getHoursCompensed() - (float)$hour->getTotal()));
 
             /** @var Log $log */
             $log = new Log();
             $log->setCalendar($calendar);
-            $log->setUser($this->getUser());
+            /** @var User $u */
+            $u = $this->getUser();
+            $log->setUser($u);
             $log->setName('Ordu konpentsatua ezabatua');
             $log->setDescription('Fetxa: '.date_format($hour->getDate(), 'Y/m/d').' Orduak: '.$hour->getHours().' Minutuak: '.$hour->getMinutes().' Total: '.$hour->getTotal());
             $em->persist($log);
@@ -204,7 +223,7 @@ class HourController extends Controller
      *
      * @param Hour $hour The hour entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Hour $hour)
     {

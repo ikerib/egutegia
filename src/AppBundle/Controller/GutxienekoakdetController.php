@@ -5,12 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Gutxienekoakdet;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use AppBundle\Form\GutxienekoakdetType;
 
 /**
  * Gutxienekoakdet controller.
@@ -22,10 +23,9 @@ class GutxienekoakdetController extends Controller
     /**
      * Lists all gutxienekoakdet entities.
      *
-     * @Route("/", name="admin_gutxienekoakdet_index")
-     * @Method("GET")
+     * @Route("/", name="admin_gutxienekoakdet_index", methods={"GET"})
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -39,8 +39,7 @@ class GutxienekoakdetController extends Controller
     /**
      * Creates a new gutxienekoakdet entity.
      *
-     * @Route("/new/{gutxiid}", name="admin_gutxienekoakdet_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{gutxiid}", name="admin_gutxienekoakdet_new", methods={"GET", "POST"})
      * @param Request $request
      * @param         $gutxiid
      *
@@ -57,10 +56,14 @@ class GutxienekoakdetController extends Controller
 
         $gutxienekoakdet = new Gutxienekoakdet();
         $gutxienekoakdet->setGutxienekoak($gutxi);
-        $form = $this->createForm('AppBundle\Form\GutxienekoakdetType', $gutxienekoakdet, [
+        $form = $this->createForm(
+            GutxienekoakdetType::class,
+            $gutxienekoakdet,
+            [
             'action' => $this->generateUrl('admin_gutxienekoakdet_new', array('gutxiid'=>$gutxiid)),
             'method' => 'POST',
-        ]);
+        ]
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -81,13 +84,12 @@ class GutxienekoakdetController extends Controller
     /**
      * Finds and displays a gutxienekoakdet entity.
      *
-     * @Route("/{id}", name="admin_gutxienekoakdet_show")
-     * @Method("GET")
+     * @Route("/{id}", name="admin_gutxienekoakdet_show", methods={"GET"})
      * @param Gutxienekoakdet $gutxienekoakdet
      *
      * @return Response
      */
-    public function showAction(Gutxienekoakdet $gutxienekoakdet)
+    public function showAction(Gutxienekoakdet $gutxienekoakdet): Response
     {
         $deleteForm = $this->createDeleteForm($gutxienekoakdet);
 
@@ -100,8 +102,7 @@ class GutxienekoakdetController extends Controller
     /**
      * Displays a form to edit an existing gutxienekoakdet entity.
      *
-     * @Route("/{id}/edit", name="admin_gutxienekoakdet_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_gutxienekoakdet_edit", methods={"GET", "POST"})
      * @param Request         $request
      * @param Gutxienekoakdet $gutxienekoakdet
      *
@@ -110,7 +111,7 @@ class GutxienekoakdetController extends Controller
     public function editAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
     {
         $deleteForm = $this->createDeleteForm($gutxienekoakdet);
-        $editForm = $this->createForm('AppBundle\Form\GutxienekoakdetType', $gutxienekoakdet);
+        $editForm = $this->createForm(GutxienekoakdetType::class, $gutxienekoakdet);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -129,14 +130,13 @@ class GutxienekoakdetController extends Controller
     /**
      * Deletes a gutxienekoakdet entity.
      *
-     * @Route("/{id}", name="admin_gutxienekoakdet_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_gutxienekoakdet_delete", methods={"DELETE"})
      * @param Request         $request
      * @param Gutxienekoakdet $gutxienekoakdet
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Gutxienekoakdet $gutxienekoakdet)
+    public function deleteAction(Request $request, Gutxienekoakdet $gutxienekoakdet): RedirectResponse
     {
         $form = $this->createDeleteForm($gutxienekoakdet);
         $form->handleRequest($request);
@@ -157,7 +157,7 @@ class GutxienekoakdetController extends Controller
      *
      * @param Gutxienekoakdet $gutxienekoakdet The gutxienekoakdet entity
      *
-     * @return Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Gutxienekoakdet $gutxienekoakdet)
     {

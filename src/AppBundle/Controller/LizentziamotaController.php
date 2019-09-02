@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Lizentziamota;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\LizentziamotaType;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Lizentziamotum controller.
@@ -23,8 +22,7 @@ class LizentziamotaController extends Controller
     /**
      * Lists all lizentziamotum entities.
      *
-     * @Route("/", name="admin_lizentziamota_index")
-     * @Method("GET")
+     * @Route("/", name="admin_lizentziamota_index", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -46,8 +44,7 @@ class LizentziamotaController extends Controller
     /**
      * Creates a new lizentziamotum entity.
      *
-     * @Route("/new", name="admin_lizentziamota_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="admin_lizentziamota_new", methods={"GET", "POST"})
      * @param Request $request
      *
      * @return RedirectResponse|Response
@@ -83,8 +80,7 @@ class LizentziamotaController extends Controller
     /**
      * Deletes a lizentziamotum entity.
      *
-     * @Route("/{id}", name="admin_lizentziamota_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_lizentziamota_delete", methods={"DELETE"})
      * @param Request       $request
      * @param Lizentziamota $lizentziamotum
      *
@@ -107,8 +103,7 @@ class LizentziamotaController extends Controller
     /**
      * Displays a form to edit an existing lizentziamotum entity.
      *
-     * @Route("/{id}/edit", name="admin_lizentziamota_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_lizentziamota_edit", methods={"GET", "POST"})
      * @param Request       $request
      * @param Lizentziamota $lizentziamotum
      *
@@ -149,7 +144,5 @@ class LizentziamotaController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
-
-
     }
 }

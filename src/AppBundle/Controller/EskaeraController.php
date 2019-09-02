@@ -1,4 +1,4 @@
-<?php /** @noinspection ALL */
+<?php
 
 namespace AppBundle\Controller;
 
@@ -17,30 +17,36 @@ use AppBundle\Form\EskaeraJustifyType;
 use AppBundle\Service\CalendarService;
 use AppBundle\Service\NotificationService;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\ORMException;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use GuzzleHttp\Client;
 use AppBundle\Form\EskaeraType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use function count;
 
 /**
  * Eskaera controller.
  *
  * @Route("eskaera")
  */
-class EskaeraController extends Controller {
+class EskaeraController extends Controller
+{
 
     /**
      * Lists all eskaera entities.
      *
-     * @Route("/", name="eskaera_index")
-     * @Method("GET")
+     * @Route("/", name="eskaera_index", methods={"GET"})
      */
-    public function indexAction(): \Symfony\Component\HttpFoundation\Response
+    public function indexAction(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -54,8 +60,7 @@ class EskaeraController extends Controller {
         $types = $em->getRepository('AppBundle:Type')->findEskaerak();
 
         $deleteForms = [];
-        foreach ($eskaeras as $e)
-        {
+        foreach ($eskaeras as $e) {
             /** @var Eskaera $e */
             $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
@@ -72,10 +77,9 @@ class EskaeraController extends Controller {
 
     /**
      *
-     * @Route("/instantziak", name="eskaera_instantziak")
-     * @Method("GET")
+     * @Route("/instantziak", name="eskaera_instantziak", methods={"GET"})
      */
-    public function eskaerainstantziakAction(): \Symfony\Component\HttpFoundation\Response
+    public function eskaerainstantziakAction(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -95,14 +99,13 @@ class EskaeraController extends Controller {
     }
 
 
-      /**
-     * @Route("/lista", name="admin_eskaera_list")
-     * @Method("GET")
+    /**
+     * @Route("/lista", name="admin_eskaera_list", methods={"GET"})
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function listAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function listAction(Request $request): Response
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
@@ -111,18 +114,14 @@ class EskaeraController extends Controller {
         $history = $request->query->get('history', '1');
         $lm = $request->query->get('lm');
 
-        if ((($q === null) || ($q === 'all')) && $history === '1')
-        {
+        if ((($q === null) || ($q === 'all')) && $history === '1') {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
-        }
-        else
-        {
+        } else {
             $eskaeras = $this->get('app.eskaera.repository')->list($q, $history, $lm);
         }
 
         $deleteForms = [];
-        foreach ($eskaeras as $e)
-        {
+        foreach ($eskaeras as $e) {
             /** @var Eskaera $e */
             $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
@@ -145,13 +144,12 @@ class EskaeraController extends Controller {
     /**
      * Eskaera gehitu langilearen egutegira.
      *
-     * @Route("/addToCalendar/{id}", name="eskaera_add_to_calendar")
-     * @Method({"GET"})
+     * @Route("/addToCalendar/{id}", name="eskaera_add_to_calendar", methods={"GET"})
      *
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\ORMException
+     * @return RedirectResponse|Response
+     * @throws ORMException
      */
     public function addToCalendarAction(Eskaera $eskaera)
     {
@@ -169,8 +167,7 @@ class EskaeraController extends Controller {
             'eskaera_id'  => $eskaera->getId()
         );
 
-        if ($eskaera->getType()->getId() === 5)
-        {
+        if ($eskaera->getType()->getId() === 5) {
             $aData[ 'event_nondik' ]                 = $eskaera->getNondik();
             $aData[ 'event_hours_self_before' ]      = $eskaera->getCalendar()->getHoursSelf();
             $aData[ 'event_hours_self_half_before' ] = $eskaera->getCalendar()->getHoursSelfHalf();
@@ -180,8 +177,7 @@ class EskaeraController extends Controller {
         $niresrv = $this->get('app.calendar.service');
         $resp    = $niresrv->addEvent($aData);
 
-        if ($resp[ 'result' ] === - 1)
-        {
+        if ($resp[ 'result' ] === - 1) {
             $this->addFlash('error', 'Ez ditu nahikoa ordu.');
 
             return $this->redirectToRoute('admin_eskaera_list');
@@ -199,13 +195,14 @@ class EskaeraController extends Controller {
     /**
      * Creates a new eskaera entity.
      *
-     * @Route("/new/{q}", name="eskaera_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{q}", name="eskaera_new", methods={"GET", "POST"})
+
      * @param Request $request
      *
      * @param         $q
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
+     * @throws ORMException
      */
     public function newAction(Request $request, $q)
     {
@@ -222,8 +219,7 @@ class EskaeraController extends Controller {
             date('Y')
         );
 
-        if (!$calendar)
-        {
+        if (!$calendar) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
@@ -254,8 +250,7 @@ class EskaeraController extends Controller {
         );
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em   = $this->getDoctrine()->getManager();
             /** @var Eskaera $data */
             $data = $form->getData();
@@ -274,18 +269,14 @@ class EskaeraController extends Controller {
             /**
              * 2-. Bateraezinik badu, begiratu ea koinzidentziarik dagoen
              */
-            if ($gutxienekoak > 0)
-            {
+            if ($gutxienekoak > 0) {
 
                 /** @var Gutxienekoak $g */
-                foreach ($gutxienekoak as $g)
-                {
+                foreach ($gutxienekoak as $g) {
                     $gutxienekoakdet = $g->getGutxienekoakdet();
-                    foreach ($gutxienekoakdet as $gd)
-                    {
+                    foreach ($gutxienekoakdet as $gd) {
                         /** @var Gutxienekoakdet $gd */
-                        if ($gd->getUser() !== $user)
-                        {
+                        if ($gd->getUser() !== $user) {
                             $collision1 = $em->getRepository('AppBundle:Event')->checkCollision($gd->getUser()->getId(), $fini, $ffin);
                             $collision2 = $em->getRepository('AppBundle:Eskaera')->checkCollision($gd->getUser()->getId(), $fini, $ffin);
                         }
@@ -297,27 +288,22 @@ class EskaeraController extends Controller {
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
              */
-            if (($collision1 !== '') || ($collision2 !== ''))
-            {
-                if (\count($collision1) > 0)
-                {
+            if (($collision1 !== '') || ($collision2 !== '')) {
+                if (count($collision1) > 0) {
                     $txt = '';
                     /** @var Event $e */
-                    foreach ($collision1 as $e)
-                    {
-                        $txt = $txt.' - '.$e->getCalendar()->getUser();
+                    foreach ($collision1 as $e) {
+                        $txt .= ' - '.$e->getCalendar()->getUser();
                     }
                     $txtOharra = $eskaera->getOharra().' ADI!!  '.$txt.' langileekin koinzidentziak ditu';
                     $eskaera->setOharra($txtOharra);
                     $eskaera->setKonfliktoa(true);
                 }
-                if (\count($collision2) > 0)
-                {
+                if (count($collision2) > 0) {
                     $txt = '';
                     /** @var Event $e */
-                    foreach ($collision2 as $e)
-                    {
-                        $txt = $txt.' - '.$e->getCalendar()->getUser();
+                    foreach ($collision2 as $e) {
+                        $txt .= ' - '.$e->getCalendar()->getUser();
                     }
                     $txtOharra = $eskaera->getOharra().' ADI!!  '.$txt.' langileekin koinzidentziak ditu';
                     $eskaera->setOharra($txtOharra);
@@ -333,14 +319,12 @@ class EskaeraController extends Controller {
             /** @var User $user */
             $user = $this->getUser();
             $noiz = date('Y-m-d');
-            if ($eskaera->getNoiz()->format('Y-m-d') !== null)
-            {
+            if ($eskaera->getNoiz()->format('Y-m-d') !== null) {
                 $noiz = $eskaera->getNoiz()->format('Y-m-d');
             }
 
             $amaitu = '';
-            if ($eskaera->getAmaitu() !== null)
-            {
+            if ($eskaera->getAmaitu() !== null) {
                 $amaitu = $eskaera->getAmaitu()->format('Y-m-d');
             }
 
@@ -361,8 +345,7 @@ class EskaeraController extends Controller {
                 'eskaera_id'  => $eskaera->getId()
             );
 
-            if ($eskaera->getType()->getId() === 5)
-            {
+            if ($eskaera->getType()->getId() === 5) {
                 $aData[ 'event_nondik' ]                 = $eskaera->getNondik();
                 $aData[ 'event_hours_self_before' ]      = $eskaera->getCalendar()->getHoursSelf();
                 $aData[ 'event_hours_self_half_before' ] = $eskaera->getCalendar()->getHoursSelfHalf();
@@ -396,13 +379,12 @@ class EskaeraController extends Controller {
     /**
      * Eskaera zuzen gauzatua izan da
      *
-     * @Route("/{id}/ok", name="eskaera_gauzatua")
-     * @Method("GET")
+     * @Route("/{id}/ok", name="eskaera_gauzatua", methods={"GET"})
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function gauzatuaAction(Eskaera $eskaera): \Symfony\Component\HttpFoundation\Response
+    public function gauzatuaAction(Eskaera $eskaera): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
         $deleteForm = $this->createDeleteForm($eskaera);
@@ -419,15 +401,15 @@ class EskaeraController extends Controller {
     /**
      * Get PDF Document.
      *
-     * @Route("/{id}/pdf", name="eskaera_pdf")
-     * @Method("GET")
+     * @Route("/{id}/pdf", name="eskaera_pdf", methods={"GET"})
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function pdfAction(Eskaera $eskaera): ?\Symfony\Component\HttpFoundation\Response
+    public function pdfAction(Eskaera $eskaera): ?Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        /** @var User $user */
         $user = $this->getUser();
         $html = $this->renderView(
             'eskaera/print.html.twig',
@@ -446,8 +428,7 @@ class EskaeraController extends Controller {
 
         $nirepath = $tmpPath.$filename;
 
-        if (!file_exists($nirepath))
-        {
+        if (!file_exists($nirepath)) {
             $this->get('knp_snappy.pdf')->generateFromHtml(
                 $this->renderView(
                     'eskaera/print.html.twig',
@@ -470,13 +451,12 @@ class EskaeraController extends Controller {
     /**
      * Finds and prints a eskaera entity.
      *
-     * @Route("/print/{id}", name="eskaera_print")
-     * @Method("GET")
+     * @Route("/print/{id}", name="eskaera_print", methods={"GET"})
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function printAction(Eskaera $eskaera): \Symfony\Component\HttpFoundation\Response
+    public function printAction(Eskaera $eskaera): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -491,13 +471,12 @@ class EskaeraController extends Controller {
     /**
      * Displays a form to edit an existing eskaera entity.
      *
-     * @Route("/{id}/edit", name="admin_eskaera_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_eskaera_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return RedirectResponse|Response
+     * @throws GuzzleException
      */
     public function editAction(Request $request, Eskaera $eskaera)
     {
@@ -511,7 +490,9 @@ class EskaeraController extends Controller {
             EskaeraType::class,
             $eskaera,
             array(
-                'action' => $this->generateUrl('admin_eskaera_edit', array(
+                'action' => $this->generateUrl(
+                    'admin_eskaera_edit',
+                    array(
                     'id' => $eskaera->getId(),
                     'q'=>$q,
                     'history'=>$history,
@@ -524,26 +505,22 @@ class EskaeraController extends Controller {
 
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid())
-        {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($eskaera->getSinatzaileak())
-            {
+            if ($eskaera->getSinatzaileak()) {
 
                 /*
                  * 2-. Begiratu firma entitaterik ez duela (abiatua = false) eta firma entitatea bete
                  */
-                if ($eskaera->getAbiatua() === false)
-                {
+                if ($eskaera->getAbiatua() === false) {
                     $eskaera->setAbiatua(true);
                     $sinatubeharda = true;
                     /** @var NotificationService $notifysrv */
                     $notifysrv = $this->container->get('app.sinatzeke');
 
                     $firma = new Firma();
-                    if ($eskaera->getLizentziamota()){
-                        if ($eskaera->getLizentziamota()->getSinatubehar() === false)
-                        {
+                    if ($eskaera->getLizentziamota()) {
+                        if ($eskaera->getLizentziamota()->getSinatubehar() === false) {
                             $sinatubeharda = false;
                         }
                     }
@@ -554,7 +531,6 @@ class EskaeraController extends Controller {
                     $lehenSinatzaile = $sinatzaileusers[ 0 ];
 
                     if ($sinatubeharda) {
-
                         $firma->setName($eskaera->getName());
                         $firma->setSinatzaileak($eskaera->getSinatzaileak());
                         $firma->setEskaera($eskaera);
@@ -565,8 +541,7 @@ class EskaeraController extends Controller {
                         $_ez_notifikatu = null; // Autofirmarekin bada, ez du jakinarazpena sortu beharrik
 
                         /** @var Sinatzaileakdet $s */
-                        foreach ($sinatzaileusers as $s)
-                        {
+                        foreach ($sinatzaileusers as $s) {
                             /** @var Firmadet $fd */
                             $fd = new Firmadet();
                             $fd->setFirma($firma);
@@ -576,11 +551,10 @@ class EskaeraController extends Controller {
 
                             $eskatzaile_id = $eskaera->getUser()->getId();
 
-                            if ($s->getUser()->getId() === $eskatzaile_id)
-                            {
+                            if ($s->getUser()->getId() === $eskatzaile_id) {
                                 // Autofirmatu. Eskatzailea eta sinatzaile zerrendako user berdinak direnez, firmatu
 
-                                /** @var \GuzzleHttp\Client $client */
+                                /** @var Client $client */
                                 $client = $this->get('eight_points_guzzle.client.api_put_firma');
 //                            $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1?XDEBUG_SESSION_START=PHPSTORM';
                                 $url = '/app_dev.php/api/postit/'.$firma->getId().'/'.$eskatzaile_id.'.json?autofirma=1';
@@ -609,9 +583,7 @@ class EskaeraController extends Controller {
                         // SOILIK LEHENA NOTIFIKATU
                         $notifysrv->sendNotificationToFirst($eskaera, null, $lehenSinatzaile);
                     }
-
-                } elseif ($eskaera->getAmaitua() === false)
-                {
+                } elseif ($eskaera->getAmaitua() === false) {
                     echo 'kaka';
                 }
             }
@@ -637,16 +609,14 @@ class EskaeraController extends Controller {
     /**
      * Displays a form to edit an existing eskaera entity.
      *
-     * @Route("/{id}/justify", name="eskaera_justify")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/justify", name="eskaera_justify", methods={"GET", "POST"})
      * @param Request $request
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function justifyAction(Request $request, Eskaera $eskaera)
     {
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $editForm = $this->createForm(
             EskaeraJustifyType::class,
             $eskaera,
@@ -657,12 +627,10 @@ class EskaeraController extends Controller {
         );
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid())
-        {
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
-            if ($eskaera->getJustifikanteFile() !== null)
-            {
+            if ($eskaera->getJustifikanteFile() !== null) {
                 $eskaera->setJustifikatua(true);
                 $em->persist($eskaera);
                 $em->flush();
@@ -687,14 +655,14 @@ class EskaeraController extends Controller {
     /**
      * Deletes a Justify file.
      *
-     * @Route("/justity/file/{id}", name="eskaera_justify_file_delete")
-     * @Method("GET")
+     * @Route("/justity/file/{id}", name="eskaera_justify_file_delete", methods={"GET"})
      * @param Request $request
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function deleteJustifyFileAction(Request $request, Eskaera $eskaera)
+    public function deleteJustifyFileAction(Request $request, Eskaera $eskaera): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
@@ -712,14 +680,14 @@ class EskaeraController extends Controller {
     /**
      * Deletes a eskaera entity.
      *
-     * @Route("/{id}", name="eskaera_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="eskaera_delete", methods={"DELETE"})
+
      * @param Request $request
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Eskaera $eskaera): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function deleteAction(Request $request, Eskaera $eskaera): RedirectResponse
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
         $form = $this->createDeleteForm($eskaera);
@@ -727,17 +695,14 @@ class EskaeraController extends Controller {
 
         $urlToRedirect = 'admin_eskaera_list';
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Ezabatu egutegitik
             /** @var CalendarService $niresrv */
             $niresrv = $this->get('app.calendar.service');
             $resp    = $niresrv->removeEventsByEskaera($eskaera);
 
-            if ($request->request->has('eskaerauserdelete')) {
-                if ($request->request->get('eskaerauserdelete')==="1") {
-                    $urlToRedirect = 'eskaera_index';
-                }
+            if ($request->request->has('eskaerauserdelete') && $request->request->get('eskaerauserdelete') === "1") {
+                $urlToRedirect = 'eskaera_index';
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -753,7 +718,7 @@ class EskaeraController extends Controller {
      *
      * @param Eskaera $eskaera The eskaera entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Eskaera $eskaera)
     {
@@ -766,13 +731,12 @@ class EskaeraController extends Controller {
     /**
      * Finds and displays a eskaera entity.
      *
-     * @Route("/{id}/show", name="eskaera_show")
-     * @Method("GET")
+     * @Route("/{id}/show", name="eskaera_show", methods={"GET"})
      * @param Eskaera $eskaera
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function showAction(Eskaera $eskaera): \Symfony\Component\HttpFoundation\Response
+    public function showAction(Eskaera $eskaera): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
         $deleteForm = $this->createDeleteForm($eskaera);
