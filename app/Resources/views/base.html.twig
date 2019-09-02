@@ -111,68 +111,36 @@
                                 <li><a href="{{ path('notification_list') }}"><i class="fa fa-notify"></i> {{ "Jakinarazpen guztiak" | trans}}</a></li>
                             </ul>
                         </li>
+                        {% set eskaerak = notification_service.getEskaerak %}
+                        {% include '_nav/eskaerak.html.twig' with {'eskaerak': eskaerak} %}
                     {% endif %}
                 </ul>
 
-{#                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}#}
-{#                    {{ knp_menu_render('main', {'currentClass': 'active', 'template': 'knp_menu.html.twig'}) }}#}
-{#                {% endif %}#}
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                        </ul>
-                    </li>
+                    {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                        <li><a href="{{ path('dashboard', {'_switch_user': '_exit'}) }}"><i class="fa fa-exit"></i> {{ "Modu arruntera izuli" | trans}}</a></li>
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        <li><a href="{{ path('eskaera_instantziak') }}"><i class="fa fa-send"></i> {{ "user_menu.eskaera.new" | trans}}</a></li>
+                        <li class="dropdown">
+                            {%  set notifications = notification_service.GetNotifications %}
+
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.username }} <span id='mainMenuNotificationCount' class='badge badge-error'>{{ notifications | length}}</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('user_homepage') }}"><i class="fa fa-calendar"></i> {{ "Egutegia" | trans}}</a></li>
+                                <li><a href="{{ path('user_documents') }}"><i class="fa fa-folder-open"></i> {{ "Fitxategiak" | trans}}</a></li>
+                                <li><a href="{{ path('eskaera_index') }}"><i class="fa fa-folder-send"></i> {{ "user_menu.eskaerak" | trans}}</a></li>
+{#                                <li><a href="{{ path('user_homepage') }}"><i class="fa fa-calendar"></i> {{ "Egutegia" | trans}}</a></li>                                <li><a href="#">Another action</a></li>#}
+{#                                <li><a href="#">Something else here</a></li>#}
+{#                                <li role="separator" class="divider"></li>#}
+{#                                <li><a href="#">Separated link</a></li>#}
+                            </ul>
+                        </li>
+                    {% endif %}
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
-
-{#<div {% if id|default(false) %}id="{{ id }}" {% endif %}role="navigation" class="navbar{{ inverse|default(false) ? ' navbar-inverse' : ' navbar-default' }}{{ fixedTop|default(false) ? ' navbar-fixed-top' : '' }}{{ staticTop|default(false) ? ' navbar-static-top' : '' }}{{ fixedBottom|default(false) ? ' navbar-fixed-bottom' : '' }}{{ staticBottom|default(false) ? ' navbar-static-bottom' : '' }}">#}
-{#    <div class="container{{ fluid|default(false) ? '-fluid' : '' }}">#}
-{#        {% block navheader %}#}
-{#            <div class="navbar-header">#}
-{#                {% block toggle %}#}
-{#                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse{% if id|default(false) %}-{{ id }}{% endif %}" >#}
-{#                        <span class="sr-only">Toggle navigation</span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                        <span class="icon-bar"></span>#}
-{#                    </button>#}
-{#                {% endblock toggle %}#}
-{#                {% block brand %}#}
-{#                    {% if is_granted('ROLE_ADMIN') %}#}
-{#                        <a class="navbar-brand" href="{{ path('dashboard') }}">Egutegiak</a>#}
-{#                    {% else %}#}
-{#                        <a class="navbar-brand" href="{{ path('user_homepage') }}">Egutegiak</a>#}
-{#                    {% endif %}{% endblock brand %}#}
-{#            </div>#}
-{#        {% endblock navheader %}#}
-{#        {% block menu_container %}#}
-{#            <div class="collapse navbar-collapse navbar-responsive-collapse{% if id|default(false) %}-{{ id }}{% endif %}">#}
-{#                {% block menu %}#}
-{#                    {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_BIDERATZAILE') or is_granted('ROLE_SINATZAILEA') %}#}
-{#                        {{ knp_menu_render('main') }}#}
-{#                    {% endif %}#}
-{#                    <div class="pull-right">#}
-{#                    {% if is_mobile() %}#}
-{#                        #}{#            {{ mopa_bootstrap_menu('AppBundle:Builder:movuserMenu', {'automenu':'navbar', 'currentClass': ''}) }}#}
-{#                    {% else %}#}
-{#                        #}{#            {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}#}
-{#                    {% endif %}#}
-{#                    </div>#}
-{#                {% endblock %}#}
-{#            </div>#}
-{#        {% endblock %}#}
-{#    </div>#}
-{#</div>#}
 
 
 {% block container %}

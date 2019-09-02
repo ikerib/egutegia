@@ -28,9 +28,6 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-
-
-
     fr3d_ldap.security.authentication.provider:
         class: "%fr3d_ldap.security.authentication.provider.class%"
         arguments:
@@ -48,23 +45,14 @@ services:
         public: true
         class: AppBundle\Ldap\UserHydrator
 
-    app.menu_builder: '@AppBundle\Menu\MenuBuilder'
-    AppBundle\Menu\MenuBuilder:
-        arguments: ["@knp_menu.factory", "@security.authorization_checker", '@doctrine.orm.entity_manager']
-        tags:
-            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
-
     app.document.directory_namer:
         public: true
         class: AppBundle\Service\DirectoryNamer
         arguments: ['%kernel.root_dir%']
 
-    app.sinatzeke:
-        public: true
+    app.notification.service:
+#        public: true
         class: AppBundle\Service\NotificationService
-#        arguments: ["@doctrine.orm.entity_manager"]
-        arguments: ["@doctrine.orm.entity_manager", "@security.token_storage"]
-
 
     app.calendar.service:
         public: true
@@ -87,4 +75,3 @@ services:
             - '%ldap_username%'
             - '%ldap_base_dn%'
             - '%ldap_password%'
-

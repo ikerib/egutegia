@@ -1,0 +1,8 @@
+<li>
+    <a href="{{ path('admin_eskaera_list') }}">
+        <i class="fa fa-inbox"></i> {{'main_menu.eskaerak'|trans}}
+        {% if eskaerak|length > 0 %}
+            <span class='badge badge-error'>"{{ eskaerak | length }}</span>
+        {% endif %}
+    </a>
+</li>

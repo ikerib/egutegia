@@ -61,9 +61,9 @@ class CalendarService
         $event->setType($type);
 
         if (array_key_exists('event_nondik', $datuak) && array_key_exists('event_hours_self_before', $datuak) && array_key_exists(
-                'event_hours_self_half_before',
-                $datuak
-            ) && $type->getId() === 5) {
+            'event_hours_self_half_before',
+            $datuak
+        ) && $type->getId() === 5) {
             $event->setNondik($datuak[ 'event_nondik' ]);
             $event->setHoursSelfBefore($datuak[ 'event_hours_self_before' ]);
             $event->setHoursSelfHalfBefore($datuak[ 'event_hours_self_half_before' ]);
@@ -204,7 +204,6 @@ class CalendarService
                 $this->em->remove($event);
             } catch (ORMException $e) {
             }
-
         }
         try {
             $this->em->flush();

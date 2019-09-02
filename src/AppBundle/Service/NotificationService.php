@@ -12,23 +12,30 @@ use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Notification;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 
 class NotificationService
 {
-    protected $u;
     protected $em;
+    protected $tokenStorage;
 
-    public function __construct(EntityManager $em, TokenStorage $tokenStorage)
+
+    public function __construct(EntityManager $em, TokenStorageInterface $tokenStorage)
     {
         $this->em = $em;
-        $this->u = $tokenStorage->getToken()->getUser();
+        $this->tokenStorage = $tokenStorage;
+    }
+
+    public function getEskaerak()
+    {
+        return $this->em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
     }
 
     public function GetNotifications()
     {
         /** @var User $user */
-        $user = $this->u;
+        $user = $this->tokenStorage->getToken()->getUser();
 
         $notifications = $this->em->getRepository('AppBundle:Notification')->getAllUnCompleted($user->getId());
 
