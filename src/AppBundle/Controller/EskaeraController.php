@@ -117,7 +117,7 @@ class EskaeraController extends Controller
         if ((($q === null) || ($q === 'all')) && $history === '1') {
             $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
         } else {
-            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history, $lm);
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->list($q, $history, $lm);
         }
 
         $deleteForms = [];

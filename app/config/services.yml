@@ -1,28 +1,21 @@
 
+imports:
+    - { resource: legacy_aliases.yml }
+
 parameters:
     fr3d_ldap.security.authentication.provider.class: AppBundle\Security\Authentication\LdapAuthenticationProvider
 
 services:
-    # default configuration for services in *this* file
     _defaults:
-        # automatically injects dependencies in your services
         autowire: true
-        # automatically registers your services as commands, event subscribers, etc.
         autoconfigure: true
-        # this means you cannot fetch services directly from the container via $container->get()
-        # if you need to do this, you can override this setting on individual services
         public: false
 
-    # makes classes in src/AppBundle available to be used as services
-    # this creates a service per class whose id is the fully-qualified class name
+
     AppBundle\:
         resource: '../../src/AppBundle/*'
-        # you can exclude directories or files
-        # but if a service is unused, it's removed anyway
         exclude: '../../src/AppBundle/{Entity,Repository,Tests}'
 
-    # controllers are imported separately to make sure they're public
-    # and have a tag that allows actions to type-hint services
     AppBundle\Controller\:
         resource: '../../src/AppBundle/Controller'
         public: true
@@ -41,33 +34,33 @@ services:
             - "@app.ldap.service"
             - '@logger'
 
-    app.ldap.user_hydrator:
+    AppBundle\Ldap\UserHydrator:
         public: true
+        autowire: true
         class: AppBundle\Ldap\UserHydrator
 
-    app.document.directory_namer:
+    AppBundle\Service\DirectoryNamer:
         public: true
         class: AppBundle\Service\DirectoryNamer
         arguments: ['%kernel.root_dir%']
 
-    app.notification.service:
-#        public: true
+    AppBundle\Service\NotificationService:
+        public: true
         class: AppBundle\Service\NotificationService
 
-    app.calendar.service:
+    AppBundle\Service\CalendarService:
         public: true
         class: AppBundle\Service\CalendarService
-        arguments: ["@doctrine.orm.entity_manager"]
 
-    app.eskaera.repository:
-        public: true
-        class: AppBundle\Repository\EskaeraRepository
-        factory: ["@doctrine", "getRepository"]
-        arguments: ['AppBundle:Eskaera']
-        calls:
-            - ["setLizentziaType", ["%type_lizentzia%"]]
+#    AppBundle\Repository\EskaeraRepository:
+#        public: true
+#        class: AppBundle\Repository\EskaeraRepository
+#        factory: ["@doctrine", "getRepository"]
+#        arguments: ['AppBundle:Eskaera']
+#        calls:
+#            - ["setLizentziaType", ["%type_lizentzia%"]]
 
-    app.ldap.service:
+    AppBundle\Service\LdapService:
         public: true
         class: AppBundle\Service\LdapService
         arguments:
