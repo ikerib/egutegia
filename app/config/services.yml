@@ -23,16 +23,16 @@ services:
 
     fr3d_ldap.security.authentication.provider:
         class: "%fr3d_ldap.security.authentication.provider.class%"
-        arguments:
-            - '@security.user_checker'
-            - ''
-            - ''
-            - '@fr3d_ldap.ldap_manager'
-            - '@fos_user.user_manager'
-            - "%security.authentication.hide_user_not_found%"
-            - "@doctrine.orm.entity_manager"
-            - "@app.ldap.service"
-            - '@logger'
+#        arguments:
+#            - '@security.user_checker'
+#            - $providerKey: ''
+#            - ''
+#            - '@fr3d_ldap.ldap_manager'
+#            - '@fos_user.user_manager'
+#            - "%security.authentication.hide_user_not_found%"
+#            - "@doctrine.orm.entity_manager"
+#            - "@app.ldap.service"
+#            - '@logger'
 
     AppBundle\Ldap\UserHydrator:
         public: true
