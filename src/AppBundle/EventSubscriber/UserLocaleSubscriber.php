@@ -34,10 +34,10 @@ class UserLocaleSubscriber implements EventSubscriberInterface
     {
         /** @var User $user */
         $user = $event->getAuthenticationToken()->getUser();
-
-        if (null !== $user->getHizkuntza()) {
-            $this->session->set('_locale', strtolower($user->getHizkuntza()));
-        }
+//
+//        if (null !== $user->getHizkuntza()) {
+//            $this->session->set('_locale', strtolower($user->getHizkuntza()));
+//        }
     }
 
     public static function getSubscribedEvents()

@@ -1,10 +1,10 @@
 services:
-    app.ldap.user_hydrator: '@AppBundle\Ldap\UserHydrator'
+#    app.ldap.user_hydrator: '@AppBundle\Ldap\UserHydrator'
     app.document.directory_namer: '@AppBundle\Service\DirectoryNamer'
     app.notification.service: '@AppBundle\Service\NotificationService'
     app.calendar.service: '@AppBundle\Service\CalendarService'
 #    app.eskaera.repository: '@AppBundle\Repository\EskaeraRepository'
     app.ldap.service: '@AppBundle\Service\LdapService'
-    fr3d_ldap.security.authentication.provider.class: '@AppBundle\Security\Authentication\LdapAuthenticationProvider'
+#    fr3d_ldap.security.authentication.provider.class: '@AppBundle\Security\Authentication\LdapAuthenticationProvider'
 
 

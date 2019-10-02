@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
+use AppBundle\Service\LdapService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,55 +24,60 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminController extends Controller
 {
+
     /**
      * @Route("/dashboard", name="dashboard")
+     *
+     * @param LdapService $ldapService
      *
      * @return Response
      *
      * @internal param Request $request
      */
-    public function dashboardAction(): Response
+    public function dashboardAction(LdapService $ldapService): Response
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $ldap = $this->get('ldap_tools.ldap_manager');
+
+        $ldapusers = $ldapService->getAllUsersInfo();
 
         /****************************************************************************************************************
          ***  OJO ALDATZEN BADA CalendarController newAction ere aldatu *************************************************
          ****************************************************************************************************************/
-        $ldapusers = $ldap->buildLdapQuery()
-            ->select(
-                [
-                    'name',
-                    'guid',
-                    'username',
-                    'emailAddress',
-                    'firstName',
-                    'lastName',
-                    'dn',
-                    'department',
-                    'description',
-                ]
-            )
-            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+//        $ldapusers = $ldap->buildLdapQuery()
+//            ->select(
+//                [
+//                    'name',
+//                    'guid',
+//                    'username',
+//                    'emailAddress',
+//                    'firstName',
+//                    'lastName',
+//                    'dn',
+//                    'department',
+//                    'description',
+//                ]
+//            )
+//            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
 
         $userdata = [];
         foreach ($ldapusers as $user) {
+
             /** @var $user User */
             $u = [];
             $u['user'] = $user;
             $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
-                $user->getUsername(),
+                $user['username'],
                 date('Y')
             );
             $u['calendar'] = $calendar;
 
-            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user->getUsername());
+            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user['username']);
             $u[ 'egutegiak' ] = $egutegiguztiak;
 
             /** @var $usernotes User */
-            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
+            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user['username']);
 
             if ($usernotes) {
                 $user->setNotes($usernotes->getNotes());

@@ -21,8 +21,6 @@ class AppKernel extends Kernel
 
             new Vich\UploaderBundle\VichUploaderBundle(),
 
-            new LdapTools\Bundle\LdapToolsBundle\LdapToolsBundle(),
-
             new EightPoints\Bundle\GuzzleBundle\EightPointsGuzzleBundle(),
 
             new JMS\SerializerBundle\JMSSerializerBundle(),
@@ -30,9 +28,6 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
-
-            new FR3D\LdapBundle\FR3DLdapBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
 
             new FOS\CKEditorBundle\FOSCKEditorBundle(),
 

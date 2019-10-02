@@ -2,9 +2,6 @@
 imports:
     - { resource: legacy_aliases.yml }
 
-parameters:
-    fr3d_ldap.security.authentication.provider.class: AppBundle\Security\Authentication\LdapAuthenticationProvider
-
 services:
     _defaults:
         autowire: true
@@ -21,24 +18,6 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
-    fr3d_ldap.security.authentication.provider:
-        class: "%fr3d_ldap.security.authentication.provider.class%"
-#        arguments:
-#            - '@security.user_checker'
-#            - $providerKey: ''
-#            - ''
-#            - '@fr3d_ldap.ldap_manager'
-#            - '@fos_user.user_manager'
-#            - "%security.authentication.hide_user_not_found%"
-#            - "@doctrine.orm.entity_manager"
-#            - "@app.ldap.service"
-#            - '@logger'
-
-    AppBundle\Ldap\UserHydrator:
-        public: true
-        autowire: true
-        class: AppBundle\Ldap\UserHydrator
-
     AppBundle\Service\DirectoryNamer:
         public: true
         class: AppBundle\Service\DirectoryNamer
@@ -52,13 +31,17 @@ services:
         public: true
         class: AppBundle\Service\CalendarService
 
-#    AppBundle\Repository\EskaeraRepository:
-#        public: true
-#        class: AppBundle\Repository\EskaeraRepository
-#        factory: ["@doctrine", "getRepository"]
-#        arguments: ['AppBundle:Eskaera']
-#        calls:
-#            - ["setLizentziaType", ["%type_lizentzia%"]]
+    Symfony\Component\Ldap\Ldap:
+        arguments: ['@Symfony\Component\Ldap\Adapter\ExtLdap\Adapter']
+
+    Symfony\Component\Ldap\Adapter\ExtLdap\Adapter:
+        arguments:
+            -   host: pasaia.net
+                port: 389
+                #encryption: tls
+                options:
+                    protocol_version: 3
+                    referrals: false
 
     AppBundle\Service\LdapService:
         public: true

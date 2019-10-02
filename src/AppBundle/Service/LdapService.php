@@ -8,8 +8,6 @@
 
 namespace AppBundle\Service;
 
-
-
 class LdapService
 {
     private $ip;
@@ -26,8 +24,7 @@ class LdapService
         $this->passwd = $passwd;
     }
 
-
-    public function getAllUsers(): array
+    public function getAllUsersInfo(): array
     {
         $ip       = $this->ip;
         $ldap_username = $this->ldap_username;
@@ -39,8 +36,40 @@ class LdapService
 
         ldap_bind($ldap, $ldap_username, $passwd) or die('Could not bind to LDAP');
 
+        $gFilter = '(&(objectCategory=person)(objectClass=user))';
+        $gAttr = array('samAccountName', 'name', 'employeeid', 'guid', 'username','preferredlanguage', 'mail', 'givenname', 'sn', 'department', 'description');
+        $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
+        $ldapusers = ldap_get_entries($ldap, $result);
+        $users = [];
+        foreach ($ldapusers as $key => $value) {
+            if ($key !== 'count') {
+                $u = [];
+                $u['username'] =$value[ 'samaccountname' ][ 0 ];
 
-//        $gFilter = '(&(objectClass=posixAccount)(CN=^*,CN=Users,DC=pasaia,DC=net))';
+                foreach ($gAttr as $attr) {
+                    if (array_key_exists($attr, $value)) {
+                        $u[$attr] = $value[ $attr ][ 0 ];
+                    }
+                }
+
+                $users[]=$u;
+            }
+        }
+        return $users;
+    }
+
+    public function getAllUsernames(): array
+    {
+        $ip       = $this->ip;
+        $ldap_username = $this->ldap_username;
+        $basedn   = $this->basedn;
+        $passwd   = $this->passwd;
+
+
+        $ldap = ldap_connect($ip) or die('Could not connect to LDAP');
+
+        ldap_bind($ldap, $ldap_username, $passwd) or die('Could not bind to LDAP');
+
         $gFilter = '(&(objectCategory=person)(objectClass=user))';
         $gAttr = array('samAccountName');
         $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
@@ -52,7 +81,6 @@ class LdapService
                 $users[]  = $username;
             }
         }
-
         return $users;
     }
 

@@ -1,51 +1,68 @@
 security:
     # Preserve plain text password in token for refresh the user.
     # Analyze the security considerations before turn off this setting.
-    erase_credentials: false
-
-    encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+#    erase_credentials: false
+#
+#    encoders:
+#        FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_SUPER_ADMIN,ROLE_ADMIN, ROLE_BIDERATZAILE]
 
+#    providers:
+#        chain_provider:
+#           chain:
+#              providers: [fos_userbundle, fr3d_ldapbundle]
+#        fr3d_ldapbundle:
+#           id: fr3d_ldap.security.user.provider
+#        fos_userbundle:
+#           id: fos_user.user_provider.username
+
     providers:
-        chain_provider:
-           chain:
-              providers: [fos_userbundle, fr3d_ldapbundle]
-        fr3d_ldapbundle:
-           id: fr3d_ldap.security.user.provider
-        fos_userbundle:
-           id: fos_user.user_provider.username
+        my_ldap:
+            ldap:
+                service: Symfony\Component\Ldap\Ldap
+                base_dn: 'DC=pasaia,DC=net'
+                search_dn: 'CN=izfeprint,CN=Users,DC=pasaia,DC=net'
+                search_password: 'izfeprint'
+                default_roles: ROLE_USER
+                uid_key: sAMAccountName
+
 
     firewalls:
-        # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            fr3d_ldap:  ~
             security: false
-            form_login:
-                always_use_default_target_path: true
-                default_target_path: /homepage
-            logout:       true
-            anonymous:    true
-
         main:
-            logout_on_user_change: true
+            # this firewall applies to all URLs
             pattern: ^/
-            fr3d_ldap:  ~
-            form_login:
+
+            # but the firewall does not require login on every page
+            # denying access is done in access_control or in your controllers
+            anonymous: true
+
+            form_login_ldap:
+                login_path: login
+                check_path: login
+                default_target_path: userdata
                 always_use_default_target_path: true
-                default_target_path: /mycalendar
-            logout:       true
-            anonymous:    true
-            switch_user:
-                provider:   fos_userbundle
-                role: ROLE_BIDERATZAILEA
+                service: Symfony\Component\Ldap\Ldap
+                dn_string: 'PASAIA\{username}'
+
+            logout:
+                path: /logout
+                target: /
+
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path:     /
+                # by default, the feature is enabled by checking a
+                # checkbox in the login form (see below), uncomment the
+                # following line to always enable it.
+                #always_remember_me: true
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: [ROLE_ADMIN, ROLE_BIDERATZAILEA, ROLE_SUPER_ADMIN] }
