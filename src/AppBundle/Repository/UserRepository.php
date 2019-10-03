@@ -21,6 +21,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function findAllUsersAndCalendars()
+    {
+        /** @var \Doctrine\ORM\QueryBuilder $qb */
+        $qb = $this->createQueryBuilder('u')
+                   ->select('u,c')
+                   ->innerJoin('u.calendars', 'c')
+                   ->orderBy('u.username');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getByUsername($username)
     {
         $em = $this->getEntityManager();
@@ -30,19 +41,12 @@ class UserRepository extends EntityRepository
                 FROM AppBundle:User u
                 WHERE u.username like :username
         ');
-
-        //$consulta = $em->createQuery($dql);
         $query->setParameter('username', $username);
 
         return $query->getOneOrNullResult();
     }
 
-    /**
-     * @param string $role
-     *
-     * @return array
-     */
-    public function findByRole($role)
+    public function findByRole($role): array
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('u')
@@ -53,28 +57,28 @@ class UserRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findSailGuztiak()
+    public function findSailGuztiak(): ?array
     {
         $sql = /** @lang text */
-            "SELECT DISTINCT(department) FROM `user` WHERE department IS NOT NULL ORDER BY department ASC ";
+            'SELECT DISTINCT(department) FROM `user` WHERE department IS NOT NULL ORDER BY department ASC ';
         $params = array();
 
         try {
-            return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
-        } catch ( DBALException $e ) {
+            return $this->getEntityManager()->getConnection()->executeQuery($sql, $params)->fetchAll();
+        } catch (DBALException $e) {
             throw new $e;
         }
     }
 
-    public function findLanpostuGuztiak()
+    public function findLanpostuGuztiak(): ?array
     {
         $sql = /** @lang text */
-            "SELECT DISTINCT(lanpostua) FROM `user` WHERE lanpostua IS NOT NULL ORDER BY lanpostua";
+            'SELECT DISTINCT(lanpostua) FROM `user` WHERE lanpostua IS NOT NULL ORDER BY lanpostua';
         $params = array();
 
         try {
-            return $this->getEntityManager()->getConnection()->executeQuery( $sql, $params )->fetchAll();
-        } catch ( DBALException $e ) {
+            return $this->getEntityManager()->getConnection()->executeQuery($sql, $params)->fetchAll();
+        } catch (DBALException $e) {
             throw new $e;
         }
     }

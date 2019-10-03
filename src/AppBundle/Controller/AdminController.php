@@ -11,9 +11,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
-use AppBundle\Repository\UserRepository;
 use AppBundle\Service\LdapService;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\RedirectResponse as RedirectResponseAlias;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,9 +29,7 @@ class AdminController extends Controller
     /**
      * @Route("/dashboard", name="dashboard")
      *
-     * @param LdapService    $ldapService
-     *
-     * @param UserRepository $ur
+     * @param LdapService $ldapService
      *
      * @return Response
      *
@@ -43,52 +41,36 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-        $ldapService->sincronizeUserEntityWithLdapData();
-
-
         /****************************************************************************************************************
          ***  TODO:  OJO ALDATZEN BADA CalendarController newAction ere aldatu *************************************************
          ****************************************************************************************************************/
 
-        $ldapusers = $em->getRepository('AppBundle:User')->findAll();
-
-        $userdata = [];
-        foreach ($ldapusers as $user) {
-
-            /** @var $user User */
-            $u = [];
-            $u['user'] = $user;
-            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
-                $user->getUsername(),
-                date('Y')
-            );
-            $u['calendar'] = $calendar;
-
-            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user->getUsername());
-            $u[ 'egutegiak' ] = $egutegiguztiak;
-
-            /** @var $usernotes User */
-            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
-
-            if ($usernotes) {
-                $user->setNotes($usernotes->getNotes());
-            }
-            $userdata[] = $u;
-        }
+        $users = $em->getRepository('AppBundle:User')->findAllUsersAndCalendars();
 
         $user = new User();
         $frmusernote = $this->createForm(UserNoteType::class, $user);
 
-        dump($userdata);
         return $this->render(
             'default/index.html.twig',
             [
-                'userdata' => $userdata,
+                'users' => $users,
                 'frmusernote' => $frmusernote->createView(),
             ]
         );
     }
 
+    /**
+     * @Route("/sync", name="sync")
+     * @param LdapService $ldapService
+     *
+     * @return RedirectResponseAlias
+     */
+    public function sincronizeUserEntityWithLdapData(LdapService $ldapService): RedirectResponseAlias
+    {
+        $ldapService->sincronizeUserEntityWithLdapData();
 
+        return $this->redirectToRoute('dashboard');
+
+    }
 
 }

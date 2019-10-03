@@ -200,14 +200,14 @@ sensio_framework_extra:
     router:
         annotations: false
 
-#fos_ck_editor:
-#    input_sync: true
-#    default_config: simple_config
-#    configs:
-#        simple_config:
-#            toolbar:
-#                - { name: "styles", items: ['Bold', 'Italic','Underline', 'BulletedList','NumberedList','Outdent','Indent', 'Link', 'PasteText', 'TextColor', 'BGColor'] }
-#            jquery: true
-#            forcePasteAsPlainText: true;
+fos_ck_editor:
+    input_sync: true
+    default_config: simple_config
+    configs:
+        simple_config:
+            toolbar:
+                - { name: "styles", items: ['Bold', 'Italic','Underline', 'BulletedList','NumberedList','Outdent','Indent', 'Link', 'PasteText', 'TextColor', 'BGColor'] }
+            jquery: true
+            forcePasteAsPlainText: true;
 
 mobile_detect:
