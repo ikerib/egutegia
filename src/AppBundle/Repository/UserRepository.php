@@ -10,6 +10,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -23,7 +24,7 @@ class UserRepository extends EntityRepository
     public function getByUsername($username)
     {
         $em = $this->getEntityManager();
-        /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
+        /** @var $query QueryBuilder */
         $query = $em->createQuery('
             SELECT u
                 FROM AppBundle:User u

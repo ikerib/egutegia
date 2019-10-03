@@ -177,30 +177,7 @@ class SecurityController extends AbstractController
     }
 
 
-    public function getLdapInfo($username)
-    {
-        /** Irakurri .env datuak  **/
-        /* TODO: jarri .env edo parameters irakurtzeko*/
-//        $ip       = getenv('LDAP_IP');
-        $ip = 'pdc000';
-//        $searchdn = getenv('LDAP_SEARCH_DN');
-        $searchdn = 'CN=izfeprint,CN=Users,DC=pasaia,DC=net';
-//        $basedn   = getenv('LDAP_BASE_DN');
-        $basedn = 'DC=pasaia,DC=net';
-//        $passwd   = getenv('LDAP_PASSWD');
-        $passwd = 'izfeprint';
 
-
-
-        /**
-         * LDAP KONTSULTA EGIN erabiltzailearen bila
-         */
-        $ldap = new Adapter(array( 'host' => $ip ));
-        $ldap->getConnection()->bind($searchdn, $passwd);
-        $query = $ldap->createQuery($basedn, "(sAMAccountName=$username)", array());
-
-        return $query->execute();
-    }
 
     public function ldap_recursive($name): void
     {

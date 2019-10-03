@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
+use AppBundle\Repository\UserRepository;
 use AppBundle\Service\LdapService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +29,9 @@ class AdminController extends Controller
     /**
      * @Route("/dashboard", name="dashboard")
      *
-     * @param LdapService $ldapService
+     * @param LdapService    $ldapService
+     *
+     * @param UserRepository $ur
      *
      * @return Response
      *
@@ -40,26 +43,14 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-        $ldapusers = $ldapService->getAllUsersInfo();
+        $ldapService->sincronizeUserEntityWithLdapData();
+
 
         /****************************************************************************************************************
-         ***  OJO ALDATZEN BADA CalendarController newAction ere aldatu *************************************************
+         ***  TODO:  OJO ALDATZEN BADA CalendarController newAction ere aldatu *************************************************
          ****************************************************************************************************************/
-//        $ldapusers = $ldap->buildLdapQuery()
-//            ->select(
-//                [
-//                    'name',
-//                    'guid',
-//                    'username',
-//                    'emailAddress',
-//                    'firstName',
-//                    'lastName',
-//                    'dn',
-//                    'department',
-//                    'description',
-//                ]
-//            )
-//            ->fromUsers()->orderBy('username')->getLdapQuery()->getResult();
+
+        $ldapusers = $em->getRepository('AppBundle:User')->findAll();
 
         $userdata = [];
         foreach ($ldapusers as $user) {
@@ -68,16 +59,16 @@ class AdminController extends Controller
             $u = [];
             $u['user'] = $user;
             $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
-                $user['username'],
+                $user->getUsername(),
                 date('Y')
             );
             $u['calendar'] = $calendar;
 
-            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user['username']);
+            $egutegiguztiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user->getUsername());
             $u[ 'egutegiak' ] = $egutegiguztiak;
 
             /** @var $usernotes User */
-            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user['username']);
+            $usernotes = $em->getRepository('AppBundle:User')->getByUsername($user->getUsername());
 
             if ($usernotes) {
                 $user->setNotes($usernotes->getNotes());
@@ -88,7 +79,7 @@ class AdminController extends Controller
         $user = new User();
         $frmusernote = $this->createForm(UserNoteType::class, $user);
 
-
+        dump($userdata);
         return $this->render(
             'default/index.html.twig',
             [
