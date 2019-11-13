@@ -23,70 +23,81 @@ class EskaeraRepository extends EntityRepository
         $this->lizentziaType = $lizentziaType;
     }
 
-    public function list($q, $history, $lm)
+    public function list($q, $history, $lm): \Doctrine\ORM\QueryBuilder
     {
-        $em = $this->getEntityManager();
+        $em  = $this->getEntityManager();
         $dql = '';
-        $qb = '';
+        $qb  = '';
 
         switch ($q) {
             case 'no-way':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
-                                ->where('e.abiatua=0')
-                ;
+                                ->select('e, t, s, u')
+                                ->from(Eskaera::class, 'e')
+                                ->innerJoin('e.type', 't')
+                                ->leftJoin('e.sinatzaileak', 's')
+                                ->where('e.abiatua=0');
                 break;
             case 'unsigned':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
+                                ->select('e,t,s')
+                                ->from(Eskaera::class, 'e')
+                                ->innerJoin('e.type', 't')
+                                ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.amaitua=0');
                 break;
             case 'unadded':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
+                                ->select('e,t,s')
+                                ->from(Eskaera::class, 'e')
+                                ->innerJoin('e.type', 't')
+                                ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.egutegian=0')->andWhere('e.amaitua=1');
                 break;
             case 'conflict':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
-                                ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.bideratua=0')->andWhere('e.konfliktoa=1')
-                ;
+                                ->select('e,t,s')
+                                ->from(Eskaera::class, 'e')
+                                ->innerJoin('e.type', 't')
+                                ->leftJoin('e.sinatzaileak', 's')
+                                ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.bideratua=0')->andWhere('e.konfliktoa=1');
                 break;
             case 'justify':
-                if ($lm === null) {
+                if (null === $lm) {
                     $lm = '*';
                 }
 
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
+                                ->select('e,t, s, lm')
+                                ->from(Eskaera::class, 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.lizentziamota', 'lm')
+                                ->leftJoin('e.sinatzaileak', 's')
                                 ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)
-                                ->andWhere('lm.id = :lizentzia_mota')->setParameter('lizentzia_mota', $lm)
-                ;
+                                ->andWhere('lm.id = :lizentzia_mota')->setParameter('lizentzia_mota', $lm);
                 break;
             case 'nojustified':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
+                                ->select('e,t,s')
+                                ->from(Eskaera::class, 'e')
                                 ->innerJoin('e.type', 't')
-                                ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)->andWhere('e.justifikatua=0')
-                ;
+                                ->leftJoin('e.sinatzaileak', 's')
+                                ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)->andWhere('e.justifikatua=0');
                 break;
             default:
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e')
-                                ->from('AppBundle:Eskaera', 'e')
-                ;
+                                ->select('e,t,s,c,tm,u')
+                                ->from(Eskaera::class, 'e')
+                                ->innerJoin('e.type', 't')
+                                ->leftJoin('e.sinatzaileak', 's')
+                                ->innerJoin('e.calendar','c')
+                                ->innerJoin('c.template', 'tm')
+                                ->innerJoin('e.user','u')
+                                ;
                 break;
         }
 
-        if ($history === '0') {
+        if ('0' === $history) {
             $currentYEAR = date('Y');
             $qb->innerJoin('e.calendar', 'c')->andWhere('c.year = :year')->setParameter('year', $currentYEAR);
         }
