@@ -6,7 +6,12 @@ fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 api:
-    resource: "@ApiBundle/Controller/"
+    resource: "@ApiBundle/Controller/ApiController.php"
+    type:     rest
+    prefix:   /api/
+
+Messages:
+    resource: "@ApiBundle/Controller/MessageController.php"
     type:     rest
     prefix:   /api/
 
