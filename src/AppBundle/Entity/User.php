@@ -112,6 +112,12 @@ class User extends BaseUser implements LdapUserInterface
     private $calendars;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Message", mappedBy="user",cascade={"persist"})
+     * @ORM\OrderBy({"name" = "ASC"})
+     */
+    private $messages;
+
+    /**
      * @var \AppBundle\Entity\Notification
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Notification", mappedBy="user")
@@ -532,5 +538,41 @@ class User extends BaseUser implements LdapUserInterface
     public function getLdapsaila()
     {
         return $this->ldapsaila;
+    }
+
+    /**
+     * Add message.
+     *
+     * @param \AppBundle\Entity\Message $message
+     *
+     * @return User
+     */
+    public function addMessage(\AppBundle\Entity\Message $message)
+    {
+        $this->messages[] = $message;
+
+        return $this;
+    }
+
+    /**
+     * Remove message.
+     *
+     * @param \AppBundle\Entity\Message $message
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMessage(\AppBundle\Entity\Message $message)
+    {
+        return $this->messages->removeElement($message);
+    }
+
+    /**
+     * Get messages.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMessages()
+    {
+        return $this->messages;
     }
 }
