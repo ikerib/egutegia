@@ -23,7 +23,7 @@ class EskaeraRepository extends EntityRepository
         $this->lizentziaType = $lizentziaType;
     }
 
-    public function list($q, $history, $lm): \Doctrine\ORM\QueryBuilder
+    public function list($q, $history, $lm)
     {
         $em  = $this->getEntityManager();
         $dql = '';
@@ -32,8 +32,8 @@ class EskaeraRepository extends EntityRepository
         switch ($q) {
             case 'no-way':
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e, t, s, u')
-                                ->from(Eskaera::class, 'e')
+                                ->select('e, t, s')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.abiatua=0');
@@ -41,7 +41,7 @@ class EskaeraRepository extends EntityRepository
             case 'unsigned':
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t,s')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.amaitua=0');
@@ -49,7 +49,7 @@ class EskaeraRepository extends EntityRepository
             case 'unadded':
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t,s')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.egutegian=0')->andWhere('e.amaitua=1');
@@ -57,7 +57,7 @@ class EskaeraRepository extends EntityRepository
             case 'conflict':
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t,s')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.bideratua=0')->andWhere('e.konfliktoa=1');
@@ -69,7 +69,7 @@ class EskaeraRepository extends EntityRepository
 
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t, s, lm')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.lizentziamota', 'lm')
                                 ->leftJoin('e.sinatzaileak', 's')
@@ -79,7 +79,7 @@ class EskaeraRepository extends EntityRepository
             case 'nojustified':
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t,s')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->where('t.id = :lizentzia_type')->setParameter('lizentzia_type', $this->lizentziaType)->andWhere('e.justifikatua=0');
@@ -87,12 +87,12 @@ class EskaeraRepository extends EntityRepository
             default:
                 $qb = $this->_em->createQueryBuilder()
                                 ->select('e,t,s,c,tm,u')
-                                ->from(Eskaera::class, 'e')
+                                ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
-                                ->innerJoin('e.calendar','c')
+                                ->innerJoin('e.calendar', 'c')
                                 ->innerJoin('c.template', 'tm')
-                                ->innerJoin('e.user','u')
+                                ->innerJoin('e.user', 'u')
                                 ;
                 break;
         }
