@@ -66,6 +66,8 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
                      ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             }
+            $menu->addChild('Mezuak', ['icon' => 'envelop', 'route' => 'admin_message_list'])
+                 ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
         }
 
 
@@ -177,6 +179,7 @@ class Builder implements ContainerAwareInterface
                     )
                 )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
+
             }
 
             $menu[ 'User' ]->addChild(

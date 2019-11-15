@@ -86,11 +86,12 @@ class EskaeraRepository extends EntityRepository
                 break;
             default:
                 $qb = $this->_em->createQueryBuilder()
-                                ->select('e,t,s,c,tm,u')
+                                ->select('e,t,s,c,tm,u,f')
                                 ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
                                 ->innerJoin('e.calendar', 'c')
+                                ->leftJoin('e.firma', 'f')
                                 ->innerJoin('c.template', 'tm')
                                 ->innerJoin('e.user', 'u')
                                 ;
@@ -99,7 +100,7 @@ class EskaeraRepository extends EntityRepository
 
         if ('0' === $history) {
             $currentYEAR = date('Y');
-            $qb->innerJoin('e.calendar', 'c')->andWhere('c.year = :year')->setParameter('year', $currentYEAR);
+            $qb->innerJoin('e.calendar', 'cc')->andWhere('cc.year = :year')->setParameter('year', $currentYEAR);
         }
 
 

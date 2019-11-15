@@ -97,7 +97,8 @@ class MessageController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/messages/new", name="messages_new", options={"expose": true})
+     * @Rest\Get("/messages/new/nouser", name="messages_new", options={"expose": true})
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function getMessagesNewAction(): Response
     {
@@ -110,7 +111,7 @@ class MessageController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/messages/new/user/{id}", name="messages_new", options={"expose": true})
+     * @Rest\Get("/messages/new/user/{id}", name="messages_new_user", options={"expose": true})
      * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
