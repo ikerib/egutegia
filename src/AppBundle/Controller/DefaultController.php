@@ -14,6 +14,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
 use AppBundle\Service\LdapService;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use function count;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -33,6 +34,41 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/notifycation", name="user_notifycation")
+     */
+    public function notifycationAction(): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $user User */
+        $user = $this->getUser();
+        $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
+
+        return $this->render(
+            'default/notify.html.twig',
+            [
+                'message' => $unreadMessages[0]
+            ]
+        );
+    }
+
+    /**
+     * @Route("/notifycation/{id}/readed", name="user_notifycation_readed")
+     */
+    public function notifycationReadedAction($id): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $unreadMessage = $em->getRepository('AppBundle:Message')->find($id);
+        $unreadMessage->setReaded(1);
+        $unreadMessage->setReadedAt(new \DateTime());
+        $em->persist($unreadMessage);
+        $em->flush();
+
+        return $this->redirectToRoute('user_homepage');
+    }
+
+
+    /**
      * @Route("/mycalendar", name="user_homepage")
      */
     public function userhomepageAction(): Response
@@ -42,6 +78,12 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
+
+        $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
+
+        if ($unreadMessages) {
+            return $this->redirectToRoute('user_notifycation');
+        }
 
         if ($this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
             return $this->render(
@@ -94,7 +136,6 @@ class DefaultController extends Controller
         //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round($calendar->getHoursSelf(), 2);
 
-        $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
 
         return $this->render(
             'default/user_homepage.html.twig',
@@ -103,6 +144,7 @@ class DefaultController extends Controller
                 'calendar'          => $calendar,
                 'selfHoursPartial'  => $selfHoursPartial,
                 'selfHoursComplete' => $selfHoursComplete,
+                'unreadMessages'    => $unreadMessages
             ]
         );
     }
