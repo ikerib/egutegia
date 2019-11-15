@@ -215,9 +215,6 @@
                         <td>
                             <ul class="list text-left">
                                 <li>
-                                    <a class="btn btn-sm btnMezua" data-userid="{{ eskaera.user.id }}" href="javascript:void(0);">Mezua bidali</a>
-                                </li>
-                                <li>
                                     <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
                                         <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                     </a>
@@ -294,7 +291,11 @@
                                     </li>
 
                                 {% endif %}
-
+                                <li>
+                                    <a class="btnMezua" data-userid="{{ eskaera.user.id }}" data-eskaeraid="{{ eskaera.id }}" href="javascript:void(0);">
+                                        <i class="fa fa-envelope"></i> Mezua bidali
+                                    </a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -449,10 +450,11 @@
 
             $(document).on("click", ".btnMezua", function () {
                 var userid = $(this).data('userid');
-                console.log("USERID => " + userid);
+                var eskaeraid = $(this).data('eskaeraid');
                 var url = Routing.generate("get_messages_new_usermessages_new", { 'id': userid});
                 $(".messageModalBody").load(url, function () {
                     $("#messageModal").modal({ show: true });
+                    $('#appbundle_message_name').val("Ref:" + eskaeraid);
                 });
             });
 
@@ -463,7 +465,8 @@
                     type: 'POST',
                     data: data,
                     success: function (data, textSatus, jQxhr) {
-                        $('#messageModal').modal('hide')
+                        $('#messageModal').modal('hide');
+                        bootbox.alert("Mezua ongi gorde da.");
                     },
                     error: function( jqXhr, textStatus, errorThrown ){
                         console.log( errorThrown );
