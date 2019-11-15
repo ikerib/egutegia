@@ -94,6 +94,8 @@ class DefaultController extends Controller
         //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round($calendar->getHoursSelf(), 2);
 
+        $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
+
         return $this->render(
             'default/user_homepage.html.twig',
             [

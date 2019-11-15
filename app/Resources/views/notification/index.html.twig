@@ -116,8 +116,10 @@
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.total }}</td>
                 <td>{{ notification.created | date('Y-m-d') }}
-                <td>{{ notification.eskaera.oharra|length > 50 ? notification.eskaera.oharra|slice(0, 50) ~ '...' : notification.eskaera.oharra  }}</td>
-                
+                <td><span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ notification.eskaera.oharra }}">
+                    {{ notification.eskaera.oharra|length > 50 ? notification.eskaera.oharra|slice(0, 50) ~ '...' : notification.eskaera.oharra  }}
+                </td>
+
                 <td>
                     {% if notification.sinatzeprozesua is same as(true) or notification.sinatzeprozesua is null %}
                         <ul class="list list-inline">

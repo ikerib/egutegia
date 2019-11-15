@@ -10,4 +10,14 @@ namespace AppBundle\Repository;
  */
 class MessageRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findUserUnreadMessages($userid)
+    {
+        $qb = $this->_em->createQueryBuilder()
+                        ->select('m')
+                        ->from('AppBundle:Message', 'm')
+                        ->where('m.readed=0');
+
+
+        return $qb->getQuery()->getResult();
+    }
 }
