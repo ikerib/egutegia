@@ -57,33 +57,6 @@ class MessageController extends AbstractFOSRestController
 
     }
 
-    public function putMessagesAction(Request $request, $id): \FOS\RestBundle\View\View
-    {
-        $em = $this->getDoctrine()->getManager();
-        $name = $request->get('name');
-        $desc = $request->get('description');
-        $userid = $request->get('userid');
-        /** @var Message $message */
-        $msg = $em->getRepository('AppBundle:Message')->find($id);
-        if (!$msg) {
-            return View::create(['message' => 'Not found'], Response::HTTP_BAD_REQUEST);
-        }
-        /** @var \AppBundle\Entity\User $user */
-        $user = $em->getRepository('AppBundle:User')->find($userid);
-        if (!$user) {
-            return View::create(['user' => 'Not found'], Response::HTTP_BAD_REQUEST);
-        }
-
-        $msg->setName($name);
-        $msg->setDescription($desc);
-        $msg->setUser($user);
-        $em->persist($msg);
-        $em->flush();
-
-        $ctx = new Context();
-        $ctx->addGroup('main');
-        return View::create($msg, Response::HTTP_OK)->setContext($ctx);
-    }
 
     public function deleteMessagesAction($id): View
     {
@@ -111,7 +84,7 @@ class MessageController extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Get("/messages/new/user/{id}", name="messages_new_user", options={"expose": true})
+     * @Rest\Get(options={"expose": true})
      * @param $id
      *
      * @return \Symfony\Component\HttpFoundation\Response

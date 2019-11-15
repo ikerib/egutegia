@@ -451,7 +451,7 @@
             $(document).on("click", ".btnMezua", function () {
                 var userid = $(this).data('userid');
                 var eskaeraid = $(this).data('eskaeraid');
-                var url = Routing.generate("get_messages_new_usermessages_new", { 'id': userid});
+                var url = Routing.generate("get_messages_new_user", { 'id': userid});
                 $(".messageModalBody").load(url, function () {
                     $("#messageModal").modal({ show: true });
                     $('#appbundle_message_name').val("Ref:" + eskaeraid);

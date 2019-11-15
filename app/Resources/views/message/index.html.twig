@@ -37,7 +37,7 @@
                 <td>{% if message.readedAt %}{{ message.readedAt|date('Y-m-d H:i:s') }}{% else %}-{% endif %}</td>
                 <td>
                     <ul class="list-inline">
-                        <li class="list-inline-item">
+                        <li>
                             {{ include('message/_delete.html.twig') }}
                         </li>
                     </ul>
@@ -80,6 +80,7 @@
                     $("#messageModal").modal({show: true});
                 });
             });
+
 
             $(document).on('click', '#messageButtonSend', function () {
                 var data = $('#frmMessage').serialize();
