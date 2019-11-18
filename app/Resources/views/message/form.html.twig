@@ -16,6 +16,9 @@
 <script src="{{ asset('js/select2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
-        $('.select2').select2({width: '80%'});
+        $('.select2').select2({
+            width: '80%',
+            dropdownParent: $("#messageModal")
+        });
     });
 </script>
