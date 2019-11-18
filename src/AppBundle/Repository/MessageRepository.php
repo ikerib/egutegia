@@ -17,7 +17,7 @@ class MessageRepository extends \Doctrine\ORM\EntityRepository
                         ->from('AppBundle:Message', 'm')
                         ->innerJoin('m.user', 'u')
                         ->andWhere('u.id=:userid')->setParameter('userid', $userid)
-                        ->where('m.readed=0');
+                        ->andwhere('m.readed=0');
 
 
         return $qb->getQuery()->getResult();

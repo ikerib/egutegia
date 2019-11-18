@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
-
 /**
  * Document.
  *
@@ -136,6 +135,7 @@ class Document
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $uploadfile
      *
      * @return Document
+     * @throws \Exception
      */
     public function setUploadfile(File $uploadfile = null)
     {
@@ -257,7 +257,7 @@ class Document
      *
      * @return Document
      */
-    public function setCalendar( Calendar $calendar = null)
+    public function setCalendar(Calendar $calendar = null)
     {
         $this->calendar = $calendar;
 
@@ -329,7 +329,7 @@ class Document
      *
      * @return Document
      */
-    public function setEskaera( Eskaera $eskaera = null)
+    public function setEskaera(Eskaera $eskaera = null)
     {
         $this->eskaera = $eskaera;
 
