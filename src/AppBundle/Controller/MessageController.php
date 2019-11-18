@@ -8,19 +8,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 class MessageController extends Controller
 {
     /**
      * Lists all message entities.
      *
      * @Route("/admin/message", name="admin_message_list", methods={"GET"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction(): \Symfony\Component\HttpFoundation\Response
+    public function listAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
         $em = $this->getDoctrine()->getManager();
+        $q       = $request->query->get('q');
 
-        $messages = $em->getRepository('AppBundle:Message')->findAll();
+        if (($q === null) || ($q === 'all')) {
+            $messages = $em->getRepository('AppBundle:Message')->findAll();
+        } else {
+            $messages = $em->getRepository('AppBundle:Message')->findByParameter($q);
+        }
 
         return $this->render('message/index.html.twig', array(
             'messages' => $messages,

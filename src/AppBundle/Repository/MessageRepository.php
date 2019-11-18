@@ -15,8 +15,22 @@ class MessageRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->_em->createQueryBuilder()
                         ->select('m')
                         ->from('AppBundle:Message', 'm')
+                        ->innerJoin('m.user', 'u')
+                        ->andWhere('u.id=:userid')->setParameter('userid', $userid)
                         ->where('m.readed=0');
 
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByParameter($q)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        if ($q === 'unread') {
+            $qb = $qb->select('m')
+                                ->from('AppBundle:Message', 'm')
+                                ->where('m.readed=0');
+        }
 
         return $qb->getQuery()->getResult();
     }

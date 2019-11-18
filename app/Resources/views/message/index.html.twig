@@ -3,8 +3,26 @@
 {% block headline %}{{ 'Mezuen zerrenda' | trans }} {% endblock %}
 
 {% block content_row %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="col-md-10">
+                <div class="btn-group" role="group" aria-label="...">
+                    {% set q = app.request.get('q') %}
+                    <p>Filtratu:</p>
+                    <a class="btn {% if app.request.get('q') == 'all' %}        btn-info {% else %} btn-default {% endif %}"
+                       href="{{ path('admin_message_list', { 'q': 'all'}) }}">{{ 'Guztiak' | trans }}</a>
+                    <a class="btn {% if app.request.get('q') == 'unread' %}     btn-info {% else %} btn-default {% endif %}"
+                       href="{{ path('admin_message_list', { 'q': 'unread'}) }}">{{ 'Langileak irakurri gabeak' | trans }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
     <div id="toolbar">
-        <button id="btnMezua" class="btn btn-default">{{ "Mezu berria" | trans }}</button>
+        <div class="col-md-2">
+            <button id="btnMezua" class="btn btn-default">{{ "Mezu berria" | trans }}</button>
+        </div>
     </div>
     <table data-toggle="table" data-classes="table table-hover table-condensed" data-striped="true"
            data-pagination="true" data-page-size="25" data-search="true" data-sort-name="id" data-sort-order="desc"
@@ -30,9 +48,9 @@
                 <td>{{ message.name }}</td>
                 <td>{{ message.description | raw}}</td>
                 <td>{% if message.readed %}
-                        BAI
+                        <label class="label label-success">Bai</label>
                     {% else %}
-                        Ez
+                        <label class="label label-danger">Ez</label>
                     {% endif %}</td>
                 <td>{% if message.readedAt %}{{ message.readedAt|date('Y-m-d H:i:s') }}{% else %}-{% endif %}</td>
                 <td>

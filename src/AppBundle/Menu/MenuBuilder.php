@@ -10,7 +10,6 @@ namespace AppBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 
-
 class MenuBuilder
 {
     private $factory;
@@ -24,7 +23,7 @@ class MenuBuilder
         $this->factory = $factory;
     }
 
-    public function createMainMenu(array $options)
+    public function createMainMenu(array $options): \Knp\Menu\ItemInterface
     {
         $menu = $this->factory->createItem('root');
 

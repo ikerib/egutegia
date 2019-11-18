@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class Builder implements ContainerAwareInterface
 {
-
     use ContainerAwareTrait;
 
     public function mainMenu(FactoryInterface $factory, array $options): ItemInterface
@@ -30,7 +29,6 @@ class Builder implements ContainerAwareInterface
         $menu    = $factory->createItem('root', ['navbar' => true]);
 
         if ($checker->isGranted('ROLE_BIDERATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
-
             $menu->addChild('Hasiera', ['icon' => 'home', 'route' => 'dashboard'])->setExtra('translation_domain', 'messages');
             $menu->addChild('Taula Laguntzaileak', ['icon' => 'th-list'])->setExtra('translation_domain', 'messages');
             $menu[ 'Taula Laguntzaileak' ]->addChild('Instantzia Motak', ['icon' => 'tag', 'route' => 'admin_type_index'])->setExtra('translation_domain', 'messages');
@@ -66,8 +64,11 @@ class Builder implements ContainerAwareInterface
                 $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
                      ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             }
-            $menu->addChild('Mezuak', ['icon' => 'envelop', 'route' => 'admin_message_list'])
-                 ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+            $menu->addChild('Mezuak', [
+                'icon' => 'envelope',
+                'route' => 'admin_message_list',
+                'routeParameters'   => ['q'=>'unread']
+            ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
         }
 
 
@@ -109,7 +110,6 @@ class Builder implements ContainerAwareInterface
         }
 
         if ($checker->isGranted('ROLE_USER')) {
-
             $menu->addChild('user_menu.eskaera.new', ['icon' => 'send', 'route' => 'eskaera_instantziak'])->setExtra('translation_domain', 'messages');
 
             if (\count($notifications) === 0) {
@@ -179,7 +179,6 @@ class Builder implements ContainerAwareInterface
                     )
                 )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
-
             }
 
             $menu[ 'User' ]->addChild(
@@ -189,7 +188,6 @@ class Builder implements ContainerAwareInterface
                     'icon'  => 'log-out',
                 )
             )->setExtra('translation_domain', 'messages');
-
         } else {
             $menu->addChild('login', ['route' => 'fos_user_security_login']);
         }
@@ -297,7 +295,6 @@ class Builder implements ContainerAwareInterface
                     'icon'  => 'log-out',
                 )
             )->setExtra('translation_domain', 'messages');
-
         } else {
             $menu->addChild('login', ['route' => 'fos_user_security_login']);
         }
