@@ -6,7 +6,12 @@ use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Gutxienekoakdet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Gutxienekoak controller.
@@ -28,9 +33,9 @@ class GutxienekoakController extends Controller
         $gutxienekoaks = $em->getRepository('AppBundle:Gutxienekoak')->findAll();
 
         $deleteForms = [];
-        foreach ( $gutxienekoaks as $e ) {
+        foreach ($gutxienekoaks as $e) {
             /** @var Gutxienekoak $e */
-            $deleteForms[ $e->getId() ] = $this->createDeleteForm( $e )->createView();
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
         }
 
         return $this->render('gutxienekoak/index.html.twig', array(
@@ -46,12 +51,12 @@ class GutxienekoakController extends Controller
      * @Method({"GET", "POST"})
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function newAction(Request $request)
     {
         $gutxienekoak = new Gutxienekoak();
-        $form = $this->createForm('AppBundle\Form\GutxienekoakType', $gutxienekoak,[
+        $form = $this->createForm('AppBundle\Form\GutxienekoakType', $gutxienekoak, [
             'action' => $this->generateUrl('admin_gutxienekoak_new'),
             'method' => 'POST',
         ]);
@@ -78,7 +83,7 @@ class GutxienekoakController extends Controller
      * @Method("GET")
      * @param Gutxienekoak $gutxienekoak
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Gutxienekoak $gutxienekoak)
     {
@@ -87,13 +92,12 @@ class GutxienekoakController extends Controller
         $deleteForms = [];
         /** @var Gutxienekoakdet $gd */
         $gd = $gutxienekoak->getGutxienekoakdet();
-        foreach ($gd as $g ) {
+        foreach ($gd as $g) {
             /** @var Gutxienekoakdet $g */
             $deleteForms[$g->getId()] = $this->createDeleteFormGutxienekoakDet($g)->createView();
         }
         return $this->render('gutxienekoak/show.html.twig', array(
             'gutxienekoak' => $gutxienekoak,
-            'delete_form' => $deleteForm->createView(),
             'deleteForms' => $deleteForms,
         ));
     }
@@ -149,7 +153,7 @@ class GutxienekoakController extends Controller
      *
      * @param Gutxienekoak $gutxienekoak The gutxienekoak entity
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Gutxienekoak $gutxienekoak)
     {
@@ -165,7 +169,7 @@ class GutxienekoakController extends Controller
      *
      * @param Gutxienekoakdet $gd
      *
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * @return Form|FormInterface
      * @internal param Gutxienekoak $gutxienekoak The gutxienekoak entity
      *
      */

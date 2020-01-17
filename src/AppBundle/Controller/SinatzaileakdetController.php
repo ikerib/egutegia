@@ -5,13 +5,13 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Sinatzaileakdet;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 /**
  * Sinatzaileakdet controller.
@@ -23,8 +23,7 @@ class SinatzaileakdetController extends Controller
     /**
      * Lists all sinatzaileakdet entities.
      *
-     * @Route("/", name="admin_sinatzaileakdet_index")
-     * @Method("GET")
+     * @Route("/", name="admin_sinatzaileakdet_index", methods={"GET"})
      */
     public function indexAction(): Response
     {
@@ -40,8 +39,7 @@ class SinatzaileakdetController extends Controller
     /**
      * Creates a new sinatzaileakdet entity.
      *
-     * @Route("/new/{sinatzaileid}", name="admin_sinatzaileakdet_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new/{sinatzaileid}", name="admin_sinatzaileakdet_new", methods={"GET", "POST"})
      * @param Request $request
      * @param         $sinatzaileid
      *
@@ -81,8 +79,7 @@ class SinatzaileakdetController extends Controller
     /**
      * Finds and displays a sinatzaileakdet entity.
      *
-     * @Route("/{id}/show", name="admin_sinatzaileakdet_show")
-     * @Method("GET")
+     * @Route("/{id}/show", name="admin_sinatzaileakdet_show", methods={"GET"})
      * @param Sinatzaileakdet $sinatzaileakdet
      *
      * @return Response
@@ -100,8 +97,11 @@ class SinatzaileakdetController extends Controller
     /**
      * Displays a form to edit an existing sinatzaileakdet entity.
      *
-     * @Route("/{id}/edit", name="admin_sinatzaileakdet_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{id}/edit", name="admin_sinatzaileakdet_edit", methods={"GET", "POST"})
+     * @param Request         $request
+     * @param Sinatzaileakdet $sinatzaileakdet
+     *
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Sinatzaileakdet $sinatzaileakdet)
     {
@@ -125,8 +125,11 @@ class SinatzaileakdetController extends Controller
     /**
      * Deletes a sinatzaileakdet entity.
      *
-     * @Route("/{id}", name="admin_sinatzaileakdet_delete")
-     * @Method("DELETE")
+     * @Route("/{id}", name="admin_sinatzaileakdet_delete", methods={"DELETE"})
+     * @param Request         $request
+     * @param Sinatzaileakdet $sinatzaileakdet
+     *
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Sinatzaileakdet $sinatzaileakdet)
     {
@@ -163,8 +166,7 @@ class SinatzaileakdetController extends Controller
     /**
      * Orden up
      *
-     * @Route("/{id}/up", options={"expose"=true}, name="admin_sinatzaileakdet_up")
-     * @Method({"GET"})
+     * @Route("/{id}/up", options={"expose"=true}, name="admin_sinatzaileakdet_up", methods={"GET"})
      * @param Sinatzaileakdet $sinatzaileakdet
      * @return RedirectResponse
      */
@@ -183,8 +185,7 @@ class SinatzaileakdetController extends Controller
     /**
      * Orden down
      *
-     * @Route("/{id}/down", options={"expose"=true}, name="admin_sinatzaileakdet_down")
-     * @Method({"GET"})
+     * @Route("/{id}/down", options={"expose"=true}, name="admin_sinatzaileakdet_down", methods={"GET"})
      * @param Sinatzaileakdet $sinatzaileakdet
      * @return RedirectResponse
      */
