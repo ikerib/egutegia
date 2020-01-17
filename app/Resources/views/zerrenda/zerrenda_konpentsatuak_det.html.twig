@@ -72,7 +72,7 @@
                                 <div class="col-md-3" id="divDateRange">
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" name="detailatua"> Detailatua
+                                            <input type="checkbox" name="detailatua"> Eskaera guztiak erakutsi
                                         </label>
                                     </div>
                                 </div>
@@ -130,6 +130,7 @@
                     <th data-halign="center" data-align="left" data-field="username" data-sortable="true">{{ 'Langilea' | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="department" data-sortable="true">{{ 'Saila' | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="lanpostua" data-sortable="true">{{ 'Lanpostua' | trans }}</th>
+                    <th data-halign="center" data-align="right" data-field="fetxa" data-sortable="true">{{ 'Noiz' | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="suma" data-sortable="true">{{ 'Orduak Guztira' | trans }}</th>
                 </tr>
                 </thead>
@@ -139,6 +140,7 @@
                         <td><a target="_blank" href="{{ path('admin_calendar_edit', { 'id': k.calendarid }) }}">{{ k.username }}</a></td>
                         <td>{{ k.department }}</td>
                         <td>{{ k.lanpostua }}</td>
+                        <td>{{ k.fetxa | date('Y-m-d')}}</td>
                         <td>{{ k.suma }}</td>
                     </tr>
                 {% endfor %}

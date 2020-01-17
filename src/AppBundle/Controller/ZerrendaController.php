@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Eskaera controller.
@@ -16,7 +17,7 @@ class ZerrendaController extends Controller
     /**
      * @Route("/absentismo")
      */
-    public function absentismoAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function absentismoAction(Request $request): Response
     {
         $em = $this->getDoctrine()->getManager();
         $urteak = $em->getRepository('AppBundle:Calendar')->getEgutegiUrteak();
@@ -45,17 +46,18 @@ class ZerrendaController extends Controller
      * @Route("/konpentsatuak")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function konpentsatuakAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    public function konpentsatuakAction(Request $request): Response
     {
         //        FORM POST PARAMETERS
-        $hasi      = $request->request->get('data_hasi');
-        $fin       = $request->request->get('data_amaitu');
-        $urtea     = $request->request->get('urtea');
-        $saila     = $request->request->get('saila');
-        $lanpostua = $request->request->get('lanpostua');
-        $mota      = $request->request->get('mota');
+        $hasi       = $request->request->get('data_hasi');
+        $fin        = $request->request->get('data_amaitu');
+        $urtea      = $request->request->get('urtea');
+        $saila      = $request->request->get('saila');
+        $lanpostua  = $request->request->get('lanpostua');
+        $mota       = $request->request->get('mota');
+        $detailatua = $request->request->get('detailatua');
 
         if ((!$urtea) && (!$mota)) {
             $urtea = date('Y');
@@ -65,7 +67,11 @@ class ZerrendaController extends Controller
         $em = $this->getDoctrine()->getManager();
 
 
-        $konpentsatuak = $em->getRepository('AppBundle:Event')->findKonpentsatuak($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        if ($detailatua) {
+            $konpentsatuak = $em->getRepository('AppBundle:Event')->findKonpentsatuakdet($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        } else {
+            $konpentsatuak = $em->getRepository('AppBundle:Event')->findKonpentsatuak($hasi, $fin, $urtea, $saila, $lanpostua, $mota);
+        }
         $sailak        = $em->getRepository('AppBundle:User')->findSailGuztiak();
         $urteak        = $em->getRepository('AppBundle:Calendar')->getEgutegiUrteak();
         $lanpostuak    = $em->getRepository('AppBundle:User')->findLanpostuGuztiak();
@@ -90,17 +96,26 @@ class ZerrendaController extends Controller
             if ($motatest) {
                 $testua = $testua.' Mota:'.$motatest->getName();
             }
-
         }
 
-        return $this->render('zerrenda/zerrenda_konpentsatuak.html.twig', array(
-            'konpentsatuak' => $konpentsatuak,
-            'sailak'        => $sailak,
-            'lanpostuak'    => $lanpostuak,
-            'urteak'        => $urteak,
-            'motak'         => $motak,
-            'testua'        => $testua,
-        ));
+        if ($detailatua) {
+            return $this->render('zerrenda/zerrenda_konpentsatuak_det.html.twig', array(
+                'konpentsatuak' => $konpentsatuak,
+                'sailak'        => $sailak,
+                'lanpostuak'    => $lanpostuak,
+                'urteak'        => $urteak,
+                'motak'         => $motak,
+                'testua'        => $testua,
+            ));
+        } else {
+            return $this->render('zerrenda/zerrenda_konpentsatuak.html.twig', array(
+                'konpentsatuak' => $konpentsatuak,
+                'sailak'        => $sailak,
+                'lanpostuak'    => $lanpostuak,
+                'urteak'        => $urteak,
+                'motak'         => $motak,
+                'testua'        => $testua,
+            ));
+        }
     }
-
 }

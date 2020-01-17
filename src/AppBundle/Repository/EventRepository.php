@@ -25,7 +25,7 @@ class EventRepository extends EntityRepository
         /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery('
             SELECT e
-                FROM AppBundle:Event e 
+                FROM AppBundle:Event e
                   LEFT JOIN e.calendar c
                 WHERE c.id = :calendarid
         ');
@@ -36,7 +36,8 @@ class EventRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function findCalendarSelfEvents($calendarid) {
+    public function findCalendarSelfEvents($calendarid)
+    {
 
         // TODO: Remove hardcoded type id
 
@@ -44,7 +45,7 @@ class EventRepository extends EntityRepository
         /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery('
             SELECT e
-                FROM AppBundle:Event e 
+                FROM AppBundle:Event e
                   LEFT JOIN e.calendar c
                 WHERE c.id = :calendarid
                 AND e.type = 5
@@ -55,55 +56,87 @@ class EventRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function checkCollision($userid, $fini, $ffin) {
-        $qb = $this->createQueryBuilder( 'e' );
+    public function checkCollision($userid, $fini, $ffin)
+    {
+        $qb = $this->createQueryBuilder('e');
 
-            $qb->innerJoin('e.calendar','c')
+        $qb->innerJoin('e.calendar', 'c')
             ->innerJoin('c.user', 'u')
             ->where('u.id=:userid')
             //->andWhere($qb->expr()->between(':fini', 'e.start_date', 'e.end_date'))
             ->andWhere('(:fini BETWEEN e.start_date AND e.end_date) OR (:ffin BETWEEN e.start_date AND e.end_date)')
-            ->setParameter('userid',$userid)
-            ->setParameter('fini',$fini)
-            ->setParameter('ffin',$ffin)
+            ->setParameter('userid', $userid)
+            ->setParameter('fini', $fini)
+            ->setParameter('ffin', $ffin)
         ;
 
         return $qb->getQuery()->getResult();
     }
 
-    public function findKonpentsatuak( $hasi=null, $fin=null, $urtea=null, $saila=null, $lanpostua=null, $mota = null)
+    public function findKonpentsatuak($hasi=null, $fin=null, $urtea=null, $saila=null, $lanpostua=null, $mota = null)
     {
-
         $qb = $this->createQueryBuilder('e');
         $qb->select('SUM(e.hours) as suma', 'c.id as calendarid', 'u.id', 'u.username', 'u.department', 'u.lanpostua', 'c.year');
-        $qb->innerJoin( 'e.calendar', 'c' );
-        $qb->innerJoin( 'e.type', 't' );
-        $qb->innerJoin( 'c.user', 'u' );
-        $qb->groupBy( 'c.id' );
+        $qb->innerJoin('e.calendar', 'c');
+        $qb->innerJoin('e.type', 't');
+        $qb->innerJoin('c.user', 'u');
+        $qb->groupBy('c.id');
+
 
         if ($mota) {
-            $qb->andWhere( 'e.type = :mota' )->setParameter( 'mota', $mota );
+            $qb->andWhere('e.type = :mota')->setParameter('mota', $mota);
         }
         if ($urtea) {
-            $qb->andWhere( 'c.year = :urtea' )->setParameter( 'urtea', $urtea );
+            $qb->andWhere('c.year = :urtea')->setParameter('urtea', $urtea);
         }
         if ($hasi) {
-            $qb->andWhere( 'e.start_date > :hasi' )->setParameter( 'hasi', $hasi );
+            $qb->andWhere('e.start_date > :hasi')->setParameter('hasi', $hasi);
         }
         if ($fin) {
-            $qb->andWhere( 'e.end_date < :fin' )->setParameter( 'fin', $fin );
+            $qb->andWhere('e.end_date < :fin')->setParameter('fin', $fin);
         }
         if ($saila) {
-            $qb->andWhere( 'u.department = :saila' )->setParameter( 'saila', $saila );
+            $qb->andWhere('u.department = :saila')->setParameter('saila', $saila);
         }
         if ($lanpostua) {
-            $qb->andWhere( 'u.lanpostua = :lanpostua' )->setParameter( 'lanpostua', $lanpostua );
+            $qb->andWhere('u.lanpostua = :lanpostua')->setParameter('lanpostua', $lanpostua);
         }
-
+        $qb->orderBy('u.department');
         $sql = $qb->getQuery()->getSQL();
 
         return $qb->getQuery()->getResult();
-
     }
 
+    public function findKonpentsatuakdet($hasi=null, $fin=null, $urtea=null, $saila=null, $lanpostua=null, $mota = null)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->select('e.hours as suma', 'e.start_date as fetxa','c.id as calendarid', 'u.id', 'u.username', 'u.department', 'u.lanpostua', 'c.year');
+        $qb->innerJoin('e.calendar', 'c');
+        $qb->innerJoin('e.type', 't');
+        $qb->innerJoin('c.user', 'u');
+
+
+        if ($mota) {
+            $qb->andWhere('e.type = :mota')->setParameter('mota', $mota);
+        }
+        if ($urtea) {
+            $qb->andWhere('c.year = :urtea')->setParameter('urtea', $urtea);
+        }
+        if ($hasi) {
+            $qb->andWhere('e.start_date > :hasi')->setParameter('hasi', $hasi);
+        }
+        if ($fin) {
+            $qb->andWhere('e.end_date < :fin')->setParameter('fin', $fin);
+        }
+        if ($saila) {
+            $qb->andWhere('u.department = :saila')->setParameter('saila', $saila);
+        }
+        if ($lanpostua) {
+            $qb->andWhere('u.lanpostua = :lanpostua')->setParameter('lanpostua', $lanpostua);
+        }
+        $qb->orderBy('u.department');
+        $sql = $qb->getQuery()->getSQL();
+
+        return $qb->getQuery()->getResult();
+    }
 }
