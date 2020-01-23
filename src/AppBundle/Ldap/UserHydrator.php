@@ -42,6 +42,7 @@ class UserHydrator implements HydratorInterface
         }
         if (array_key_exists('memberof', $ldapEntry) && \count($ldapEntry[ 'memberof' ])) {
             $members = $ldapEntry[ 'memberof' ];
+            $udaltzainAdministrariaDa = false;
             foreach ($members as $key => $value) {
                 $sp = ldap_explode_dn($value, 1);
                 if ($sp[ 0 ] === 'APP-Web_Egutegia') {
@@ -70,7 +71,15 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_SAILBURUA';
                     $user->addRole($rol);
                 }
+                if (strpos($sp[ 0 ], 'ROL-Udaltzaingoa_Administrazioa') !== false) { // UDALTZAINA BADA
+                    $udaltzainAdministrariaDa = true;
+                }
             }
+
+            if ($udaltzainAdministrariaDa) { // Udaltzaingoan dagoen administraria denez, egutegira sartu behar du, beraz ROLE_UDALTZAINA kendu
+                $user->removeRole('ROLE_UDALTZAINA');
+            }
+
             if ($user->getSailburuada()) {
                 $user->addRole('ROLE_SAILBURUA');
             }
