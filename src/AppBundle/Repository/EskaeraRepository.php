@@ -23,6 +23,22 @@ class EskaeraRepository extends EntityRepository
         $this->lizentziaType = $lizentziaType;
     }
 
+    public function listAll()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('e, m, u, c, f, t, s')
+            ->from('AppBundle:Eskaera', 'e')
+            ->leftJoin('e.type', 't')
+            ->leftJoin('e.lizentziamota', 'm')
+            ->leftJoin('e.user', 'u')
+            ->leftJoin('e.calendar', 'c')
+            ->leftJoin('e.firma', 'f')
+            ->leftJoin('e.sinatzaileak', 's')
+            ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function list($q, $history, $lm)
     {
         $em  = $this->getEntityManager();

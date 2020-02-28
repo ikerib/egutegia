@@ -105,7 +105,8 @@ class EskaeraController extends Controller {
 
         if ((($q === null) || ($q === 'all')) && $history === '1')
         {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->findAll();
+//            $eskaeras = $em->getRepository('AppBundle:Eskaera'->findAll();
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->listAll();
         }
         else
         {
