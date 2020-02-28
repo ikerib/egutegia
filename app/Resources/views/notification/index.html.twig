@@ -124,7 +124,6 @@
                     {% if notification.eskaera.lizentziamota and notification.readed == 0%}
                         <a href="{{ path('notification_readed', {'id': notification.id }) }}" class="btn btn-primary">{{ "Markatu irakurrita" | trans }}</a>
                     {% else %}
-
                         {% if notification.sinatzeprozesua is same as(true) or notification.sinatzeprozesua is null %}
                             <ul class="list list-inline">
                                 <li><button type="button" class="btn btn-xs btn-danger btnEskaeraEzOnartu"
