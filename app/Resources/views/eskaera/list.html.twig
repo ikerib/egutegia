@@ -116,6 +116,7 @@
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ "Izaera" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="type " data-sortable="true">{{ "Mota" | trans }}</th>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="kostua " data-sortable="true">{{ "Kostua" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="created" data-sortable="true">{{ "Eskatu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
@@ -146,6 +147,7 @@
                         </span>
                         </td>
                         <td>{{ eskaera.kostua ~ " €" }}</td>
+                        <td>{{ eskaera.created | date('Y-m-d') }}
                         <td>{{ eskaera.hasi | date('Y-m-d') }}
                             {#{% if eskaera.noiz %}#}
                             {#<label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"#}
