@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
 /**
  * Notification controller.
  *
@@ -69,8 +68,6 @@ class NotificationController extends Controller
      */
     public function sinatzenAction(Request $request): Response
     {
-
-
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
@@ -146,7 +143,6 @@ class NotificationController extends Controller
      */
     public function showAction(Notification $notification)
     {
-
         return $this->render(
             'notification/show.html.twig',
             array(
@@ -192,5 +188,26 @@ class NotificationController extends Controller
                     ->setAction($this->generateUrl('notification_delete', ['id' => $notify->getId()]))
                     ->setMethod('DELETE')
                     ->getForm();
+    }
+
+    /**
+     * @Route("/readed/{id}", name="notification_readed")
+     * @param              $id
+     * @param Notification $notification
+     *
+     * @return RedirectResponse
+     */
+    public function setReadedAction(Notification $notification)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $notification->setReaded(1);
+        $notification->setResult(1);
+        $notification->setCompleted(1);
+        $notification->setSinatzeprozesua( 0 );
+
+        $em->persist($notification);
+        $em->flush();
+
+        return $this->redirectToRoute('notification_index', ['q' => 'unanswered']);
     }
 }

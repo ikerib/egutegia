@@ -133,6 +133,8 @@ class EskaeraRepository extends EntityRepository
             FROM AppBundle:Eskaera e
               INNER JOIN e.user u
             WHERE u.id = :id
+            ORDER BY e.created DESC
+
         ';
 
         $query = $em->createQuery($dql);
