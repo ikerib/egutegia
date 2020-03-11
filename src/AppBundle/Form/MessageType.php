@@ -18,9 +18,11 @@ class MessageType extends AbstractType
         $builder
             ->add('user', null, [
                 'label' => 'Nori:',
-                'required' => true,
-                'placeholder' => 'Aukeratu bat',
+                'required' => false,
+                'multiple' => true,
+                'mapped' => false,
                 'attr' => [
+                    'multiple' => true,
                     'class' => 'select2'
                 ]
             ])

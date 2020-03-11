@@ -140,7 +140,7 @@ class Type
     /**
      * @var \AppBundle\Entity\Eskaera
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Eskaera", mappedBy="type",cascade={"persist"})
      */
     protected $eskaera;
 
