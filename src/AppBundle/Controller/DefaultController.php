@@ -41,6 +41,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var $user User */
         $user = $this->getUser();
+
         $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
 
         return $this->render(
@@ -81,7 +82,10 @@ class DefaultController extends Controller
 
         $unreadMessages = $em->getRepository('AppBundle:Message')->findUserUnreadMessages($user->getId());
 
-        if ($unreadMessages) {
+        // impertsonalizazioa bada ez du erakutsi behar
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        if (($unreadMessages) && (! $authorizationChecker->isGranted('ROLE_PREVIOUS_ADMIN'))) {
             return $this->redirectToRoute('user_notifycation');
         }
 
