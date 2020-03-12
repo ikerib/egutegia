@@ -26,7 +26,7 @@ class MessageController extends Controller
         $q       = $request->query->get('q');
 
         if (($q === null) || ($q === 'all')) {
-            $messages = $em->getRepository('AppBundle:Message')->findAll();
+            $messages = $em->getRepository('AppBundle:Message')->getAllMessages();
         } else {
             $messages = $em->getRepository('AppBundle:Message')->findByParameter($q);
         }

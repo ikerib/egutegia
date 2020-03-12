@@ -23,6 +23,18 @@ class MessageRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+
+    public function getAllMessages()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('m, u')
+            ->from('AppBundle:Message', 'm')
+            ->innerJoin('m.user', 'u')
+            ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findByParameter($q)
     {
         $qb = $this->_em->createQueryBuilder();
