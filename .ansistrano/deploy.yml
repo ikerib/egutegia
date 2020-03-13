@@ -35,9 +35,7 @@
     shared_path_parameters: "{{ symfony_app_dir }}/config/parameters.yml"
 
     ansistrano_shared_paths:
-      - var/logs
-      - var/sessions
-      - var/cache
+      - var
       - web/uploads
 
     ansistrano_shared_files:

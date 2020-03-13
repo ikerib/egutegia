@@ -23,6 +23,7 @@
         "php": ">=5.5.9",
         "ext-json": "*",
         "ext-ldap": "*",
+        "deployer/deployer": "^6.7",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
         "egeloen/form-extra-bundle": "^2.0",
