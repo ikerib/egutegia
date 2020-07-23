@@ -12,7 +12,7 @@
     symfony_console_path: 'bin/console'
 
     #symfony_run_composer: true
-    symfony_composer_path: "{{ ansistrano_deploy_to }}/composer.phar"
+    #symfony_composer_path: "{{ ansistrano_deploy_to }}/composer.phar"
     #symfony_composer_options: '--no-dev --optimize-autoloader --no-interaction'
 #    symfony_composer_options: '--optimize-autoloader --no-interaction'
     symfony_composer_self_update: true # Always attempt a composer self-update
