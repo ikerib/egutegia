@@ -63,3 +63,5 @@ web/vendor/
 /web/fonts/
 /web/css/app.css
 /web/app_dev.php
+
+/docker/data
