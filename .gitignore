@@ -65,3 +65,4 @@ web/vendor/
 /web/app_dev.php
 
 /docker/data
+/docker/data-redis
