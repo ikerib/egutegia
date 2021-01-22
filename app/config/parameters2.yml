@@ -1,0 +1,25 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: egutegia
+    database_user: root
+    database_password: pasaia
+    ldap_domain: 172.28.64.23
+    ldap_username: izfeprint
+    ldap_password: izfeprint
+    ldap_base_dn: 'dc=pasaia,dc=net'
+    ldap_server: 172.28.64.23
+    cors_allow_origin: 'http://egutegia.pasaia.et'
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: fosusermailer@example.com
+    mailer_password: null
+    mailer_bidaltzailea: egutegia@pasaia.net
+    secret: ThisTokenIsNotSoSecretChangeIt
+    dir_base_pdf: /var
+    dir_tmp_pdf: /var
+    api_url: 'http://egutegia.test/app_dev.php/api'
+    type_konpentsatuak: 5
+    type_norbere: 2
+    type_lizentzia: 7
