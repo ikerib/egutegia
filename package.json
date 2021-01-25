@@ -32,6 +32,7 @@
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "merge-stream": "^1.0.1",
+    "natives": "^1.1.6",
     "postcss-cssnext": "^3.0.2",
     "uglify-js": "^3.0.27"
   },
@@ -41,5 +42,8 @@
     "bootbox": "^4.4.0",
     "natives": "^1.1.6",
     "node-sass": "^4.11.0"
+  },
+  "resolutions": {
+    "**/event-stream": "^4.0.1"
   }
 }

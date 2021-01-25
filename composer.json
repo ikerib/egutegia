@@ -23,6 +23,7 @@
         "php": ">=5.5.9",
         "ext-json": "*",
         "ext-ldap": "*",
+        "composer/package-versions-deprecated": "1.11.99.1",
         "deployer/deployer": "^6.7",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
