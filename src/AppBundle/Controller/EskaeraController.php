@@ -77,11 +77,13 @@ class EskaeraController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $types = $em->getRepository('AppBundle:Type')->findEskaerak();
+        $isMunipa = in_array('ROLE_UDALTZAINA', $user->getRoles());
 
         return $this->render(
             'eskaera/instantziak.html.twig',
             array(
                 'types' => $types,
+                'isMunipa' => $isMunipa
             )
         );
     }

@@ -89,18 +89,6 @@ class DefaultController extends Controller
             return $this->redirectToRoute('user_notifycation');
         }
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_UDALTZAINA')) {
-            return $this->render(
-                'default/no_calendar_error.html.twig',
-                [
-                    'h1Textua' => $this->get('translator')->trans('error.udaltzaina'),
-                    'h3Testua' => '',
-                    'user'     => $user,
-                ]
-            );
-        }
-
-
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
 
         if ((!$calendar) || (count($calendar) > 1)) {
