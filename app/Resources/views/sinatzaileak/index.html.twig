@@ -70,7 +70,7 @@
                             </a>
                         </li>
                         <li>
-                            {{ form_start(deleteForms[sinatzaileak.id],{'attr': {'id': sinatzaileak.id}}) }}
+                            {{ form_start(deleteForms[sinatzaileak.id],{'method': 'DELETE','attr': {'id': 'frm'~sinatzaileak.id}}) }}
                             <a class="btnRemoveRow" data-id="{{ sinatzaileak.id }}"
                                href="#sinatzaileakEditModal{{ sinatzaileak.id }}">
                                 <i class="fa fa-trash text-danger" aria-hidden="true"></i>
@@ -138,7 +138,9 @@
                   },
                   callback: function (result) {
                       if (result === true) {
-                          $(that).closest('form').submit();
+                          var frmid = '#frm' + $(that).data('id');
+                          console.log(frmid);
+                          $(frmid).submit();
                       }
                   }
               });

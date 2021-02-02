@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Form\SinatzaileakType;
@@ -25,7 +27,7 @@ class SinatzaileakController extends Controller
      * @Route("/", name="admin_sinatzaileak_index")
      * @Method("GET")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -48,11 +50,13 @@ class SinatzaileakController extends Controller
      *
      * @Route("/new", name="admin_sinatzaileak_new")
      * @Method({"GET", "POST"})
+     * @param Request $request
+     * @return RedirectResponse|Response|null
      */
     public function newAction(Request $request)
     {
         $sinatzaileak = new Sinatzaileak();
-        $form = $this->createForm('AppBundle\Form\SinatzaileakType', $sinatzaileak, [
+        $form = $this->createForm(SinatzaileakType::class, $sinatzaileak, [
             'action' => $this->generateUrl('admin_sinatzaileak_new'),
             'method' => 'POST'
         ]);
@@ -108,7 +112,7 @@ class SinatzaileakController extends Controller
      * @param Request      $request
      * @param Sinatzaileak $sinatzaileak
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Sinatzaileak $sinatzaileak)
     {
@@ -132,10 +136,13 @@ class SinatzaileakController extends Controller
     /**
      * Deletes a sinatzaileak entity.
      *
-     * @Route("/{id}", name="admin_sinatzaileak_delete")
+     * @Route("/{id}/delete", name="admin_sinatzaileak_delete")
      * @Method("DELETE")
+     * @param Request $request
+     * @param Sinatzaileak $sinatzaileak
+     * @return RedirectResponse
      */
-    public function deleteAction(Request $request, Sinatzaileak $sinatzaileak)
+    public function deleteAction(Request $request, Sinatzaileak $sinatzaileak): RedirectResponse
     {
         $form = $this->createDeleteForm($sinatzaileak);
         $form->handleRequest($request);
@@ -154,7 +161,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileak $sinatzaileak The sinatzaileak entity
      *
-     * @return Form The form
+     * @return Form|FormInterface
      */
     private function createDeleteForm(Sinatzaileak $sinatzaileak)
     {
@@ -170,7 +177,7 @@ class SinatzaileakController extends Controller
      *
      * @param Sinatzaileakdet $sd
      *
-     * @return Form The form
+     * @return Form|FormInterface
      *
      */
     private function createDeleteFormSinatzaileakkDet(Sinatzaileakdet $sd)
