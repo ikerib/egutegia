@@ -70,9 +70,9 @@ class DefaultController extends Controller
 
 
     /**
-     * @Route("/mycalendar", name="user_homepage")
+     * @Route("/mycalendar/{calendarid}", name="user_homepage")
      */
-    public function userhomepageAction(): Response
+    public function userhomepageAction($calendarid=null): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
 
@@ -89,9 +89,17 @@ class DefaultController extends Controller
             return $this->redirectToRoute('user_notifycation');
         }
 
-        $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+        if ($calendarid === null) {
+            /** @var Calendar $calendar */
+            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+            $calendar = $calendar[0];
+        } else {
+            /** @var Calendar $calendar */
+            $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
+        }
 
-        if ((!$calendar) || (count($calendar) > 1)) {
+
+        if (!$calendar) {
             if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 return $this->redirectToRoute('dashboard');
             }
@@ -106,8 +114,8 @@ class DefaultController extends Controller
             );
         }
 
-        /** @var Calendar $calendar */
-        $calendar = $calendar[ 0 ];
+//        /** @var Calendar $calendar */
+//        $calendar = $calendar[ 0 ];
         // norberarentzako orduak
         /** @var Event $selfHours */
         $selfHours         = $em->getRepository('AppBundle:Event')->findCalendarSelfEvents($calendar->getId());

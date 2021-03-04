@@ -4,10 +4,14 @@
  */
 
 $(function () {
-  var currentYear = new Date().getFullYear();
+  // var currentYear = new Date().getFullYear();
+  var currentYear = parseInt($('#year').val());
+  // console.log("currentYear => " + currentYear);
   var minDate = currentYear + "-01-01";
+  // console.log("minDate => " + minDate);
   currentYear += 1;
   var maxDate = currentYear + "-01-15";
+  // console.log("maxDate => " + maxDate);
   var locale = $("#locale").val();
 
   $("#usercalendar").calendar({
@@ -15,6 +19,7 @@ $(function () {
     language: locale,
     minDate: new Date(minDate),
     maxDate: new Date(maxDate),
+    startYear: currentYear-1,
     allowOverlap: true,
     enableContextMenu: false,
     enableRangeSelection: false,

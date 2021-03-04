@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection NullPointerExceptionInspection */
 
 /*
  *     Iker Ibarguren <@ikerib>
@@ -9,6 +9,7 @@
 
 namespace AppBundle\Menu;
 
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\User;
 use AppBundle\Service\NotificationService;
 use AppBundle\Service\Sinatzeke;
@@ -110,6 +111,18 @@ class Builder implements ContainerAwareInterface
         }
 
         if ($checker->isGranted('ROLE_USER')) {
+            /** @var EntityManager $em */
+            $em       = $this->container->get('doctrine.orm.entity_manager');
+            $egutegiak = $em->getRepository('AppBundle:Calendar')->findAllCalendarsByUsername($user->getUsername());
+            if (\count($egutegiak) > 0) {
+                $menu->addChild('Egutegia', array('label' => 'Egutegiak', 'dropdown' => true, 'icon' => 'calendar'));
+                /** @var Calendar $egutegia */
+                foreach ($egutegiak as $egutegia) {
+                    $menu['Egutegia']->addChild($egutegia->getYear(), ['icon' => 'calendar', 'route' => 'user_homepage', 'routeParameters' => array('calendarid'=>$egutegia->getId()),])->setExtra('translation_domain', 'messages');
+
+                }
+            }
+
             $menu->addChild('user_menu.eskaera.new', ['icon' => 'send', 'route' => 'eskaera_instantziak'])->setExtra('translation_domain', 'messages');
 
             if (\count($notifications) === 0) {
