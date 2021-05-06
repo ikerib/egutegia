@@ -400,8 +400,11 @@
             d = 0;
 
             const hasi = $("#appbundle_eskaera_hasi").val();
+            console.log(hasi);
             const amaitu = $("#appbundle_eskaera_amaitu").val();
+            console.log(amaitu);
             d = workday_count(hasi, amaitu);
+            console.log(d);
             if ( isNaN(d) ) {
                 d = 0;
             }
