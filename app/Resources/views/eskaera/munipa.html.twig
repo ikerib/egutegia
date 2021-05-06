@@ -356,7 +356,9 @@
 
         function workday_count( fstart, fend ) {
             var start = moment(fstart);
+            console.log(fstart);
             var end = moment(fend);
+            console.log(fend);
             // var first = start.clone().endOf("week"); // end of first week
             // var last = end.clone().startOf("week"); // start of last week
             // var days = Math.floor(last.diff(first, "days") * 5 / 7); // this will always multiply of 7
@@ -368,6 +370,10 @@
             // if ( end.day() === 6 ) --wlast; // -1 if end with saturday
             //
             // return wfirst + days + wlast - kendu_jai_egunak(fstart, fend); // get the total
+            console.log("lehen partea")
+            console.log(end.diff(start, 'days') + 1);
+            console.log("Kendu jai egunak")
+            console.log(kendu_jai_egunak(fstart, fend))
             return end.diff(start, 'days') + 1 - kendu_jai_egunak(fstart, fend);
         }
 
