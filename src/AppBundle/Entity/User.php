@@ -65,6 +65,12 @@ class User extends BaseUser implements LdapUserInterface
     protected $sailburuada;
 
     /**
+     * @ORM\Column(type="boolean", length=255, nullable=true, options={"default": false})
+     * @Expose
+     */
+    protected $munipada;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
@@ -574,5 +580,29 @@ class User extends BaseUser implements LdapUserInterface
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    /**
+     * Set munipada.
+     *
+     * @param bool|null $munipada
+     *
+     * @return User
+     */
+    public function setMunipada($munipada = null)
+    {
+        $this->munipada = $munipada;
+
+        return $this;
+    }
+
+    /**
+     * Get munipada.
+     *
+     * @return bool|null
+     */
+    public function getMunipada()
+    {
+        return $this->munipada;
     }
 }

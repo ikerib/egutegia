@@ -352,16 +352,31 @@ class EskaeraController extends Controller {
             )
         );
 
+        if ($user->getMunipada()) {
+            return $this->render(
+                'eskaera/munipa.html.twig',
+                array(
+                    'eskaera'   => $eskaera,
+                    'calendar'  => $calendar,
+                    'jaiegunak' => $jaiegunak,
+                    'munipada'  => $user->getMunipada(),
+                    'form'      => $form->createView(),
+                )
+            );
+        } else {
+            return $this->render(
+                'eskaera/new.html.twig',
+                array(
+                    'eskaera'   => $eskaera,
+                    'calendar'  => $calendar,
+                    'jaiegunak' => $jaiegunak,
+                    'munipada'  => $user->getMunipada(),
+                    'form'      => $form->createView(),
+                )
+            );
+        }
 
-        return $this->render(
-            'eskaera/new.html.twig',
-            array(
-                'eskaera'   => $eskaera,
-                'calendar'  => $calendar,
-                'jaiegunak' => $jaiegunak,
-                'form'      => $form->createView(),
-            )
-        );
+
     }
 
     /**
