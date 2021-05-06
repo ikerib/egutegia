@@ -312,10 +312,10 @@
         var jaiegunak = JSON.parse($("#txtJaiEgunak").val());
         var arrayJaiEgunak = [];
 
-        $.each(jaiegunak, function ( key, value ) {
-            var nireFetxa = moment(value.start_date);
-            arrayJaiEgunak.push(moment(nireFetxa).format("YYYY-MM-DD"));
-        });
+        // $.each(jaiegunak, function ( key, value ) {
+        //     var nireFetxa = moment(value.start_date);
+        //     arrayJaiEgunak.push(moment(nireFetxa).format("YYYY-MM-DD"));
+        // });
 
         $("#appbundle_eskaera_hasi").datepicker({
             todayBtn: 1,
@@ -356,9 +356,9 @@
 
         function workday_count( fstart, fend ) {
             var start = moment(fstart);
-            console.log(fstart);
+            // console.log(fstart);
             var end = moment(fend);
-            console.log(fend);
+            // console.log(fend);
             // var first = start.clone().endOf("week"); // end of first week
             // var last = end.clone().startOf("week"); // start of last week
             // var days = Math.floor(last.diff(first, "days") * 5 / 7); // this will always multiply of 7
@@ -370,10 +370,10 @@
             // if ( end.day() === 6 ) --wlast; // -1 if end with saturday
             //
             // return wfirst + days + wlast - kendu_jai_egunak(fstart, fend); // get the total
-            console.log("lehen partea")
-            console.log(end.diff(start, 'days') + 1);
-            console.log("Kendu jai egunak")
-            console.log(kendu_jai_egunak(fstart, fend))
+            // console.log("lehen partea")
+            // console.log(end.diff(start, 'days') + 1);
+            // console.log("Kendu jai egunak")
+            // console.log(kendu_jai_egunak(fstart, fend))
             return end.diff(start, 'days') + 1 - kendu_jai_egunak(fstart, fend);
         }
 
@@ -387,7 +387,8 @@
             var b = moment(fend);
             var erantzuna = 0;
             for ( var m = moment(a); m.diff(b, 'days') <= 0; m.add(1, "days") ) {
-
+                // console.log("Array Jai Eguinak");
+                // console.log(arrayJaiEgunak);
                 // if ( (m.weekday() !== 6) && (m.weekday() !== 0) ) {
                     if ( jQuery.inArray(m.format("YYYY-MM-DD"), arrayJaiEgunak) !== -1 ) {
                         erantzuna += 1;
@@ -406,11 +407,11 @@
             d = 0;
 
             const hasi = $("#appbundle_eskaera_hasi").val();
-            console.log(hasi);
+            // console.log(hasi);
             const amaitu = $("#appbundle_eskaera_amaitu").val();
-            console.log(amaitu);
+            // console.log(amaitu);
             d = workday_count(hasi, amaitu);
-            console.log(d);
+            // console.log(d);
             if ( isNaN(d) ) {
                 d = 0;
             }
