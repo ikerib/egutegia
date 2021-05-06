@@ -25,7 +25,7 @@ class TemplateEventRepository extends EntityRepository
         /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery('
             SELECT te,tt
-                FROM AppBundle:TemplateEvent te 
+                FROM AppBundle:TemplateEvent te
                   LEFT JOIN te.template t
                   LEFT JOIN te.type tt
                 WHERE t.id = :templateid
@@ -33,6 +33,22 @@ class TemplateEventRepository extends EntityRepository
 
         //$consulta = $em->createQuery($dql);
         $query->setParameter('templateid', $templateid);
+
+        return $query->getResult();
+    }
+
+    public function getPintatuGorriz($templateid)
+    {
+        $em = $this->getEntityManager();
+        /** @var $query QueryBuilder */
+        $query = $em->createQuery('
+            SELECT te
+                FROM AppBundle:TemplateEvent te
+                  LEFT JOIN te.type tt
+                  INNER JOIN te.template t
+                WHERE tt.instantziaegutegianerakutsi=1 and t.id=:templateid
+        ')->setParameter('templateid',$templateid);
+
 
         return $query->getResult();
     }

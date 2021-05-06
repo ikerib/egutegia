@@ -80,21 +80,21 @@ class ZerrendaController extends Controller
 
         $testua = $urtea.'-ko datuak erakusten ';
         if ($hasi) {
-            $testua = $testua.$hasi.'-tik hasita ';
+            $testua .= $hasi . '-tik hasita ';
         }
         if ($fin) {
-            $testua = $testua.$fin.'-erarte. ';
+            $testua .= $fin . '-erarte. ';
         }
         if ($saila) {
-            $testua = $testua.' Saila:'.$saila;
+            $testua .= ' Saila:' . $saila;
         }
         if ($lanpostua) {
-            $testua = $testua.' Lanpostua:'.$lanpostua;
+            $testua .= ' Lanpostua:' . $lanpostua;
         }
         if ($mota) {
             $motatest = $em->getRepository('AppBundle:Type')->find($mota);
             if ($motatest) {
-                $testua = $testua.' Mota:'.$motatest->getName();
+                $testua .= ' Mota:' . $motatest->getName();
             }
         }
 
