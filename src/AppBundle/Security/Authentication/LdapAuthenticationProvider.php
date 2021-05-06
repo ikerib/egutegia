@@ -103,6 +103,7 @@ class LdapAuthenticationProvider extends BaseProvider
                         $ldapUser = $provider->loadUserByUsername($username);
                         $user->setEmail($ldapUser->getEmail());
                         $user->setRoles($ldapUser->getRoles());
+                        $user->setMunipada($ldapUser->getMunipada());
                         // Hydrator-eko berdina egiten dugu
                         if ($ldapUser->getNan()) {
                             $user->setNan($ldapUser->getNan());

@@ -61,8 +61,10 @@ class UserHydrator implements HydratorInterface
                 }
                 if (strpos($sp[ 0 ], 'daltzaing') !== false) { // UDALTZAINA BADA
                     $rol = 'ROLE_UDALTZAINA';
+                    $user->setMunipada(true);
                     $user->addRole($rol);
                 }
+
                 if (strpos($sp[ 0 ], 'App-Web_Egutegia-Sinatzailea') !== false) {
                     $rol = 'ROLE_SINATZAILEA';
                     $user->addRole($rol);

@@ -346,23 +346,35 @@ class EskaeraController extends Controller {
             return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
         }
 
-//        $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->findBy(
-//            array(
-//                'template' => $calendar->getTemplate()->getId(),
-//            )
-//        );
-
-        $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->getPintatuGorriz($calendar->getTemplate()->getId());
-
-        return $this->render(
-            'eskaera/new.html.twig',
+        $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->findBy(
             array(
-                'eskaera'   => $eskaera,
-                'calendar'  => $calendar,
-                'jaiegunak' => $jaiegunak,
-                'form'      => $form->createView(),
+                'template' => $calendar->getTemplate()->getId(),
             )
         );
+
+        if ($user->getMunipada()) {
+            return $this->render(
+                'eskaera/munipa.html.twig',
+                array(
+                    'eskaera'   => $eskaera,
+                    'calendar'  => $calendar,
+                    'jaiegunak' => $jaiegunak,
+                    'munipada'  => $user->getMunipada(),
+                    'form'      => $form->createView(),
+                )
+            );
+        } else {
+            return $this->render(
+                'eskaera/new.html.twig',
+                array(
+                    'eskaera'   => $eskaera,
+                    'calendar'  => $calendar,
+                    'jaiegunak' => $jaiegunak,
+                    'munipada'  => $user->getMunipada(),
+                    'form'      => $form->createView(),
+                )
+            );
+        }
     }
 
     /**

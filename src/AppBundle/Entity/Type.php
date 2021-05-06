@@ -115,11 +115,7 @@ class Type
      */
     private $lizentziamotabehar;
 
-    /**
-     * @var bool
-     * @ORM\Column(name="instantziaegutegianerakutsi", type="boolean", nullable=true)
-     */
-    private $instantziaegutegianerakutsi;
+
 
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
