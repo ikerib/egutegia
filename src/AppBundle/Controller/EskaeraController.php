@@ -231,7 +231,12 @@ class EskaeraController extends Controller {
 
         $eskaera = new Eskaera();
         $eskaera->setUser($user);
-        $eskaera->setName($user->getDisplayname());
+        if ($user->getDisplayname() !== null) {
+            $eskaera->setName($user->getDisplayname());
+        } else {
+            $eskaera->setName($user->getUsername());
+        }
+
         $eskaera->setCalendar($calendar);
 
         $type = $em->getRepository('AppBundle:Type')->find($q);
