@@ -1,5 +1,4 @@
-<?php /** @noinspection NullPointerExceptionInspection */
-
+<?php
 /*
  *     Iker Ibarguren <@ikerib>
  *
@@ -12,13 +11,13 @@ namespace AppBundle\Menu;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\User;
 use AppBundle\Service\NotificationService;
-use AppBundle\Service\Sinatzeke;
-use AppBundle\Service\SinatzekeService;
+
 use Doctrine\ORM\EntityManager;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\HttpFoundation\Request;
 
 class Builder implements ContainerAwareInterface
 {
@@ -82,7 +81,7 @@ class Builder implements ContainerAwareInterface
      *
      * @return ItemInterface
      */
-    public function userMenu(FactoryInterface $factory, array $options): ItemInterface
+    public function userMenu( FactoryInterface $factory, array $options): ItemInterface
     {
         /*
         * Sinatze ditu eskaerak??
@@ -91,6 +90,8 @@ class Builder implements ContainerAwareInterface
         $zerbitzua     = $this->container->get('app.sinatzeke');
         $notifications = $zerbitzua->GetNotifications();
 
+
+
         $checker = $this->container->get('security.authorization_checker');
         /** @var $user User */
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
@@ -98,16 +99,30 @@ class Builder implements ContainerAwareInterface
         $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
 
         if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
-            $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
-            $menu->addChild(
-                'Exit',
-                array(
-                    'label'           => 'Modu arruntera izuli',
-                    'route'           => 'dashboard',
-                    'routeParameters' => array('_switch_user' => '_exit'),
-                    'icon'            => 'exit',
-                )
-            );
+            if ($options['saila'] === "Udaltzaingoa") {
+                $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
+                $menu->addChild(
+                    'Exit',
+                    array(
+                        'label'           => 'Modu arruntera izuli',
+                        'route'           => 'saila_dashboard',
+                        'routeParameters' => array('_switch_user' => '_exit'),
+                        'icon'            => 'exit',
+                    )
+                );
+            } else {
+                $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
+                $menu->addChild(
+                    'Exit',
+                    array(
+                        'label'           => 'Modu arruntera izuli',
+                        'route'           => 'dashboard',
+                        'routeParameters' => array('_switch_user' => '_exit'),
+                        'icon'            => 'exit',
+                    )
+                );
+            }
+
         }
 
         if ($checker->isGranted('ROLE_USER')) {

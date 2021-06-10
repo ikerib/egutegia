@@ -88,7 +88,7 @@
         {% if is_mobile() %}
             {{ mopa_bootstrap_menu('AppBundle:Builder:movuserMenu', {'automenu':'navbar', 'currentClass': ''}) }}
         {% else %}
-            {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': ''}) }}
+            {{ mopa_bootstrap_menu('AppBundle:Builder:userMenu', {'automenu':'navbar', 'currentClass': '', 'saila': app.user.department}) }}
         {% endif %}
     </div>
 {% endblock %}

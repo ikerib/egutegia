@@ -47,15 +47,15 @@
 
     <thead>
     <tr>
-        <th data-checkbox="true"></th>
         <th data-visible="false" data-switchable="false" data-field="id"></th>
+        <th data-checkbox="true"></th>
+        <th data-halign="center" data-align="center"></th>
         <th data-halign="left" data-align="left" data-field="displayname" data-sortable="true">{{ 'Lankidea' | trans }}</th>
         <th data-halign="left" data-align="left" data-field="saila" data-sortable="true">{{ 'Saila' | trans }}</th>
         <th data-halign="left" data-align="left">{{ 'Urteko orduak' | trans }}</th>
         <th data-halign="center" data-align="center">{{ 'Opor orduak' | trans }}</th>
         <th data-halign="center" data-align="center">{{ 'Norberarentzako orduak' | trans }}</th>
         <th data-halign="center" data-align="center">{{ 'Konpentsatutako orduak' | trans }}</th>
-        <th data-halign="center" data-align="center"></th>
     </tr>
     </thead>
     <tbody>
@@ -63,9 +63,15 @@
     {% for user in userdata %}
 
     <tr>
+        <td>{{ user.user.id }}</td>
         <td></td>
+        <td class="nireTD">
+            <a href="{{ path('homepage', { _switch_user: user.user.username, saila: 'saila' }) }}">
+                <i class="fa fa-user-o" aria-hidden="true" title="Inpertsonalizatu"></i>
+            </a>
+        </td>
+
         <td>{{ user.user.username }}</td>
-        <td>{{ user.user.displayName }}</td>
         <td>{{ user.user.department }}</td>
         <td>
             {%  for c in user.calendar %}

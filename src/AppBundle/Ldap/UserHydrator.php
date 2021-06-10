@@ -94,7 +94,6 @@ class UserHydrator implements HydratorInterface
         $user->setEnabled(true);
         $user->setPassword('');
 
-
         return $user;
     }
 }
