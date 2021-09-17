@@ -23,13 +23,7 @@ use JMS\Serializer\Annotation as JMS;
  */
 class TemplateEvent
 {
-    /**
-     * @var \AppBundle\Entity\Type
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="template_events")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    protected $type;
+    
     /**
      * @var int
      *
@@ -87,6 +81,14 @@ class TemplateEvent
      * @ORM\JoinColumn(name="template_id", referencedColumnName="id",onDelete="CASCADE")
      */
     private $template;
+
+    /**
+     * @var \AppBundle\Entity\Type
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Type", inversedBy="template_events")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id",onDelete="CASCADE")
+     */
+    protected $type;
 
     public function __toString()
     {
