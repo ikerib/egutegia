@@ -1029,6 +1029,7 @@ class ApiController extends FOSRestController
 
             /*
              * 2-. firma guztiak baditu, orduan eskaera onartzen da erabat.
+             * 2021/09/28 -> Eskatzailea jakinarazi
              */
             if (true === $firma->getCompleted()) {
                 /** @var Eskaera $eskaera */
@@ -1037,22 +1038,25 @@ class ApiController extends FOSRestController
                 $eskaera->setEmaitza(true);
                 $em->persist($eskaera);
 
-                $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
-                $bideratzaileak     = [];
-                /** @var User $b */
-                foreach ($bideratzaileakfind as $b) {
-                    // igomez baldin bada, jakinarazpenak Ayelen -i bidali
-                    if ($user->getUsername() === 'igomez') {
-                        $bideratzaileak[] = 'atorrado@pasaia.net';
-                    } else {
-                        $bideratzaileak[] = $b->getEmail();
-                    }
-                }
+                // 2021/09/28 ->
+                //$bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
+                //$bideratzaileak     = [];
+                ///** @var User $b */
+                //foreach ($bideratzaileakfind as $b) {
+                //    // igomez baldin bada, jakinarazpenak Ayelen -i bidali
+                //    if ($user->getUsername() === 'igomez') {
+                //        $bideratzaileak[] = 'atorrado@pasaia.net';
+                //    } else {
+                //        $bideratzaileak[] = $b->getEmail();
+                //    }
+                //}
+                // <- 2021/09/28 eskatzailea jakinarazi
+                $eskatzailea = $eskaera->getUser()->getEmail();
                 $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
-                $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] :'.$eskaera->getUser()->getDisplayname()))
+                $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] Eskaera zenbakia: '.$eskaera->getId()))
                     ->setFrom($bailtzailea)
-                    ->setTo($bideratzaileak)
+                    ->setTo($eskatzailea)
                     ->setBody(
                         $this->renderView(
                             'Emails/eskaera_onartua.html.twig',
