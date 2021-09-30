@@ -42,6 +42,7 @@ class DefaultController extends Controller
         $eskaera = $this->getDoctrine()->getRepository('AppBundle:Eskaera')->findOneBy(['id' => 100,
         ]);
         $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+
         $message = (new Swift_Message('FROGA!!!'))
             ->setFrom($bailtzailea)
             ->setTo('iibarguren@pasaia.net')
@@ -54,7 +55,7 @@ class DefaultController extends Controller
             );
         $this->get('mailer')->send($message);
 
-        return new Response("OK");
+        return new Response("OK: " . $bailtzailea);
     }
 
 
