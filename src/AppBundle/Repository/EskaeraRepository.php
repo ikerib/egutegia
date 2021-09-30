@@ -68,7 +68,15 @@ class EskaeraRepository extends EntityRepository
                                 ->from('AppBundle:Eskaera', 'e')
                                 ->innerJoin('e.type', 't')
                                 ->leftJoin('e.sinatzaileak', 's')
-                                ->where('e.egutegian=0')->andWhere('e.amaitua=1');
+                                ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.emaitza=1');
+                break;
+            case 'not-approved':
+                $qb = $this->_em->createQueryBuilder()
+                    ->select('e,t,s')
+                    ->from('AppBundle:Eskaera', 'e')
+                    ->innerJoin('e.type', 't')
+                    ->leftJoin('e.sinatzaileak', 's')
+                    ->where('e.egutegian=0')->andWhere('e.amaitua=1')->andWhere('e.emaitza=0');
                 break;
             case 'conflict':
                 $qb = $this->_em->createQueryBuilder()

@@ -15,6 +15,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
 use AppBundle\Service\LdapService;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Swift_Message;
 use function count;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,6 +33,30 @@ class DefaultController extends Controller
     {
         return $this->redirectToRoute('user_homepage');
     }
+
+    /**
+     * @Route("/froga", name="froga")
+     */
+    public function frogaAction(): Response
+    {
+        $eskaera = $this->getDoctrine()->getRepository('AppBundle:Eskaera')->findOneBy(['id' => 100,
+        ]);
+        $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+        $message = (new Swift_Message('FROGA!!!'))
+            ->setFrom($bailtzailea)
+            ->setTo('iibarguren@pasaia.net')
+            ->setBody(
+                $this->renderView(
+                    'Emails/eskaera_ez_onartua.html.twig',
+                    ['eskaera' => $eskaera]
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
+
+        return new Response("OK");
+    }
+
 
     /**
      * @Route("/notifycation", name="user_notifycation")
@@ -182,6 +207,8 @@ class DefaultController extends Controller
             ]
         );
     }
+
+
 
     /**
      * @Route("/saila/dashboard", name="saila_dashboard")

@@ -123,10 +123,13 @@ class EskaeraController extends Controller {
 
         $lizentziamotak = $em->getRepository('AppBundle:Lizentziamota')->findAll();
 
+        $ezeztatuak = $this->get('app.eskaera.repository')->list('not-approved', $history, $lm);
+
         return $this->render(
             'eskaera/list.html.twig',
             array(
                 'eskaeras'      => $eskaeras,
+                'ezeztatuak'    => $ezeztatuak,
                 'deleteForms'   => $deleteForms,
                 'lizentziamotak'=> $lizentziamotak,
                 'q'             => $q,

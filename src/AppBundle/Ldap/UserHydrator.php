@@ -69,7 +69,7 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_SINATZAILEA';
                     $user->addRole($rol);
                 }
-                if (strpos($sp[ 0 ], 'Sailburu') !== false) { // UDALTZAINA BADA
+                if (strpos($sp[ 0 ], 'Sailburu') !== false) { //
                     $rol = 'ROLE_SAILBURUA';
                     $user->addRole($rol);
                 }

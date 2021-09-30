@@ -18,6 +18,10 @@
                 {% set history = app.request.get('history') %}
                 <a class="btn {% if app.request.get('q') == 'all' %}        btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'all', 'history':history}) }}">{{ 'Guztiak' | trans }}</a>
+                {% if ezeztatuak| length >0 %}
+                    <a class="btn {% if app.request.get('q') == 'not-approved' %} btn-danger {% else %} btn-default {% endif %}"
+                       href="{{ path('admin_eskaera_list', { 'q': 'not-approved', 'history':history}) }}">{{ 'Ez onartuak' ~ '(' ~ ezeztatuak|length ~ ')' }}</a>
+                {% endif %}
                 <a class="btn {% if app.request.get('q') == 'no-way' %}     btn-info {% else %} btn-default {% endif %}"
                    href="{{ path('admin_eskaera_list', { 'q': 'no-way', 'history':history}) }}">{{ 'Bideratu gabeak' | trans }}</a>
                 <a class="btn {% if app.request.get('q') == 'unsigned' %}   btn-info {% else %} btn-default {% endif %}"
@@ -120,7 +124,8 @@
                     <th data-halign="center" data-align="left" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="abiatua" data-sortable="false">{{ "Bideratua" | trans }}</th>
+{#                    <th data-halign="center" data-align="center" data-field="abiatua" data-sortable="false">{{ "Bideratua" | trans }}</th>#}
+                    <th data-halign="center" data-align="center" data-field="emaitza" data-sortable="false">{{ "Emaitza" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="amaitua" data-sortable="false">{{ "Gauzatua" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="egutegian" data-sortable="false">{{ "Egutegian" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>
@@ -158,9 +163,19 @@
                         </td>
                         <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
                         <td>{{ eskaera.total }}</td>
+{#                        bideratua#}
+{#                        <td>#}
+{#                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">#}
+{#                                {% if eskaera.abiatua == true %}#}
+{#                                    <label class="label label-success">Bai</label>#}
+{#                                {% else %}#}
+{#                                    <label class="label label-danger">Ez</label>#}
+{#                                {% endif %}#}
+{#                            </a>#}
+{#                        </td>#}
                         <td>
                             <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {% if eskaera.abiatua == true %}
+                                {% if eskaera.emaitza == true %}
                                     <label class="label label-success">Bai</label>
                                 {% else %}
                                     <label class="label label-danger">Ez</label>
