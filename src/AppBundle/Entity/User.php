@@ -71,6 +71,12 @@ class User extends BaseUser implements LdapUserInterface
     protected $munipada;
 
     /**
+     * @ORM\Column(type="boolean", length=255, nullable=true, options={"default": false})
+     * @Expose
+     */
+    protected $aktibo;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
@@ -604,5 +610,29 @@ class User extends BaseUser implements LdapUserInterface
     public function getMunipada()
     {
         return $this->munipada;
+    }
+
+    /**
+     * Set aktibo.
+     *
+     * @param bool|null $aktibo
+     *
+     * @return User
+     */
+    public function setAktibo($aktibo = null)
+    {
+        $this->aktibo = $aktibo;
+
+        return $this;
+    }
+
+    /**
+     * Get aktibo.
+     *
+     * @return bool|null
+     */
+    public function getAktibo()
+    {
+        return $this->aktibo;
     }
 }
