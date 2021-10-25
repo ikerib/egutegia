@@ -122,6 +122,7 @@ fos_rest:
     view:
             view_response_listener: 'force'
 
+
 fos_js_routing:
     routes_to_expose:
         - get_lizentziamota
@@ -154,6 +155,7 @@ fos_js_routing:
         - put_eskaera_egutegian_marka
         - get_calendars
         - admin_calendar_edit
+
 
 
 mopa_bootstrap:
