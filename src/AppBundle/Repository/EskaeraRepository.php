@@ -25,6 +25,9 @@ class EskaeraRepository extends EntityRepository
 
     public function listAll()
     {
+//        $year = date('Y')-2;
+//        $noiz = "$year-01-01";
+
         $qb = $this->_em->createQueryBuilder()
             ->select('e, m, u, c, f, t, s')
             ->from('AppBundle:Eskaera', 'e')
@@ -34,6 +37,7 @@ class EskaeraRepository extends EntityRepository
             ->leftJoin('e.calendar', 'c')
             ->leftJoin('e.firma', 'f')
             ->leftJoin('e.sinatzaileak', 's')
+//            ->andWhere('e.noiz > :noiz')->setParameter('noiz', $noiz)
             ;
 
         return $qb->getQuery()->getResult();

@@ -2,7 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Firmadet;
 use AppBundle\Entity\Notification;
+use AppBundle\Entity\User;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -51,11 +54,85 @@ class NotificationController extends Controller
         return $this->render(
             'notification/index.html.twig',
             array(
-                'notifications' => $notifications,
-                'user'          => $user,
+                'notifications'         => $notifications,
+                'user'                  => $user,
             )
         );
     }
+
+    /**
+     * Lists all notification entities.
+     *
+     * @Route("/transfer", name="notification_transfer")
+     * @Method("GET")
+     * @param Request $request
+     * @return Response
+     */
+    public function transferAction(Request $request): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        // transferitzeko modala betetzeko sinatzaile guztiak ekarri
+        $sinatzaileroldutenak = $em->getRepository('AppBundle:Sinatzaileakdet')->getSinatzaileRolDutenak();
+
+        return $this->render(
+            'notification/transfer.html.twig', [
+                'sinatzaileroldutenak'  => $sinatzaileroldutenak,
+            ]
+        );
+    }
+
+
+    /**
+     * Lists all notification entities.
+     *
+     * @Route("/dotransfer", name="notification_do_transfer")
+     * @Method("GET")
+     * @param Request $request
+     * @return Response
+     */
+    public function dotransferAction(Request $request): Response
+    {
+        $origenuserid = $request->request->get('origenuserid');
+        $destinuserid = $request->request->get('destinouserid');
+
+        if ((!$origenuserid) || (!$destinuserid)) {
+            return $this->render(
+                'notification/error.html.twig', [
+                'origenuserid' => $origenuserid,
+                'destinuserid' => $destinuserid
+            ]);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $oUser = $em->getRepository(User::class)->find($origenuserid);
+        $dUser = $em->getRepository(User::class)->find($destinuserid);
+
+        $oJakirazpenak = $em->getRepository('AppBundle:Notification')->getAllUnCompleted($oUser->getId());
+
+        /** @var Notification $o */
+        foreach ($oJakirazpenak as $o) {
+            $o->setUser($dUser);
+            $em->persist($o);
+            $firmadets = $o->getFirma()->getFirmadet();
+            /** @var Firmadet $firmadet */
+            foreach ($firmadets as $firmadet) {
+                if ( $firmadet->getSinatzaileakdet()->getUser() === $oUser ) {
+                    $firmadet->setFirmatzailea($dUser);
+                    $em->persist($firmadet);
+                }
+            }
+        }
+        $em->flush();
+
+
+        return $this->render(
+            'notification/dotransfer.html.twig', [
+            ]
+        );
+    }
+
+
 
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN

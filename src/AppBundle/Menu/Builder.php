@@ -49,10 +49,10 @@ class Builder implements ContainerAwareInterface
             $em       = $this->container->get('doctrine.orm.entity_manager');
             $eskaerak = $em->getRepository('AppBundle:Eskaera')->findBideratugabeak();
 
-            $menu->addChild('Langileak', [
-                'icon' => 'user',
-                'route' => 'admin_user_index'
-            ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+            $menu->addChild('Herramintak', ['icon' => 'wrench'])->setExtra('translation_domain', 'messages');
+
+            $menu['Herramintak']->addChild('Langileak', ['icon' => 'user','route' => 'admin_user_index'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+            $menu['Herramintak']->addChild('Jakinazpenak transferitu', ['icon' => 'transfer','route' => 'notification_transfer'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
 
             if (\count($eskaerak) > 0) {
                 $menu->addChild(
@@ -66,7 +66,8 @@ class Builder implements ContainerAwareInterface
                     )
                 );
             } else {
-                $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list'])
+                $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list','routeParameters' => array('q' => 'unsigned'),])
+
                      ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             }
             $menu->addChild('Mezuak', [
@@ -160,29 +161,11 @@ class Builder implements ContainerAwareInterface
                 );
             }
 
-            $menu[ 'User' ]->addChild(
-                'Egutegia',
-                [
-                    'route' => 'user_homepage',
-                    'icon'  => 'calendar',
-                ]
-            )->setExtra('translation_domain', 'messages');
+            $menu[ 'User' ]->addChild('Egutegia',['route' => 'user_homepage','icon'  => 'calendar',])->setExtra('translation_domain', 'messages');
 
-            $menu[ 'User' ]->addChild(
-                'Fitxategiak',
-                array(
-                    'route' => 'user_documents',
-                    'icon'  => 'folder-open',
-                )
-            )->setExtra('translation_domain', 'messages');
+            $menu[ 'User' ]->addChild('Fitxategiak',array('route' => 'user_documents','icon'  => 'folder-open',))->setExtra('translation_domain', 'messages');
 
-            $menu[ 'User' ]->addChild(
-                'user_menu.eskaerak',
-                array(
-                    'route' => 'eskaera_index',
-                    'icon'  => 'send',
-                )
-            )->setExtra('translation_domain', 'messages');
+            $menu[ 'User' ]->addChild('user_menu.eskaerak',array('route' => 'eskaera_index','icon'  => 'send',))->setExtra('translation_domain', 'messages');
 
             $menu[ 'User' ]->addChild('divider', ['divider' => true]);
 

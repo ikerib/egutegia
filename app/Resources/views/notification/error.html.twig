@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block content_div_start %}{% endblock %}
+{% block content_div_end %}{% endblock %}
+{% block headline %}{{ 'Jakinazpenak transferitu' | trans }} {% endblock %}
+
+{% block content_row %}
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        {% if not origenuserid %}
+            <p>Jatorrizko erabiltzailea ez da topatu</p>
+        {% else %}
+            <p>Helmugako erabiltzailea ez da topatu</p>
+        {% endif %}
+
+    <div class="col-md-2"></div>
+
+{% endblock %}
+

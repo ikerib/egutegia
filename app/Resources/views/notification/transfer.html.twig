@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block content_div_start %}{% endblock %}
+{% block content_div_end %}{% endblock %}
+{% block headline %}{{ 'Jakinazpenak transferitu' | trans }} {% endblock %}
+
+{% block content_row %}
+    <div class="col-md-11">
+        <form name="appbundle_eskaera" method="post" action="{{ path('notification_do_transfer') }}" class="form-horizontal" id="frmNotificationTransfer" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="origenuserid" class="col-sm-4 control-label">Noren jakinarazpenak</label>
+                <div class="col-sm-7">
+                    <select name="origenuserid" id="origenuserid" class="form-control">
+                        <option value="-1">Aukeratu bat</option>
+                        {% for s in sinatzaileroldutenak %}
+                            <option value="{{ s.id }}">{{ s.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="destinouserid" class="col-sm-4 control-label">Nori esleitu</label>
+                <div class="col-sm-7">
+                    <select name="destinouserid" id="destinouserid" class="form-control">
+                        <option value="-1">Aukeratu bat</option>
+                        {% for s in sinatzaileroldutenak %}
+                            <option value="{{ s.id }}">{{ s.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <button id="btnDoTransferSubmit" type="button" class="btn btn-primary">{{ 'Transferitu' | trans }}</button>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-1"></div>
+
+{% endblock %}
+{% block foot_script %}
+
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#btnDoTransferSubmit').on('click', function () {
+
+                $origen = $('#origenuserid').val();
+                $destin = $('#destinouserid').val();
+                if (($origen === "-1") || ($destin === "-1")) {
+                    alert('Aukeratu sinatzaile bat aukera bakoitzean.');
+                }
+                if ($origen === $destin) {
+                    alert('Bi sinatzaileek ezin dute berdinak izan.');
+                }
+                $('#frmNotificationTransfer').submit();
+            });
+        });
+    </script>
+
+{% endblock %}

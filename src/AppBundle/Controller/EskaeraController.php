@@ -125,6 +125,9 @@ class EskaeraController extends Controller {
 
         $ezeztatuak = $this->get('app.eskaera.repository')->list('not-approved', $history, $lm);
 
+
+        $sinatzaileroldutenak = $em->getRepository('AppBundle:Sinatzaileakdet')->getSinatzaileRolDutenak();
+
         return $this->render(
             'eskaera/list.html.twig',
             array(
@@ -134,10 +137,57 @@ class EskaeraController extends Controller {
                 'lizentziamotak'=> $lizentziamotak,
                 'q'             => $q,
                 'history'       => $history,
-                'lm'            => $lm
+                'lm'            => $lm,
+                'sinatzaileroldutenak' => $sinatzaileroldutenak
             )
         );
     }
+
+    /**
+     *
+     * @Route("/transfer", name="eskaera_transfer")
+     * @Method("GET")
+     */
+    public function transferAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $destinouserid  = $request->request->get('destinouserid');
+        $firmaid        = $request->request->get('firmaid');
+        $notifyid       = $request->request->get('notifyid');
+        $userid         = $request->request->get('userid');
+
+        /** @var User $dUser */
+        $dUser = $em->getRepository('AppBundle:User')->find($destinouserid);
+        /** @var User $dUser */
+        $oUser = $em->getRepository('AppBundle:User')->find($userid);
+        /** @var Firma $firma */
+        $firma = $em->getRepository('AppBundle:Firma')->find($firmaid);
+        /** @var Notification $notify */
+        $notify = $em->getRepository('AppBundle:Notification')->find($notifyid);
+
+        $notify->setUser($dUser);
+        $em->persist($notify);
+
+        // Sinatzailea lortu HACK!!! berez sinatzailedet-etik beste erabilzailea kendu eta gehitu berko zan
+        $sinatzaile = $em->getRepository('AppBundle:Sinatzaileakdet')->getSinatzaileByUserid($dUser->getId());
+
+        $firmadets = $firma->getFirmadet();
+        /** @var Firmadet $firmadet */
+        foreach ($firmadets as $firmadet) {
+            if ( $firmadet->getSinatzaileakdet()->getUser() === $oUser ) {
+                $firmadet->setSinatzaileakdet($sinatzaile);
+                $em->persist($firmadet);
+            }
+        }
+        $em->flush();
+
+        return $this->redirectToRoute('admin_eskaera_list', [
+            'q' => 'unsigned',
+        ]);
+    }
+
+
 
     /**
      * Eskaera gehitu langilearen egutegira.

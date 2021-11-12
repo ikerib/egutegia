@@ -29,4 +29,25 @@ class SinatzaileakdetRepository extends \Doctrine\ORM\EntityRepository
 
         return $qm->getQuery()->getResult();
     }
+
+    public function getSinatzaileRolDutenak()
+    {
+        $qm = $this->createQueryBuilder('sd')
+            ->leftJoin('sd.user','u')
+            ->select('u.id', 'u.username')
+            ->distinct(true)
+            ->orderBy('u.username','ASC')
+        ;
+        return $qm->getQuery()->getResult();
+    }
+
+    public function getSinatzaileByUserid($userid)
+    {
+        $qm = $this->createQueryBuilder('sd')
+            ->innerJoin('sd.user','u')
+            ->andWhere('u.id = :userid')->setParameter('userid', $userid)
+
+        ;
+        return $qm->getQuery()->getSingleResult();
+    }
 }

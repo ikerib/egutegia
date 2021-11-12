@@ -23,6 +23,7 @@
     <div id="toolbar">
         <div class="btn-group" role="group" aria-label="...">
             <a class="btn btnZabaldu btn-default" href="javascript:void(0);">{{ 'Zabaldu' | trans }}</a>
+            <a class="btn btnTransfer btn-default" href="javascript:void(0);">{{ 'Transferitu' | trans }}</a>
         </div>
     </div>
     <div id="toolbar">
@@ -153,14 +154,11 @@
 {% block foot_script %}
     {{ parent() }}
     <script>
-
         function rowStyle(row, index) {
             if (row.sinatzeprozesua === "") {
-
-                    return {
-                        classes: 'nosign'
-                    }
-
+                return {
+                    classes: 'nosign'
+                }
             }
 
             return {
