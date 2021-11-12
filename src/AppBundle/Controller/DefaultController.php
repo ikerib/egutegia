@@ -268,6 +268,31 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/saila/eskaerak", name="saila_eskaerak")
+     *
+     * @return Response
+     *
+     * @internal param Request $request
+     */
+    public function sailaEskaerakdAction(): Response
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $sailIzena = $user->getLdapsaila();
+        $eskaerak = $em->getRepository('AppBundle:Eskaera')->getAllBySaila($sailIzena);
+
+        return $this->render(
+            'default/saila_eskaerak.html.twig',
+            [
+                'eskaerak' => $eskaerak
+            ]
+        );
+    }
+
+    /**
      * Compare calendars
      *
      * @Route("/compare", name="calendar_compare", methods={"POST"})

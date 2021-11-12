@@ -1,0 +1,134 @@
+{% extends 'base.html.twig' %}
+
+{% block content_div_start %}{% endblock %}
+{% block content_div_end %}{% endblock %}
+{% block headline %}{{ 'Langileen Eskaera zerrenda' | trans }} {% endblock %}
+
+{% block content_row %}
+    <table id="table"
+
+           data-id-field="id"
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
+
+           data-pagination="true"
+           data-page-size="15"
+           data-search="true"
+
+           data-sort-name="name"
+           data-sort-order="asc"
+
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-editable-url="/my/editable/update/path"
+           data-toolbar="#toolbar"
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
+        <thead>
+        <tr>
+            <th data-switchable="true" data-align="right" data-field="id">Eskaera Zenb.</th>
+            <th data-halign="left" data-align="left" data-field="name" data-sortable="true">{{ 'Eskaera' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="eskaera.type" data-sortable="true">{{ 'Mota' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="hasi" data-sortable="true">{{ 'Hasi' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="amaitu" data-sortable="true">{{ 'Hasi' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="egunak" data-sortable="true">{{ 'Egunak' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="orduak" data-sortable="true">{{ 'Orduak' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="total" data-sortable="true">{{ 'Orduak Guztira' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="abiatua" data-sortable="true">{{ 'Bideratua' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="amaitua" data-sortable="true">{{ 'Gauzatua' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="justifikatua" data-sortable="true">{{ 'Justifikatea' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="oharra" data-sortable="true">{{ 'Oharrak' | trans }}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for eskaera in eskaerak %}
+            <tr>
+                <td>{{ eskaera.id }}</td>
+                <td>{{ eskaera }}</td>
+                <td>{{ eskaera.type }}</td>
+                <td>{{ eskaera.hasi | date('Y-m-d')}}</td>
+                <td>{{ eskaera.amaitu | date('Y-m-d')}}</td>
+                <td>{{ eskaera.egunak}}</td>
+                <td>{{ eskaera.orduak}}</td>
+                <td>{{ eskaera.total}}</td>
+                <td>
+                    {% if eskaera.abiatua == true %}
+                        <label class="label label-success">{{ "Bai" | trans }}</label>
+                    {% else %}
+                        <label class="label label-danger">{{ "Ez" | trans }}</label>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if eskaera.amaitua == true %}
+                        <label class="label label-success">{{ "Bai" | trans }}</label>
+                    {% else %}
+                        <label class="label label-danger">{{ "Ez" | trans }}</label>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if eskaera.type.id != type_lizentzia %}
+                        -
+                    {% else %}
+                        {% if eskaera.justifikatua == true %}
+                            <span class="label label-success">{{ "Bai" | trans }}</span>
+                        {% else %}
+                            <span class="label label-danger">{{ "Ez" | trans }}</span>
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.oharra }}">
+                            {{ eskaera.oharra|length > 10 ? eskaera.oharra|slice(0, 10) ~ '...' : eskaera.oharra }}
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+
+        var $table = $("#table"), selections = [];
+
+        function initTable() {
+            $table.bootstrapTable({
+                height: getHeight()
+            });
+            $table.bootstrapTable("uncheckAll");
+        }
+
+        function getHeight() {
+            var winh = $(window).height();
+            var h2h = $("h2").outerHeight(true);
+            var fooh = $("footer").outerHeight(true);
+            return winh - h2h - fooh - 200;
+        }
+
+        $(function () {
+
+            initTable();
+
+
+        });
+    </script>
+{% endblock %}

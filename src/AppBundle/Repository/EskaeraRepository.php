@@ -210,4 +210,15 @@ class EskaeraRepository extends EntityRepository
         ;
         return $qb->getQuery()->getResult();
     }
+
+    public function getAllBySaila($sailIzena)
+    {
+        $qm = $this->createQueryBuilder('e')
+            ->innerJoin('e.user', 'u')
+            ->andWhere('u.ldapsaila=:sailizena')->setParameter('sailizena', $sailIzena)
+            ->orWhere('u.department=:sailizena')->setParameter('sailizena', $sailIzena)
+            ;
+
+        return $qm->getQuery()->getResult();
+    }
 }

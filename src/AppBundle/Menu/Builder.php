@@ -179,7 +179,17 @@ class Builder implements ContainerAwareInterface
                         'extras' => array('safe_label' => true),
                     )
                 )->setExtra('translation_domain', 'messages');
+                $menu[ 'User' ]->addChild(
+                    'Saileko eskaerak',
+                    array(
+                        'label'  => $this->container->get('translator')->trans('Saileko eskaerak'),
+                        'route'  => 'saila_eskaerak',
+                        'icon'   => 'send',
+                        'extras' => array('safe_label' => true),
+                    )
+                )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
+
             }
 
 
