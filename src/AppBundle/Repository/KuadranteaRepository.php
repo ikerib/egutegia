@@ -32,4 +32,14 @@ class KuadranteaRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findallSaila($sailIzena) {
+        $qb = $this->createQueryBuilder('k')
+            ->select('k')
+            ->join('k.user', 'u')
+            ->andWhere('u.ldapsaila=:sailizena')->setParameter('sailizena', $sailIzena)
+            ->orWhere('u.department=:sailizena')->setParameter('sailizena', $sailIzena)
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }

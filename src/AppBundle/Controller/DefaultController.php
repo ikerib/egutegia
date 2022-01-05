@@ -14,6 +14,7 @@ use AppBundle\Entity\Event;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
 use AppBundle\Service\LdapService;
+use DateTime;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Swift_Message;
 use function count;
@@ -290,6 +291,37 @@ class DefaultController extends Controller
                 'eskaerak' => $eskaerak
             ]
         );
+    }
+
+    /**
+     * @Route("/saila/kuadrantea", name="saila_kuadrantea")
+     *
+     * @return Response
+     *
+     * @internal param Request $request
+     */
+    public function sailaKuadranteaAction(): Response
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $sailIzena = $user->getLdapsaila();
+        $results = $em->getRepository('AppBundle:Kuadrantea')->findallSaila($sailIzena);
+
+        $year = date('Y');
+        // urteko lehen astea bada, aurreko urtea aukeratu
+        $date_now = new DateTime();
+        $date2    = new DateTime("06/01/".$year);
+
+        if ($date_now <= $date2) {
+            --$year;
+        }
+        return $this->render('default/kuadrantea.html.twig', [
+            'results' => $results,
+            'year' => $year
+        ]);
     }
 
     /**
