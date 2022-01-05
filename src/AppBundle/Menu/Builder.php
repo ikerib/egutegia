@@ -75,6 +75,11 @@ class Builder implements ContainerAwareInterface
                 'route' => 'admin_message_list',
                 'routeParameters'   => ['q'=>'unread']
             ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+
+            $menu->addChild('Kuadrantea', [
+                'icon' => 'envelope',
+                'route' => 'admin_kuadrantea',
+            ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
         }
 
 
