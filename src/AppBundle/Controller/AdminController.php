@@ -13,6 +13,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\UserNoteType;
 use DateTime;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -98,8 +99,8 @@ class AdminController extends Controller
      * @return Response
      *
      * @internal param Request $request
-     */
-    public function kuadranteaAction()
+     **/
+    public function kuadranteaAction(): ?Response
     {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
@@ -119,5 +120,34 @@ class AdminController extends Controller
             'year' => $year
         ]);
     }
+
+    /**
+     * @Route("/urteko-balantzea", name="admin_urteko_balantzea")
+     *
+     * @return Response
+     *
+     * @internal param Request $request
+     **/
+    public function urtekoBalantzeaAction(Request $request): ?Response
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $year = $request->get('year') ?: null;
+
+        $results = [];
+        if ($year !== null) {
+            $results = $em->getRepository('AppBundle:Calendar')->findByYear($year);
+        }
+
+        //dump($results[0]);
+
+        return $this->render('default/urteko_balantzea.html.twig', [
+            'results' => $results,
+            'year' => $year
+        ]);
+    }
+
+
 
 }

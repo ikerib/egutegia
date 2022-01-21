@@ -68,4 +68,22 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
             throw new $e;
         }
     }
+
+    public function findByYear($year)
+    {
+        $em = $this->getEntityManager();
+
+        $dql = /** @lang text */
+            '
+            SELECT c,u
+            FROM AppBundle:Calendar c
+              INNER Join c.user u
+            WHERE c.year = :year
+        ';
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('year', $year);
+
+        return $query->getResult();
+    }
 }

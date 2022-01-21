@@ -80,6 +80,11 @@ class Builder implements ContainerAwareInterface
                 'icon' => 'envelope',
                 'route' => 'admin_kuadrantea',
             ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+
+            $menu['Herramintak']->addChild('Urteko balantzea', [
+                'icon' => 'envelope',
+                'route' => 'admin_urteko_balantzea',
+            ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
         }
 
 
