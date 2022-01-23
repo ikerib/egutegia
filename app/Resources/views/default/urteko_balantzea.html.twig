@@ -49,7 +49,7 @@
 
         <thead>
         <tr>
-{#            <th data-halign="left" data-align="left" data-field="username" data-sortable="true">{{ 'Erabiltzailea' | trans }}</th>#}
+            <th data-halign="left" data-align="left" data-field="username" data-sortable="true">{{ 'Erabiltzailea' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="firstName" data-sortable="true">{{ 'Nombre' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="saila"     data-sortable="true">{{ 'Saila' | trans }}</th>
             <th data-halign="left" data-align="left">{{ 'Urteko orduak' | trans }}</th>
@@ -63,9 +63,9 @@
 {#        {% for result in results if result.user.has('firstName') and result.user.has('lastName') %}#}
         {% for result in results  %}
             <tr>
-{#                <td>#}
-{#                        {{ result.user.username }}#}
-{#                </td>#}
+                <td>
+                        {{ result.user.username }}
+                </td>
                 <td>
                         {{ result.user.displayname }}
                 </td>
@@ -124,12 +124,7 @@
         }
 
         $( function () {
-
             initTable();
-
-
-
-
         } );
     </script>
 {% endblock %}

@@ -119,7 +119,7 @@ class User extends BaseUser implements LdapUserInterface
      * @var calendars[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="user",cascade={"persist"})
-     * @ORM\OrderBy({"name" = "ASC"})
+     * @ORM\OrderBy({"year" = "DESC", "name"="ASC"})
      */
     private $calendars;
 

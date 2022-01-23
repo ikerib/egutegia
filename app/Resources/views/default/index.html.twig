@@ -150,6 +150,16 @@
                            data-username="{{ user.user.username }}">
                             <i class="fa fa-plus-square-o" aria-hidden="true"> Berria</i>
                         </a>
+                        {% if user.calendar | length > 0 %}
+                            <a href="{{ path('print_calendar', {'id': user.calendar[0].id})}}" class="btn btn-primary btn-xs"
+                               data-username="{{ user.user.username }}" target="_blank">
+                                <i class="fa fa-print" aria-hidden="true"> Inprimatu</i>
+                            </a>
+                        {% else %}
+                            <a href="javascript:void(0);" class="btn disabled">
+                                <i class="fa fa-print" aria-hidden="true"> Inprimatu</i>
+                            </a>
+                        {% endif %}
                     </td>
                 {% else %}
                     <td>
@@ -167,6 +177,9 @@
                         <a href="javascript:void(0);" class="btnNewCalendar btn btn-primary btn-xs"
                            data-username="{{ user.user.username }}">
                             <i class="fa fa-plus-square-o" aria-hidden="true"> Berria</i>
+                        </a>
+                        <a href="javascript:void(0);" class="btn btn-primary btn-xs disabled">
+                            <i class="fa fa-print" aria-hidden="true"> Inprimatu</i>
                         </a>
                     </td>
                 {% endif %}
