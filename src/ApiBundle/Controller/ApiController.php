@@ -815,33 +815,35 @@ class ApiController extends FOSRestController
             $eskaera->setEmaitza(true);
             $em->persist($eskaera);
 
-            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
-            $bideratzaileak     = [];
-            /** @var User $b */
-            foreach ($bideratzaileakfind as $b) {
-                // igomez baldin bada, jakinarazpenak Ayelen -i bidali
-                if ($user->getUsername() === 'igomez') {
-                    $bideratzaileak[] = 'atorrado@pasaia.net';
-                } else {
-                    $bideratzaileak[] = $b->getEmail();
-                }
-            }
-            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
-            $eskatzailea = $eskaera->getUser()->getEmail();
-
-            $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] :'.$eskaera->getUser()->getDisplayname()))
-                ->setFrom($bailtzailea)
-                ->setTo($eskatzailea)
-                ->setBody(
-                    $this->renderView(
-                    // app/Resources/views/Emails/registration.html.twig
-                        'Emails/eskaera_onartua.html.twig',
-                        ['eskaera' => $eskaera]
-                    ),
-                    'text/html'
-                );
-
-            $this->get('mailer')->send($message);
+            /**
+             * Onartua izan den emaila kentzeko eskatzen da 2022/02/04
+             */
+//            $bideratzaileakfind = $em->getRepository('AppBundle:User')->findByRole('ROLE_BIDERATZAILEA');
+//            $bideratzaileak     = [];
+//            /** @var User $b */
+//            foreach ($bideratzaileakfind as $b) {
+//                // igomez baldin bada, jakinarazpenak Ayelen -i bidali
+//                if ($user->getUsername() === 'igomez') {
+//                    $bideratzaileak[] = 'atorrado@pasaia.net';
+//                } else {
+//                    $bideratzaileak[] = $b->getEmail();
+//                }
+//            }
+//            $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+//            $eskatzailea = $eskaera->getUser()->getEmail();
+//
+//            $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] :'.$eskaera->getUser()->getDisplayname()))
+//                ->setFrom($bailtzailea)
+//                ->setTo($eskatzailea)
+//                ->setBody(
+//                    $this->renderView(
+//                        'Emails/eskaera_onartua.html.twig',
+//                        ['eskaera' => $eskaera]
+//                    ),
+//                    'text/html'
+//                );
+//
+//            $this->get('mailer')->send($message);
         } else {
             $hurrengoSinatzailea = null;
             // Firmak falta dituenez, Sinatzaile zerrengako hurrengoari jakinarazpena bidali
@@ -1052,21 +1054,24 @@ class ApiController extends FOSRestController
                 //    }
                 //}
                 // <- 2021/09/28 eskatzailea jakinarazi
-                $eskatzailea = $eskaera->getUser()->getEmail();
-                $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
-
-                $message = (new Swift_Message('[Egutegia][Janirazpen berria]-[Onartua] Eskaera zenbakia: '.$eskaera->getId()))
-                    ->setFrom($bailtzailea)
-                    ->setTo($eskatzailea)
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/eskaera_onartua.html.twig',
-                            ['eskaera' => $eskaera]
-                        ),
-                        'text/html'
-                    );
-
-                $this->get('mailer')->send($message);
+                /**
+                 * Ez jakinaraztea eskatu da 2022/02/24
+                 */
+//                $eskatzailea = $eskaera->getUser()->getEmail();
+//                $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+//
+//                $message = (new Swift_Message('[Egutegia][Janirazpen berria]-[Onartua] Eskaera zenbakia: '.$eskaera->getId()))
+//                    ->setFrom($bailtzailea)
+//                    ->setTo($eskatzailea)
+//                    ->setBody(
+//                        $this->renderView(
+//                            'Emails/eskaera_onartua.html.twig',
+//                            ['eskaera' => $eskaera]
+//                        ),
+//                        'text/html'
+//                    );
+//
+//                $this->get('mailer')->send($message);
             } else {
                 $hurrengoSinatzailea = null;
                 // Firmak falta dituenez, Sinatzaile zerrengako hurrengoari jakinarazpena bidali
