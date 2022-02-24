@@ -827,10 +827,11 @@ class ApiController extends FOSRestController
                 }
             }
             $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
+            $eskatzailea = $eskaera->getUser()->getEmail();
 
             $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] :'.$eskaera->getUser()->getDisplayname()))
                 ->setFrom($bailtzailea)
-                ->setTo($bideratzaileak)
+                ->setTo($eskatzailea)
                 ->setBody(
                     $this->renderView(
                     // app/Resources/views/Emails/registration.html.twig
@@ -1054,7 +1055,7 @@ class ApiController extends FOSRestController
                 $eskatzailea = $eskaera->getUser()->getEmail();
                 $bailtzailea = $this->container->getParameter('mailer_bidaltzailea');
 
-                $message = (new Swift_Message('[Egutegia][Janirazpen berria][Onartua] Eskaera zenbakia: '.$eskaera->getId()))
+                $message = (new Swift_Message('[Egutegia][Janirazpen berria]-[Onartua] Eskaera zenbakia: '.$eskaera->getId()))
                     ->setFrom($bailtzailea)
                     ->setTo($eskatzailea)
                     ->setBody(
