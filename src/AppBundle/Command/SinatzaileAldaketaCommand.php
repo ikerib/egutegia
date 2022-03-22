@@ -5,9 +5,11 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Firma;
 use AppBundle\Entity\Firmadet;
+use AppBundle\Entity\Notification;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Sinatzaileakdet;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -21,6 +23,7 @@ class SinatzaileAldaketaCommand extends ContainerAwareCommand
         $this
             ->setName('app:sinatzaile_aldaketa')
             ->setDescription('');
+
     }
 
     /**
@@ -67,5 +70,7 @@ class SinatzaileAldaketaCommand extends ContainerAwareCommand
                 }
             }
         }
+
+        $output->writeln('Orain exekutatu app:jakinarazpen_aldaketa');
     }
 }
