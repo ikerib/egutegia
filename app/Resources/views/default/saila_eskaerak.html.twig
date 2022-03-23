@@ -42,7 +42,7 @@
         <tr>
             <th data-switchable="true" data-align="right" data-field="id">Eskaera Zenb.</th>
             <th data-halign="left" data-align="left" data-field="name" data-sortable="true">{{ 'Eskaera' | trans }}</th>
-            <th data-halign="left" data-align="left" data-field="eskaera.type" data-sortable="true">{{ 'Mota' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="type" data-sortable="true">{{ 'Mota' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="hasi" data-sortable="true">{{ 'Hasi' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="amaitu" data-sortable="true">{{ 'Hasi' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="egunak" data-sortable="true">{{ 'Egunak' | trans }}</th>
@@ -60,8 +60,8 @@
         {% for eskaera in eskaerak %}
             <tr>
                 <td>{{ eskaera.id }}</td>
-                <td>{{ eskaera }}</td>
-                <td>{{ eskaera.type }}</td>
+                <td>{{ eskaera.name }}</td>
+                <td>{{ eskaera.type.name }}</td>
                 <td>{{ eskaera.hasi | date('Y-m-d')}}</td>
                 <td>{{ eskaera.amaitu | date('Y-m-d')}}</td>
                 <td>{{ eskaera.egunak}}</td>
@@ -112,7 +112,7 @@
 
         function initTable() {
             $table.bootstrapTable({
-                height: getHeight()
+                // height: getHeight()
             });
             $table.bootstrapTable("uncheckAll");
         }
