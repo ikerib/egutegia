@@ -9,6 +9,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\User;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityRepository;
 
@@ -34,6 +35,16 @@ class UserRepository extends EntityRepository
         $query->setParameter('username', $username);
 
         return $query->getOneOrNullResult();
+    }
+
+    public function getSailak()
+    {
+        $qb = $this->createQueryBuilder('u');
+        $qb->select('DISTINCT(u.department) as Saila')
+            ->orderBy('Saila','Asc');
+
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

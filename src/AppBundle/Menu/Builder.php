@@ -211,6 +211,18 @@ class Builder implements ContainerAwareInterface
 
             }
 
+            if ($checker->isGranted('ROLE_BIDERATZAILEA')) {
+                $menu[ 'User' ]->addChild(
+                    'kuadrantea',
+                    array(
+                        'label'  => $this->container->get('translator')->trans('Saileko kuadrantea'),
+                        'route'  => 'admin_kuadrantea',
+                        'icon'   => 'send',
+                        'extras' => array('safe_label' => true),
+                    )
+                )->setExtra('translation_domain', 'messages');
+            }
+
 
             if ($checker->isGranted('ROLE_SINATZAILEA') || $checker->isGranted('ROLE_SUPER_ADMIN')) {
                 $menu[ 'User' ]->addChild(
