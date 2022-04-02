@@ -37,6 +37,7 @@
     ansistrano_shared_paths:
       - var
       - web/uploads
+      - vendor
 
     ansistrano_shared_files:
       - app/config/parameters.yml
