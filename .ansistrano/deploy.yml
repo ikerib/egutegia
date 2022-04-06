@@ -11,8 +11,9 @@
     symfony_app_dir: "{{ symfony_dir }}/app"
     symfony_console_path: 'bin/console'
 
-    symfony_run_composer: true
+    #symfony_run_composer: true
     #symfony_composer_path: "{{ ansistrano_deploy_to }}/composer.phar"
+    symfony_composer_path: "/usr/local/bin/composer"
     symfony_composer_options: '--no-dev --optimize-autoloader --no-interaction'
 #    symfony_composer_options: '--optimize-autoloader --no-interaction'
     symfony_composer_self_update: false # Always attempt a composer self-update
