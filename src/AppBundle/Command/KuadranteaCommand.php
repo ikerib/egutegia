@@ -63,14 +63,15 @@ class KuadranteaCommand extends ContainerAwareCommand
         $year = date('Y');
         // urteko lehen astea bada, aurreko urtea aukeratu
         $date_now = new DateTime();
-        $date2    = new DateTime("06/01/".$year);
+//        $date2    = new DateTime("06/01/".$year);
+        $date2    = new DateTime($year.'-01-06');
 
         if ($date_now <= $date2) {
             --$year;
         }
 
         /** @var $users  User **/
-        $users = $this->em->getRepository('AppBundle:User')->findAll();
+        $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
         /** @var User $user */
         foreach ($users as $user) {
             $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

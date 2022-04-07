@@ -21,6 +21,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+
+    public function getAllAktibo()
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.aktibo=:aktibo')->setParameter('aktibo', 1)
+            ->orderBy('u.department','ASC')
+            ->orderBy('u.displayname', 'ASC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
     public function getByUsername($username)
     {
         $em = $this->getEntityManager();

@@ -5,28 +5,31 @@
 {% block headline %}{{ 'Koadrantea' | trans }} {% endblock %}
 
 {% block content_row %}
-    <div class="row">
-        <div class="col-md-12">
-            <form action="" class="form-horizontal">
-                <div class="form-group">
-                    <label for="sailaSelect" class="control-label col-sm-2 required">
-                        Filtratu sailaren arabera
-                    </label>
-                    <div class="col-sm-4">
-                        <select name="saila" id="sailaSelect" class="form-control">
-                            {% for saila in sailak %}
-                                <option value="{{ saila.Saila }}">{{ saila.Saila }}</option>
-                            {% endfor %}
-                        </select>
+    {% if app.request.get('_route') == "admin_kuadrantea" %}
+        <div class="row">
+            <div class="col-md-12">
+                <form action="" class="form-horizontal">
+                    <div class="form-group">
+                        <label for="sailaSelect" class="control-label col-sm-2 required">
+                            Filtratu sailaren arabera
+                        </label>
+                        <div class="col-sm-4">
+                            <select name="saila" id="sailaSelect" class="form-control">
+                                {% for saila in sailak %}
+                                    <option value="{{ saila.Saila }}">{{ saila.Saila }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <input type="submit" class="btn btn-primary" value="Filtratu">
+                        </div>
                     </div>
-                    <div class="col-sm-1">
-                        <input type="submit" class="btn btn-primary" value="Filtratu">
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div class="row">&nbsp;</div>
+    <h1>{{ year }}</h1>
     <ul class="nav nav-tabs" id="myTabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#urtarrila" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Urtarrila</a>
