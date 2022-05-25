@@ -63,7 +63,7 @@ class KuadranteaCommand extends ContainerAwareCommand
         $year = date('Y');
         // urteko lehen astea bada, aurreko urtea aukeratu
         $date_now = new DateTime();
-//        $date2    = new DateTime("06/01/".$year);
+        // $date2    = new DateTime("06/01/".$year);
         $date2    = new DateTime($year.'-01-06');
 
         if ($date_now <= $date2) {
@@ -83,7 +83,7 @@ class KuadranteaCommand extends ContainerAwareCommand
                 $k->setUrtea($year);
                 $k->setHilabetea($month);
                 $this->em->persist($k);
-                if ($i == $len - 1) {
+                if ($i === $len - 1) {
                     $k = new Kuadrantea();
                     $k->setUser($user);
                     $k->setUrtea($year+1);
@@ -119,7 +119,7 @@ class KuadranteaCommand extends ContainerAwareCommand
 
                 if ($event->getStartDate() == $event->getEndDate()) {
                     $field = "setDay".$event->getStartDate()->format('d');
-                    $kua->{$field}($event->getType()->getLabur());
+                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
 
                 } else {
                     $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
@@ -136,7 +136,7 @@ class KuadranteaCommand extends ContainerAwareCommand
                     foreach ($period as $dt) {
 
                         $field = "setDay".$dt->format('d');
-                        $kua->{$field}($event->getType()->getLabur());
+                        $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
                     }
                 }
                 $this->em->persist($kua);

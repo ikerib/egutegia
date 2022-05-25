@@ -5,6 +5,12 @@ Pasaiako Udaletxeko langileen egutegiak kudeatzeko web aplikazioa.
 
    `app/config/parameters.yml` fitxategia bete beharrezko datuekin
    
+node bertsio zehatza erabiltzeko:
+    `nvm use --delete-prefix v6.17.1`
+
+ondoren `nvm use --delete-prefix v14`
+
+# COMPOSER.PHAR erabiliº
 
 Bikoiztutako filak ezabatzeko MYSQL-n
 

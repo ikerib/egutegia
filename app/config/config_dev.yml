@@ -19,7 +19,7 @@ monolog:
             level: debug
             channels: ['!event']
         console:
-            type:   console
+            type: console
             bubble: false
             verbosity_levels:
                 VERBOSITY_VERBOSE: INFO
