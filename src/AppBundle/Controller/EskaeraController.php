@@ -282,7 +282,14 @@ class EskaeraController extends Controller {
         /** @var Calendar $calendar */
         $calendar = $calendar[ 0 ];
 
+        $lastBideratu = $em->getRepository(Eskaera::class)->getLastBideratu($user->getId());
+
         $eskaera = new Eskaera();
+        if ($lastBideratu) {
+            /** @var Eskaera $lastEskaera */
+            $lastEskaera = $lastBideratu[0];
+            $eskaera->setSinatzaileak($lastEskaera->getSinatzaileak());
+        }
         $eskaera->setUser($user);
         if ($user->getDisplayname() !== null) {
             $eskaera->setName($user->getDisplayname());

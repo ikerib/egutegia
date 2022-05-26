@@ -221,4 +221,18 @@ class EskaeraRepository extends EntityRepository
 
         return $qm->getQuery()->getResult();
     }
+
+    public function getLastBideratu($id)
+    {
+        $qm = $this->createQueryBuilder('e')
+            ->innerJoin('e.sinatzaileak', 's')
+            ->innerJoin('e.user', 'u')
+            ->andWhere('u.id = :id')->setParameter('id', $id)
+            ->orderBy('e.id','DESC')
+            ->setMaxResults(1)
+        ;
+
+        return $qm->getQuery()->getResult();
+
+    }
 }

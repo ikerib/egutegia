@@ -484,6 +484,7 @@
 
             $(document).on("click", ".btnEskaera", function () {
                 var url = $(this).data("myurl");
+                console.log(url)
                 $(".my-modal-cont").load(url, function () {
                     $("#myModal").modal({ show: true });
                 });
