@@ -118,16 +118,18 @@
                     <th data-visible="true" data-halign="center" data-align="left" data-field="id" data-sortable="true">{{ "Nº" | trans }}</th>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="emaitza" data-sortable="true">{{ "Emaitza" |trans }}</th>
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ "Izaera" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="department" data-sortable="true">{{ "Saila" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="type" data-sortable="true">{{ "Mota" | trans }}</th>
                     <th data-visible="false" data-halign="center" data-align="left" data-field="kostua " data-sortable="true">{{ "Kostua" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="created" data-sortable="true">{{ "Eskatu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
-{#                    <th data-halign="center" data-align="center" data-field="abiatua" data-sortable="false">{{ "Bideratua" | trans }}</th>#}
-                    <th data-halign="center" data-align="center" data-field="emaitza" data-sortable="false">{{ "Emaitza" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="amaitua" data-sortable="false">{{ "Gauzatua" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="egutegian" data-sortable="false">{{ "Egutegian" | trans }}</th>
+                    {% if app.request.get('_route') != 'admin_eskaera_list' %}
+                        <th data-halign="center" data-align="center" data-field="emaitza" data-sortable="false">{{ "Emaitza" | trans }}</th>
+                        <th data-halign="center" data-align="center" data-field="amaitua" data-sortable="false">{{ "Gauzatua" | trans }}</th>
+                        <th data-halign="center" data-align="center" data-field="egutegian" data-sortable="false">{{ "Egutegian" | trans }}</th>
+                    {% endif %}
                     <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="konfliktoa" data-sortable="false">{{ "Bateraezinak" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="oharrak" data-sortable="false">{{ "Oharrak" | trans }}</th>
@@ -146,65 +148,55 @@
                             </a>
                         </td>
                         <td>
+                            {{ eskaera.user.department }}
+                        </td>
+                        <td>
                         <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ eskaera.type.name }}">
-                            {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}
+{#                            {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}#}
+                            {{ eskaera.type.labur }}
                             {% if eskaera.lizentziamota %}({{ eskaera.lizentziamota }}){% endif %}
                         </span>
                         </td>
                         <td>{{ eskaera.kostua ~ " €" }}</td>
                         <td>{{ eskaera.created | date('Y-m-d H:m:s') }}
                         <td>{{ eskaera.hasi | date('Y-m-d') }}
-                            {#{% if eskaera.noiz %}#}
-                            {#<label class="label label-default" data-html="true" data-toggle="tooltip" data-placement="top"#}
-                            {#title="Hasi: {{ eskaera.hasi|date('Y-m-d') }} <br/>Amaitu: {{ eskaera.amaitu|date('Y-m-d') }} <br />Orduak: {{ eskaera.orduak }}">#}
-                            {#{{ eskaera.noiz|date('Y-m-d') }}#}
-                            {#</label>#}
-                            {#{% endif %}#}
                         </td>
                         <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
                         <td>{{ eskaera.total }}</td>
-{#                        bideratua#}
-{#                        <td>#}
-{#                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">#}
-{#                                {% if eskaera.abiatua == true %}#}
-{#                                    <label class="label label-success">Bai</label>#}
-{#                                {% else %}#}
-{#                                    <label class="label label-danger">Ez</label>#}
-{#                                {% endif %}#}
-{#                            </a>#}
-{#                        </td>#}
-                        <td>
-                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {% if eskaera.emaitza == true %}
-                                    <label class="label label-success">Bai</label>
-                                {% else %}
-                                    <label class="label label-danger">Ez</label>
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td>
-                            <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {% if eskaera.amaitua == true %}
-                                    <label class="label label-success">Bai</label>
-                                {% else %}
-                                    <label class="label label-danger">Ez</label>
-                                {% endif %}
-                            </a>
-                        </td>
-                        <td>
-                            {% if eskaera.amaitua == true %}
-                                <a href="javascript:void(0);" class="btnEskaeraEgutegira" data-id="{{ eskaera.id }}"
-                                   data-egutegian="{{ eskaera.egutegian }}">
-                                    {% if eskaera.egutegian == true %}
+                        {% if app.request.get('_route') != 'admin_eskaera_list' %}
+                            <td>
+                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                    {% if eskaera.emaitza == true %}
                                         <label class="label label-success">Bai</label>
                                     {% else %}
                                         <label class="label label-danger">Ez</label>
                                     {% endif %}
                                 </a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);" class="btnEskaera" data-id="{{ eskaera.id }}">
+                                    {% if eskaera.amaitua == true %}
+                                        <label class="label label-success">Bai</label>
+                                    {% else %}
+                                        <label class="label label-danger">Ez</label>
+                                    {% endif %}
+                                </a>
+                            </td>
+                            <td>
+                                {% if eskaera.amaitua == true %}
+                                    <a href="javascript:void(0);" class="btnEskaeraEgutegira" data-id="{{ eskaera.id }}"
+                                       data-egutegian="{{ eskaera.egutegian }}">
+                                        {% if eskaera.egutegian == true %}
+                                            <label class="label label-success">Bai</label>
+                                        {% else %}
+                                            <label class="label label-danger">Ez</label>
+                                        {% endif %}
+                                    </a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                        {% endif %}
                         <td>
                             {% if eskaera.sinatzaileak %}
                                 <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
@@ -275,7 +267,6 @@
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
-{#                                    {% if sinatzeprozesua ==true %}#}
                                         <li>
                                             {% if eskaera.bideratua %}
                                                 <i class="fa fa-paper-plane" aria-hidden="true"></i>
@@ -287,7 +278,6 @@
                                             {% endif %}
 
                                         </li>
-{#                                    {% endif %}#}
                                 {% endif %}
 
                                 {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
