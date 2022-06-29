@@ -73,6 +73,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN npm install
 RUN npm install -g gulp
 RUN npm install gulp
+ENV PATH="/usr/src/app/node_modules/.bin:${PATH}"
 
 # 6 Remove Cache
 RUN rm -rf /var/cache/apk/*
@@ -94,8 +95,8 @@ RUN composer install --no-scripts --prefer-dist --no-interaction --optimize-auto
 
 RUN php bin/console cache:clear
 
-RUN mkdir -p /usr/src/app/public/uploads
-RUN chmod -R 777 /usr/src/app/public/uploads
+RUN mkdir -p /usr/src/app/web/uploads
+RUN chmod -R 777 /usr/src/app/web/uploads
 
 # 9 Change current user
 USER www-data

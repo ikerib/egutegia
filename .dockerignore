@@ -6,7 +6,7 @@
 var
 #vendor
 tmp
-public/uploads
+web/uploads
 storage/framework/cache/**
 storage/framework/sessions/**
 storage/framework/views/**

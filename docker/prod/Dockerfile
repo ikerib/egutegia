@@ -65,8 +65,8 @@ RUN composer install --no-scripts --prefer-dist --no-interaction --optimize-auto
 
 RUN php bin/console cache:clear
 
-RUN mkdir -p /usr/src/app/public/uploads
-RUN chmod -R 777 /usr/src/app/public/uploads
+RUN mkdir -p /usr/src/app/wev/uploads
+RUN chmod -R 777 /usr/src/app/web/uploads
 
 RUN yarn install
 
@@ -76,7 +76,7 @@ RUN if [[ "$FOSJSDUMP" = "0"]] ; \
     else \
         echo Argument is $FOSJSDUMP \
         RUN php bin/console ckedit:install \
-        RUN php bin/console fos:js-routing:dump --format=json --target=public/js/fos_js_routes.json \
+        RUN php bin/console fos:js-routing:dump --format=json --target=web/js/fos_js_routes.json \
         RUN php bin/console assets:install --symlink public \
     ; fi
 

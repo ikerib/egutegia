@@ -29,7 +29,7 @@ services:
         - GROUP_ID=${GROUP_ID}
         - DEBUGMODE=${DEBUGMODE}
         - FOSJSDUMP=${FOSJSDUMP}
-    user: "675847499:675807745"
+    user: "${USER_ID}:${GROUP_ID}"
     depends_on:
       - db
       - redis
@@ -37,7 +37,7 @@ services:
       - ".:/usr/src/app"
       - "./docker/php/conf/php.ini:/usr/local/etc/php/php.ini:ro"
       - "./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro"
-      - "./docker/uploads/:/usr/src/app/public/uploads"
+      - "./docker/uploads/:/usr/src/app/web/uploads"
     working_dir: /usr/src/app
 
   nginx:
@@ -52,7 +52,7 @@ services:
       - "443:443"
     volumes:
       - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro"
-      - "./docker/ssl/:/etc/nginx/ssl/"
+      - "./docker/nginx/ssl/:/etc/nginx/ssl/"
     volumes_from:
       - app
     working_dir: /usr/src/app
