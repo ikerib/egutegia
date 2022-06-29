@@ -111,7 +111,7 @@ class AdminController extends Controller
         $sailak = $em->getRepository('AppBundle:User')->getSailak();
 
         $saila = $request->query->get('saila');
-        if ($saila) {
+        if (($saila) && !($saila==="-1") ){
             $results = $em->getRepository('AppBundle:Kuadrantea')->findallSaila($saila);
         } else {
             $results = $em->getRepository('AppBundle:Kuadrantea')->findall();

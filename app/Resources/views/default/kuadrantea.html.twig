@@ -15,6 +15,7 @@
                         </label>
                         <div class="col-sm-4">
                             <select name="saila" id="sailaSelect" class="form-control">
+                                <option value="-1">Guztiak</option>
                                 {% for saila in sailak %}
                                     <option value="{{ saila.Saila }}">{{ saila.Saila }}</option>
                                 {% endfor %}
@@ -118,9 +119,24 @@
 {{ parent() }}
 
 <script>
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
     $(document).ready(function () {
         $('#myTabs a:last').tab('show') // Select last tab
         $('#myTabs a:first').tab('show') // Select last tab
+
+        var saila = getParameterByName('saila');
+
+        if ( saila !== null ) {
+            $('#sailaSelect').val(saila);
+        }
     });
 </script>
 

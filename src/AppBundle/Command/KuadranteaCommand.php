@@ -143,6 +143,6 @@ class KuadranteaCommand extends ContainerAwareCommand
             }
         }
         $this->em->flush();
-        $output->writeln('Command result.');
+        $output->writeln('OK.');
     }
 }
