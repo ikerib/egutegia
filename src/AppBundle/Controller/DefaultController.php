@@ -230,7 +230,8 @@ class DefaultController extends Controller
         if ($this->isGranted('ROLE_ARDURADUNA')) {
             $users = $ldapsrv->getAllUsers();
         } else {
-            $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());
+//            $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getLdapsaila());
+            $users = $ldapsrv->getGroupUsersRecurive('Saila-'.$user->getDepartment());
         }
 
         $userdata = [];
@@ -282,7 +283,8 @@ class DefaultController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-        $sailIzena = $user->getLdapsaila();
+//        $sailIzena = $user->getLdapsaila();
+        $sailIzena = $user->getDepartment();
         $eskaerak = $em->getRepository('AppBundle:Eskaera')->getAllBySaila($sailIzena);
 
         return $this->render(
@@ -307,7 +309,8 @@ class DefaultController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-        $sailIzena = $user->getLdapsaila();
+//        $sailIzena = $user->getLdapsaila();
+        $sailIzena = $user->getDepartment();
         $results = $em->getRepository('AppBundle:Kuadrantea')->findallSaila($sailIzena);
 
         $year = date('Y');

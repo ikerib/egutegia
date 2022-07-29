@@ -104,7 +104,6 @@ class LdapService
 
         // Saila
         $gFilter = "(member:1.2.840.113556.1.4.1941:=cn=$username,cn=users,dc=pasaia,dc=net)";
-        $gAttr = array('samAccountName');
         $result = ldap_search($ldap, $basedn, $gFilter, $gAttr) or exit('Unable to search LDAP server');
         $result2 = ldap_get_entries($ldap, $result);
 
