@@ -41,7 +41,6 @@ class DefaultControllerTest extends WebTestCase
 
     public function testMycalendar(): void
     {
-        $this->doLogin('iibarguren', 'pasadon');
         $crawler = $this->client->request('GET', '/mycalendar');
         $this->assertSame('IKER IBARGUREN BERASALUZE', $crawler->filter('h3')->text());
 

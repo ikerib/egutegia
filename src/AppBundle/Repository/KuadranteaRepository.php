@@ -37,8 +37,8 @@ class KuadranteaRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('k')
             ->select('k')
             ->join('k.user', 'u')
-            ->andWhere('u.ldapsaila=:sailizena')->setParameter('sailizena', $sailIzena)
-            ->orWhere('u.department=:sailizena')->setParameter('sailizena', $sailIzena)
+            ->andWhere('u.ldapsaila=:sailizena OR u.department=:sailizena')->setParameter('sailizena', $sailIzena)
+
         ;
         return $qb->getQuery()->getResult();
     }

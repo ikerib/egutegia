@@ -47,7 +47,11 @@ RUN docker-php-ext-install gd
 RUN docker-php-ext-configure intl && docker-php-ext-install intl
 
 # DEBUG
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+#RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && pecl install xdebug-3.0.0 \
+    && docker-php-ext-enable xdebug \
+    && apk del -f .build-deps
 
 # ldap
 RUN apk add --update --no-cache \
@@ -68,7 +72,11 @@ RUN apk --no-cache add nodejs yarn npm --repository=http://dl-cdn.alpinelinux.or
 
 
 # 5 Install PHP Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# ADI!!! 2.2.6 izan behar du, produkzioan bezala
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# copy the Composer PHAR from the Composer image into the PHP image
+COPY --from=composer:2.2.6 /usr/bin/composer /usr/local/bin/composer
 
 RUN npm install
 RUN npm install -g gulp
