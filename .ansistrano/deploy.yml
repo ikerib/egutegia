@@ -1,6 +1,6 @@
 ---
 - name: Pasaiako Udal langileen egutekien kudeaketa Web Aplikazioa
-  hosts: all
+  hosts: 172.23.64.33
   remote_user: root
   roles:
     - cbrunnkvist.ansistrano-symfony-deploy

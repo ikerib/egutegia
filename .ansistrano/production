@@ -1,6 +1,8 @@
 [hosts]
 172.23.64.33
 
+
+
 [hosts:vars]
 ansible_connection=ssh
 ansible_user=root
