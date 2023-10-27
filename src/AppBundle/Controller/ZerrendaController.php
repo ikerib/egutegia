@@ -33,7 +33,7 @@ class ZerrendaController extends Controller
         if (!$eskaerak) {
             $testua = 'Ez dago daturik, aldatu filtroak...';
         } else {
-            $testua = 'Erakusten '.$hasi.'-tik '.$fin.'-era bitartean eskaerak dituzten langileak.';
+            $testua = 'Erakusten '.$hasi.'-tik '.$fin.'-era bitartean eskaerak dituzten langileak.' . count($eskaerak);
         }
         return $this->render('zerrenda/absentismo.html.twig', array(
             'urteak'    => $urteak,

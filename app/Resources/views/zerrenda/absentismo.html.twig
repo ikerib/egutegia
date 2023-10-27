@@ -1,5 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{#{% block head_script %}#}
+{#    {{ parent() }}#}
+{#    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"></script>#}
+{#    <script>#}
+{#        console.log(document)#}
+{#        document.getElementById("exportarExcel").addEventListener("click", function () {#}
+{#            // Obtén la tabla por su ID#}
+{#            var table = document.getElementById("miTabla");#}
+
+{#            // Crea un objeto de trabajo de Excel#}
+{#            var workbook = XLSX.utils.table_to_book(table, { sheet: "Hoja1" });#}
+
+{#            // Convierte el libro de Excel a un archivo Blob#}
+{#            var blob = XLSX.write(workbook, { bookType: "xlsx", type: "blob" });#}
+
+{#            // Crea un enlace para descargar el archivo Excel#}
+{#            var url = URL.createObjectURL(blob);#}
+{#            var a = document.createElement("a");#}
+{#            a.href = url;#}
+{#            a.download = "tabla_excel.xlsx";#}
+{#            a.click();#}
+{#        });#}
+{#    </script>#}
+
+{#{% endblock %}#}
+
 {% block content_div_start %}{% endblock %}
 {% block content_div_end %}{% endblock %}
 {% block headline %}{{ 'Zerrendak' | trans }} {% endblock %}
@@ -11,6 +37,9 @@
             <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <i class="fa fa-filter" aria-hidden="true"></i> FILTROAK
             </button>
+
+            <button class="btn btn-default" id="exportarExcel">Excel-era exportatu</button>
+
             <div class="collapse" id="collapseExample">
                 <div class="well">
                     <div class="row">
@@ -58,16 +87,51 @@
             </div>
             <div class="row">&nbsp;</div>
             <div class="row">
-                <table class="table table-condensed table-bordered table-hover">
+                <table data-toggle="table"
+                       data-classes="table table-hover table-condensed"
+                       data-striped="true"
+
+                       data-pagination="true"
+                       data-page-size="25"
+                       data-search="true"
+
+                       data-sort-name="name"
+                       data-sort-order="asc"
+
+                       data-icon-size="sm"
+                       data-show-refresh="true"
+                       data-show-toggle="true"
+                       data-show-columns="true"
+
+                       data-toolbar="#toolbar"
+                       data-show-export="true"
+                       data-export-types="['csv','excel', 'pdf']"
+                       data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
                     <thead>
                     <tr>
-                        <th><strong>Langilea</strong></th>
-                        <th><strong>Hasi</strong></th>
-                        <th><strong>Amaitu</strong></th>
-                        <th><strong>Mota</strong></th>
-                        <th><strong>Orduak</strong></th>
-                        <th><strong>Bideratua</strong></th>
-                        <th><strong>Egutegian</strong></th>
+{#                        <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ 'Izena' | trans }}</th>#}
+{#                        <th data-halign="center" data-align="right" data-field="portzentaia" data-sortable="true">{{ 'Portzentaia' | trans }}</th>#}
+{#                        <th data-halign="center" data-align="left" data-field="gutxienekoakdet" data-sortable="true">{{ 'Erabiltzaileak' | trans }}</th>#}
+{#                        <th data-halign="center" data-align="center"></th>#}
+                        <th data-halign="center" data-align="left"  >Langilea</th>
+                        <th data-halign="center" data-align="left"  >Saila</th>
+                        <th data-halign="center" data-align="left"  >Hasi</th>
+                        <th data-halign="center" data-align="left"  >Amaitu</th>
+                        <th data-halign="center" data-align="left"  >Mota</th>
+                        <th data-halign="center" data-align="left"  >Orduak</th>
+                        <th data-halign="center" data-align="left"  >Bideratua</th>
+                        <th data-halign="center" data-align="left"  >Egutegian</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -75,7 +139,9 @@
                             <tr>
                                 <td><a href="{{ path('admin_calendar_edit', { 'id': e.calendar.id }) }}" class="btnEskaera" data-id="{{ e.id }}" target="_blank">
                                         {{ e.name }}
-                                    </a></td>
+                                    </a>
+                                </td>
+                                <td>{{ e.user.department }}</td>
                                 <td>{{ e.hasi | date('Y-m-d')}}</td>
                                 <td>{{ e.amaitu | date('Y-m-d')}}</td>
                                 <td>{{ e.type}}</td>
@@ -107,7 +173,6 @@
 {% block foot_script %}
 
     {{ parent() }}
-
     <script >
         $( document ).ready(function() {
             $('.input-daterange input').each(function() {
