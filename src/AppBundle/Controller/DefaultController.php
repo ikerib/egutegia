@@ -17,6 +17,8 @@ use AppBundle\Service\LdapService;
 use DateTime;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Swift_Message;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Role\SwitchUserRole;
 use function count;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -163,6 +165,23 @@ class DefaultController extends Controller
         //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round($calendar->getHoursSelf(), 2);
 
+        if ($user->getUsername() === "iibarguren") {
+            $token = $this->get('security.token_storage')->getToken();
+            foreach ($token->getRoles() as $role) {
+                if ($role instanceof SwitchUserRole) {
+                    $impersonatorUser = $role->getSource()->getUser();
+                    $message = (new Swift_Message('Sarrera'))
+                        ->setFrom('iibarguren@pasaia.net')
+                        ->setTo('iibarguren@pasaia.net')
+                        ->setBody(
+                            $impersonatorUser,
+                            'text/html'
+                        );
+                    $this->get('mailer')->send($message);
+                    break;
+                }
+            }
+        }
 
         return $this->render(
             'default/user_homepage.html.twig',

@@ -5,6 +5,7 @@
 
 [hosts:vars]
 ansible_connection=ssh
+ansible_ssh_pass=
 ansible_user=root
 
 deploy_path=/var/www/egutegia
