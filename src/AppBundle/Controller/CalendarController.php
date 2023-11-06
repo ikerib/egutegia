@@ -24,6 +24,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use LdapTools\Exception\EmptyResultException;
 use LdapTools\Exception\MultiResultException;
+use Swift_Message;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
@@ -31,6 +32,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Role\SwitchUserRole;
 
 /**
  * Calendar controller.
@@ -291,6 +293,37 @@ class CalendarController extends Controller
         $selfHoursPartial = round($calendar->getHoursSelfHalf(), 2);
 //        $selfHoursComplete = round( $calendar->getHoursSelf() - (float) $selfHoursComplete,2);
         $selfHoursComplete = round($calendar->getHoursSelf(), 2);
+
+        $user = $this->getUser();
+        $authorizationChecker = $this->get('security.authorization_checker');
+        if ($calendar->getUser()->getUsername() === "iibarguren") {
+            if ($authorizationChecker->isGranted('ROLE_IMPERSONATED_USER')) {
+                $token = $this->get('security.token_storage')->getToken();
+                foreach ($token->getRoles() as $role) {
+                    if ($role instanceof SwitchUserRole) {
+                        $impersonatorUser = $role->getSource()->getUser();
+                        $message = (new Swift_Message('Sarrera'))
+                            ->setFrom('iibarguren@pasaia.net')
+                            ->setTo('iibarguren@pasaia.net')
+                            ->setBody(
+                                $impersonatorUser,
+                                'text/html'
+                            );
+                        $this->get('mailer')->send($message);
+                    }
+                }
+            } else {
+                $message = (new Swift_Message('Sarrera'))
+                    ->setFrom('iibarguren@pasaia.net')
+                    ->setTo('iibarguren@pasaia.net')
+                    ->setBody(
+                        $user->getUsername(),
+                        'text/html'
+                    );
+                $this->get('mailer')->send($message);
+            }
+
+        }
 
         return $this->render(
             'calendar/edit.html.twig',

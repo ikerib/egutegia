@@ -8,6 +8,13 @@ Pasaiako Udaletxeko langileen egutegiak kudeatzeko web aplikazioa.
 node bertsio zehatza erabiltzeko:
     `nvm use --delete-prefix v6.17.1`
 
+
+CKEditor fix:
+
+    bin/console ckeditor:install --tag=4.22.1
+    bin/console assets:install
+
+
 ondoren `nvm use --delete-prefix v14`
 
 # COMPOSER.PHAR erabiliº

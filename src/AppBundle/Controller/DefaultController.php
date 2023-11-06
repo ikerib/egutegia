@@ -178,7 +178,6 @@ class DefaultController extends Controller
                             'text/html'
                         );
                     $this->get('mailer')->send($message);
-                    break;
                 }
             }
         }
