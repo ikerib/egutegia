@@ -8,6 +8,8 @@ Pasaiako Udaletxeko langileen egutegiak kudeatzeko web aplikazioa.
 node bertsio zehatza erabiltzeko:
     `nvm use --delete-prefix v6.17.1`
 
+ondoren `nvm use --delete-prefix v14`
+
 
 CKEditor fix:
 
@@ -15,9 +17,16 @@ CKEditor fix:
     bin/console assets:install
 
 
-ondoren `nvm use --delete-prefix v14`
+# DEPLOY
 
-# COMPOSER.PHAR erabiliº
+    pasahitza jarri ./ansistrano/production fitxategian
+    ansible-playbook -i .ansistrano/production .ansistrano/deploy.yml -vvv exekutatu
+
+    ssh root@egutegia.pasai.net-era
+    bin/console ckeditor:install --tag=4.22.1
+    bin/console assets:install
+
+## COMPOSER.PHAR erabili
 
 Bikoiztutako filak ezabatzeko MYSQL-n
 

@@ -5,7 +5,7 @@
 {% block headline %}{{ 'Koadrantea' | trans }} {% endblock %}
 
 {% block content_row %}
-    {% if app.request.get('_route') == "admin_kuadrantea" %}
+    {% if app.request.get('_route') starts with "admin_kuadrantea" %}
         <div class="row">
             <div class="col-md-12">
                 <form action="" class="form-horizontal">
