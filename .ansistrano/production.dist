@@ -1,0 +1,13 @@
+[hosts]
+SERVER_IP
+
+
+
+[hosts:vars]
+ansible_connection=ssh
+ansible_ssh_pass=SERVER_PASSWD
+ansible_user=root
+
+deploy_path=/var/www/egutegia
+git_branch_default=master
+symfony_inventory_env=prod
