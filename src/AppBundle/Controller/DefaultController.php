@@ -228,8 +228,6 @@ class DefaultController extends Controller
         );
     }
 
-
-
     /**
      * @Route("/saila/dashboard", name="saila_dashboard")
      *
@@ -318,8 +316,9 @@ class DefaultController extends Controller
      *
      * @return Response
      *
+     * @throws \Exception
      * @internal param Request $request
-     */
+     **/
     public function sailaKuadranteaAction(): Response
     {
         /** @var EntityManager $em */
