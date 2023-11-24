@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace AppBundle\Command;
 
@@ -10,7 +10,10 @@ use AppBundle\Entity\User;
 use DateInterval;
 use DatePeriod;
 use DateTime;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,7 +46,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
             $connection->executeUpdate($q);
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
             $connection->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $connection->rollback();
         }
     }
@@ -52,7 +55,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
      * @param User $user
      * @param $year
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function fillFromEvents(User $user, $year): void
     {
@@ -136,7 +139,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
      * @param User $user
      * @param $year
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function fillFromEskaerak(User $user, $year): void
     {
@@ -202,6 +205,11 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         ;
     }
 
+    /**
+     * @throws ConnectionException
+     * @throws DBALException
+     * @throws Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->truncateTable();
