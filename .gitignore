@@ -65,3 +65,6 @@ web/vendor/
 /web/app_dev.php
 /docker/ssl/
 !/.ansistrano/production
+!/core.*
+!/web/core.*
+
