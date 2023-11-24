@@ -26,17 +26,13 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         $this->em = $em;
     }
 
-    protected function configure()
+    /**
+     * @return void
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function truncateTable(): void
     {
-        $this
-            ->setName('app:kuadrantea-eskaerekin')
-            ->setDescription('...')
-        ;
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        // TRUNCATE
         $classMetaData = $this->em->getClassMetadata('AppBundle:KuadranteaEskaerekin');
         $connection = $this->em->getConnection();
         $dbPlatform = $connection->getDatabasePlatform();
@@ -47,73 +43,133 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
             $connection->executeUpdate($q);
             $connection->query('SET FOREIGN_KEY_CHECKS=1');
             $connection->commit();
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $connection->rollback();
         }
+    }
 
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws \Exception
+     */
+    public function fillFromEvents(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Event $events */
+        $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+        /** @var Event $event */
+        foreach ($events as $event) {
 
+            $kuadranteak = $this->em->getRepository('AppBundle:Kuadrantea')->findByUserYearMonth(
+                $user->getId(),
+                $event->getStartDate()->format('Y'),
+                $event->getStartDate()->format('F')
+            );
 
-        $year = date('Y');
-        // urteko lehen astea bada, aurreko urtea aukeratu
-        $date_now = new DateTime();
-        // $date2    = new DateTime("06/01/".$year);
-        $date2    = new DateTime($year.'-01-06');
-
-        if ($date_now <= $date2) {
-            --$year;
-        }
-
-        /** @var $users  User **/
-        $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
-        /** @var User $user */
-        foreach ($users as $user) {
-            $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            $i = 0;
-            $len = count($months);
-            foreach ($months as $month) {
-                $k = new KuadranteaEskaerekin();
-                $k->setUser($user);
-                $k->setUrtea($year);
-                $k->setHilabetea($month);
-                $this->em->persist($k);
-                if ($i === $len - 1) {
-                    $k = new KuadranteaEskaerekin();
-                    $k->setUser($user);
-                    $k->setUrtea($year+1);
-                    $k->setHilabetea('january');
-                    $this->em->persist($k);
-                }
-                $i++;
-                $this->em->persist($k);
+            if (count($kuadranteak) === 0) {
+                continue;
             }
 
-            $this->em->flush();
+            $kua = $kuadranteak[0];
 
+            if ($event->getStartDate() == $event->getEndDate()) {
+                $field = "setDay" . $event->getStartDate()->format('d');
+                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
 
-            // get current user all events
-            /** @var Eskaera $eskaerak */
-            $eskaerak = $this->em->getRepository('AppBundle:Eskaera')->getUserYearEvents($user->getId(), $year);
-            $hilabetea = "";
-            $kua = null;
+            } else {
+                $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
 
-            /** @var Eskaera $esk */
-            foreach ($eskaerak as $esk) {
-
-                $kuadranteak = $this->em->getRepository('AppBundle:KuadranteaEskaerekin')->findByUserYearMonth(
-                    $user->getId(),
-                    $esk->getHasi()->format('Y'),
-                    $esk->getHasi()->format('F')
-                );
-
-                if (count($kuadranteak) === 0) {
-                    continue;
+                if ($event->getEndDate() === null) {
+                    $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
+                } else {
+                    $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
                 }
 
-                $kua = $kuadranteak[0];
+                $interval = DateInterval::createFromDateString('1 day');
+                $period = new DatePeriod($begin, $interval, $end);
 
+                foreach ($period as $dt) {
+
+                    $field = "setDay" . $dt->format('d');
+                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
+                }
+            }
+            $this->em->persist($kua);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     */
+    public function sortuKuadranteEskaeraRow(User $user, $year): void
+    {
+        $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        $i = 0;
+        $len = count($months);
+        foreach ($months as $month) {
+            $k = new KuadranteaEskaerekin();
+            $k->setUser($user);
+            $k->setUrtea($year);
+            $k->setHilabetea($month);
+            $this->em->persist($k);
+            if ($i === $len - 1) {
+                $k = new KuadranteaEskaerekin();
+                $k->setUser($user);
+                $k->setUrtea($year + 1);
+                $k->setHilabetea('january');
+                $this->em->persist($k);
+            }
+            $i++;
+            $this->em->persist($k);
+        }
+
+        $this->em->flush();
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws \Exception
+     */
+    public function fillFromEskaerak(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Eskaera $eskaerak */
+        $eskaerak = $this->em->getRepository('AppBundle:Eskaera')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+
+        /** @var Eskaera $esk */
+        foreach ($eskaerak as $esk) {
+
+            $kuadranteak = $this->em->getRepository('AppBundle:KuadranteaEskaerekin')->findByUserYearMonth(
+                $user->getId(),
+                $esk->getHasi()->format('Y'),
+                $esk->getHasi()->format('F')
+            );
+
+            if (count($kuadranteak) === 0) {
+                continue;
+            }
+
+            $kua = $kuadranteak[0];
+
+            // BEGIRATU IADANIK KUADRANTEAN DATURIK BADAGOEN.
+            // BALDIN BADAGO, EGUTEGIKO DAUAK LEHENETSI, BERAZ, SALTO EGIN
+
+            $rowDataField = "getDay" . $esk->getHasi()->format('d');
+            $rowDataValue = $kua->{$rowDataField}();
+
+            if ( !$rowDataValue) {
                 if ($esk->getHasi() == $esk->getAmaitu()) {
-                    $field = "setDay".$esk->getHasi()->format('d');
+                    $field = "setDay" . $esk->getHasi()->format('d');
                     $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
                 } else {
                     $begin = new \DateTime($esk->getHasi()->format('Y-m-d'));
@@ -129,12 +185,43 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
                     foreach ($period as $dt) {
 
-                        $field = "setDay".$dt->format('d');
+                        $field = "setDay" . $dt->format('d');
                         $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
                     }
                 }
                 $this->em->persist($kua);
             }
+        }
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setName('app:kuadrantea-eskaerekin')
+            ->setDescription('...')
+        ;
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $this->truncateTable();
+        $year = date('Y');
+        // urteko lehen astea bada, aurreko urtea aukeratu
+        $date_now = new DateTime();
+        // $date2    = new DateTime("06/01/".$year);
+        $date2    = new DateTime($year.'-01-06');
+
+        if ($date_now <= $date2) {
+            --$year;
+        }
+
+        /** @var $users  User **/
+        $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
+        /** @var User $user */
+        foreach ($users as $user) {
+            $this->sortuKuadranteEskaeraRow($user, $year);
+            $this->fillFromEvents($user, $year);
+            $this->fillFromEskaerak($user, $year);
         }
         $this->em->flush();
         $output->writeln('OK.');

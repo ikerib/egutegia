@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Kuadrantea;
+use AppBundle\Entity\KuadranteaEskaerekin;
 use AppBundle\Entity\User;
 use DateInterval;
 use DatePeriod;
@@ -24,6 +25,112 @@ class KuadranteaCommand extends ContainerAwareCommand
         $this->em = $em;
     }
 
+    /**
+     * @return void
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function truncateTable(): void
+    {
+        $classMetaData = $this->em->getClassMetadata('AppBundle:Kuadrantea');
+        $connection = $this->em->getConnection();
+        $dbPlatform = $connection->getDatabasePlatform();
+        $connection->beginTransaction();
+        try {
+            $connection->query('SET FOREIGN_KEY_CHECKS=0');
+            $q = $dbPlatform->getTruncateTableSql($classMetaData->getTableName());
+            $connection->executeUpdate($q);
+            $connection->query('SET FOREIGN_KEY_CHECKS=1');
+            $connection->commit();
+        } catch (\Exception $e) {
+            $connection->rollback();
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws \Exception
+     */
+    public function fillFromEvents(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Event $events */
+        $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+        /** @var Event $event */
+        foreach ($events as $event) {
+
+            $kuadranteak = $this->em->getRepository('AppBundle:Kuadrantea')->findByUserYearMonth(
+                $user->getId(),
+                $event->getStartDate()->format('Y'),
+                $event->getStartDate()->format('F')
+            );
+
+            if (count($kuadranteak) === 0) {
+                continue;
+            }
+
+            $kua = $kuadranteak[0];
+
+            if ($event->getStartDate() == $event->getEndDate()) {
+                $field = "setDay" . $event->getStartDate()->format('d');
+                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
+
+            } else {
+                $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
+
+                if ($event->getEndDate() === null) {
+                    $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
+                } else {
+                    $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
+                }
+
+                $interval = DateInterval::createFromDateString('1 day');
+                $period = new DatePeriod($begin, $interval, $end);
+
+                foreach ($period as $dt) {
+
+                    $field = "setDay" . $dt->format('d');
+                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
+                }
+            }
+            $this->em->persist($kua);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     */
+    public function sortuKuadranteRow(User $user, $year): void
+    {
+        $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        $i = 0;
+        $len = count($months);
+        foreach ($months as $month) {
+            $k = new Kuadrantea();
+            $k->setUser($user);
+            $k->setUrtea($year);
+            $k->setHilabetea($month);
+            $this->em->persist($k);
+            if ($i === $len - 1) {
+                $k = new Kuadrantea();
+                $k->setUser($user);
+                $k->setUrtea($year + 1);
+                $k->setHilabetea('january');
+                $this->em->persist($k);
+            }
+            $i++;
+            $this->em->persist($k);
+        }
+
+        $this->em->flush();
+    }
+
     protected function configure()
     {
         $this
@@ -36,30 +143,7 @@ class KuadranteaCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $argument = $input->getArgument('argument');
-
-        if ($input->getOption('option')) {
-            // ...
-        }
-
-        // TRUNCATE
-        $classMetaData = $this->em->getClassMetadata('AppBundle:Kuadrantea');
-        $connection = $this->em->getConnection();
-        $dbPlatform = $connection->getDatabasePlatform();
-        $connection->beginTransaction();
-        try {
-            $connection->query('SET FOREIGN_KEY_CHECKS=0');
-            $q = $dbPlatform->getTruncateTableSql($classMetaData->getTableName());
-            $connection->executeUpdate($q);
-            $connection->query('SET FOREIGN_KEY_CHECKS=1');
-            $connection->commit();
-        }
-        catch (\Exception $e) {
-            $connection->rollback();
-        }
-
-
-
+        $this->truncateTable();
         $year = date('Y');
         // urteko lehen astea bada, aurreko urtea aukeratu
         $date_now = new DateTime();
@@ -74,73 +158,8 @@ class KuadranteaCommand extends ContainerAwareCommand
         $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
         /** @var User $user */
         foreach ($users as $user) {
-            $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            $i = 0;
-            $len = count($months);
-            foreach ($months as $month) {
-                $k = new Kuadrantea();
-                $k->setUser($user);
-                $k->setUrtea($year);
-                $k->setHilabetea($month);
-                $this->em->persist($k);
-                if ($i === $len - 1) {
-                    $k = new Kuadrantea();
-                    $k->setUser($user);
-                    $k->setUrtea($year+1);
-                    $k->setHilabetea('january');
-                    $this->em->persist($k);
-                }
-                $i++;
-                $this->em->persist($k);
-            }
-
-            $this->em->flush();
-
-
-            // get current user all events
-            /** @var Event $events */
-            $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
-            $hilabetea = "";
-            $kua = null;
-            /** @var Event $event */
-            foreach ($events as $event) {
-
-                $kuadranteak = $this->em->getRepository('AppBundle:Kuadrantea')->findByUserYearMonth(
-                    $user->getId(),
-                    $event->getStartDate()->format('Y'),
-                    $event->getStartDate()->format('F')
-                );
-
-                if (count($kuadranteak) === 0) {
-                    continue;
-                }
-
-                $kua = $kuadranteak[0];
-
-                if ($event->getStartDate() == $event->getEndDate()) {
-                    $field = "setDay".$event->getStartDate()->format('d');
-                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
-
-                } else {
-                    $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
-
-                    if ($event->getEndDate() === null) {
-                        $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
-                    } else {
-                        $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
-                    }
-
-                    $interval = DateInterval::createFromDateString('1 day');
-                    $period = new DatePeriod($begin, $interval, $end);
-
-                    foreach ($period as $dt) {
-
-                        $field = "setDay".$dt->format('d');
-                        $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
-                    }
-                }
-                $this->em->persist($kua);
-            }
+            $this->sortuKuadranteRow($user, $year);
+            $this->fillFromEvents($user, $year);
         }
         $this->em->flush();
         $output->writeln('OK.');

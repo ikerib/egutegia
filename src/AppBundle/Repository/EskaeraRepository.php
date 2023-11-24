@@ -246,8 +246,7 @@ class EskaeraRepository extends EntityRepository
                 ->innerJoin('c.user', 'u')
             ->andWhere('e.hasi between :start and :end')->setParameter('start', $start)->setParameter('end', $end)
             ->andWhere('u.id = :userid')->setParameter('userid', $userid)
-            ->andWhere('e.amaitua=1')
-            ->andWhere('e.emaitza=0')
+            ->andWhere('e.emaitza!=0')
             ->orderBy('e.amaitu','ASC')
         ;
 
