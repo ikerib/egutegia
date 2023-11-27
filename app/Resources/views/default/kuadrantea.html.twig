@@ -2,7 +2,7 @@
 
 {% block content_div_start %}{% endblock %}
 {% block content_div_end %}{% endblock %}
-{% block headline %}{{ 'Koadrantea' | trans }} <small>Azken eguneraketa {{ results[0].lastExecution | date('Y-m-d hh:mm:ss') }}</small> {% endblock %}
+{% block headline %}{{ 'Koadrantea' | trans }} <small>Azken eguneraketa {{ results[0].lastExecution | date('Y-m-d h:m:s') }}</small> {% endblock %}
 
 {% block content_row %}
     {% if app.request.get('_route') starts with "admin_kuadrantea" %}
