@@ -190,7 +190,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
                     foreach ($period as $dt) {
                         $field = "setDay" . $dt->format('d');
-                        $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
+                        $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName().'#');
                     }
                 }
                 $this->em->persist($kua);
