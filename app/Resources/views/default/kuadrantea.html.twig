@@ -110,7 +110,9 @@
             {% include ':default:_tab_content.html.twig' with {'hilabetea': 'December', 'egunak': 31 } %}
         </div>
         <div class="tab-pane fade active in" role="tabpanel" id="urtarrila2" aria-labelledby="home-tab">
-            {% include ':default:_tab_content.html.twig' with {'hilabetea': 'January', 'egunak': 6, 'year': year+1} %}
+            {% set year = year + 1 %}
+            {% set yearAsString = '' ~ year %}
+            {% include ':default:_tab_content.html.twig' with {'hilabetea': 'January', 'egunak': 6, 'year': yearAsString} %}
         </div>
     </div>
 {% endblock %}

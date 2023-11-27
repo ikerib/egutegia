@@ -46,9 +46,9 @@
             </tr>
             </thead>
             <tbody>
-            {% for r in results if r.hilabetea == hilabetea and r.urtea == year%}
+            {% for r in results if r.hilabetea == hilabetea and r.urtea == year %}
                 <tr>
-                    <td>{{ r.user.displayname }}</td>
+                    <td data-userid="{{ r.user.id }}">{{ r.user.displayname }} </td>
                     <td>{{ r.user.lanpostua }}</td>
                     <td class="text-center"><span data-toggle="tooltip" data-placement="top" title="{{ r.day01 }}">{{ r.day01|split(' => ')[0] }}</span></td>
                     <td class="text-center"><span data-toggle="tooltip" data-placement="top" title="{{ r.day02 }}">{{ r.day02|split(' => ')[0] }}</span></td>

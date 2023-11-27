@@ -15,6 +15,7 @@ use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -125,7 +126,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
                 $k = new KuadranteaEskaerekin();
                 $k->setUser($user);
                 $k->setUrtea($year + 1);
-                $k->setHilabetea('january');
+                $k->setHilabetea('January');
                 $this->em->persist($k);
             }
             $i++;
@@ -183,11 +184,11 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
                         $end = new \DateTime($esk->getAmaitu()->format('Y-m-d'));
                     }
 
-                    $interval = DateInterval::createFromDateString('1 day');
+                    $interval = new DateInterval('P1D'); // Intervalo de 1 día
+                    $end = $end->modify('+1 day'); // Azken eguna inprimatu dezan ere
                     $period = new DatePeriod($begin, $interval, $end);
 
                     foreach ($period as $dt) {
-
                         $field = "setDay" . $dt->format('d');
                         $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
                     }
@@ -225,13 +226,20 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
         /** @var $users  User **/
         $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
+
+        $progressBar = new ProgressBar($output, count($users));
+        $progressBar->start();
+
         /** @var User $user */
         foreach ($users as $user) {
+            $progressBar->advance();
             $this->sortuKuadranteEskaeraRow($user, $year);
             $this->fillFromEvents($user, $year);
             $this->fillFromEskaerak($user, $year);
         }
+        $progressBar->finish();
         $this->em->flush();
+        $output->writeln('');
         $output->writeln('OK.');
     }
 

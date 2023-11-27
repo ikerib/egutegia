@@ -328,7 +328,7 @@ class DefaultController extends Controller
 
 //        $sailIzena = $user->getLdapsaila();
         $sailIzena = $user->getDepartment();
-        $results = $em->getRepository('AppBundle:Kuadrantea')->findallSaila($sailIzena);
+        $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($sailIzena);
 
         $year = date('Y');
 
