@@ -56,60 +56,6 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
      * @param User $user
      * @param $year
      * @return void
-     * @throws Exception
-     */
-    public function fillFromEvents(User $user, $year): void
-    {
-        // get current user all events
-        /** @var Event $events */
-        $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
-        $hilabetea = "";
-        $kua = null;
-        /** @var Event $event */
-        foreach ($events as $event) {
-
-            $kuadranteak = $this->em->getRepository('AppBundle:Kuadrantea')->findByUserYearMonth(
-                $user->getId(),
-                $event->getStartDate()->format('Y'),
-                $event->getStartDate()->format('F')
-            );
-
-            if (count($kuadranteak) === 0) {
-                continue;
-            }
-
-            $kua = $kuadranteak[0];
-
-            if ($event->getStartDate() == $event->getEndDate()) {
-                $field = "setDay" . $event->getStartDate()->format('d');
-                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
-
-            } else {
-                $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
-
-                if ($event->getEndDate() === null) {
-                    $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
-                } else {
-                    $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
-                }
-
-                $interval = DateInterval::createFromDateString('1 day');
-                $period = new DatePeriod($begin, $interval, $end);
-
-                foreach ($period as $dt) {
-
-                    $field = "setDay" . $dt->format('d');
-                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName());
-                }
-            }
-            $this->em->persist($kua);
-        }
-    }
-
-    /**
-     * @param User $user
-     * @param $year
-     * @return void
      */
     public function sortuKuadranteEskaeraRow(User $user, $year): void
     {
@@ -136,6 +82,61 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         }
 
         $this->em->flush();
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws Exception
+     */
+    public function fillFromEvents(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Event $events */
+        $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+        /** @var Event $event */
+        foreach ($events as $event) {
+
+            $kuadranteak = $this->em->getRepository('AppBundle:KuadranteaEskaerekin')->findByUserYearMonth(
+                $user->getId(),
+                $event->getStartDate()->format('Y'),
+                $event->getStartDate()->format('F')
+            );
+
+            if (count($kuadranteak) === 0) {
+                continue;
+            }
+
+            $kua = $kuadranteak[0];
+
+            if ($event->getStartDate() == $event->getEndDate()) {
+                $field = "setDay" . $event->getStartDate()->format('d');
+                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName().'#');
+
+            } else {
+                $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
+
+                if ($event->getEndDate() === null) {
+                    $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
+                } else {
+                    $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
+                }
+
+                $interval = new DateInterval('P1D'); // Intervalo de 1 día
+                $end = $end->modify('+1 day'); // Azken eguna inprimatu dezan ere
+                $period = new DatePeriod($begin, $interval, $end);
+
+                foreach ($period as $dt) {
+
+                    $field = "setDay" . $dt->format('d');
+                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName().'#');
+                }
+            }
+            $this->em->persist($kua);
+        }
     }
 
     /**
@@ -192,7 +193,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
                     foreach ($period as $dt) {
                         $field = "setDay" . $dt->format('d');
-                        $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName().'#');
+                        $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
                     }
                 }
                 $this->em->persist($kua);
