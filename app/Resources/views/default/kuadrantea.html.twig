@@ -2,7 +2,7 @@
 
 {% block content_div_start %}{% endblock %}
 {% block content_div_end %}{% endblock %}
-{% block headline %}{{ 'Koadrantea' | trans }} {% endblock %}
+{% block headline %}{{ 'Koadrantea' | trans }} <small>Azken eguneraketa {{ results[0].lastExecution | date('Y-m-d hh:mm:ss') }}</small> {% endblock %}
 
 {% block content_row %}
     {% if app.request.get('_route') starts with "admin_kuadrantea" %}
@@ -30,7 +30,6 @@
         </div>
     {% endif %}
     <div class="row">&nbsp;</div>
-    <h1>{{ year }}</h1>
     <ul class="nav nav-tabs" id="myTabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#urtarrila" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Urtarrila</a>

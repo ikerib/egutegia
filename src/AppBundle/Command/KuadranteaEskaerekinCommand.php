@@ -113,12 +113,14 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
      */
     public function sortuKuadranteEskaeraRow(User $user, $year): void
     {
+        $lastExecution = new DateTime();
         $months = ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         $i = 0;
         $len = count($months);
         foreach ($months as $month) {
             $k = new KuadranteaEskaerekin();
             $k->setUser($user);
+            $k->setLastExecution($lastExecution);
             $k->setUrtea($year);
             $k->setHilabetea($month);
             $this->em->persist($k);

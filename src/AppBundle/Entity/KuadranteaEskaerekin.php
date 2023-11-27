@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,6 +21,13 @@ class KuadranteaEskaerekin
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="noiz", type="datetime", nullable=true)
+     */
+    private $lastExecution;
 
     /**
      * @var integer
@@ -1100,5 +1108,29 @@ class KuadranteaEskaerekin
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set lastExecution.
+     *
+     * @param \DateTime|null $lastExecution
+     *
+     * @return KuadranteaEskaerekin
+     */
+    public function setLastExecution($lastExecution = null)
+    {
+        $this->lastExecution = $lastExecution;
+
+        return $this;
+    }
+
+    /**
+     * Get lastExecution.
+     *
+     * @return \DateTime|null
+     */
+    public function getLastExecution()
+    {
+        return $this->lastExecution;
     }
 }
