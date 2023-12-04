@@ -151,6 +151,13 @@ class User extends BaseUser implements LdapUserInterface
     protected $firmadet;
 
     /**
+     * @var \AppBundle\Entity\Saila
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Saila", mappedBy="saila")
+     */
+    protected $saila;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -634,5 +641,41 @@ class User extends BaseUser implements LdapUserInterface
     public function getAktibo()
     {
         return $this->aktibo;
+    }
+
+    /**
+     * Add saila.
+     *
+     * @param \AppBundle\Entity\Saila $saila
+     *
+     * @return User
+     */
+    public function addSaila(\AppBundle\Entity\Saila $saila)
+    {
+        $this->saila[] = $saila;
+
+        return $this;
+    }
+
+    /**
+     * Remove saila.
+     *
+     * @param \AppBundle\Entity\Saila $saila
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeSaila(\AppBundle\Entity\Saila $saila)
+    {
+        return $this->saila->removeElement($saila);
+    }
+
+    /**
+     * Get saila.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSaila()
+    {
+        return $this->saila;
     }
 }

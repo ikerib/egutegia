@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sailas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Izena</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for saila in sailas %}
+            <tr>
+                <td><a href="{{ path('admin_saila_show', { 'id': saila.id }) }}">{{ saila.id }}</a></td>
+                <td>{{ saila.izena }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_saila_show', { 'id': saila.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_saila_edit', { 'id': saila.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_saila_new') }}">Create a new saila</a>
+        </li>
+    </ul>
+{% endblock %}
