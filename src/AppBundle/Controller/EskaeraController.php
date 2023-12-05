@@ -187,7 +187,15 @@ class EskaeraController extends Controller {
         ]);
     }
 
+    /**
+     *
+     * @Route("/bertanbehera/{id}", name="admin_eskaera_bertan_behera")
+     * @Method("GET")
+     */
+    public function bertanBeheraAction(Eskaera $eskaera)
+    {
 
+    }
 
     /**
      * Eskaera gehitu langilearen egutegira.

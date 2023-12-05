@@ -115,7 +115,7 @@ $(function () {
 
                 $.when(deleteCalendarEvents()).done(function ( a1 ) {
                     location.reload();
-                }).fail(function ( error ) {
+                }).fail(function ( error )  {
                     $("#myAlert").hide();
 
                     $("#alertSpot").append(

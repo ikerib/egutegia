@@ -20,6 +20,7 @@ services:
     env_file: ./.env.local
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "egutegia.test:172.29.164.206"
     build:
       context: .
       dockerfile: docker/php/Dockerfile
@@ -35,7 +36,7 @@ services:
       - redis
     volumes:
       - ".:/usr/src/app"
-      - "./docker/php/conf/php.ini:/usr/local/etc/php/php.ini:ro"
+      - "./docker/php/conf/my-php.ini:/usr/local/etc/php/php.ini:ro"
       - "./docker/php/conf/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro"
       - "./docker/uploads/:/usr/src/app/web/uploads"
     working_dir: /usr/src/app
