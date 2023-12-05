@@ -25,7 +25,17 @@ class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
             ->select('k')
             ->join('k.user', 'u')
             ->andWhere('u.saila=:sailaid')->setParameter('sailaid', $sailaid)
+            ->orderBy('u.lanpostua', 'ASC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 
+    public function findallSorted()
+    {
+        $qb = $this->createQueryBuilder('k')
+            ->select('k')
+            ->join('k.user', 'u')
+            ->orderBy('u.lanpostua', 'ASC')
         ;
         return $qb->getQuery()->getResult();
     }

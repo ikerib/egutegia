@@ -153,7 +153,7 @@ class AdminController extends Controller
         if (($saila) && !($saila==="-1") ){
             $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($saila);
         } else {
-            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findall();
+            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSorted();
         }
 
         $year = date('Y');
