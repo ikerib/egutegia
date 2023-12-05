@@ -13,7 +13,7 @@ class SailaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('izena')->add('user');
+        $builder->add('izena')->add('users');
     }/**
      * {@inheritdoc}
      */

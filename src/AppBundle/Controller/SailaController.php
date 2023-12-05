@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Gutxienekoak;
 use AppBundle\Entity\Saila;
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -24,10 +26,16 @@ class SailaController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $sailas = $em->getRepository('AppBundle:Saila')->findAll();
+        $sailak = $em->getRepository('AppBundle:Saila')->findAll();
+        $deleteForms = [];
+        foreach ($sailak as $e) {
+            /** @var Saila $e */
+            $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
+        }
 
         return $this->render('saila/index.html.twig', array(
-            'sailas' => $sailas,
+            'sailak' => $sailak,
+            'deleteForms' => $deleteForms,
         ));
     }
 
@@ -40,7 +48,10 @@ class SailaController extends Controller
     public function newAction(Request $request)
     {
         $saila = new Saila();
-        $form = $this->createForm('AppBundle\Form\SailaType', $saila);
+        $form = $this->createForm('AppBundle\Form\SailaType', $saila, [
+            'action' => $this->generateUrl('admin_saila_new'),
+            'method' => 'POST',
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -67,9 +78,17 @@ class SailaController extends Controller
     {
         $deleteForm = $this->createDeleteForm($saila);
 
+        $deleteForms = [];
+        /** @var User $users */
+        $users = $saila->getUsers();
+//        foreach ($users as $user) {
+//
+//            $deleteForms[$g->getId()] = $this->createRemoveUserForm($user)->createView();
+//        }
         return $this->render('saila/show.html.twig', array(
             'saila' => $saila,
             'delete_form' => $deleteForm->createView(),
+//            'deleteForms' => $deleteForms,
         ));
     }
 
@@ -82,13 +101,21 @@ class SailaController extends Controller
     public function editAction(Request $request, Saila $saila)
     {
         $deleteForm = $this->createDeleteForm($saila);
-        $editForm = $this->createForm('AppBundle\Form\SailaType', $saila);
+        $editForm = $this->createForm('AppBundle\Form\SailaType', $saila, [
+            'action' => $this->generateUrl('admin_saila_edit', ['id' => $saila->getId()]),
+            'method' => 'POST',
+        ]);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            /** @var User $user */
+            foreach ($saila->getUsers() as $user) {
+                $user->setSaila($saila);
+                $this->getDoctrine()->getManager()->persist($user);
+            }
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('admin_saila_edit', array('id' => $saila->getId()));
+            return $this->redirectToRoute('admin_saila_show', array('id' => $saila->getId()));
         }
 
         return $this->render('saila/edit.html.twig', array(
@@ -133,4 +160,25 @@ class SailaController extends Controller
             ->getForm()
         ;
     }
+
+    /**
+     *
+     * @Route("/removeuser/{id}/{userid}", name="admin_saila_remove_user")
+     * @Method("GET")
+     */
+    public function removeUserAction(Saila $saila, $userid)
+    {
+        /** @var User $user */
+        foreach ($saila->getUsers() as $user) {
+            if ( $user->getId() == $userid ) {
+                $em = $this->getDoctrine()->getManager();
+                $user->setSaila(null);
+                $em->persist($user);
+                $em->flush();
+            }
+        }
+
+        return $this->redirectToRoute('admin_saila_show', ['id' => $saila->getId()]);
+    }
+
 }

@@ -69,4 +69,24 @@ class UserController extends Controller
         return $this->redirectToRoute('admin_user_index');
     }
 
+    /**
+     * @Route("/sailburua/{sailaid}/{userid}", name="admin_user_sailburua")
+     * @Method("GET")
+     */
+    public function sailburuaAction($sailaid, $userid)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $em->getRepository('AppBundle:User')->find($userid);
+        if ( $user->getSailburua() ) {
+            $user->setSailburua(null);
+        } else {
+            $user->setSailburua(1);
+        }
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_saila_show', ['id' => $sailaid]);
+    }
 }

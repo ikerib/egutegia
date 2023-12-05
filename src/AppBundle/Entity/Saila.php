@@ -44,14 +44,22 @@ class Saila
     /**
      * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="saila")
-     * @ORM\JoinColumn(name="saila_id", referencedColumnName="id",onDelete="CASCADE")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\User", mappedBy="saila")
      */
-    private $user;
+    private $users;
+
 
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -87,27 +95,40 @@ class Saila
         return $this->izena;
     }
 
+
     /**
-     * Set user.
+     * Add user.
      *
-     * @param \AppBundle\Entity\User|null $user
+     * @param \AppBundle\Entity\User $user
      *
      * @return Saila
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function addUser(\AppBundle\Entity\User $user)
     {
-        $this->user = $user;
+        $this->users[] = $user;
 
         return $this;
     }
 
     /**
-     * Get user.
+     * Remove user.
      *
-     * @return \AppBundle\Entity\User|null
+     * @param \AppBundle\Entity\User $user
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function getUser()
+    public function removeUser(\AppBundle\Entity\User $user)
     {
-        return $this->user;
+        return $this->users->removeElement($user);
+    }
+
+    /**
+     * Get users.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 }

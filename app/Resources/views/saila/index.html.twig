@@ -1,28 +1,101 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Sailas list</h1>
+{% block head_style %}
+    {{ parent() }}
+{% endblock %}
+{% block headline %}{{ 'Sailen zerrenda' | trans }} {% endblock %}
 
-    <table>
+
+{% block content_row %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Sail berria</h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('AppBundle:Saila:new')) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                    <button type="button" class="btn btn-primary" id="btnNewZerrenda">Sortu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default">Sail berria</button>
+    </div>
+
+    <table data-toggle="table"
+           data-classes="table table-hover table-condensed"
+           data-striped="true"
+
+           data-pagination="true"
+           data-page-size="25"
+           data-search="true"
+            {#data-height="300"#}
+
+           data-sort-name="name"
+           data-sort-order="asc"
+
+           data-icon-size="sm"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+
+           data-toolbar="#toolbar"
+           data-show-export="true"
+           data-export-types="['csv','excel', 'pdf']"
+           data-export-options='{
+                 "fileName": "export",
+                 "worksheetName": "export",
+                 "jspdf": {
+                   "autotable": {
+                     "styles": { "rowHeight": 20, "fontSize": 10 },
+                     "headerStyles": { "fillColor": 255, "textColor": 0 },
+                     "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
+                   }
+                 }
+               }'>
+
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Izena</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th data-halign="center" data-align="left" data-field="izena" data-sortable="true">{{ 'Izena' | trans }}</th>
+            <th data-halign="center" data-align="left" data-field="user" data-sortable="true">{{ 'Erabiltzaileak' | trans }}</th>
+            <th data-halign="center" data-align="center"></th>
+        </tr>
         </thead>
         <tbody>
-        {% for saila in sailas %}
+        {% for saila in sailak %}
             <tr>
-                <td><a href="{{ path('admin_saila_show', { 'id': saila.id }) }}">{{ saila.id }}</a></td>
-                <td>{{ saila.izena }}</td>
+                <td><a href="{{ path('admin_saila_show', { 'id': saila.id }) }}">{{ saila.izena }}</a></td>
                 <td>
-                    <ul>
+                    {% for d in saila.users %}
+                        <span class="label label-default">{{ d.displayname }}</span>&nbsp;
+                    {% endfor %}
+                </td>
+                <td>
+                    <ul class="list-inline">
                         <li>
-                            <a href="{{ path('admin_saila_show', { 'id': saila.id }) }}">show</a>
+                            <a href="{{ path('admin_saila_show', { 'id': saila.id }) }}"><i class="fa fa-eye" aria-hidden="true"></i>
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ path('admin_saila_edit', { 'id': saila.id }) }}">edit</a>
+                            <a href="{{ path('admin_saila_edit', { 'id': saila.id }) }}"><i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            {{ form_start(deleteForms[saila.id],{'attr': {'id': saila.id}}) }}
+                            <a class="btnRemoveRow" data-id="{{ saila.id }}"
+                               href="#sailaEditModal{{ saila.id }}">
+                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                            </a>
+                            {{ form_end(deleteForms[saila.id]) }}
                         </li>
                     </ul>
                 </td>
@@ -31,9 +104,47 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_saila_new') }}">Create a new saila</a>
-        </li>
-    </ul>
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            $("#btnBerria").on("click", function () {
+                $("#myModal").modal();
+            });
+
+            $("#btnNewZerrenda").on("click", function () {
+                if ( $("#appbundle_saila_izena").val().length > 0 ) {
+                    $("#frmNewSaila").submit();
+                } else {
+                    bootbox.alert("Izena ezartzea beharrezkoa da");
+                }
+            });
+
+            $('.btnRemoveRow').on('click', function () {
+                var that = $(this);
+                bootbox.confirm({
+                    title: "{{ 'Adi!' | trans }}",
+                    message: "{{ 'msg.ezabatu' | trans }}",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result === true) {
+                            $(that).closest('form').submit();
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+
 {% endblock %}

@@ -1,32 +1,127 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Saila</h1>
+{% block head_style %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+    <style>
+        .select2-close-mask{
+            z-index: 2099;
+        }
+        .select2-dropdown{
+            z-index: 3051;
+        }
+    </style>
+{% endblock %}
+{% block headline %}{{ 'Saila ' | trans }}{{ saila.izena }} {% endblock %}
 
-    <table>
+
+{% block content_row %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Gehitu erabiltzailea</h4>
+                </div>
+                <div class="modal-body">
+                    {{ render(controller('AppBundle:Saila:edit', {'id': saila.id})) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Utzi</button>
+                    <button type="button" class="btn btn-primary" id="btnNewZerrendaUser">Sortu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toolbar">
+        <button id="btnBerria" class="btn btn-default">Gehitu langilea</button>
+    </div>
+    <div>&nbsp;</div>
+
+    <table class="table table-condensed table-hover table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Langilea</th>
+            <th>Sailburua</th>
+            <th></th>
+        </tr>
+        </thead>
         <tbody>
+        {% for u in saila.users %}
             <tr>
-                <th>Id</th>
-                <td>{{ saila.id }}</td>
+                <td>{{ u.displayname }}</td>
+                <td>
+                    {% if u.sailburua %}
+                        <a class="btn btn-success btn-sm" href="{{ path('admin_user_sailburua', {'sailaid': saila.id, 'userid': u.id}) }}">
+                            Bai
+                        </a>
+                    {% else %}
+                        <a class="btn btn-danger btn-sm" href="{{ path('admin_user_sailburua', {'sailaid': saila.id, 'userid': u.id}) }}">
+                            Ez
+                        </a>
+                    {% endif %}
+                </td>
+                <td>
+                    <a class="btn btn-default" href="{{ path('admin_saila_remove_user', {'id': saila.id, 'userid': u.id}) }}">
+                        <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                    </a>
+                </td>
             </tr>
-            <tr>
-                <th>Izena</th>
-                <td>{{ saila.izena }}</td>
-            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('admin_saila_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('admin_saila_edit', { 'id': saila.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+{% endblock %}
+{% block foot_script %}
+    {{ parent() }}
+
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/eu.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#appbundle_saila_users').select2({width: '80%'});
+            $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+
+            $("#btnBerria").on("click", function () {
+                $("#myModal").modal();
+            });
+
+            $("#btnNewZerrendaUser").on("click", function () {
+                var u = $("#appbundle_saila_users").val();
+                if ( u.length > 0 )
+                    $("#frmSailaAddUser").submit();
+                else
+                    bootbox.alert("Langile bat aukeratu behar duzu.");
+            });
+
+            $(".btnRemoveRow").on("click", function () {
+                var that = $(this);
+                bootbox.confirm({
+                    title: "{{ 'Adi!' | trans }}",
+                    message: "{{ 'Ziur zaude ezabatu nahi duzula?' | trans }}",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> {{ 'Ezeztatu' | trans }}'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> {{ 'Onartu' | trans }}'
+                        }
+                    },
+                    callback: function ( result ) {
+                        if ( result === true ) {
+                            $(that).closest("form").submit();
+                        }
+                    }
+                });
+            });
+
+        });
+
+    </script>
 {% endblock %}

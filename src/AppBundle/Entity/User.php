@@ -95,6 +95,13 @@ class User extends BaseUser implements LdapUserInterface
     protected $lanpostua;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="sailburua", type="boolean", nullable=true)
+     */
+    private $sailburua;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Expose
      */
@@ -153,9 +160,10 @@ class User extends BaseUser implements LdapUserInterface
     /**
      * @var \AppBundle\Entity\Saila
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Saila", mappedBy="saila")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Saila", inversedBy="users")
+     * @ORM\JoinColumn(name="saila_id", referencedColumnName="id",onDelete="CASCADE")
      */
-    protected $saila;
+    private $saila;
 
     /**
      * Constructor.
@@ -644,38 +652,50 @@ class User extends BaseUser implements LdapUserInterface
     }
 
     /**
-     * Add saila.
+     * Set saila.
      *
-     * @param \AppBundle\Entity\Saila $saila
+     * @param \AppBundle\Entity\Saila|null $saila
      *
      * @return User
      */
-    public function addSaila(\AppBundle\Entity\Saila $saila)
+    public function setSaila(\AppBundle\Entity\Saila $saila = null)
     {
-        $this->saila[] = $saila;
+        $this->saila = $saila;
 
         return $this;
     }
 
     /**
-     * Remove saila.
-     *
-     * @param \AppBundle\Entity\Saila $saila
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeSaila(\AppBundle\Entity\Saila $saila)
-    {
-        return $this->saila->removeElement($saila);
-    }
-
-    /**
      * Get saila.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \AppBundle\Entity\Saila|null
      */
     public function getSaila()
     {
         return $this->saila;
+    }
+
+    /**
+     * Set sailburua.
+     *
+     * @param bool|null $sailburua
+     *
+     * @return User
+     */
+    public function setSailburua($sailburua = null)
+    {
+        $this->sailburua = $sailburua;
+
+        return $this;
+    }
+
+    /**
+     * Get sailburua.
+     *
+     * @return bool|null
+     */
+    public function getSailburua()
+    {
+        return $this->sailburua;
     }
 }
