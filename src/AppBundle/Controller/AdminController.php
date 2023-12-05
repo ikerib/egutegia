@@ -146,7 +146,8 @@ class AdminController extends Controller
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
-        $sailak = $em->getRepository('AppBundle:User')->getSailak();
+//        $sailak = $em->getRepository('AppBundle:User')->getSailak();
+        $sailak = $em->getRepository('AppBundle:Saila')->findAll();
 
         $saila = $request->query->get('saila');
         if (($saila) && !($saila==="-1") ){

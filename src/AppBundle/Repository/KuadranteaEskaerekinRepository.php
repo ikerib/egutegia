@@ -20,11 +20,11 @@ class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findallSaila($sailIzena) {
+    public function findallSaila($sailaid) {
         $qb = $this->createQueryBuilder('k')
             ->select('k')
             ->join('k.user', 'u')
-            ->andWhere('u.ldapsaila=:sailizena OR u.department=:sailizena')->setParameter('sailizena', $sailIzena)
+            ->andWhere('u.saila=:sailaid')->setParameter('sailaid', $sailaid)
 
         ;
         return $qb->getQuery()->getResult();
