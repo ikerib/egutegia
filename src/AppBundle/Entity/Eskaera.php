@@ -82,7 +82,6 @@ class Eskaera
      */
     private $total = 0;
 
-
     /**
      * @var decimal
      *
@@ -115,6 +114,12 @@ class Eskaera
      * @ORM\Column(name="abiatua", type="boolean", nullable=true, options={"default"=false})
      */
     private $abiatua=false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="bertanbehera", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $bertanbehera=false;
 
     /**
      * @var bool
@@ -1033,5 +1038,29 @@ class Eskaera
     public function getKostua()
     {
         return $this->kostua;
+    }
+
+    /**
+     * Set bertanbehera.
+     *
+     * @param bool|null $bertanbehera
+     *
+     * @return Eskaera
+     */
+    public function setBertanbehera($bertanbehera = null)
+    {
+        $this->bertanbehera = $bertanbehera;
+
+        return $this;
+    }
+
+    /**
+     * Get bertanbehera.
+     *
+     * @return bool|null
+     */
+    public function getBertanbehera()
+    {
+        return $this->bertanbehera;
     }
 }

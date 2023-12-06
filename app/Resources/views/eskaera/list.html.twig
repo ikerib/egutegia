@@ -221,52 +221,53 @@
                             </span>
                         </td>
 
-                        <td>
+                        <td>{{ eskaera.bertanbehera }}
                             <ul class="list text-left">
-                                <li>
-                                    <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
-                                        <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
-                                    </a>
-                                </li>
+                                {% if not eskaera.bertanbehera == 1%}
+                                    <li>
+                                        <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
+                                            <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                        </a>
+                                    </li>
 
-                                {% if eskaera.type.id == type_lizentzia %}
-                                    {% if eskaera.justifikanteName != null %}
+                                    {% if eskaera.type.id == type_lizentzia %}
+                                        {% if eskaera.justifikanteName != null %}
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                                    <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                         <li>
-                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
-                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
                                             </a>
                                         </li>
                                     {% endif %}
-                                    <li>
-                                        <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
-                                        </a>
-                                    </li>
-                                {% endif %}
 
 
-                                {% if eskaera.egutegian == false %}
-                                    <li>
-                                        {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
-                                        <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
-                                           href="#eskaeraEditModal{{ eskaera.id }}">
-                                            <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
-                                        </a>
-                                        {{ form_end(deleteForms[eskaera.id]) }}
-                                    </li>
-                                {% endif %}
+                                    {% if eskaera.egutegian == false %}
+                                        <li>
+                                            {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
+                                            <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
+                                               href="#eskaeraEditModal{{ eskaera.id }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
+                                            </a>
+                                            {{ form_end(deleteForms[eskaera.id]) }}
+                                        </li>
+                                    {% endif %}
 
-                                {% if eskaera.amaitua != true %}
-                                    {% set sinatzeprozesua = true %}
-                                    {% if eskaera.type %}
-                                        {%  if eskaera.type.id == type_lizentzia %}
-                                            {% if eskaera.lizentziamota %}
-                                                {% if eskaera.lizentziamota.sinatubehar == false %}
-                                                    {% set sinatzeprozesua = false %}
+                                    {% if eskaera.amaitua != true %}
+                                        {% set sinatzeprozesua = true %}
+                                        {% if eskaera.type %}
+                                            {%  if eskaera.type.id == type_lizentzia %}
+                                                {% if eskaera.lizentziamota %}
+                                                    {% if eskaera.lizentziamota.sinatubehar == false %}
+                                                        {% set sinatzeprozesua = false %}
+                                                    {% endif %}
                                                 {% endif %}
                                             {% endif %}
                                         {% endif %}
-                                    {% endif %}
                                         <li>
                                             {% if eskaera.bideratua %}
                                                 <i class="fa fa-paper-plane" aria-hidden="true"></i>
@@ -278,36 +279,38 @@
                                             {% endif %}
 
                                         </li>
-                                {% endif %}
+                                    {% endif %}
 
-                                {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
-                                {% if eskaera.amaitua and eskaera.emaitza == true %}
+                                    {#BIDERATUA ETA GAUZATUA BADAGO,EGUTEGIAN GEHITZEKO AUKERA EMAN#}
+                                    {% if eskaera.amaitua and eskaera.emaitza == true %}
 
+                                        <li>
+                                            <a href="javascript:void(0);" class="btnEskaeraEgutegira"
+                                               data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="javascript:void(0);" class="btnEskaeraGauzatuaMarkatu"
+                                               data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
+                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                            </a>
+                                        </li>
+
+                                    {% endif %}
                                     <li>
-                                        <a href="javascript:void(0);" class="btnEskaeraEgutegira"
-                                           data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
-                                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                                        <a class="btnMezua" data-userid="{{ eskaera.user.id }}" data-eskaeraid="{{ eskaera.id }}" href="javascript:void(0);">
+                                            <i class="fa fa-envelope"></i> Mezua bidali
                                         </a>
                                     </li>
-
                                     <li>
-                                        <a href="javascript:void(0);" class="btnEskaeraGauzatuaMarkatu"
-                                           data-id="{{ eskaera.id }}" data-egutegian="{{ eskaera.egutegian }}">
-                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                        <a href="{{ path('admin_eskaera_bertan_behera', {'id': eskaera.id}) }}">
+                                            <i class="fa fa-deaf"></i> Bertan behera utzi
                                         </a>
                                     </li>
-
                                 {% endif %}
-                                <li>
-                                    <a class="btnMezua" data-userid="{{ eskaera.user.id }}" data-eskaeraid="{{ eskaera.id }}" href="javascript:void(0);">
-                                        <i class="fa fa-envelope"></i> Mezua bidali
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('admin_eskaera_bertan_behera', {'id': eskaera.id}) }}">
-                                        <i class="fa fa-deaf"></i> Bertan behera utzi
-                                    </a>
-                                </li>
+
                             </ul>
                         </td>
                     </tr>
@@ -615,7 +618,7 @@
 
 
                     $detail.html(html);
-                }).fail(function () {
+                %}).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
                         className: "bb-alternate-modal",

@@ -140,7 +140,6 @@ class EventRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-
     public function getUserYearEvents($userid, $year) {
         $start = $year . "-01-01";
         ++$year;
@@ -157,6 +156,17 @@ class EventRepository extends EntityRepository
             ->orderBy('e.start_date','ASC')
         ;
 
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByDates($hasi, $amaitu)
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->andWhere('e.start_date = :hasi')->setParameter('hasi', $hasi)
+            ->andWhere('e.end_date = :amaitu')->setParameter('amaitu', $amaitu)
+        ;
+
+        $sql = $qb->getQuery()->getSQL();
         return $qb->getQuery()->getResult();
     }
 }

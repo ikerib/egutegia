@@ -484,63 +484,7 @@ class ApiController extends FOSRestController
      */
     public function deleteEventsAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $event = $em->getRepository('AppBundle:Event')->find($id);
-
-        if (null === $event) {
-            return new View('Event ez da aurkitu', Response::HTTP_NOT_FOUND);
-        }
-
-        /** @var Calendar $calendar */
-        $calendar = $event->getCalendar();
-
-        /** @var Type $type */
-        $type = $event->getType();
-        if ($type->getRelated()) {
-            /** @var Type $t */
-            $t = $event->getType();
-            if ('hours_free' === $t->getRelated()) {
-                $calendar->setHoursFree((float)($calendar->getHoursFree()) + $event->getHours());
-            }
-            if ('hours_self' === $t->getRelated()) {
-                /* Maiatzean (2018) Event entitarean sortu aurretik zuten balioak gordetzen hasi nintzen
-                   ezabatzen denean, datu horiek berreskuratu ahal izateko. Baina aurretik grabatutako datuetan... kalkuluak egin behar
-                 */
-                if (null !== $event->getNondik()) {  // Aurreko egoerako datuak grabatuak daude, iuju!
-                    if ('Egunak' === $event->getNondik()) {
-                        $calendar->setHoursSelf((float)($calendar->getHoursSelf()) + (float)($event->getHours()));
-                    } else {
-                        $calendar->setHoursSelfHalf((float)($calendar->getHoursSelfHalf()) + (float)($event->getHours()));
-                    }
-                } else { // Kalkuluak egin behar. 2019rako egutegirako datorren elseko kodea ezaba daiteke, event guztiek izango bait dituzte datuak
-                    $jornada = (float)($calendar->getHoursDay());
-                    $orduak  = (float)($event->getHours());
-                    if ($orduak < $jornada) {
-                        $osoa      = $orduak;
-                        $partziala = $orduak;
-                    } else {
-                        $zenbatEgun = $orduak / $jornada;
-
-                        $orduOsoak = $jornada * $zenbatEgun;
-                        $osoa      = $orduak;
-                        $partziala = $orduak - $orduOsoak;
-                    }
-                    $calendar->setHoursSelf((float)($calendar->getHoursSelf()) + (float)$osoa * - 1);
-                    $calendar->setHoursSelfHalf((float)($calendar->getHoursSelfHalf()) + (float)$partziala * - 1);
-                }
-            }
-            if ('hours_compensed' === $t->getRelated()) {
-                $calendar->setHoursCompensed((float)($calendar->getHoursCompensed()) + $event->getHours());
-            }
-            if ('hours_sindical' === $t->getRelated()) {
-                $calendar->setHoursSindikal((float)($calendar->getHoursSindikal()) + $event->getHours());
-            }
-            $em->persist($calendar);
-        }
-
-        $em->remove($event);
-        $em->flush();
+        $event = $this->get('app.calendar.service')->deleteEvent($id);
 
         $view = View::create();
         $view->setData($event);

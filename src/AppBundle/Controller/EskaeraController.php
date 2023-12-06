@@ -122,10 +122,7 @@ class EskaeraController extends Controller {
         }
 
         $lizentziamotak = $em->getRepository('AppBundle:Lizentziamota')->findAll();
-
         $ezeztatuak = $this->get('app.eskaera.repository')->list('not-approved', $history, $lm);
-
-
         $sinatzaileroldutenak = $em->getRepository('AppBundle:Sinatzaileakdet')->getSinatzaileRolDutenak();
 
         return $this->render(
@@ -194,7 +191,33 @@ class EskaeraController extends Controller {
      */
     public function bertanBeheraAction(Eskaera $eskaera)
     {
+        $em = $this->getDoctrine()->getManager();
+        // Sortu den Event bilatu
+        $events = $em->getRepository(Event::class)->findByDates($eskaera->getHasi(), $eskaera->getAmaitu());
 
+        if (!$events) {
+            throw new \Exception('Eskaera honekin bat egiten duten egunik ez da topatu egutegian');
+        }
+
+//        /** @var \GuzzleHttp\Client $client */
+//        $client = $this->get('eight_points_guzzle.client.api_put_firma');
+//
+//        $event = $events[0];
+//        $url = '/app_dev.php/api/events/'.$event->getId();
+//
+//        $resp = $client->request('DELETE', $url);
+
+
+
+        /** @var Event $event */
+        $event = $events[0];
+        /** @var Event $event */
+        $event = $this->get('app.calendar.service')->deleteEvent($event->getId());
+        $eskaera->setBertanbehera(true);
+        $em->persist($eskaera);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_eskaera_list', ['q' => 'unsigned']);
     }
 
     /**
