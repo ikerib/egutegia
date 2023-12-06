@@ -221,9 +221,9 @@
                             </span>
                         </td>
 
-                        <td>{{ eskaera.bertanbehera }}
-                            <ul class="list text-left">
-                                {% if not eskaera.bertanbehera == 1%}
+                        <td>
+                            {% if not eskaera.bertanbehera == 1%}
+                                <ul class="list text-left">
                                     <li>
                                         <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}" target="_blank">
                                             <i class="fa fa-eye" aria-hidden="true"></i> {{ "Ikusi" | trans }}
@@ -309,9 +309,11 @@
                                             <i class="fa fa-deaf"></i> Bertan behera utzi
                                         </a>
                                     </li>
-                                {% endif %}
+                                </ul>
+                            {% else %}
+                                Eskaera baliogabetua.
+                            {% endif %}
 
-                            </ul>
                         </td>
                     </tr>
 
