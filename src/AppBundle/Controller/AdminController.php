@@ -133,46 +133,6 @@ class AdminController extends Controller
         ]);
     }
 
-
-    /**
-     * @Route("/kuadrantea-eskaerekin", name="admin_kuadrantea_eskaerekin")
-     *
-     * @return Response
-     *
-     * @internal param Request $request
-     **/
-    public function kuadranteaeskaerekinAction(Request $request): ?Response
-    {
-        /** @var EntityManager $em */
-        $em = $this->getDoctrine()->getManager();
-
-//        $sailak = $em->getRepository('AppBundle:User')->getSailak();
-        $sailak = $em->getRepository('AppBundle:Saila')->findAll();
-
-        $saila = $request->query->get('saila');
-        if (($saila) && !($saila==="-1") ){
-            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($saila);
-        } else {
-            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSorted();
-        }
-
-        $year = date('Y');
-        // urteko lehen astea bada, aurreko urtea aukeratu
-        $date_now = new DateTime();
-//        $date2    = new DateTime("06/01/".$year);
-        $date2    = new DateTime($year.'-01-06');
-
-        if ($date_now <= $date2) {
-            --$year;
-        }
-        return $this->render('default/kuadrantea.html.twig', [
-            'results' => $results,
-            'year' => $year,
-            'sailak' => $sailak
-        ]);
-    }
-
-
     /**
      * @Route("/urteko-balantzea", name="admin_urteko_balantzea")
      *
@@ -199,7 +159,6 @@ class AdminController extends Controller
             'year' => $year
         ]);
     }
-
 
     /**
      * @Route ("/print/{id}", name="print_calendar")

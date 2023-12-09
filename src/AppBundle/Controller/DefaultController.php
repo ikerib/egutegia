@@ -117,11 +117,14 @@ class DefaultController extends Controller
         if (($unreadMessages) && (! $authorizationChecker->isGranted('ROLE_PREVIOUS_ADMIN'))) {
             return $this->redirectToRoute('user_notifycation');
         }
-
+        $calendar = null;
         if ($calendarid === null) {
             /** @var Calendar $calendar */
-            $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
-            $calendar = $calendar[0];
+            $calendars = $em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), date('Y'));
+            if (count($calendars)>0) {
+                $calendar = $calendars[0];
+            }
+
         } else {
             /** @var Calendar $calendar */
             $calendar = $em->getRepository('AppBundle:Calendar')->find($calendarid);
@@ -299,9 +302,8 @@ class DefaultController extends Controller
         /** @var User $user */
         $user = $this->getUser();
 
-//        $sailIzena = $user->getLdapsaila();
         $sailIzena = $user->getDepartment();
-        $eskaerak = $em->getRepository('AppBundle:Eskaera')->getAllBySaila($sailIzena);
+        $eskaerak = $em->getRepository('AppBundle:Eskaera')->getAllBySailaId($user->getSaila()->getId());
 
         return $this->render(
             'default/saila_eskaerak.html.twig',

@@ -123,15 +123,15 @@ class Builder implements ContainerAwareInterface
         if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
             if ($options['saila'] === "Udaltzaingoa") {
                 $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
-                $menu->addChild(
-                    'Exit',
-                    array(
-                        'label'           => 'Modu arruntera izuli',
-                        'route'           => 'saila_dashboard',
-                        'routeParameters' => array('_switch_user' => '_exit'),
-                        'icon'            => 'exit',
-                    )
-                );
+//                $menu->addChild(
+//                    'Exit',
+//                    array(
+//                        'label'           => 'Modu arruntera izuli',
+//                        'route'           => 'saila_dashboard',
+//                        'routeParameters' => array('_switch_user' => '_exit'),
+//                        'icon'            => 'exit',
+//                    )
+//                );
             } else {
                 $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
                 $menu->addChild(
@@ -186,15 +186,15 @@ class Builder implements ContainerAwareInterface
             $menu[ 'User' ]->addChild('divider', ['divider' => true]);
 
             if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN') || $checker->isGranted('ROLE_ARDURADUNA')) {
-                $menu[ 'User' ]->addChild(
-                    'Saila',
-                    array(
-                        'label'  => $this->container->get('translator')->trans('Saila'),
-                        'route'  => 'saila_dashboard',
-                        'icon'   => 'bullhorn',
-                        'extras' => array('safe_label' => true),
-                    )
-                )->setExtra('translation_domain', 'messages');
+//                $menu[ 'User' ]->addChild(
+//                    'Saila',
+//                    array(
+//                        'label'  => $this->container->get('translator')->trans('Saila'),
+//                        'route'  => 'saila_dashboard',
+//                        'icon'   => 'bullhorn',
+//                        'extras' => array('safe_label' => true),
+//                    )
+//                )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild(
                     'Saileko eskaerak',
                     array(
@@ -208,7 +208,8 @@ class Builder implements ContainerAwareInterface
                     'Saileko kuadrantea',
                     array(
                         'label'  => $this->container->get('translator')->trans('Saileko kuadrantea'),
-                        'route'  => 'saila_kuadrantea',
+                        'route'  => 'admin_kuadrantea_eskaerekin',
+                        'routeParameters' => ['saila' => $user->getSaila()->getId()],
                         'icon'   => 'send',
                         'extras' => array('safe_label' => true),
                     )
@@ -222,7 +223,8 @@ class Builder implements ContainerAwareInterface
                     'kuadrantea',
                     array(
                         'label'  => $this->container->get('translator')->trans('Saileko kuadrantea'),
-                        'route'  => 'admin_kuadrantea',
+                        'route'  => 'admin_kuadrantea_eskaerekin',
+                        'routeParameters' => ['saila' => $user->getSaila()->getId()],
                         'icon'   => 'send',
                         'extras' => array('safe_label' => true),
                     )

@@ -211,6 +211,18 @@ class EskaeraRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function getAllBySailaId($sailaid)
+    {
+        $qm = $this->createQueryBuilder('e')
+            ->innerJoin('e.user', 'u')
+            ->innerJoin('u.saila', 's')
+            ->andWhere('s.id = :sailaid')->setParameter('sailaid', $sailaid)
+            ->orderBy('e.id', 'DESC')
+        ;
+
+        return $qm->getQuery()->getResult();
+    }
+
     public function getAllBySaila($sailIzena)
     {
         $qm = $this->createQueryBuilder('e')
