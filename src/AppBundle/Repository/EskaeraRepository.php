@@ -259,6 +259,7 @@ class EskaeraRepository extends EntityRepository
             ->andWhere('e.hasi between :start and :end')->setParameter('start', $start)->setParameter('end', $end)
             ->andWhere('u.id = :userid')->setParameter('userid', $userid)
             ->andWhere('e.emaitza!=0')
+            ->andWhere('e.bertanbehera != 1')
             ->orderBy('e.amaitu','ASC')
         ;
 
