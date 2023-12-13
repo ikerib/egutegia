@@ -236,15 +236,15 @@ class EskaeraController extends Controller {
             throw new \Exception('Eskaera honekin bat egiten duten egunik ez da topatu egutegian');
         }
 
-//        /** @var \GuzzleHttp\Client $client */
-//        $client = $this->get('eight_points_guzzle.client.api_put_firma');
-//
-//        $event = $events[0];
-//        $url = '/app_dev.php/api/events/'.$event->getId();
-//
-//        $resp = $client->request('DELETE', $url);
+        // Firma ezabatu
+        $firma = $eskaera->getFirma();
+        $em->remove($firma);
 
-
+        // Jakinarazpena ezabatu
+        $notications = $eskaera->getNotifications();
+        foreach ($notications as $notication) {
+            $em->remove($notication);
+        }
 
         /** @var Event $event */
         $event = $events[0];

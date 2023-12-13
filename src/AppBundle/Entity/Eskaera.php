@@ -232,7 +232,7 @@ class Eskaera
     protected $notifications;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="eskaera")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Firma", mappedBy="eskaera", cascade={"persist"})
      */
     protected $firma;
 

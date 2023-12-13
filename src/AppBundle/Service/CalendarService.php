@@ -148,8 +148,6 @@ class CalendarService
 
     public function deleteEvent($id)
     {
-
-
         $event = $this->em->getRepository('AppBundle:Event')->find($id);
 
         if (null === $event) {
