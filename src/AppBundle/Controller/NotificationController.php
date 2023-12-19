@@ -81,7 +81,6 @@ class NotificationController extends Controller
         );
     }
 
-
     /**
      * Lists all notification entities.
      *
@@ -132,8 +131,6 @@ class NotificationController extends Controller
         );
     }
 
-
-
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
      *
@@ -164,7 +161,6 @@ class NotificationController extends Controller
             )
         );
     }
-
 
     /**
      * Lists all notification entities for everyone. Only ROLE_SUPER_ADMIN
@@ -207,7 +203,6 @@ class NotificationController extends Controller
             )
         );
     }
-
 
     /**
      * Finds and displays a notification entity.

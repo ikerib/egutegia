@@ -82,7 +82,7 @@
         <thead>
         <tr>
             <th data-visible="false" data-field="sinatzeprozesua"></th>
-{#            <th data-halign="center" data-align="center" data-field="id" data-visible="true" data-sortable="true">#</th>#}
+            <th data-visible="false" data-halign="center" data-align="center" data-field="id">#</th>
             <th data-halign="center" data-align="center" data-field="eskaera" data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
             <th data-halign="center" data-align="center" data-field="result" data-sortable="true">{{ 'Erantzuna' | trans }}</th>
             <th data-halign="center" data-align="left" data-field="username" data-sortable="true">{{ 'Langilea' | trans }}</th>
@@ -101,7 +101,7 @@
         {% for notification in notifications %}
             <tr>
                 <td>{{ notification.sinatzeprozesua }}</td>
-{#                <td>{{ notification.id }}</td>#}
+                <td>{{ notification.id }}</td>
                 <td>{{ notification.eskaera.id }}</td>
                 <td>
                     {% if notification.completed %}
