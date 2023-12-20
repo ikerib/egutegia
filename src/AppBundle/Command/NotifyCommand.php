@@ -75,10 +75,10 @@ class NotifyCommand extends ContainerAwareCommand
 
                 if ($berria === 1) {
                     $berria = 0;
-                    $textua = ' - Eskaera berria: Nº '. $notify['id'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
+                    $textua = $notify['name'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
 
                 } else {
-                    $textua .= '<br />- Eskaera berria: Nº '. $notify['id'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
+                    $textua .= '<br />'. $notify['name'] . ' Hasi: '.$hasi.' Amaitu: '.$amaitu;
                 }
 
 
