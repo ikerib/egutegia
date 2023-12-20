@@ -60,14 +60,14 @@ class Builder implements ContainerAwareInterface
                     'Eskaerak',
                     array(
                         'route'           => 'admin_eskaera_list',
-                        'routeParameters' => array('q' => 'no-way', 'history'=>'0'),
+                        'routeParameters' => array('q' => 'no-way', 'history'=>'0', 'bertanbehera' => '0'),
                         'icon'            => 'inbox',
                         'label'           => $this->container->get('translator')->trans('main_menu.eskaerak')." <span class='badge badge-error'>".\count($eskaerak)."</span>",
                         'extras'          => array('safe_label' => true),
                     )
                 );
             } else {
-                $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list','routeParameters' => array('q' => 'unsigned'),])
+                $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list','routeParameters' => array('q' => 'unsigned', 'bertanbehera'=>0),])
 
                      ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             }

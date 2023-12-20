@@ -3,7 +3,8 @@
 {% block headline %}{{ 'Justifikantea gehitu' | trans }} {% endblock %}
 
 {% block content_row %}
-
+    {% set history = app.request.get('history') %}
+    {% set bertanbehera = app.request.get('bertanbehera') %}
     {{ form_start(edit_form) }}
     <div class="form-group">
         <label for="min-date" class="col-sm-4 control-label">{{ 'Justifikantea gehitu' | trans }}</label>
@@ -17,7 +18,7 @@
     <div class="col-md-4"></div>
     <div class="col-md-4">
         <input type="submit" value="{{ "Gorde" | trans }}" class="btn btn-primary" />
-        <a class="btn btn-default" href="{{ path('admin_eskaera_list', {'q':'nojustified'}) }}">Ezeztatu</a>
+        <a class="btn btn-default" href="{{ path('admin_eskaera_list', {'q':'nojustified', 'history': histor, 'bertanbehera': bertanbehera}) }}">Ezeztatu</a>
     </div>
     <div class="col-md-4"></div>
 

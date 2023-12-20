@@ -140,15 +140,16 @@ class EskaeraController extends Controller {
 
         $q       = $request->query->get('q');
         $history = $request->query->get('history', '1');
+        $bertanbehera = $request->query->get('bertanbehera', '0');
         $lm = $request->query->get('lm');
 
         if ((($q === null) || ($q === 'all')) && $history === '1')
         {
-            $eskaeras = $em->getRepository('AppBundle:Eskaera')->listAll();
+            $eskaeras = $em->getRepository('AppBundle:Eskaera')->listAll($bertanbehera);
         }
         else
         {
-            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history, $lm);
+            $eskaeras = $this->get('app.eskaera.repository')->list($q, $history, $lm, $bertanbehera);
         }
 
         $deleteForms = [];
@@ -159,7 +160,7 @@ class EskaeraController extends Controller {
         }
 
         $lizentziamotak = $em->getRepository('AppBundle:Lizentziamota')->findAll();
-        $ezeztatuak = $this->get('app.eskaera.repository')->list('not-approved', $history, $lm);
+        $ezeztatuak = $this->get('app.eskaera.repository')->list('not-approved', $history, $lm, $bertanbehera);
         $sinatzaileroldutenak = $em->getRepository('AppBundle:Sinatzaileakdet')->getSinatzaileRolDutenak();
 
         return $this->render(
@@ -171,6 +172,7 @@ class EskaeraController extends Controller {
                 'lizentziamotak'=> $lizentziamotak,
                 'q'             => $q,
                 'history'       => $history,
+                'bertanbehera'       => $bertanbehera,
                 'lm'            => $lm,
                 'sinatzaileroldutenak' => $sinatzaileroldutenak
             )
@@ -185,7 +187,8 @@ class EskaeraController extends Controller {
     public function transferAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $history = $request->query->get('history', '1');
+        $bertanbehera = $request->query->get('bertanbehera', '0');
         $destinouserid  = $request->request->get('destinouserid');
         $firmaid        = $request->request->get('firmaid');
         $notifyid       = $request->request->get('notifyid');
@@ -218,6 +221,8 @@ class EskaeraController extends Controller {
 
         return $this->redirectToRoute('admin_eskaera_list', [
             'q' => 'unsigned',
+            'history' => $history,
+            'bertanbehera' => $bertanbehera
         ]);
     }
 
@@ -226,9 +231,11 @@ class EskaeraController extends Controller {
      * @Route("/bertanbehera/{id}", name="admin_eskaera_bertan_behera")
      * @Method("GET")
      */
-    public function bertanBeheraAction(Eskaera $eskaera)
+    public function bertanBeheraAction(Request  $request, Eskaera $eskaera)
     {
         $em = $this->getDoctrine()->getManager();
+        $history = $request->query->get('history', '1');
+        $bertanbehera = $request->query->get('bertanbehera', '0');
         // Sortu den Event bilatu
         $events = $em->getRepository(Event::class)->findByDates($eskaera->getHasi(), $eskaera->getAmaitu());
 
@@ -254,7 +261,11 @@ class EskaeraController extends Controller {
         $em->persist($eskaera);
         $em->flush();
 
-        return $this->redirectToRoute('admin_eskaera_list', ['q' => 'unsigned']);
+        return $this->redirectToRoute('admin_eskaera_list', [
+            'q' => 'unsigned',
+            'history' => $history,
+            'bertanbehera' => $bertanbehera
+        ]);
     }
 
     /**
@@ -621,6 +632,7 @@ class EskaeraController extends Controller {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $q       = $request->query->get('q');
         $history = $request->query->get('history', '0');
+        $bertanbehera = $request->query->get('bertanbehera', '0');
         $lm = $request->query->get('lm');
 
         $deleteForm = $this->createDeleteForm($eskaera);
@@ -737,6 +749,7 @@ class EskaeraController extends Controller {
             return $this->redirectToRoute('admin_eskaera_list', [
                 'q'=>$q,
                 'history'=> $history,
+                'bertanbehera' => $bertanbehera,
                 'lm'=>$lm
             ]);
         }

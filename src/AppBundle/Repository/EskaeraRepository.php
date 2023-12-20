@@ -23,11 +23,8 @@ class EskaeraRepository extends EntityRepository
         $this->lizentziaType = $lizentziaType;
     }
 
-    public function listAll()
+    public function listAll($bertanbehera)
     {
-//        $year = date('Y')-2;
-//        $noiz = "$year-01-01";
-
         $qb = $this->_em->createQueryBuilder()
             ->select('e, m, u, c, f, t, s')
             ->from('AppBundle:Eskaera', 'e')
@@ -37,13 +34,17 @@ class EskaeraRepository extends EntityRepository
             ->leftJoin('e.calendar', 'c')
             ->leftJoin('e.firma', 'f')
             ->leftJoin('e.sinatzaileak', 's')
-//            ->andWhere('e.noiz > :noiz')->setParameter('noiz', $noiz)
             ;
+
+        if ('1' === $bertanbehera) {
+            $qb->andWhere('e.bertanbehera != 1');
+        }
+
 
         return $qb->getQuery()->getResult();
     }
 
-    public function list($q, $history, $lm)
+    public function list($q, $history, $lm, $bertanbehera)
     {
         $em  = $this->getEntityManager();
         $dql = '';
@@ -130,9 +131,10 @@ class EskaeraRepository extends EntityRepository
             $currentYEAR = date('Y');
             $qb->innerJoin('e.calendar', 'cc')->andWhere('cc.year = :year')->setParameter('year', $currentYEAR);
         }
+        if ('1' === $bertanbehera) {
+            $qb->andWhere('e.bertanbehera != 1');
+        }
 
-
-//        return $query->getResult();
         return $qb->getQuery()->getResult();
     }
 
