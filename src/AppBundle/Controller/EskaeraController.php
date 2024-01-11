@@ -239,8 +239,11 @@ class EskaeraController extends Controller {
         // Sortu den Event bilatu
         $events = $em->getRepository(Event::class)->findByDates($eskaera->getHasi(), $eskaera->getAmaitu());
 
-        if (!$events) {
-            throw new \Exception('Eskaera honekin bat egiten duten egunik ez da topatu egutegian');
+        if ($events) {
+            /** @var Event $event */
+            $event = $events[0];
+            /** @var Event $event */
+            $event = $this->get('app.calendar.service')->deleteEvent($event->getId());
         }
 
         // Firma ezabatu
@@ -253,10 +256,6 @@ class EskaeraController extends Controller {
             $em->remove($notication);
         }
 
-        /** @var Event $event */
-        $event = $events[0];
-        /** @var Event $event */
-        $event = $this->get('app.calendar.service')->deleteEvent($event->getId());
         $eskaera->setBertanbehera(true);
         $em->persist($eskaera);
         $em->flush();
