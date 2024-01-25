@@ -248,7 +248,10 @@ class EskaeraController extends Controller {
 
         // Firma ezabatu
         $firma = $eskaera->getFirma();
-        $em->remove($firma);
+        if ($firma) {
+            $em->remove($firma);
+        }
+
 
         // Jakinarazpena ezabatu
         $notications = $eskaera->getNotifications();
