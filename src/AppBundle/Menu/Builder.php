@@ -53,6 +53,7 @@ class Builder implements ContainerAwareInterface
             $menu->addChild('Herramintak', ['icon' => 'wrench'])->setExtra('translation_domain', 'messages');
 
             $menu['Herramintak']->addChild('Langileak', ['icon' => 'user','route' => 'admin_user_index'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+            $menu['Herramintak']->addChild('Langileen Eskaerak', ['icon' => 'user','route' => 'admin_user_langileak'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             $menu['Herramintak']->addChild('Jakinazpenak transferitu', ['icon' => 'transfer','route' => 'notification_transfer'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
 
             if (\count($eskaerak) > 0) {

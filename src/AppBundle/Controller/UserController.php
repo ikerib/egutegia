@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\Saila;
 use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,6 +38,41 @@ class UserController extends Controller
             'users'         => $users,
         ));
     }
+
+    /**
+     * @Route("/langileak", name="admin_user_langileak")
+     * @Method("GET")
+     */
+    public function langileakAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $users = $em->getRepository('AppBundle:User')->getAllAktibo();
+
+        return $this->render('user/langileak.html.twig', array(
+            'users'         => $users,
+            'sailak' => $em->getRepository(Saila::class)->findAll(),
+        ));
+    }
+
+    /**
+     * @Route("/langileak/{id}/eskaerak", name="admin_user_eskaerak")
+     * @Method("GET")
+     */
+    public function eskaerakction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var User $user */
+        $user = $em->getRepository('AppBundle:User')->find($id);
+        /** @var Eskaera $eskaerak */
+        $eskaerak = $em->getRepository(Eskaera::class)->findAllByUser($id);
+
+        return $this->render('user/langile_eskaerak.html.twig', array(
+            'user'      => $user,
+            'eskaerak'  => $eskaerak
+        ));
+    }
+
 
     /**
      * @Route("/alta/{id}", name="admin_user_alta")
