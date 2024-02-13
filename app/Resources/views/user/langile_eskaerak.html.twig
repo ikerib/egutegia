@@ -42,6 +42,7 @@
             <th data-halign="left" data-align="left" data-field="id"        data-sortable="true">{{ 'Nº Eskaera' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="calendar.year"        data-sortable="true">{{ 'Urtea' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="type.name" data-sortable="true">{{ 'Mota' | trans }}</th>
+            <th data-halign="left" data-align="left" data-field="lizentziamota.name" data-sortable="true">{{ 'Azpimota' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="noiz"      data-sortable="true">{{ 'Noiz eskatua' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="hasi"      data-sortable="true">{{ 'Hasi' | trans }}</th>
             <th data-halign="left" data-align="left" data-field="amaitu"    data-sortable="true">{{ 'Amaitu' | trans }}</th>
@@ -55,6 +56,11 @@
                 <td>{{ eskaera.id }}</td>
                 <td>{{ eskaera.calendar.year }}</td>
                 <td>{{ eskaera.type.name }}</td>
+                <td>
+                    {% if eskaera.lizentziamota %}
+                        {{ eskaera.lizentziamota.name }}
+                    {% endif %}
+                </td>
                 <td>{{ eskaera.noiz | date('Y-m-d') }}</td>
                 <td>{{ eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>

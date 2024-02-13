@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -336,7 +337,14 @@ class EskaeraController extends Controller {
      */
     public function newAction(Request $request, $q)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login');
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login  ');
+
+        // Begiratu ia ikastaro bat den
+        $typeIkastaro = $this->getParameter('type_ikastaroa');
+
+        if ( $q === (string)$typeIkastaro ) {
+            return $this->redirectToRoute('eskaera_new_ikastaroa');
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -521,6 +529,17 @@ class EskaeraController extends Controller {
                 )
             );
         }
+    }
+
+    /**
+     * @Route("/ikastaroa", name="eskaera_new_ikastaroa")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     *
+     */
+    public function newikastaroAction(Request $request)
+    {
+
     }
 
     /**

@@ -50,6 +50,7 @@ twig:
         type_konpentsatuak: '%type_konpentsatuak%'
         type_norbere: '%type_norbere%'
         type_lizentzia: '%type_lizentzia%'
+        type_ikastaroa: '%type_ikastaroa%'
     form_themes:
         # Bootstrap:
 #        - bootstrap_3_layout.html.twig

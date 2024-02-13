@@ -35,6 +35,7 @@ parameters:
     type_konpentsatuak: id
     type_norbere: id
     type_lizentzia: id
+    type_ikastaroa: id
 
     redis_server: 'redis://localhost'
 
