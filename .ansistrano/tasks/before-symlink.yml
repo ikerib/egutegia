@@ -7,12 +7,6 @@
     executable: /usr/bin/npm
     state: present
 
-- name: Install CKEditor.
-  npm:
-    path: "{{ ansistrano_release_path.stdout }}"
-    executable: php bin/console ckeditor:install --tag=4.22.1 --clear=drop
-    state: present
-
 - name: Run gulp
   command: /usr/bin/gulp dev
   args:
@@ -22,3 +16,15 @@
   command: /usr/bin/gulp sass:prod
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
+
+- name: Install CKEditor.
+  npm:
+    path: "{{ ansistrano_release_path.stdout }}"
+    executable: php bin/console ckeditor:install --tag=4.22.1 --clear=drop
+    state: present
+
+- name: Install CKEditor and all assets
+  npm:
+    path: "{{ ansistrano_release_path.stdout }}"
+    executable: php bin/console assets:install
+    state: present
