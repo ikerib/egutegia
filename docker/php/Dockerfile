@@ -32,7 +32,7 @@ RUN apk update && apk add --no-cache \
     postgresql-dev \
     aspell-dev \
     git\
-    autoconf
+    autoconf acl
 
 # 4 Add and Enable PHP-PDO Extenstions
 RUN docker-php-ext-install pdo pdo_mysql mysqli
@@ -95,13 +95,16 @@ RUN mkdir -p var/cache/prod var/cache/dev var/cache/test var/log \
 # 7 Add UID '1000' to www-data
 RUN usermod -u ${USER_ID} www-data
 
+RUN setfacl -dR -m u:"www-data":rwX -m u:$(whoami):rwX var \
+    && setfacl -R -m u:"www-data":rwX -m u:$(whoami):rwX var
+
 # 8 Copy existing application directory permissions
 RUN rm -fr node_modules
 COPY --chown=www-data:www-data . /usr/src/app
 
 RUN composer install --no-scripts --prefer-dist --no-interaction --optimize-autoloader
 
-RUN php bin/console cache:clear
+#RUN php bin/console cache:clear
 
 RUN mkdir -p /usr/src/app/web/uploads
 RUN chmod -R 777 /usr/src/app/web/uploads

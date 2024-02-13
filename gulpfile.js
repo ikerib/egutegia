@@ -198,10 +198,12 @@ gulp.task('js:dev', function () {
 });
 
 gulp.task('js:prod', function () {
-    gulp.src(freeJS)
+    return gulp.src(freeJS)
       .pipe(babel({presets: ['es2015']}))
       .pipe(minify())
       .pipe(gulp.dest('web/js/'));
+});
+gulp.task('js:prod2', function () {
     return gulp.src(otherJS)
         .pipe(minify())
         .pipe(concat('app.min.js'))
@@ -210,7 +212,7 @@ gulp.task('js:prod', function () {
 
 
 // Task guztiak batuz
-gulp.task('prod', ['icons', 'js:prod', 'sass:prod']);
+gulp.task('prod', ['icons', 'js:prod', 'js:prod2', 'sass:prod']);
 
 gulp.task('dev', ['icons', 'js:dev', 'sass:dev']);
 

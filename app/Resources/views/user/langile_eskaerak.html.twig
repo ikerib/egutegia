@@ -79,6 +79,7 @@
         var $table = $( "#table" ), selections = [];
 
         function initTable() {
+            console.log("initTable");
             $table.bootstrapTable( {
                 height: getHeight()
             } );
@@ -93,6 +94,7 @@
         }
 
         $( function () {
+            console.log("INIT");
             initTable();
         } );
 

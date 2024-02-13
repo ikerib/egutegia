@@ -7,8 +7,14 @@
     executable: /usr/bin/npm
     state: present
 
+- name: Install CKEditor.
+  npm:
+    path: "{{ ansistrano_release_path.stdout }}"
+    executable: php bin/console ckeditor:install --tag=4.22.1
+    state: present
+
 - name: Run gulp
 #  command: /root/.nvm/versions/node/v6.10.1/bin/gulp prod
-  command: /usr/bin/gulp prod
+  command: /usr/bin/gulp dev
   args:
     chdir: "{{ ansistrano_release_path.stdout }}"
