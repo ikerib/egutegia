@@ -10,7 +10,7 @@
 - name: Install CKEditor.
   npm:
     path: "{{ ansistrano_release_path.stdout }}"
-    executable: php bin/console ckeditor:install --tag=4.22.1 drop
+    executable: php bin/console ckeditor:install --tag=4.22.1 --clear=drop
     state: present
 
 - name: Run gulp
