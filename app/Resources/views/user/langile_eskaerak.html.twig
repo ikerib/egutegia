@@ -12,12 +12,13 @@
            data-striped="true"
 
            data-pagination="true"
-           data-page-size="15"
+           data-page-size="25"
            data-search="true"
 
            data-sort-name="displayname"
            data-sort-order="asc"
 
+           data-page-list="[25, 50, 100, 10000000]"
            data-icon-size="sm"
            data-show-refresh="true"
            data-show-toggle="true"
@@ -35,7 +36,8 @@
                      "alternateRowStyles": { "fillColor": [60, 69, 79], "textColor": 255 }
                    }
                  }
-               }'>
+               }'
+    >
 
         <thead>
         <tr>
@@ -79,7 +81,6 @@
         var $table = $( "#table" ), selections = [];
 
         function initTable() {
-            console.log("initTable");
             $table.bootstrapTable( {
                 height: getHeight()
             } );
@@ -94,7 +95,6 @@
         }
 
         $( function () {
-            console.log("INIT");
             initTable();
         } );
 
