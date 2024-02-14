@@ -124,15 +124,15 @@ class Builder implements ContainerAwareInterface
         if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
             if ($options['saila'] === "Udaltzaingoa") {
                 $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
-//                $menu->addChild(
-//                    'Exit',
-//                    array(
-//                        'label'           => 'Modu arruntera izuli',
-//                        'route'           => 'saila_dashboard',
-//                        'routeParameters' => array('_switch_user' => '_exit'),
-//                        'icon'            => 'exit',
-//                    )
-//                );
+                $menu->addChild(
+                    'Exit',
+                    array(
+                        'label'           => 'Modu arruntera izuli',
+                        'route'           => 'saila_dashboard',
+                        'routeParameters' => array('_switch_user' => '_exit'),
+                        'icon'            => 'exit',
+                    )
+                );
             } else {
                 $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'exit']);
                 $menu->addChild(
