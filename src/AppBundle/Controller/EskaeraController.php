@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\EskaeraIkastaroaType;
 use DateTime;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
@@ -339,80 +340,61 @@ class EskaeraController extends Controller {
     {
         $this->denyAccessUnlessGranted('ROLE_USER', null, 'Egin login  ');
 
-        // Begiratu ia ikastaro bat den
-        $typeIkastaro = $this->getParameter('type_ikastaroa');
-
-        if ( $q === (string)$typeIkastaro ) {
-            return $this->redirectToRoute('eskaera_new_ikastaroa');
-        }
-
         $em = $this->getDoctrine()->getManager();
-
-        /** @var User $user */
         $user = $this->getUser();
-
-        /** @var Calendar $calendar */
         $calendar = $em->getRepository('AppBundle:Calendar')->findByUsernameYear(
             $user->getUsername(),
             date('Y')
         );
 
-        if (!$calendar)
-        {
+        if (!$calendar) {
             return $this->render(
                 'default/no_calendar_error.html.twig',
                 [
                     'h1Textua' => 'Ez daukazu Egutegirik sortuta aplikazioan',
                     'h3Testua' => 'Deitu Pertsonal sailera',
-                    'user'     => $user,
+                    'user' => $user,
                 ]
             );
         }
-        /** @var Calendar $calendar */
-        $calendar = $calendar[ 0 ];
+
+        $calendar = $calendar[0];
 
         $lastBideratu = $em->getRepository(Eskaera::class)->getLastBideratu($user->getId());
 
         $eskaera = new Eskaera();
         if ($lastBideratu) {
-            /** @var Eskaera $lastEskaera */
             $lastEskaera = $lastBideratu[0];
             $eskaera->setSinatzaileak($lastEskaera->getSinatzaileak());
         }
         $eskaera->setUser($user);
-        if ($user->getDisplayname() !== null) {
-            $eskaera->setName($user->getDisplayname());
-        } else {
-            $eskaera->setName($user->getUsername());
-        }
-
+//        $eskaera->setName($user->getDisplayname() ?? $user->getUsername());
+        $eskaera->setName( ($q === (string) $this->getParameter('type_ikastaroa')) ? '' : $user->getDisplayname() ?? $user->getUsername());
         $eskaera->setCalendar($calendar);
-
         $type = $em->getRepository('AppBundle:Type')->find($q);
         $eskaera->setType($type);
 
+        $formType = ($q === (string) $this->getParameter('type_ikastaroa')) ? EskaeraIkastaroaType::class : EskaeraType::class;
+
         $form = $this->createForm(
-            EskaeraType::class,
+            $formType,
             $eskaera,
-            array(
-                'action' => $this->generateUrl('eskaera_new', array('q' => $q)),
+            [
+                'action' => $this->generateUrl('eskaera_new', ['q' => $q]),
                 'method' => 'POST',
-            )
+            ]
         );
+
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid())
-        {
-            $em   = $this->getDoctrine()->getManager();
-            /** @var Eskaera $data */
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-
-            $user       = $data->getUser();
-            $fini       = $data->getHasi();
-            $ffin       = $data->getAmaitu();
+            // Lógica de procesamiento del formulario
+            $user = $data->getUser();
+            $fini = $data->getHasi();
+            $ffin = $data->getAmaitu();
             $collision1 = '';
             $collision2 = '';
-
 
             /**
              * 1-. Begiratu ea bateraezinik duen
@@ -423,7 +405,6 @@ class EskaeraController extends Controller {
              */
             if ($gutxienekoak > 0)
             {
-
                 /** @var Gutxienekoak $g */
                 foreach ($gutxienekoak as $g)
                 {
@@ -439,7 +420,6 @@ class EskaeraController extends Controller {
                     }
                 }
             }
-
             /**
              * 3-. Bateraezin talderen batean badago, eta fetxa koinzidentziarenbat baldin badu
              *     koinziditzen duen erabiltzaile ororen eskaeretan oharra jarri.
@@ -472,11 +452,6 @@ class EskaeraController extends Controller {
                 }
             }
 
-
-            /**
-             * PDF Fitxategia sortu
-             */
-
             /** @var User $user */
             $user = $this->getUser();
             $noiz = date('Y-m-d');
@@ -497,38 +472,28 @@ class EskaeraController extends Controller {
             $em->persist($eskaera);
             $em->flush();
 
-            return $this->redirectToRoute('eskaera_gauzatua', array('id' => $eskaera->getId()));
+            return $this->redirectToRoute('eskaera_gauzatua', ['id' => $eskaera->getId()]);
         }
 
-        $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->findBy(
-            array(
-                'template' => $calendar->getTemplate()->getId(),
-            )
-        );
+        $jaiegunak = $em->getRepository('AppBundle:TemplateEvent')->findBy(['template' => $calendar->getTemplate()->getId()]);
 
+        $template = 'eskaera/new.html.twig';
         if ($user->getMunipada()) {
-            return $this->render(
-                'eskaera/munipa.html.twig',
-                array(
-                    'eskaera'   => $eskaera,
-                    'calendar'  => $calendar,
-                    'jaiegunak' => $jaiegunak,
-                    'munipada'  => $user->getMunipada(),
-                    'form'      => $form->createView(),
-                )
-            );
-        } else {
-            return $this->render(
-                'eskaera/new.html.twig',
-                array(
-                    'eskaera'   => $eskaera,
-                    'calendar'  => $calendar,
-                    'jaiegunak' => $jaiegunak,
-                    'munipada'  => $user->getMunipada(),
-                    'form'      => $form->createView(),
-                )
-            );
+            $template = 'eskaera/munipa.html.twig';
+        } elseif ($q === (string) $this->getParameter('type_ikastaroa')) {
+            $template = 'eskaera/newIkastaro.html.twig';
         }
+
+        return $this->render(
+            $template,
+            [
+                'eskaera' => $eskaera,
+                'calendar' => $calendar,
+                'jaiegunak' => $jaiegunak,
+                'munipada' => $user->getMunipada(),
+                'form' => $form->createView(),
+            ]
+        );
     }
 
     /**

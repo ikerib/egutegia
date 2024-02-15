@@ -191,6 +191,17 @@ class Eskaera
      */
     private $justifikanteSize;
 
+    /**
+     * @var bool
+     * @ORM\Column(name="ordaindubeharda", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $ordaindubeharda=false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="ordainduta", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $ordainduta=false;
 
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
@@ -1062,5 +1073,53 @@ class Eskaera
     public function getBertanbehera()
     {
         return $this->bertanbehera;
+    }
+
+    /**
+     * Set ordaindubeharda.
+     *
+     * @param bool|null $ordaindubeharda
+     *
+     * @return Eskaera
+     */
+    public function setOrdaindubeharda($ordaindubeharda = null)
+    {
+        $this->ordaindubeharda = $ordaindubeharda;
+
+        return $this;
+    }
+
+    /**
+     * Get ordaindubeharda.
+     *
+     * @return bool|null
+     */
+    public function getOrdaindubeharda()
+    {
+        return $this->ordaindubeharda;
+    }
+
+    /**
+     * Set ordainduta.
+     *
+     * @param bool|null $ordainduta
+     *
+     * @return Eskaera
+     */
+    public function setOrdainduta($ordainduta = null)
+    {
+        $this->ordainduta = $ordainduta;
+
+        return $this;
+    }
+
+    /**
+     * Get ordainduta.
+     *
+     * @return bool|null
+     */
+    public function getOrdainduta()
+    {
+        return $this->ordainduta;
     }
 }
