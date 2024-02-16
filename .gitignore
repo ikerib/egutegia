@@ -68,3 +68,4 @@ web/vendor/
 core.*
 web/core.*
 
+/docker/uploads/
