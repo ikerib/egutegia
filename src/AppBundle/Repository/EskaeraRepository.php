@@ -268,4 +268,14 @@ class EskaeraRepository extends EntityRepository
         $sql = $qb->getQuery()->getSQL();
         return $qb->getQuery()->getResult();
     }
+
+    public function findIkastaroak($type_ikastaro_id)
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->innerJoin('e.type', 't')
+            ->andWhere('t.id = :type_ikastaro_id')->setParameter('type_ikastaro_id', $type_ikastaro_id)
+            ->orderBy('e.id', 'DESC')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }

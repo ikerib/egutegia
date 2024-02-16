@@ -69,7 +69,6 @@ class Builder implements ContainerAwareInterface
                 );
             } else {
                 $menu->addChild('Eskaerak', ['icon' => 'inbox', 'route' => 'admin_eskaera_list','routeParameters' => array('q' => 'unsigned', 'bertanbehera'=>0),])
-
                      ->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
             }
             $menu['Herramintak']->addChild('Mezuak', [
@@ -77,11 +76,6 @@ class Builder implements ContainerAwareInterface
                 'route' => 'admin_message_list',
                 'routeParameters'   => ['q'=>'unread']
             ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
-
-//            $menu['Herramintak']->addChild('Kuadrantea', [
-//                'icon' => 'envelope',
-//                'route' => 'admin_kuadrantea',
-//            ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
 
             $menu['Herramintak']->addChild('Kuadrantea eskaeretatik', [
                 'icon' => 'envelope',
@@ -92,6 +86,9 @@ class Builder implements ContainerAwareInterface
                 'icon' => 'envelope',
                 'route' => 'admin_urteko_balantzea',
             ])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+
+            $menu[ 'Herramintak' ]->addChild('divider5', ['divider' => true]);
+            $menu['Herramintak']->addChild('Ikastaroen kudeaketa', ['icon' => 'education','route' => 'admin_ikastaroa_list'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
         }
 
 

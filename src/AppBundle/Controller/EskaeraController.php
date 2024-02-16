@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Ikastaroa;
 use AppBundle\Form\EskaeraIkastaroaType;
 use DateTime;
 use AppBundle\Entity\Calendar;
@@ -762,7 +763,6 @@ class EskaeraController extends Controller {
      */
     public function justifyAction(Request $request, Eskaera $eskaera)
     {
-//        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Egin login');
         $editForm = $this->createForm(
             EskaeraJustifyType::class,
             $eskaera,
@@ -847,8 +847,15 @@ class EskaeraController extends Controller {
             $em->flush();
         }
 
-        return $this->redirectToRoute('admin_eskaera_list');
+
+
+        // Obtener la URL de referencia (referer)
+        $referer = $request->headers->get('referer');
+
+        // Redirigir a la URL de referencia si está definida, de lo contrario, redirigir a una ruta predeterminada
+        return $this->redirect($referer ?: $this->generateUrl('admin_ikastaroa_list'));
     }
+
 
     /**
      * Creates a form to delete a eskaera entity.
@@ -886,6 +893,61 @@ class EskaeraController extends Controller {
                 'delete_form' => $deleteForm->createView(),
             )
         );
+    }
+
+    /**
+     * @Route("/ikastaroak/zerrenda", name="admin_ikastaroa_list")
+     * @Method("GET")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ikastaroalistAction(Request $request): \Symfony\Component\HttpFoundation\Response
+    {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login');
+        $em = $this->getDoctrine()->getManager();
+
+        $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'));
+
+        $deleteForms = [];
+        if ($eskaeras) {
+            foreach ($eskaeras as $e)
+            {
+                /** @var Eskaera $e */
+                $deleteForms[ $e->getId() ] = $this->createDeleteForm($e)->createView();
+            }
+        }
+
+
+        return $this->render(
+            'eskaera/list_ikastaroak.html.twig',
+            array(
+                'eskaeras'      => $eskaeras,
+                'deleteForms'   => $deleteForms
+            )
+        );
+    }
+
+
+    /**
+     * @Route("/ordaindu/{id}", name="admin_ikastaroa_ordaindu")
+     * @Method("GET")
+     */
+    public function ordainduAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository('AppBundle:Eskaera')->find($id);
+        if ($eskaera !== null) {
+            $eskaera->setOrdainduta(!$eskaera->getOrdainduta());
+        } else {
+            $eskaera->setOrdainduta(true);
+        }
+
+        $em->persist($eskaera);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_ikastaroa_list');
     }
 
 }
