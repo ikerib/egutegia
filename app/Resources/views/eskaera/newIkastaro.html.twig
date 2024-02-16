@@ -8,6 +8,13 @@
         .datepicker table tr td.disabled:hover {
             color: #b90000;
         }
+        .help-block {
+            display: block;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #ae2424;
+            text-transform: uppercase;
+        }
     </style>
 
 {% endblock %}
@@ -87,6 +94,14 @@
                 </div>
             </div>
 
+            <div class="form-group" id="divOharrak">
+                <label for="min-date" class="col-sm-4 control-label">Ikastaroaren deskribapena: Programa, egunak, ordutegia...</label>
+                <div class="col-sm-4">
+                    {{ form_errors(form.oharra) }}
+                    {{ form_widget(form.oharra) }}
+                </div>
+            </div>
+
             <hr>
 
             <div class="form-group">
@@ -117,110 +132,130 @@
     {{ parent() }}
 
     <script>
-        var kostuabehar = false;
 
-        $("#appbundle_eskaera_orduak").blur(function () {
-            var orduak = $("#appbundle_eskaera_orduak").val();
-            // var lanaldi= $("#txtJornada").val();
+        $(document).ready(function () {
 
-            // var resul = orduak * lanaldi;
-            // resul = parseFloat(resul);
-            orduak = parseFloat(orduak);
+            $("#btnSubmit").on("click", function () {
 
-            $("#appbundle_eskaera_total").val(orduak.toFixed(2));
-        });
+                var ongi = true;
 
-        $("#btnSubmit").on("click", function () {
-            var ongi = true;
-
-            var hasi = $("input[name='appbundle_eskaera[hasi]']").val();
-            if (hasi.length === 0) {
-                if (konpentsatuada === false) {
-                    bootbox.alert("Noiztik zehaztea beharrezkoa da.");
-                } else {
-                    bootbox.alert("Eguna zehaztea beharrezkoa da.");
+                var izena = $("input[name='appbundle_eskaera[name]']").val();
+                if (izena.length === 0) {
+                    bootbox.alert("Izena zehaztea beharrezkoa da.");
+                    ongi = false;
+                    return;
                 }
 
-                ongi = false;
-                return;
-            }
+                var hasi = $("input[name='appbundle_eskaera[hasi]']").val();
+                if (hasi.length === 0) {
+                    bootbox.alert("Noiztik zehaztea beharrezkoa da.");
+                    ongi = false;
+                    return;
+                }
 
-            var amaitu = $("input[name='appbundle_eskaera[amaitu]']").val();
-            if (amaitu.length === 0) {
-                bootbox.alert("Amaitu zehaztea beharrezkoa da.");
-                ongi = false;
-                return;
-            }
+                var amaitu = $("input[name='appbundle_eskaera[amaitu]']").val();
+                if (amaitu.length === 0) {
+                    bootbox.alert("Amaitu zehaztea beharrezkoa da.");
+                    ongi = false;
+                    return;
+                }
 
-            var orduak = $("input[name='appbundle_eskaera[orduak]']").val();
-            if (orduak.length === 0) {
-                bootbox.alert("Orduak zehaztea beharrezkoa da.");
-                ongi = false;
-                return;
-            }
-            var noiz = $("input[name='appbundle_eskaera[noiz]']").val();
-            if (noiz.length === 0) {
-                bootbox.alert("Noiz zehaztea beharrezkoa da.");
-                ongi = false;
-                return;
-            }
+                var orduak = $("input[name='appbundle_eskaera[orduak]']").val();
+                if (orduak.length === 0) {
+                    bootbox.alert("Orduak zehaztea beharrezkoa da.");
+                    ongi = false;
+                    return;
+                }
 
-            var orduakGuztira = $("#appbundle_eskaera_total").val();
-            if ((orduakGuztira === 0) || (orduakGuztira === "0") || (orduakGuztira === "0.00")) {
-                bootbox.alert("Zerbait ez dago ondi. Guztira zenbat ordu > 0 izan behar du.");
-                ongi = false;
-                return;
-            }
+                var orduakGuztira = $("#appbundle_eskaera_total").val();
+                if ((orduakGuztira === 0) || (orduakGuztira === "0") || (orduakGuztira === "0.00")) {
+                    bootbox.alert("Ikastaroaren ordu kopurua zehaztea falta zaizu.");
+                    ongi = false;
+                    return;
+                }
 
-            if (ongi) {
-                $("#frmEskaeraNew").submit();
-            }
+                if ($('#appbundle_eskaera_ordaindubeharda').prop('checked')) {
+                    var balioa = $('#appbundle_eskaera_kostua').val();
+                    var parsedValue = parseFloat(balioa);
 
+                    console.log(balioa)
+                    console.log(parsedValue)
 
-        });
+                    if (!isNaN(parsedValue) && parsedValue >= 0) {
 
-        $("#appbundle_eskaera_hasi").datepicker({
-            todayBtn: 1,
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            language: '{{ app.request.locale }}'
-        }).on('changeDate', function (selected) {
-            var fin = $("#appbundle_eskaera_amaitu").val();
-            if (fin === "") { // Ez badago datarik zehaztuta
-                var minDate = new Date(selected.date.valueOf());
-                $("#appbundle_eskaera_amaitu").datepicker('setStartDate', minDate);
-            }
-        });
+                    } else {
+                        bootbox.alert('Ikastaroa ordaindu beharrekoa dela esan duzu baina ez duzu zenbatekoa zehaztu.');
+                        ongi = false;
+                        return;
+                    }
+                }
 
-        $("#appbundle_eskaera_amaitu").datepicker({
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            language: '{{ app.request.locale }}'
-        }).on('changeDate', function (selected) {
-            var hasi = $("#appbundle_eskaera_hasi").val();
-            if (hasi === "") { // Ez badago datarik zehaztuta
-                var maxDate = new Date(selected.date.valueOf());
-                $("#appbundle_eskaera_hasi").datepicker('setEndDate', maxDate);
-            }
-        });
+                if (ongi) {
+                    $("#frmEskaeraNew").submit();
+                }
 
-        $("#appbundle_eskaera_noiz").datepicker({
-            autoclose: true,
-            format: "yyyy-mm-dd",
-            language: '{{ app.request.locale }}'
-        });
+            });
 
-        $("#appbundle_eskaera_ordaindubeharda").on('change', function () {
-            if ($(this).prop('checked')) {
+            if ($('#appbundle_eskaera_ordaindubeharda').prop('checked')) {
                 $('.divkostua').show();
                 $('#divOrdainduta').show();
-            } else {
-                $('#appbundle_eskaera_kostua').val("0");
-                $('#appbundle_eskaera_ordainduta').prop('checked', false);
-                $('.divkostua').hide();
             }
-        });
 
+            $("#appbundle_eskaera_orduak").blur(function () {
+                var orduak = $("#appbundle_eskaera_orduak").val();
+                // var lanaldi= $("#txtJornada").val();
+
+                // var resul = orduak * lanaldi;
+                // resul = parseFloat(resul);
+                orduak = parseFloat(orduak);
+
+                $("#appbundle_eskaera_total").val(orduak.toFixed(2));
+            });
+
+            $("#appbundle_eskaera_hasi").datepicker({
+                todayBtn: 1,
+                autoclose: true,
+                format: "yyyy-mm-dd",
+                language: '{{ app.request.locale }}'
+            }).on('changeDate', function (selected) {
+                var fin = $("#appbundle_eskaera_amaitu").val();
+                if (fin === "") { // Ez badago datarik zehaztuta
+                    var minDate = new Date(selected.date.valueOf());
+                    $("#appbundle_eskaera_amaitu").datepicker('setStartDate', minDate);
+                }
+            });
+
+            $("#appbundle_eskaera_amaitu").datepicker({
+                autoclose: true,
+                format: "yyyy-mm-dd",
+                language: '{{ app.request.locale }}'
+            }).on('changeDate', function (selected) {
+                var hasi = $("#appbundle_eskaera_hasi").val();
+                if (hasi === "") { // Ez badago datarik zehaztuta
+                    var maxDate = new Date(selected.date.valueOf());
+                    $("#appbundle_eskaera_hasi").datepicker('setEndDate', maxDate);
+                }
+            });
+
+            $("#appbundle_eskaera_noiz").datepicker({
+                autoclose: true,
+                format: "yyyy-mm-dd",
+                language: '{{ app.request.locale }}'
+            });
+
+            $("#appbundle_eskaera_ordaindubeharda").on('change', function () {
+                if ($(this).prop('checked')) {
+                    $('.divkostua').show();
+                    $('#divOrdainduta').show();
+                } else {
+                    $('#appbundle_eskaera_kostua').val("0");
+                    $('#appbundle_eskaera_ordainduta').prop('checked', false);
+                    $('.divkostua').hide();
+                    $('#divOrdainduta').hide();
+                }
+            });
+
+        });
     </script>
 {% endblock %}
 

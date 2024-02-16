@@ -15,6 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Eskaera;
@@ -81,7 +83,11 @@ class EskaeraIkastaroaType extends AbstractType
                 )
             )
             ->add('oharra', CKEditorType::class, [
-
+                'required' => true,
+                'constraints' => array(
+                    new NotBlank(['message' => "Ezinbestekoa da ikastaroari buruzko informazioa zehaztea."]),
+                    new Length(array('min' => 10)),
+                ),
             ])
             ->add('ordaindubeharda', CheckboxType::class, [
                 'label' => 'Markatu ordaindu behar bada.'

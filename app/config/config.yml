@@ -29,20 +29,20 @@ framework:
     trusted_hosts: ~
 #    session: ~
 
-#    session:
+    session:
       # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
       #ORIGINALA:        handler_id:  session.handler.native_file
       #ORIGINALA:        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
 
-#          handler_id: snc_redis.session.handler
-#          cookie_lifetime: 1314000
-#          cookie_secure: false
-#          cookie_samesite: 'lax'
-
-    session:
-      handler_id: "snc_redis.session.handler"
-      cookie_lifetime: 86400 # hilabete
-      cookie_httponly: false
+          handler_id: snc_redis.session.handler
+          cookie_lifetime: 1314000
+          cookie_secure: false
+          cookie_samesite: 'lax'
+#
+#    session:
+#      handler_id: session.handler.native_file
+#      cookie_lifetime: 86400 # hilabete
+#      cookie_httponly: false
 
     fragments: ~
     http_method_override: true
@@ -278,33 +278,33 @@ fos_ck_editor:
 
 mobile_detect:
 
-#snc_redis:
-#    clients:
-#        session_client:
-#            dsn: '%redis_server%'
-#            logging: '%kernel.debug%'
-#            type: phpredis
-#        session:
-#            dsn: '%redis_server%'
-#            logging: '%kernel.debug%'
-#            type: phpredis
-#    session:
-#        client: session_client
-#        locking: false
-#        prefix: session_prefix_
-#        ttl: 86400
 snc_redis:
-  clients:
+    clients:
+        session_client:
+            dsn: '%redis_server%'
+            logging: '%kernel.debug%'
+            type: phpredis
+        session:
+            dsn: '%redis_server%'
+            logging: '%kernel.debug%'
+            type: phpredis
     session:
-      type:     "phpredis"
-      alias:    "session"
-      dsn: '%redis_server%'
-      logging:  false
-  session:
-    client: "session"
-    locking: false
-    prefix: "PHPREDIS_SESSION:"
-    ttl: 86400
+        client: session_client
+        locking: false
+        prefix: session_prefix_
+        ttl: 86400
+#snc_redis:
+#  clients:
+#    session:
+#      type:     "phpredis"
+#      alias:    "session"
+#      dsn: '%redis_server%'
+#      logging:  false
+#  session:
+#    client: "session"
+#    locking: false
+#    prefix: "PHPREDIS_SESSION:"
+#    ttl: 86400
 #snc_redis:
 #  clients:
 #    default:
