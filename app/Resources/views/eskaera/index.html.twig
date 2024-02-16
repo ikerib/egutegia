@@ -67,7 +67,7 @@
                             </a>
                         </td>
                         <td>
-                            {% if eskaera.type.id != type_lizentzia %}
+                            {% if eskaera.type.id != type_lizentzia or eskaera.type.id != type_ikastaroa %}
                                 -
                             {% else %}
                                 {% if eskaera.justifikatua == true %}
@@ -87,7 +87,7 @@
                         </td>
                         <td>
                             <ul>
-                                {% if eskaera.type.id == type_lizentzia %}
+                                {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa%}
                                     {% if eskaera.justifikanteName == null %}
                                         <li>
                                             <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">

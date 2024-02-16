@@ -82,7 +82,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    {% if eskaera.type.id != type_lizentzia %}
+                    {% if eskaera.type.id != type_lizentzia or eskaera.type.id != type_ikastaroa %}
                         -
                     {% else %}
                         {% if eskaera.justifikatua == true %}

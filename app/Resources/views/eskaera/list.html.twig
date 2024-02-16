@@ -238,7 +238,7 @@
                                         </a>
                                     </li>
 
-                                    {% if eskaera.type.id == type_lizentzia %}
+                                    {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
                                         {% if eskaera.justifikanteName != null %}
                                             <li>
                                                 <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
@@ -268,7 +268,7 @@
                                     {% if eskaera.amaitua != true %}
                                         {% set sinatzeprozesua = true %}
                                         {% if eskaera.type %}
-                                            {%  if eskaera.type.id == type_lizentzia %}
+                                            {%  if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
                                                 {% if eskaera.lizentziamota %}
                                                     {% if eskaera.lizentziamota.sinatubehar == false %}
                                                         {% set sinatzeprozesua = false %}
