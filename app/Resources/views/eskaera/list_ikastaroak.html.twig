@@ -74,47 +74,94 @@
             >
                 <thead>
                 <tr>
-                    <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ "Langilea" | trans }}</th>
+                    <th data-visible="false" data-halign="center" data-align="left" data-field="id" data-sortable="true">{{ "Nº" | trans }}</th>
+                    <th data-halign="center" data-align="left" data-field="user" data-sortable="true">{{ "Langilea" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="department" data-sortable="true">{{ "Saila" | trans }}</th>
                     <th data-halign="center" data-align="left" data-field="name" data-sortable="true">{{ "Ikastaroa" | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="kostua " data-sortable="true">{{ "Kostua" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="bideratua " data-sortable="true">{{ "Bideratua?" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="ordainduta " data-sortable="true">{{ "Ordainduta?" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="justifikatua " data-sortable="true">{{ "Justifikantea?" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="created" data-sortable="true">{{ "Eskatu" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="sareko " data-sortable="true">{{ "Sareko" | trans }}</th>
+                    <th data-halign="center" data-align="center" data-field="ikastaroaAmaituta" data-sortable="true">{{ "Ikastaroa Amaituta?" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>
-                    <th>{{ "Ekintzak" | trans }}</th>
+                    <th>Ikastaroaren PDF</th>
+                    <th>Justifikantea</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for eskaera in eskaeras %}
 
                     <tr>
+                        <td>{{ eskaera.id }}</td>
                         <td>
                             {{ eskaera.user }}
                         </td>
                         <td>
-                            {{ eskaera.user.department }}
+                            {% if eskaera.user %}
+                                {{ eskaera.user.department }}
+                            {% endif %}
                         </td>
                         <td>{{ eskaera.name }}</td>
                         <td>{{ eskaera.kostua ~ " €" }}</td>
                         <td>
-                            {% if not eskaera.ordainduta %}
-                                <span class="label label-danger text-dark"><a class="lblBaja text-white" href="{{path('admin_ikastaroa_ordaindu', {'id': eskaera.id})}}">Ez</a></span>
+                            {% if not eskaera.bideratua %}
+                                <span class="label label-danger text-dark">
+                                    <a class="lblBaja text-white">Ez</a>
+                                </span>
                             {% else %}
-                                <span class="label label-success text-dark"><a class="lblBaja text-dark" href="{{path('admin_ikastaroa_ordaindu', {'id': eskaera.id})}}">Bai</a></span>
+                                <span class="label label-success text-dark">
+                                    <a class="lblBaja text-dark">Bai</a>
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not eskaera.ordainduta %}
+                                <span class="label label-danger text-dark">
+                                    <a class="lblBaja text-white" href="{{path('admin_ikastaroa_ordaindu', {'id': eskaera.id})}}">Ez</a>
+                                </span>
+                            {% else %}
+                                <span class="label label-success text-dark">
+                                    <a class="lblBaja text-dark" href="{{path('admin_ikastaroa_ordaindu', {'id': eskaera.id})}}">Bai</a>
+                                </span>
                             {% endif %}
                         </td>
                         <td>
                             {% if not eskaera.justifikatua %}
-                                <span class="label label-danger text-dark"><a class="lblBaja text-white">Ez</a></span>
+                                <span class="label label-danger text-dark">
+                                    <a class="lblBaja text-white">Ez</a>
+                                </span>
                             {% else %}
-                                <span class="label label-success text-dark"><a class="lblBaja text-dark">Bai</a></span>
+                                <span class="label label-success text-dark">
+                                    <a class="lblBaja text-dark">Bai</a>
+                                </span>
                             {% endif %}
                         </td>
-                        <td>{{ eskaera.created | date('Y-m-d') }}
+                        <td>
+                            {% if not eskaera.sareko %}
+                                <span class="label label-danger text-dark">
+                                    <a class="lblBaja text-white" href="{{ path('admin_ikastaroa_sareko', {'id': eskaera.id}) }}">Ez</a>
+                                </span>
+                            {% else %}
+                                <span class="label label-success text-dark">
+                                    <a class="lblBaja text-dark" href="{{ path('admin_ikastaroa_sareko', {'id': eskaera.id}) }}">Bai</a>
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if not eskaera.ikastaroaAmaituta %}
+                                <span class="label label-danger text-dark">
+                                    <a class="lblBaja text-white" href="{{ path('admin_ikastaroa_amaitu', {'id':eskaera.id}) }}">Ez</a>
+                                </span>
+                            {% else %}
+                                <span class="label label-success text-dark">
+                                    <a class="lblBaja text-dark" href="{{ path('admin_ikastaroa_amaitu', {'id': eskaera.id}) }}">Bai</a>
+                                </span>
+                            {% endif %}
+                        </td>
                         <td>{{ eskaera.hasi | date('Y-m-d') }}
                         </td>
                         <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
@@ -130,28 +177,39 @@
                         <td>
                             <ul class="list text-left">
                                 {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
-                                    {% if eskaera.justifikanteName != null %}
+                                    {% if eskaera.ikastaroaName != null %}
                                         <li>
-                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
-                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                            <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile') }}" target="_blank">
+                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="{{ path('eskaera_ikastaro_pdf', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
                                             </a>
                                         </li>
                                     {% endif %}
-                                    <li>
-                                        <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea" | trans }}
-                                        </a>
-                                    </li>
                                 {% endif %}
-
-                                <li>
-                                    {{ form_start(deleteForms[eskaera.id],{'attr': {'id': eskaera.id}}) }}
-                                    <a class="btnRemoveRow" data-id="{{ eskaera.id }}"
-                                       href="#eskaeraEditModal{{ eskaera.id }}">
-                                        <i class="fa fa-trash text-danger" aria-hidden="true"></i> {{ "Ezabatu" | trans }}
-                                    </a>
-                                    {{ form_end(deleteForms[eskaera.id]) }}
-                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="list text-left">
+                                {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
+                                    {% if eskaera.justifikanteName != null %}
+                                        <li>
+                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
                             </ul>
                         </td>
                     </tr>
@@ -338,6 +396,8 @@
             $table.bootstrapTable();
             $table.on("expand-row.bs.table", function ( e, index, row, $detail ) {
                 var miid = row.id;
+                console.log("miid")
+                console.log(miid)
                 var url = Routing.generate("get_firmatzaileak", { "eskaeraid": miid });
 
                 $detail.html("toc toc..." + url + " helbideari deika");
@@ -428,7 +488,7 @@
 
 
                     $detail.html(html);
-                }).fail(function () {
+                %}).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
                         className: "bb-alternate-modal",

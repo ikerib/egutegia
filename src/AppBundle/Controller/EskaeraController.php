@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Ikastaroa;
 use AppBundle\Form\EskaeraIkastaroaType;
+use AppBundle\Form\EskaeraIkastaroPdfType;
 use DateTime;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
@@ -129,7 +130,7 @@ class EskaeraController extends Controller {
         );
     }
 
-      /**
+    /**
      * @Route("/lista", name="admin_eskaera_list")
      * @Method("GET")
      * @param Request $request
@@ -369,7 +370,7 @@ class EskaeraController extends Controller {
             $eskaera->setSinatzaileak($lastEskaera->getSinatzaileak());
         }
         $eskaera->setUser($user);
-//        $eskaera->setName($user->getDisplayname() ?? $user->getUsername());
+        // $eskaera->setName($user->getDisplayname() ?? $user->getUsername());
         $eskaera->setName( ($q === (string) $this->getParameter('type_ikastaroa')) ? '' : $user->getDisplayname() ?? $user->getUsername());
         $eskaera->setCalendar($calendar);
         $type = $em->getRepository('AppBundle:Type')->find($q);
@@ -495,17 +496,6 @@ class EskaeraController extends Controller {
                 'form' => $form->createView(),
             ]
         );
-    }
-
-    /**
-     * @Route("/ikastaroa", name="eskaera_new_ikastaroa")
-     * @Method({"GET", "POST"})
-     * @param Request $request
-     *
-     */
-    public function newikastaroAction(Request $request)
-    {
-
     }
 
     /**
@@ -799,6 +789,51 @@ class EskaeraController extends Controller {
         );
     }
 
+
+    /**
+     * Displays a form to edit an existing eskaera entity.
+     *
+     * @Route("/{id}/ikastaropdf", name="eskaera_ikastaro_pdf")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function ikastaropdfAction(Request $request, Eskaera $eskaera)
+    {
+        $editForm = $this->createForm(
+            EskaeraIkastaroPdfType::class,
+            $eskaera,
+            array(
+                'action' => $this->generateUrl('eskaera_ikastaro_pdf', array('id' => $eskaera->getId())),
+                'method' => 'POST',
+            )
+        );
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($eskaera->getIkastaroaFile() !== null)
+            {
+                $em->persist($eskaera);
+                $em->flush();
+
+                return $this->redirectToRoute('admin_ikastaroa_list');
+            }
+        }
+
+        return $this->render(
+            'eskaera/ikastaroapdf.html.twig',
+            array(
+                'eskaera'   => $eskaera,
+                'edit_form' => $editForm->createView(),
+            )
+        );
+    }
+
     /**
      * Deletes a Justify file.
      *
@@ -855,7 +890,6 @@ class EskaeraController extends Controller {
         // Redirigir a la URL de referencia si está definida, de lo contrario, redirigir a una ruta predeterminada
         return $this->redirect($referer ?: $this->generateUrl('admin_ikastaroa_list'));
     }
-
 
     /**
      * Creates a form to delete a eskaera entity.
@@ -928,7 +962,6 @@ class EskaeraController extends Controller {
         );
     }
 
-
     /**
      * @Route("/ordaindu/{id}", name="admin_ikastaroa_ordaindu")
      * @Method("GET")
@@ -949,5 +982,79 @@ class EskaeraController extends Controller {
 
         return $this->redirectToRoute('admin_ikastaroa_list');
     }
+
+    /**
+     * @Route("/sareko/{id}", name="admin_ikastaroa_sareko")
+     * @Method("GET")
+     */
+    public function sarekoAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository('AppBundle:Eskaera')->find($id);
+        if ($eskaera !== null) {
+            $eskaera->setSareko(!$eskaera->getSareko());
+        } else {
+            $eskaera->setSareko(true);
+        }
+
+        $em->persist($eskaera);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_ikastaroa_list');
+    }
+
+    /**
+     * @Route("/ikastaroa-amaitu/{id}", name="admin_ikastaroa_amaitu")
+     * @Method("GET")
+     */
+    public function ikastaroamaituAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository('AppBundle:Eskaera')->find($id);
+        if ($eskaera !== null) {
+            $eskaera->setIkastaroaAmaituta(!$eskaera->getIkastaroaAmaituta());
+        } else {
+            $eskaera->setIkastaroaAmaituta(true);
+        }
+
+        $em->persist($eskaera);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_ikastaroa_list');
+    }
+
+    /**
+     * Displays a form to edit an existing eskaera entity.
+     *
+     * @Route("/{id}/edit-ikastaroa", name="admin_ikastaroa_edit")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function editikastaroaAction(Request $request, Eskaera $eskaera)
+    {
+        $deleteForm = $this->createDeleteForm($eskaera);
+        $editForm = $this->createForm('AppBundle\Form\EskaeraIkastaroaType', $eskaera);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('admin_eskaera_list');
+        }
+
+        return $this->render('eskaera/edit_ikastaroa.html.twig', array(
+            'calendar' => $eskaera->getCalendar(),
+            'eskaera' => $eskaera,
+            'form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
 
 }

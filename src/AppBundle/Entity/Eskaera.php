@@ -191,6 +191,30 @@ class Eskaera
      */
     private $justifikanteSize;
 
+
+    /**
+     *
+     * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="ikastaroaName", size="ikastaroaSize")
+     *
+     * @var File
+     */
+    private $ikastaroaFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $ikastaroaName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $ikastaroaSize;
+
+
     /**
      * @var bool
      * @ORM\Column(name="ordaindubeharda", type="boolean", nullable=true, options={"default"=false})
@@ -202,6 +226,18 @@ class Eskaera
      * @ORM\Column(name="ordainduta", type="boolean", nullable=true, options={"default"=false})
      */
     private $ordainduta=false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="sareko", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $sareko=false;
+
+    /**
+     * @var bool
+     * @ORM\Column(name="ikastaroaAmaituta", type="boolean", nullable=true, options={"default"=false})
+     */
+    private $ikastaroaAmaituta=false;
 
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
@@ -318,6 +354,54 @@ class Eskaera
     public function getJustifikanteSize(): ?int
     {
         return $this->justifikanteSize;
+    }
+
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|UploadedFile $image
+     *
+     * @throws Exception
+     */
+    public function setIkastaroaFile(?File $image = null): void
+    {
+        $this->ikastaroaFile = $image;
+
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new DateTimeImmutable();
+        }
+    }
+
+    public function getIkastaroaFile(): ?File
+    {
+        return $this->ikastaroaFile;
+    }
+
+    public function setIkastaroaName(?string $ikastaroaName): void
+    {
+        $this->ikastaroaName = $ikastaroaName;
+    }
+
+    public function getIkastaroaName(): ?string
+    {
+        return $this->ikastaroaName;
+    }
+
+    public function setIkastaroaSize(?int $ikastaroaSize): void
+    {
+        $this->ikastaroaSize = $ikastaroaSize;
+    }
+
+    public function getIkastaroaSize(): ?int
+    {
+        return $this->ikastaroaSize;
     }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
@@ -1121,5 +1205,53 @@ class Eskaera
     public function getOrdainduta()
     {
         return $this->ordainduta;
+    }
+
+    /**
+     * Set sareko.
+     *
+     * @param bool|null $sareko
+     *
+     * @return Eskaera
+     */
+    public function setSareko($sareko = null)
+    {
+        $this->sareko = $sareko;
+
+        return $this;
+    }
+
+    /**
+     * Get sareko.
+     *
+     * @return bool|null
+     */
+    public function getSareko()
+    {
+        return $this->sareko;
+    }
+
+    /**
+     * Set ikastaroaAmaituta.
+     *
+     * @param bool|null $ikastaroaAmaituta
+     *
+     * @return Eskaera
+     */
+    public function setIkastaroaAmaituta($ikastaroaAmaituta = null)
+    {
+        $this->ikastaroaAmaituta = $ikastaroaAmaituta;
+
+        return $this;
+    }
+
+    /**
+     * Get ikastaroaAmaituta.
+     *
+     * @return bool|null
+     */
+    public function getIkastaroaAmaituta()
+    {
+        return $this->ikastaroaAmaituta;
     }
 }
