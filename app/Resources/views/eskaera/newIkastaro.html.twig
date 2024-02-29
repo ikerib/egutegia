@@ -69,7 +69,7 @@
 
             <div class="row">&nbsp;</div>
 
-            <div class="form-group" id="divOrduak">
+            <div class="form-group" id="divIkastaro">
                 <label for="min-date"
                        class="col-sm-4 control-label">{{ 'Ikastaroaren informazio fitxategia' }}</label>
                 <div class="col-sm-4">
@@ -78,8 +78,10 @@
             </div>
 
             <div class="row">&nbsp;</div>
+            <hr>
+            <div class="row">&nbsp;</div>
 
-            <div class="form-group" id="divOrduak">
+            <div class="form-group" id="divOrdaindubeharda">
                 <label for="min-date" class="col-sm-4 control-label"></label>
                 <div class="col-sm-4">
                     <div style="display: none">{{ form_label(form.ordaindubeharda) }}</div>
@@ -87,15 +89,15 @@
                 </div>
             </div>
 
-            <div class="form-group divkostua" style="display: none;">
+            <div class="form-group divkostua">
                 <label for="appbundle_eskaera_lizentziamota"
-                       class="col-sm-4 control-label">{{ 'Kostua' | trans }}</label>
+                       class="col-sm-4 control-label">{{ 'Zehaztu kostua' | trans }}</label>
                 <div class="col-sm-7">
                     {{ form_widget(form.kostua, { 'attr': {'class': 'form-control'} }) }}
                 </div>
             </div>
 
-            <div class="form-group" id="divOrdainduta" style="display: none">
+            <div class="form-group" id="divOrdainduta">
                 <label for="min-date" class="col-sm-4 control-label"></label>
                 <div class="col-sm-4">
                     <div style="display: none">{{ form_label(form.ordainduta) }}</div>
@@ -103,7 +105,18 @@
                 </div>
             </div>
 
+            <div class="form-group" id="divOrdainketaFile">
+                <label for="min-date"
+                       class="col-sm-4 control-label">{{ 'Atxikitu ordainketa ziurtagiria' }}</label>
+                <div class="col-sm-4">
+                    {{ form_widget(form.ordainketaFile, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
+                </div>
+            </div>
+
+            <div class="row">&nbsp;</div>
             <hr>
+            <div class="row">&nbsp;</div>
+
             <div class="form-group" id="divOharrak">
                 <label for="min-date" class="col-sm-4 control-label">Ikastaroaren deskribapena: Programa, egunak, ordutegia...</label>
                 <div class="col-sm-4">
@@ -170,26 +183,23 @@
                     return;
                 }
 
-                var orduak = $("input[name='appbundle_eskaera[orduak]']").val();
-                if (orduak.length === 0) {
-                    bootbox.alert("Orduak zehaztea beharrezkoa da.");
-                    ongi = false;
-                    return;
-                }
+                // var orduak = $("input[name='appbundle_eskaera[orduak]']").val();
+                // if (orduak.length === 0) {
+                //     bootbox.alert("Orduak zehaztea beharrezkoa da.");
+                //     ongi = false;
+                //     return;
+                // }
 
-                var orduakGuztira = $("#appbundle_eskaera_total").val();
-                if ((orduakGuztira === 0) || (orduakGuztira === "0") || (orduakGuztira === "0.00")) {
-                    bootbox.alert("Ikastaroaren ordu kopurua zehaztea falta zaizu.");
-                    ongi = false;
-                    return;
-                }
+                // var orduakGuztira = $("#appbundle_eskaera_total").val();
+                // if ((orduakGuztira === 0) || (orduakGuztira === "0") || (orduakGuztira === "0.00")) {
+                //     bootbox.alert("Ikastaroaren ordu kopurua zehaztea falta zaizu.");
+                //     ongi = false;
+                //     return;
+                // }
 
                 if ($('#appbundle_eskaera_ordaindubeharda').prop('checked')) {
                     var balioa = $('#appbundle_eskaera_kostua').val();
                     var parsedValue = parseFloat(balioa);
-
-                    console.log(balioa)
-                    console.log(parsedValue)
 
                     if (!isNaN(parsedValue) && parsedValue >= 0) {
 
@@ -209,6 +219,7 @@
             if ($('#appbundle_eskaera_ordaindubeharda').prop('checked')) {
                 $('.divkostua').show();
                 $('#divOrdainduta').show();
+                $('#divOrdainketaFile').show();
             }
 
             $("#appbundle_eskaera_orduak").blur(function () {

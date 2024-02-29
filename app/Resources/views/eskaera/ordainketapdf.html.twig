@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block headline %}{{ 'Ikastaroaren ordainketa ziurtagiria gehitu' | trans }} {% endblock %}
+
+{% block content_row %}
+    {{ form_start(edit_form) }}
+    <div class="form-group">
+        <label for="min-date" class="col-sm-4 control-label">{{ 'Gehitu ordainketa ziurtagiria' | trans }}</label>
+        <div class="col-sm-7">
+            {{ form_widget(edit_form.ordainketaFile, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <input type="submit" value="{{ "Gorde" | trans }}" class="btn btn-primary" />
+        <a class="btn btn-default" href="{{ path('admin_ikastaroa_list')}}">Ezeztatu</a>
+    </div>
+    <div class="col-md-4"></div>
+
+    <div style="display: none;">
+
+        {% set referer = app.request.server.get('HTTP_REFERER') %}
+        <input type="text" name="nondik" value="{{ referer }}">
+        {{ form_end(edit_form) }}
+    </div>
+
+{% endblock %}

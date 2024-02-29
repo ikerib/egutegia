@@ -214,6 +214,28 @@ class Eskaera
      */
     private $ikastaroaSize;
 
+    /**
+     *
+     * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="ordainketaName", size="ordainketaSize")
+     *
+     * @var File
+     */
+    private $ordainketaFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $ordainketaName;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $ordainketaSize;
+
 
     /**
      * @var bool
@@ -402,6 +424,54 @@ class Eskaera
     public function getIkastaroaSize(): ?int
     {
         return $this->ikastaroaSize;
+    }
+
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|UploadedFile $image
+     *
+     * @throws Exception
+     */
+    public function setOrdainketaFile(?File $image = null): void
+    {
+        $this->ordainketaFile = $image;
+
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new DateTimeImmutable();
+        }
+    }
+
+    public function getOrdainketaFile(): ?File
+    {
+        return $this->ordainketaFile;
+    }
+
+    public function setOrdainketaName(?string $ordainketaName): void
+    {
+        $this->ordainketaName = $ordainketaName;
+    }
+
+    public function getOrdainketaName(): ?string
+    {
+        return $this->ordainketaName;
+    }
+
+    public function setOrdainketaSize(?int $ordainketaSize): void
+    {
+        $this->ordainketaSize = $ordainketaSize;
+    }
+
+    public function getOrdainketaSize(): ?int
+    {
+        return $this->ordainketaSize;
     }
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/

@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Ikastaroa;
 use AppBundle\Form\EskaeraIkastaroaType;
 use AppBundle\Form\EskaeraIkastaroPdfType;
+use AppBundle\Form\EskaeraOrdainketaPdfType;
 use DateTime;
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Document;
@@ -789,7 +790,6 @@ class EskaeraController extends Controller {
         );
     }
 
-
     /**
      * Displays a form to edit an existing eskaera entity.
      *
@@ -833,6 +833,52 @@ class EskaeraController extends Controller {
             )
         );
     }
+
+    /**
+     * Displays a form to edit an existing eskaera entity.
+     *
+     * @Route("/{id}/ordainketapdf", name="eskaera_ordainketa_pdf")
+     * @Method({"GET", "POST"})
+     * @param Request $request
+     * @param Eskaera $eskaera
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function ordainketapdfAction(Request $request, Eskaera $eskaera)
+    {
+        $editForm = $this->createForm(
+            EskaeraOrdainketaPdfType::class,
+            $eskaera,
+            array(
+                'action' => $this->generateUrl('eskaera_ordainketa_pdf', array('id' => $eskaera->getId())),
+                'method' => 'POST',
+            )
+        );
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid())
+        {
+            $em = $this->getDoctrine()->getManager();
+
+            if ($eskaera->getOrdainketaFile() !== null)
+            {
+                $eskaera->setOrdainduta(true);
+                $em->persist($eskaera);
+                $em->flush();
+
+                return $this->redirectToRoute('admin_ikastaroa_list');
+            }
+        }
+
+        return $this->render(
+            'eskaera/ordainketapdf.html.twig',
+            array(
+                'eskaera'   => $eskaera,
+                'edit_form' => $editForm->createView(),
+            )
+        );
+    }
+
 
     /**
      * Deletes a Justify file.

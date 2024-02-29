@@ -81,15 +81,16 @@
                     <th data-halign="center" data-align="right" data-field="kostua " data-sortable="true">{{ "Kostua" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="bideratua " data-sortable="true">{{ "Bideratua?" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="ordainduta " data-sortable="true">{{ "Ordainduta?" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="justifikatua " data-sortable="true">{{ "Justifikantea?" | trans }}</th>
+                    <th>Ordainketa ziurtagiria</th>
+{#                    <th data-halign="center" data-align="center" data-field="justifikatua " data-sortable="true">{{ "Bertaratze ziurtagiria?" | trans }}</th>#}
                     <th data-halign="center" data-align="center" data-field="sareko " data-sortable="true">{{ "Sareko" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="ikastaroaAmaituta" data-sortable="true">{{ "Ikastaroa Amaituta?" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="hasi" data-sortable="true">{{ "Hasi" | trans }}</th>
                     <th data-halign="center" data-align="center" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
-                    <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>
+{#                    <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>#}
                     <th>Ikastaroaren PDF</th>
-                    <th>Justifikantea</th>
+                    <th>Bertaratze ziurtagiria</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -130,16 +131,35 @@
                             {% endif %}
                         </td>
                         <td>
-                            {% if not eskaera.justifikatua %}
-                                <span class="label label-danger text-dark">
-                                    <a class="lblBaja text-white">Ez</a>
-                                </span>
-                            {% else %}
-                                <span class="label label-success text-dark">
-                                    <a class="lblBaja text-dark">Bai</a>
-                                </span>
-                            {% endif %}
+                            <ul class="list text-left">
+                                {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
+                                    {% if eskaera.ordainketaName != null %}
+                                        <li>
+                                            <a href="{{ vich_uploader_asset(eskaera, 'ordainketaFile') }}" target="_blank">
+                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="{{ path('eskaera_ordainketa_pdf', { 'id': eskaera.id }) }}">
+                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            </ul>
                         </td>
+{#                        <td>#}
+{#                            {% if not eskaera.justifikatua %}#}
+{#                                <span class="label label-danger text-dark">#}
+{#                                    <a class="lblBaja text-white">Ez</a>#}
+{#                                </span>#}
+{#                            {% else %}#}
+{#                                <span class="label label-success text-dark">#}
+{#                                    <a class="lblBaja text-dark">Bai</a>#}
+{#                                </span>#}
+{#                            {% endif %}#}
+{#                        </td>#}
                         <td>
                             {% if not eskaera.sareko %}
                                 <span class="label label-danger text-dark">
@@ -166,14 +186,14 @@
                         </td>
                         <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
                         <td>{{ eskaera.total }}</td>
-                        <td>
-                            {% if eskaera.sinatzaileak %}
-                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"
-                                   target="_blank">{{ eskaera.sinatzaileak }}</a>
-                            {% else %}
-                                Bideratu gabe.
-                            {% endif %}
-                        </td>
+{#                        <td>#}
+{#                            {% if eskaera.sinatzaileak %}#}
+{#                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"#}
+{#                                   target="_blank">{{ eskaera.sinatzaileak }}</a>#}
+{#                            {% else %}#}
+{#                                Bideratu gabe.#}
+{#                            {% endif %}#}
+{#                        </td>#}
                         <td>
                             <ul class="list text-left">
                                 {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
@@ -488,7 +508,7 @@
 
 
                     $detail.html(html);
-                %}).fail(function () {
+                }).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
                         className: "bb-alternate-modal",

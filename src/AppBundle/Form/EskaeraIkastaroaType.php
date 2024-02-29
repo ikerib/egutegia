@@ -84,17 +84,18 @@ class EskaeraIkastaroaType extends AbstractType
             )
             ->add('oharra', CKEditorType::class, [
                 'required' => true,
-                'constraints' => array(
-                    new NotBlank(['message' => "Ezinbestekoa da ikastaroari buruzko informazioa zehaztea."]),
-                    new Length(array('min' => 10)),
-                ),
+//                'constraints' => array(
+//                    new NotBlank(['message' => "Ezinbestekoa da ikastaroari buruzko informazioa zehaztea."]),
+//                    new Length(array('min' => 10)),
+//                ),
             ])
             ->add('ordaindubeharda', CheckboxType::class, [
-                'label' => 'Markatu ordaindu behar bada.'
+                'label' => 'Markatu ordaindu behar bada, hau da, ikastaroak kostua badu.'
             ])
             ->add('ordainduta', CheckboxType::class, [
-                'label' => 'Markatu ordainduta badago.'
+                'label' => 'Markatu iadanik ordainketa egina badago.'
             ])
+            ->add('ordainketaFile', VichFileType::class)
             ->add(
                 'noiz',
                 DateType::class,
