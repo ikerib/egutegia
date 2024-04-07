@@ -89,7 +89,7 @@
                     <th data-halign="center" data-align="center" data-field="amaitu" data-sortable="true">{{ "Amaitu" | trans }}</th>
                     <th data-halign="center" data-align="right" data-field="orduak" data-sortable="true">{{ "Orduak" | trans }}</th>
 {#                    <th data-halign="center" data-align="center" data-field="sinatzaileak" data-sortable="false">{{ "Sinatzaile taldea" | trans }}</th>#}
-                    <th>Ikastaroaren PDF</th>
+                    <th>Ikastaroaren PDF-ak</th>
                     <th>Bertaratze ziurtagiria</th>
                 </tr>
                 </thead>
@@ -203,6 +203,20 @@
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
                                         </li>
+                                        {% if eskaera.ikastaroaName2 != null %}
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile2') }}" target="_blank">
+                                                    <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        {% if eskaera.ikastaroaName3 != null %}
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile3') }}" target="_blank">
+                                                    <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% else %}
                                         <li>
                                             <a href="{{ path('eskaera_ikastaro_pdf', { 'id': eskaera.id }) }}">

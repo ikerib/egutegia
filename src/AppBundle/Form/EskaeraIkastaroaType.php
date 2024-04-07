@@ -149,6 +149,12 @@ class EskaeraIkastaroaType extends AbstractType
             ->add('ikastaroaFile', VichFileType::class, [
                 'label' => 'Ikastaroaren informazio fitxategia'
             ])
+            ->add('ikastaroaFile2', VichFileType::class, [
+                'label' => 'Ikastaroaren informazio fitxategia'
+            ])
+            ->add('ikastaroaFile3', VichFileType::class, [
+                'label' => 'Ikastaroaren informazio fitxategia'
+            ])
         ;
     }
 

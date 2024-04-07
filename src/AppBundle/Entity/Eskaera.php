@@ -214,6 +214,53 @@ class Eskaera
      */
     private $ikastaroaSize;
 
+    /*** 2 ***/
+    /**
+     *
+     * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="ikastaroaName2", size="ikastaroaSize2")
+     *
+     * @var File
+     */
+    private $ikastaroaFile2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $ikastaroaName2;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $ikastaroaSize2;
+
+    /*** 3 ***/
+    /**
+     *
+     * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="ikastaroaName3", size="ikastaroaSize3")
+     *
+     * @var File
+     */
+    private $ikastaroaFile3;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @var string
+     */
+    private $ikastaroaName3;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @var integer
+     */
+    private $ikastaroaSize3;
+
+
     /**
      *
      * @Vich\UploadableField(mapping="justifikanteak", fileNameProperty="ordainketaName", size="ordainketaSize")
@@ -426,6 +473,102 @@ class Eskaera
         return $this->ikastaroaSize;
     }
 
+
+    /*** 2 ***/
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|UploadedFile $image
+     *
+     * @throws Exception
+     */
+    public function setIkastaroaFile2(?File $image = null): void
+    {
+        $this->ikastaroaFile2 = $image;
+
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new DateTimeImmutable();
+        }
+    }
+
+    public function getIkastaroaFile2(): ?File
+    {
+        return $this->ikastaroaFile2;
+    }
+
+    public function setIkastaroaName2(?string $ikastaroaName2): void
+    {
+        $this->ikastaroaName2 = $ikastaroaName2;
+    }
+
+    public function getIkastaroaName2(): ?string
+    {
+        return $this->ikastaroaName2;
+    }
+
+    public function setIkastaroaSize2(?int $ikastaroaSize2): void
+    {
+        $this->ikastaroaSize2 = $ikastaroaSize2;
+    }
+
+    public function getIkastaroaSize2(): ?int
+    {
+        return $this->ikastaroaSize2;
+    }
+
+    /*** 3 ***/
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|UploadedFile $image
+     *
+     * @throws Exception
+     */
+    public function setIkastaroaFile3(?File $image = null): void
+    {
+        $this->ikastaroaFile3 = $image;
+
+        if (null !== $image) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updated = new DateTimeImmutable();
+        }
+    }
+
+    public function getIkastaroaFile3(): ?File
+    {
+        return $this->ikastaroaFile3;
+    }
+
+    public function setIkastaroaName3(?string $ikastaroaName3): void
+    {
+        $this->ikastaroaName3 = $ikastaroaName3;
+    }
+
+    public function getIkastaroaName3(): ?string
+    {
+        return $this->ikastaroaName3;
+    }
+
+    public function setIkastaroaSize3(?int $ikastaroaSize3): void
+    {
+        $this->ikastaroaSize3 = $ikastaroaSize3;
+    }
+
+    public function getIkastaroaSize3(): ?int
+    {
+        return $this->ikastaroaSize3;
+    }
 
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
