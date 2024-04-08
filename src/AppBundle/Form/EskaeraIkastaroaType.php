@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use AppBundle\Entity\Sinatzaileak;
 use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\Type;
 
 class EskaeraIkastaroaType extends AbstractType
 {
@@ -38,7 +39,7 @@ class EskaeraIkastaroaType extends AbstractType
                     'label'         => 'Mota',
                     'required'      => true,
                     'expanded'      => true,
-                    'class'         => 'AppBundle\Entity\Type',
+                    'class'         => Type::class,
                     'attr'          => array('class' => 'type_label'),
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('u')
@@ -142,7 +143,6 @@ class EskaeraIkastaroaType extends AbstractType
             )
             ->add('kostua', MoneyType::class, [
                 'label' => 'Kostua',
-                'divisor' => 100,
                 'required' => false,
 
             ])

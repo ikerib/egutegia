@@ -152,7 +152,11 @@
                         <td>{{ eskaera.emaitza }}</td>
                         <td>
                             <a href="{{ path('admin_calendar_edit', { 'id': eskaera.calendar.id }) }}" class="btnEskaera" data-id="{{ eskaera.id }}">
-                                {{ eskaera.name }}
+                                {% if eskaera.type.labur =="IKA" %}
+                                    {{ eskaera.user }}
+                                {% else %}
+                                    {{ eskaera.name }}
+                                {% endif %}
                             </a>
                         </td>
                         <td>
@@ -163,6 +167,9 @@
 {#                            {{ eskaera.type.name |length > 10 ? eskaera.type.name |slice(0, 10) ~ '...' : eskaera.type.name }}#}
                             {{ eskaera.type.labur }}
                             {% if eskaera.lizentziamota %}({{ eskaera.lizentziamota }}){% endif %}
+                            {% if eskaera.type.labur == "IKA"  %}
+                                ({{ eskaera.name }})
+                            {% endif %}
                         </span>
                         </td>
                         <td>{{ eskaera.kostua ~ " €" }}</td>
@@ -628,7 +635,7 @@
 
 
                     $detail.html(html);
-                }).fail(function () {
+                }}).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
                         className: "bb-alternate-modal",
