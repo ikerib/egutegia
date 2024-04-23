@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\NonUniqueResultException;
+
 /**
  * KuadranteaEskaerekinRepository
  *
@@ -10,6 +12,9 @@ namespace AppBundle\Repository;
  */
 class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @throws NonUniqueResultException
+     */
     public function findByUserYearMonth($userid, $year, $hilabetea)
     {
         $qb = $this->createQueryBuilder('k')
@@ -17,6 +22,18 @@ class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('k.urtea = :year')->setParameter('year', $year)
             ->andWhere('k.hilabetea = :hilabetea')->setParameter('hilabetea', $hilabetea);
 
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function findByUserYear($userid, $year)
+    {
+        $qb = $this->createQueryBuilder('k')
+            ->andWhere('k.user = :userid')->setParameter('userid', $userid)
+            ->andWhere('k.urtea = :year')->setParameter('year', $year)
+            ;
         return $qb->getQuery()->getResult();
     }
 

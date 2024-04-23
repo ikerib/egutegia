@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 {
     private $em;
+
     public function __construct(EntityManagerInterface $em)
     {
         parent::__construct();
@@ -114,7 +115,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
             if ($event->getStartDate() == $event->getEndDate()) {
                 $field = "setDay" . $event->getStartDate()->format('d');
-                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName().'#');
+                $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName() . '#');
 
             } else {
                 $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
@@ -132,10 +133,51 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
                 foreach ($period as $dt) {
 
                     $field = "setDay" . $dt->format('d');
-                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName().'#');
+                    $kua->{$field}($event->getType()->getLabur() . ' => ' . $event->getType()->getName() . '#');
                 }
             }
             $this->em->persist($kua);
+        }
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws Exception
+     */
+    public function fillFromEvents2(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Event $events */
+        $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+        /** @var Event $event */
+        foreach ($events as $event) {
+            $balioa = $event->getType()->getLabur() . ' => ' . $event->getType()->getName() . '#';
+
+            if ($event->getStartDate() == $event->getEndDate()) {
+                $field = "setDay" . $event->getStartDate()->format('d');
+                $this->insertRowKuadrantean($user->getId(), $event->getStartDate()->format('Y'),$event->getStartDate()->format('F'), $field, $balioa);
+            } else {
+                $begin = new \DateTime($event->getStartDate()->format('Y-m-d'));
+
+                if ($event->getEndDate() === null) {
+                    $end = new \DateTime($event->getStartDate()->format('Y-m-d'));
+                } else {
+                    $end = new \DateTime($event->getEndDate()->format('Y-m-d'));
+                }
+
+                $interval = new DateInterval('P1D'); // Intervalo de 1 día
+                $end = $end->modify('+1 day'); // Azken eguna inprimatu dezan ere
+                $period = new DatePeriod($begin, $interval, $end);
+
+                foreach ($period as $dt) {
+                    $field = "setDay" . $dt->format('d');
+                    $this->insertRowKuadrantean($user->getId(), $event->getStartDate()->format('Y'),$event->getStartDate()->format('F'), $field, $balioa);
+                }
+            }
         }
     }
 
@@ -174,7 +216,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
             $rowDataField = "getDay" . $esk->getHasi()->format('d');
             $rowDataValue = $kua->{$rowDataField}();
 
-            if ( !$rowDataValue) {
+            if (!$rowDataValue) {
                 if ($esk->getHasi() == $esk->getAmaitu()) {
                     $field = "setDay" . $esk->getHasi()->format('d');
                     $kua->{$field}($esk->getType()->getLabur() . ' => ' . $esk->getType()->getName());
@@ -201,12 +243,64 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws Exception
+     */
+    public function fillFromEskaerak2(User $user, $year): void
+    {
+        // get current user all events
+        /** @var Eskaera $eskaerak */
+        $eskaerak = $this->em->getRepository('AppBundle:Eskaera')->getUserYearEvents($user->getId(), $year);
+        $hilabetea = "";
+        $kua = null;
+
+        /** @var Eskaera $esk */
+        foreach ($eskaerak as $esk) {
+            $balioa = $esk->getType()->getLabur() . ' => ' . $esk->getType()->getName();
+
+            if ($esk->getHasi() == $esk->getAmaitu()) {
+                $field = "setDay" . $esk->getHasi()->format('d');
+                $this->insertRowKuadrantean($user->getId(), $esk->getHasi()->format('Y'), $esk->getHasi()->format('F'), $field, $balioa);
+            } else {
+                $begin = new \DateTime($esk->getHasi()->format('Y-m-d'));
+
+                if ($esk->getAmaitu() === null) {
+                    $end = new \DateTime($esk->getHasi()->format('Y-m-d'));
+                } else {
+                    $end = new \DateTime($esk->getAmaitu()->format('Y-m-d'));
+                }
+
+                $interval = new DateInterval('P1D'); // Intervalo de 1 día
+                $end = $end->modify('+1 day'); // Azken eguna inprimatu dezan ere
+                $period = new DatePeriod($begin, $interval, $end);
+
+                foreach ($period as $dt) {
+                    $field = "setDay" . $dt->format('d');
+                    $this->insertRowKuadrantean($user->getId(), $dt->format('Y'), $dt->format('F'), $field, $balioa);
+                }
+            }
+        }
+
+    }
+
+    private function insertRowKuadrantean($userid, $urtea, $hilabetea, $field, $value): void
+    {
+        /** @var KuadranteaEskaerekin $kuadranteak */
+        $kuadranteak = $this->em->getRepository(KuadranteaEskaerekin::class)->findByUserYearMonth(
+            $userid, $urtea, $hilabetea
+        );
+        $kuadranteak->{$field}($value);
+        $this->em->persist($kuadranteak);
+    }
+
     protected function configure()
     {
         $this
             ->setName('app:kuadrantea-eskaerekin')
-            ->setDescription('...')
-        ;
+            ->setDescription('...');
     }
 
     /**
@@ -221,13 +315,13 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         // urteko lehen astea bada, aurreko urtea aukeratu
         $date_now = new DateTime();
         // $date2    = new DateTime("06/01/".$year);
-        $date2    = new DateTime($year.'-01-06');
+        $date2 = new DateTime($year . '-01-06');
 
         if ($date_now <= $date2) {
             --$year;
         }
 
-        /** @var $users  User **/
+        /** @var $users  User * */
         $users = $this->em->getRepository('AppBundle:User')->getAllAktibo();
 
         $progressBar = new ProgressBar($output, count($users));
@@ -237,8 +331,8 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             $progressBar->advance();
             $this->sortuKuadranteEskaeraRow($user, $year);
-            $this->fillFromEvents($user, $year);
-            $this->fillFromEskaerak($user, $year);
+            $this->fillFromEvents2($user, $year);
+            $this->fillFromEskaerak2($user, $year);
         }
         $progressBar->finish();
         $this->em->flush();
