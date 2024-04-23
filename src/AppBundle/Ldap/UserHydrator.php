@@ -73,6 +73,10 @@ class UserHydrator implements HydratorInterface
                     $rol = 'ROLE_SAILBURUA';
                     $user->addRole($rol);
                 }
+                if (strpos($sp[ 0 ], 'Zinegotziak') !== false) { //
+                    $rol = 'ROLE_ZINEGOTZIA';
+                    $user->addRole($rol);
+                }
                 if (strpos($sp[ 0 ], 'ROL-Udaltzaingoa_Administrazioa') !== false) { // UDALTZAINA BADA
                     $udaltzainAdministrariaDa = true;
                 }

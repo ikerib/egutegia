@@ -117,6 +117,7 @@ class Builder implements ContainerAwareInterface
         $user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         $menu = $factory->createItem('root', ['navbar' => true, 'icon' => 'user']);
+        $menu->setChildrenAttribute('class', 'nav-eskubi');
 
         if ($checker->isGranted('ROLE_PREVIOUS_ADMIN')) {
             if ($options['saila'] === "Udaltzaingoa") {
@@ -161,7 +162,15 @@ class Builder implements ContainerAwareInterface
             $menu->addChild('user_menu.eskaera.new', ['icon' => 'send', 'route' => 'eskaera_instantziak'])->setExtra('translation_domain', 'messages');
 
             if (\count($notifications) === 0) {
-                $menu->addChild('User', array('label' => $user->getDisplayname(), 'dropdown' => true, 'icon' => 'user'));
+                $menu->addChild('User',
+                    array(
+                        'label' => $user->getDisplayname(),
+                        'dropdown' => true,
+                        'icon' => 'user',
+                        'pull-right' => true,
+                        'childrenAttributes'     => ['class' =>'dropdown-menu dropdown-menu-right']
+                    ));
+                $menu['User']->setChildrenAttribute('class', 'nav navbar-nav navbar-right');
             } else {
                 $menu->addChild(
                     'User',
@@ -171,6 +180,7 @@ class Builder implements ContainerAwareInterface
                         'dropdown'   => true,
                         'icon'       => 'user',
                         'extras'     => array('safe_label' => true),
+                        'childrenAttributes' => ['class' =>'dropdown-menu dropdown-menu-right']
                     )
                 );
             }
@@ -182,6 +192,12 @@ class Builder implements ContainerAwareInterface
             $menu[ 'User' ]->addChild('user_menu.eskaerak',array('route' => 'eskaera_index','icon'  => 'send',))->setExtra('translation_domain', 'messages');
 
             $menu[ 'User' ]->addChild('divider', ['divider' => true]);
+
+            if ( $checker->isGranted('ROLE_ZINEGOTZIA')) {
+                $menu['User']->addChild('Ikastaroen kudeaketa',
+                    ['icon' => 'education','route' => 'admin_ikastaroa_list'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+                $menu['User']->addChild('divider5', ['divider' => true]);
+            }
 
             if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN') || $checker->isGranted('ROLE_ARDURADUNA')) {
 //                $menu[ 'User' ]->addChild(

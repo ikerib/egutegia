@@ -140,26 +140,17 @@
                                             </a>
                                         </li>
                                     {% else %}
-                                        <li>
-                                            <a href="{{ path('eskaera_ordainketa_pdf', { 'id': eskaera.id }) }}">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
-                                            </a>
-                                        </li>
+                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                            <li>
+                                                <a href="{{ path('eskaera_ordainketa_pdf', { 'id': eskaera.id }) }}">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             </ul>
                         </td>
-{#                        <td>#}
-{#                            {% if not eskaera.justifikatua %}#}
-{#                                <span class="label label-danger text-dark">#}
-{#                                    <a class="lblBaja text-white">Ez</a>#}
-{#                                </span>#}
-{#                            {% else %}#}
-{#                                <span class="label label-success text-dark">#}
-{#                                    <a class="lblBaja text-dark">Bai</a>#}
-{#                                </span>#}
-{#                            {% endif %}#}
-{#                        </td>#}
                         <td>
                             {% if not eskaera.sareko %}
                                 <span class="label label-danger text-dark">
@@ -186,14 +177,6 @@
                         </td>
                         <td>{{ eskaera.amaitu | date('Y-m-d') }}</td>
                         <td>{{ eskaera.total }}</td>
-{#                        <td>#}
-{#                            {% if eskaera.sinatzaileak %}#}
-{#                                <a href="{{ path('admin_sinatzaileak_show', { 'id': eskaera.sinatzaileak.id} ) }}"#}
-{#                                   target="_blank">{{ eskaera.sinatzaileak }}</a>#}
-{#                            {% else %}#}
-{#                                Bideratu gabe.#}
-{#                            {% endif %}#}
-{#                        </td>#}
                         <td>
                             <ul class="list text-left">
                                 {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa %}
@@ -218,11 +201,13 @@
                                             </li>
                                         {% endif %}
                                     {% else %}
-                                        <li>
-                                            <a href="{{ path('eskaera_ikastaro_pdf', { 'id': eskaera.id }) }}">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
-                                            </a>
-                                        </li>
+                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                            <li>
+                                                <a href="{{ path('eskaera_ikastaro_pdf', { 'id': eskaera.id }) }}">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             </ul>
@@ -237,11 +222,13 @@
                                             </a>
                                         </li>
                                     {% else %}
-                                        <li>
-                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
-                                            </a>
-                                        </li>
+                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                            <li>
+                                                <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
                                 {% endif %}
                             </ul>
@@ -522,7 +509,7 @@
 
 
                     $detail.html(html);
-                }).fail(function () {
+                %}).fail(function () {
                     bootbox.alert({
                         message: "Akats bat gertatu da. Agian eskaera bideratu gabe dago?",
                         className: "bb-alternate-modal",
