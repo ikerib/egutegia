@@ -138,6 +138,10 @@
                                             <a href="{{ vich_uploader_asset(eskaera, 'ordainketaFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
+                                            &nbsp;
+                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'ordainketa'}) }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                            </a>
                                         </li>
                                     {% else %}
                                         {% if not is_granted('ROLE_ZINEGOTZIA') %}
@@ -185,6 +189,10 @@
                                             <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
+                                            &nbsp;
+                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf1'}) }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                            </a>
                                         </li>
                                         {% if eskaera.ikastaroaName2 != null %}
                                             <li>
@@ -192,6 +200,10 @@
                                                     <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                                 </a>
                                             </li>
+                                            &nbsp;
+                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf2'}) }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                            </a>
                                         {% endif %}
                                         {% if eskaera.ikastaroaName3 != null %}
                                             <li>
@@ -199,6 +211,10 @@
                                                     <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                                 </a>
                                             </li>
+                                            &nbsp;
+                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf3'}) }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                            </a>
                                         {% endif %}
                                     {% else %}
                                         {% if not is_granted('ROLE_ZINEGOTZIA') %}
@@ -219,6 +235,10 @@
                                         <li>
                                             <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                            </a>
+                                            &nbsp;
+                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'justifikante'}) }}">
+                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                                             </a>
                                         </li>
                                     {% else %}

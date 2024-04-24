@@ -879,7 +879,6 @@ class EskaeraController extends Controller {
         );
     }
 
-
     /**
      * Deletes a Justify file.
      *
@@ -1007,6 +1006,68 @@ class EskaeraController extends Controller {
             )
         );
     }
+
+    /**
+     * @Route("/ikastaroak/ezabatu/ziurtagiria/{id}/{zer}", name="admin_remove_ziurtagiria")
+     * @Method("GET")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeziurtagiriaAction(Request $request, $id, $zer): \Symfony\Component\HttpFoundation\Response
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var Eskaera $eskaera */
+        $eskaera = $em->getRepository(Eskaera::class)->find($id);
+
+        if ( $zer === "ordainketa") {
+            $eskaera->setJustifikanteFile(null);
+            $eskaera->setJustifikanteName(null);
+            $eskaera->setJustifikanteSize(null);
+
+            $em->persist($eskaera);
+            $em->flush();
+        }
+        if ( $zer === "pdf1") {
+            $eskaera->setIkastaroaFile(null);
+            $eskaera->setIkastaroaName(null);
+            $eskaera->setIkastaroaSize(null);
+
+            $em->persist($eskaera);
+            $em->flush();
+        }
+        if ( $zer === "pdf2") {
+            $eskaera->setIkastaroaFile2(null);
+            $eskaera->setIkastaroaName2(null);
+            $eskaera->setIkastaroaSize2(null);
+
+            $em->persist($eskaera);
+            $em->flush();
+        }
+
+        if ( $zer === "pdf3") {
+            $eskaera->setIkastaroaFile3(null);
+            $eskaera->setIkastaroaName3(null);
+            $eskaera->setIkastaroaSize3(null);
+
+            $em->persist($eskaera);
+            $em->flush();
+        }
+
+        if ( $zer === "justifikante") {
+            $eskaera->setJustifikanteFile(null);
+            $eskaera->setJustifikanteName(null);
+            $eskaera->setJustifikanteSize(null);
+
+            $em->persist($eskaera);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('admin_ikastaroa_list');
+    }
+
 
     /**
      * @Route("/ordaindu/{id}", name="admin_ikastaroa_ordaindu")
