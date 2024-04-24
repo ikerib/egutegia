@@ -32,15 +32,20 @@ class LogRepository extends EntityRepository
     public function findLoginlogs()
     {
         $em = $this->getEntityManager();
+        $sqlDate = new \DateTime();
+        $sqlDate->modify('-30 days');
+
         /** @var $query \Doctrine\DBAL\Query\QueryBuilder */
         $query = $em->createQuery('
             SELECT l
                 FROM AppBundle:Log l
                 WHERE l.name = :textua
+                AND l.created >= :date
         ');
 
         //$consulta = $em->createQuery($dql);
         $query->setParameter('textua', "Login");
+        $query->setParameter('date', $sqlDate);
 
         return $query->getResult();
     }
