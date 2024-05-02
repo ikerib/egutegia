@@ -200,15 +200,7 @@ class Builder implements ContainerAwareInterface
             }
 
             if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN') || $checker->isGranted('ROLE_ARDURADUNA')) {
-//                $menu[ 'User' ]->addChild(
-//                    'Saila',
-//                    array(
-//                        'label'  => $this->container->get('translator')->trans('Saila'),
-//                        'route'  => 'saila_dashboard',
-//                        'icon'   => 'bullhorn',
-//                        'extras' => array('safe_label' => true),
-//                    )
-//                )->setExtra('translation_domain', 'messages');
+
                 $menu[ 'User' ]->addChild(
                     'Saileko eskaerak',
                     array(
@@ -230,6 +222,10 @@ class Builder implements ContainerAwareInterface
                 )->setExtra('translation_domain', 'messages');
                 $menu[ 'User' ]->addChild('divider2', ['divider' => true]);
 
+
+                $menu['User']->addChild('Ikastaroen kudeaketa',
+                    ['icon' => 'education','route' => 'admin_ikastaroa_list'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
+                $menu['User']->addChild('divider52', ['divider' => true]);
             }
 
             if ($checker->isGranted('ROLE_BIDERATZAILEA')) {

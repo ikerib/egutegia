@@ -36,6 +36,15 @@
     <div class="row">&nbsp;</div>
 
     <div class="row">
+        {% set readonly = false %}
+        {% if is_granted('ROLE_ZINEGOTZIA') %}
+            {% set readonly = true %}
+        {% endif %}
+        {% if is_granted('ROLE_SAILBURUA') %}
+            {% set readonly = true %}
+        {% endif %}
+
+        {{ dump(readonly) }}
 
         <div class="col-md-12">
             <table id="tableEskaerak"
@@ -138,13 +147,15 @@
                                             <a href="{{ vich_uploader_asset(eskaera, 'ordainketaFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
+                                        {% if not readonly %}
                                             &nbsp;
                                             <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'ordainketa'}) }}">
                                                 <i class="fa fa-trash text-danger" aria-hidden="true"></i>
                                             </a>
+                                            {% endif %}
                                         </li>
                                     {% else %}
-                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                        {% if not readonly %}
                                             <li>
                                                 <a href="{{ path('eskaera_ordainketa_pdf', { 'id': eskaera.id }) }}">
                                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
@@ -189,10 +200,12 @@
                                             <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
-                                            &nbsp;
-                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf1'}) }}">
-                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                            </a>
+                                            {% if not readonly %}
+                                                &nbsp;
+                                                <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf1'}) }}">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            {% endif %}
                                         </li>
                                         {% if eskaera.ikastaroaName2 != null %}
                                             <li>
@@ -200,10 +213,12 @@
                                                     <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                                 </a>
                                             </li>
-                                            &nbsp;
-                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf2'}) }}">
-                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                            </a>
+                                            {% if not readonly %}
+                                                &nbsp;
+                                                <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf2'}) }}">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
                                         {% if eskaera.ikastaroaName3 != null %}
                                             <li>
@@ -211,13 +226,15 @@
                                                     <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                                 </a>
                                             </li>
-                                            &nbsp;
-                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf3'}) }}">
-                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                            </a>
+                                            {% if not readonly %}
+                                                &nbsp;
+                                                <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'pdf3'}) }}">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
                                     {% else %}
-                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                        {% if not readonly %}
                                             <li>
                                                 <a href="{{ path('eskaera_ikastaro_pdf', { 'id': eskaera.id }) }}">
                                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}
@@ -236,13 +253,15 @@
                                             <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
                                             </a>
-                                            &nbsp;
-                                            <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'justifikante'}) }}">
-                                                <i class="fa fa-trash text-danger" aria-hidden="true"></i>
-                                            </a>
+                                            {% if not readonly %}
+                                                &nbsp;
+                                                <a href="{{ path('admin_remove_ziurtagiria', { 'id': eskaera.id, 'zer': 'justifikante'}) }}">
+                                                    <i class="fa fa-trash text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            {% endif %}
                                         </li>
                                     {% else %}
-                                        {% if not is_granted('ROLE_ZINEGOTZIA') %}
+                                        {% if not readonly %}
                                             <li>
                                                 <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
                                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Igo" | trans }}

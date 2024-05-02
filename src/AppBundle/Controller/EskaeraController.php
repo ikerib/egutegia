@@ -985,7 +985,6 @@ class EskaeraController extends Controller {
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
-
         $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'));
 
         $deleteForms = [];
