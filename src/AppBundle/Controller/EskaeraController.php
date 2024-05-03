@@ -983,12 +983,12 @@ class EskaeraController extends Controller {
      */
     public function ikastaroalistAction(Request $request): \Symfony\Component\HttpFoundation\Response
     {
-        $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA'], null, 'Egin login');
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN', 'ROLE_SINATZAILEA', 'ROLE_SAILBURUA'], null, 'Egin login');
         $em = $this->getDoctrine()->getManager();
         /** @var User $user */
         $user = $this->getUser();
 
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_SAILBURUA')) {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_SAILBURUA')) {
             $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'), $user->getSaila()->getId());
         } else {
             $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'));
