@@ -39,15 +39,55 @@
                 <tbody>
                 {% for eskaera in eskaeras %}
                     <tr>
-                        <td>{{ eskaera.id }}</td>
-                        {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.id }}</a></td>#}
-                        {#<td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.name }}</a></td>#}
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.egunak }}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></td>
-                        <td><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.total }}</a></td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del>{{ eskaera.id }}</del>
+                                {% else %}
+                                    {{ eskaera.id }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></del>
+                            {% else %}
+                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a></del>
+                            {% else %}
+                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.hasi %}{{ eskaera.hasi|date('Y-m-d') }}{% endif %}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a></del>
+                            {% else %}
+                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{% if eskaera.amaitu %}{{ eskaera.amaitu|date('Y-m-d') }}{% endif %}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.egunak }}</a></del>
+                            {% else %}
+                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.egunak }}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a></del>
+                            {% else %}
+                            <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.orduak }}</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.total }}</a></del>
+                            {% else %}
+                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.total }}</a>
+                            {% endif %}
+                        </td>
                         <td>
                             <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">
                                 {% if eskaera.abiatua == true %}
@@ -86,28 +126,32 @@
                         </span>
                         </td>
                         <td>
-                            <ul>
-                                {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa%}
-                                    {% if eskaera.justifikanteName == null %}
-                                        <li>
-                                            <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea bidali" | trans }}
-                                            </a>
-                                        </li>
-                                    {% else %}
-                                        <li>
-                                            <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
-                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('eskaera_justify_file_delete', {'id': eskaera.id}) }}">
-                                                <i class="fa fa-trash" aria-hidden="true"></i> {{ "Ezabatu justifikatea" | trans }}
-                                            </a>
-                                        </li>
+                            {% if eskaera.bertanbehera == "1" %}
+                                <p>Eskaera baliogabetua</p>
+                            {% else %}
+                                <ul>
+                                    {% if eskaera.type.id == type_lizentzia or eskaera.type.id == type_ikastaroa%}
+                                        {% if eskaera.justifikanteName == null %}
+                                            <li>
+                                                <a href="{{ path('eskaera_justify', { 'id': eskaera.id }) }}">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i> {{ "Justifikatea bidali" | trans }}
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li>
+                                                <a href="{{ vich_uploader_asset(eskaera, 'justifikanteFile') }}" target="_blank">
+                                                    <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi justifikatea" | trans }}
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{{ path('eskaera_justify_file_delete', {'id': eskaera.id}) }}">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i> {{ "Ezabatu justifikatea" | trans }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </ul>
+                                </ul>
+                            {% endif %}
                         </td>
                     </tr>
                 {% else %}
