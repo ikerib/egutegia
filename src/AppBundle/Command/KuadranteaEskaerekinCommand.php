@@ -153,6 +153,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         $events = $this->em->getRepository('AppBundle:Event')->getUserYearEvents($user->getId(), $year);
         $hilabetea = "";
         $kua = null;
+
         /** @var Event $event */
         foreach ($events as $event) {
             $balioa = $event->getType()->getLabur() . ' => ' . $event->getType()->getName() . '#';
@@ -175,7 +176,9 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
 
                 foreach ($period as $dt) {
                     $field = "setDay" . $dt->format('d');
-                    $this->insertRowKuadrantean($user->getId(), $event->getStartDate()->format('Y'),$event->getStartDate()->format('F'), $field, $balioa);
+//                    $this->insertRowKuadrantean($user->getId(), $event->getStartDate()->format('Y'),$event->getStartDate()->format('F'), $field, $balioa);
+//                    $this->insertRowKuadrantean($user->getId(), $event->getStartDate()->format('Y'),$event->getStartDate()->format('F'), $field, $balioa);
+                    $this->insertRowKuadrantean($user->getId(), $dt->format('Y'), $dt->format('F'), $field, $balioa);
                 }
             }
         }
@@ -331,8 +334,8 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         foreach ($users as $user) {
             $progressBar->advance();
             $this->sortuKuadranteEskaeraRow($user, $year);
-            $this->fillFromEvents2($user, $year);
             $this->fillFromEskaerak2($user, $year);
+            $this->fillFromEvents2($user, $year);
         }
         $progressBar->finish();
         $this->em->flush();

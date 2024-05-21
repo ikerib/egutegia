@@ -210,6 +210,7 @@ class Builder implements ContainerAwareInterface
                         'extras' => array('safe_label' => true),
                     )
                 )->setExtra('translation_domain', 'messages');
+                if ( $user->getSaila())
                 $menu[ 'User' ]->addChild(
                     'Saileko kuadrantea',
                     array(
