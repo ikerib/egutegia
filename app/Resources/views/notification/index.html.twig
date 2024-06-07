@@ -110,16 +110,32 @@
                         <span class="label label-danger"> {{ "Ez" | trans }}</span>
                     {% endif %}
                 </td>
-                <td>{{ notification.eskaera.user.displayname }}</td>
+                <td>{{ notification.eskaera.user }}</td>
                 <td>{{ notification.eskaera.user.department }}</td>
-                <td>{{ notification.eskaera.type }}{% if notification.eskaera.lizentziamota %}({{ notification.eskaera.lizentziamota }}){% endif %}</td>
+                <td>
+                    {{ notification.eskaera.type }}
+                    {% if notification.eskaera.lizentziamota %}
+                        ({{ notification.eskaera.lizentziamota }})
+                    {% endif %}
+                    {% if notification.eskaera.type == "ikastaroak" %}
+                        <br/>
+                        {% if notification.eskaera.kostua %}
+                            <stron>Kostua: </stron> {{ notification.eskaera.kostua }}€
+                            <br/>
+                        {% endif %}
+                        <a href="{{ vich_uploader_asset(notification.eskaera, 'ikastaroaFile3') }}" target="_blank">
+                            <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikastaroaren informazioa" | trans }}
+                        </a>
+                    {% endif %}
+                </td>
                 <td>{{ notification.eskaera.noiz | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.hasi | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.amaitu | date('Y-m-d') }}</td>
                 <td>{{ notification.eskaera.total }}</td>
                 <td>{{ notification.created | date('Y-m-d') }}
-                <td><span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ notification.eskaera.oharra }}">
-                    {{ notification.eskaera.oharra|length > 50 ? notification.eskaera.oharra|slice(0, 50) ~ '...' : notification.eskaera.oharra  }}
+                <td>
+                    <span data-html="true" data-toggle="tooltip" data-placement="top" title="{{ notification.eskaera.oharra }}">
+                    {{ notification.eskaera.oharra|raw|length > 50 ? notification.eskaera.oharra|raw|slice(0, 50) ~ '...' : notification.eskaera.oharra | raw  }}
                 </td>
 
                 <td>
