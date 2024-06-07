@@ -988,7 +988,10 @@ class EskaeraController extends Controller {
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($this->get('security.authorization_checker')->isGranted('ROLE_SAILBURUA')) {
+
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ARDURADUNA')) {
+            $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'));
+        } elseif ($this->get('security.authorization_checker')->isGranted('ROLE_SAILBURUA')) {
             $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'), $user->getSaila()->getId());
         } else {
             $eskaeras = $em->getRepository(Eskaera::class)->findIkastaroak($this->getParameter('type_ikastaroa'));
