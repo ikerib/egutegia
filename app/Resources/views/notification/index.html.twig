@@ -120,10 +120,12 @@
                     {% if notification.eskaera.type == "ikastaroak" %}
                         <br/>
                         {% if notification.eskaera.kostua %}
-                            <stron>Kostua: </stron> {{ notification.eskaera.kostua }}€
+                            <strong>Kostua: </strong> {{ notification.eskaera.kostua }}€
                             <br/>
                         {% endif %}
-                        <a href="{{ vich_uploader_asset(notification.eskaera, 'ikastaroaFile3') }}" target="_blank">
+                        {% set eskaera = notification.eskaera %}
+                        
+                        <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile2', 'AppBundle\\Entity\\Eskaera') }}" target="_blank">
                             <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikastaroaren informazioa" | trans }}
                         </a>
                     {% endif %}
