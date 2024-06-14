@@ -72,7 +72,7 @@ class AppCheckEskaerakEgutegianCommand extends ContainerAwareCommand
 
             $message = (new \Swift_Message('CHECK ESKAERAK EGUTEGIAN'))
                 ->setFrom('send@example.com')
-                ->setTo('iibarguren@pasaia.net')
+                ->setTo('rgonzalez@pasaia.net')
                 ->setBody($body, 'text/html')
                 ->setPriority(Swift_Mime_SimpleMessage::PRIORITY_HIGHEST);
             ;

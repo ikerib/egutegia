@@ -55,7 +55,7 @@ class EskaeraController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $sailak = $em->getRepository('AppBundle:Saila')->findAll();
         $saila = $request->query->get('saila');
-        if (($saila) && !($saila==="-1") ){
+        if (($saila) ){
             $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($saila);
         } else {
             $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSorted();
