@@ -1,0 +1,9 @@
+<p>Eskaera hauek abiatuta, amaituta bertan behera eman dabe eta egutegian daudela esaten dute baina egutegian ez daudela antzeman dugu:</p>
+
+<ul>
+
+    {% for mezua in mezuak %}
+        <li><strong>Eskaera Zenb: </strong>{{ mezua.id }}, <strong>Egutegi Zenb: </strong>{{ mezua.calendar }}, hasi: {{ mezua.hasi | date('Y-m-d') }} - Amaitu: {{ mezua.amaitu | date('Y-m-d') }}</li>
+    {% endfor %}
+
+</ul>
