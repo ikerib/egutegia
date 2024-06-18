@@ -141,7 +141,11 @@
                 </td>
 
                 <td>
-                    {% if notification.eskaera.lizentziamota and notification.readed == 0%}
+                    {# Lizentziak badira soilik jakinarazpena irakurri#}
+                    {# 2024-06.18- tik #}
+                    {# Aldiz lizentziak Ikastaroak badira, Onartu / Ez onartu botoia erakutsi #}
+                    
+                    {% if (notification.eskaera.lizentziamota and notification.eskaera.lizentziamota.id != "1") and notification.readed == 0 %}
                         <a href="{{ path('notification_readed', {'id': notification.id }) }}" class="btn btn-primary">{{ "Markatu irakurrita" | trans }}</a>
                     {% else %}
                         {% if notification.sinatzeprozesua is same as(true) or notification.sinatzeprozesua is null %}
