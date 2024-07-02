@@ -122,6 +122,11 @@ class EskaeraController extends Controller {
         $types = $em->getRepository('AppBundle:Type')->findEskaerak();
         $isMunipa = in_array('ROLE_UDALTZAINA', $user->getRoles());
 
+        // 2024-07-02 Salbuespena
+        if (($user->getUsername() === "acuevas") || ($user->getUsername()==="jlaranburu") ){
+            $isMunipa = false;
+        }
+
         return $this->render(
             'eskaera/instantziak.html.twig',
             array(
