@@ -159,11 +159,13 @@ class EventRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findByDates($hasi, $amaitu)
+    public function findByDates($hasi, $amaitu, $calendarid)
     {
         $qb = $this->createQueryBuilder('e')
+            ->innerJoin('e.calendar','c')
             ->andWhere('e.start_date = :hasi')->setParameter('hasi', $hasi)
             ->andWhere('e.end_date = :amaitu')->setParameter('amaitu', $amaitu)
+            ->andWhere('c.id= :calendarid')->setParameter('calendarid', $calendarid)
         ;
 
         $sql = $qb->getQuery()->getSQL();

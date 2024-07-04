@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
+use AppBundle\Entity\TempEskaerakEgutegian;
 use DateTime;
 use Exception;
 use Swift_Mime_SimpleMessage;
@@ -38,10 +39,19 @@ class AppCheckEskaerakEgutegianCommand extends ContainerAwareCommand
             $output->writeln('Abiatuta, amaituta eta egutegian egon beharko luketen eskaerak eta bertan behera eman ez direnak:');
             /** @var Eskaera $eskaera */
             foreach ($egutegia->getEskaeras() as $eskaera) {
+                $dago = $em->getRepository('AppBundle:TempEskaerakEgutegian')->findOneBy(['eskaera' => $eskaera->getId()]);
+                if ( $dago) {
+                    continue;
+                }
                 if (( $eskaera->getAbiatua()) && ($eskaera->getAmaitua()) && ($eskaera->getEgutegian()) && ($eskaera->getBertanbehera() !== true) ) {
                     $output->write('  - #' . $eskaera->getId() .' - '.$eskaera->getType());
-                    $events = $em->getRepository('AppBundle:Event')->findByDates($eskaera->getHasi(), $eskaera->getAmaitu());
+                    $events = $em->getRepository('AppBundle:Event')->findByDates($eskaera->getHasi(), $eskaera->getAmaitu(), $eskaera->getCalendar()->getId());
                     if (count($events) === 0) {
+                        $temp = new TempEskaerakEgutegian();
+                        $temp->setEskaera($eskaera->getId());
+                        $em->persist($temp);
+                        $em->flush();
+
                         $output->write('.');
                         $output->writeln('');
                         $output->writeln('<error>ADI!!!!</error>');
