@@ -69,3 +69,4 @@ core.*
 web/core.*
 
 /docker/uploads/
+.env.local
