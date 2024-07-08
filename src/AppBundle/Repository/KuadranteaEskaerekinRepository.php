@@ -44,6 +44,15 @@ class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('u.saila=:sailaid')->setParameter('sailaid', $sailaid)
             ->orderBy('u.lanpostua', 'ASC')
         ;
+
+        // 2024-07-08 Erikak eskatu du berak kuadrantean ikusi ahal izatea cuevas-en eskaerak
+        if ($sailaid  == "3") {
+            $qb->orWhere(
+                'u.username= :username'
+            )->setParameter('username', 'acuevas'
+            );
+        }
+
         return $qb->getQuery()->getResult();
     }
 
