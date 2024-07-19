@@ -247,7 +247,7 @@ class EskaeraController extends Controller {
         $history = $request->query->get('history', '1');
         $bertanbehera = $request->query->get('bertanbehera', '0');
         // Sortu den Event bilatu
-        $events = $em->getRepository(Event::class)->findByDates($eskaera->getHasi(), $eskaera->getAmaitu());
+        $events = $em->getRepository(Event::class)->findByDates($eskaera->getHasi(), $eskaera->getAmaitu(), $eskaera->getCalendar()->getId());
 
         if ($events) {
             /** @var Event $event */
