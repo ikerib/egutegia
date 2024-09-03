@@ -125,9 +125,32 @@
                         {% endif %}
                         {% set eskaera = notification.eskaera %}
 
-                        <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile2', 'AppBundle\\Entity\\Eskaera') }}" target="_blank">
-                            <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikastaroaren informazioa" | trans }}
-                        </a>
+{#                        <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile2', 'AppBundle\\Entity\\Eskaera') }}" target="_blank">#}
+{#                            <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikastaroaren informazioa" | trans }}#}
+{#                        </a>#}
+                        {% if eskaera.ikastaroaName != null %}
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile') }}" target="_blank">
+                                        <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                    </a>
+                                </li>
+                                {% if eskaera.ikastaroaName2 != null %}
+                                    <li>
+                                        <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile2') }}" target="_blank">
+                                            <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                                {% if eskaera.ikastaroaName3 != null %}
+                                    <li>
+                                        <a href="{{ vich_uploader_asset(eskaera, 'ikastaroaFile3') }}" target="_blank">
+                                            <i class="fa fa-file-image-o" aria-hidden="true"></i> {{ "Ikusi" | trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>{{ notification.eskaera.noiz | date('Y-m-d') }}</td>
@@ -144,7 +167,7 @@
                     {# Lizentziak badira soilik jakinarazpena irakurri#}
                     {# 2024-06.18- tik #}
                     {# Aldiz lizentziak Ikastaroak badira, Onartu / Ez onartu botoia erakutsi #}
-                    
+
                     {% if (notification.eskaera.lizentziamota and notification.eskaera.lizentziamota.id != "1") and notification.readed == 0 %}
                         <a href="{{ path('notification_readed', {'id': notification.id }) }}" class="btn btn-primary">{{ "Markatu irakurrita" | trans }}</a>
                     {% else %}
