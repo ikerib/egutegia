@@ -75,6 +75,11 @@
                     {{ form_widget(form.orduak, { 'attr': {'class': 'form-control', 'autocomplete': 'null'} }) }}
                 </div>
                 {% if eskaera.type.name == "Lizentziak" %}
+
+                {% elseif eskaera.type.name == "Konpentsatuak" %}
+                    <div class="col-sm-3">
+                        <p class="">Urte honetan hartu dituzun konpentsatuak ordutan: {{ calendar.hoursCompensed }} </p>
+                    </div>
                 {% else %}
                     <div class="col-sm-3">
                         <p class="">Dituzun orduak: {{ (calendar.hoursSelfHalf / calendar.hoursDay) | round (2) }} egun ( {{ calendar.hoursSelfHalf }} ordu ) </p>
