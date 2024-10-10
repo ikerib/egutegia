@@ -18,7 +18,18 @@ services:
   app:
     container_name: egutegia_app
     env_file: ./.env.local
-    image: ikerib/egutegia:latest
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+      - "egutegia.test:172.29.164.206"
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        - DOCKER_TIMEZONE=${DOCKER_TIMEZONE}
+        - USER_ID=${USER_ID}
+        - GROUP_ID=${GROUP_ID}
+        - DEBUGMODE=${DEBUGMODE}
+        - FOSJSDUMP=${FOSJSDUMP}
     user: "${USER_ID}:${GROUP_ID}"
     depends_on:
       - db

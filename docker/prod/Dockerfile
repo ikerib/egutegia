@@ -8,8 +8,6 @@ COPY --from=node /usr/local/lib /usr/local/lib
 COPY --from=node /usr/local/include /usr/local/include
 COPY --from=node /usr/local/bin /usr/local/bin
 
-ARG USER_ID=1000
-ARG GROUP_ID=1000
 ARG DOCKER_TIMEZONE="Europe/Madrid"
 ARG DEBUGMODE=0
 ARG FOSJSDUMP=0
@@ -86,10 +84,10 @@ RUN mkdir -p var/cache/prod var/cache/dev var/cache/test var/log \
 #   && chmod -R ug+rwX var/ \
 
 # 7 Add UID '1000' to www-data
-RUN usermod -u ${USER_ID} www-data
+#RUN usermod -u ${USER_ID} www-data
 
-RUN setfacl -dR -m u:"www-data":rwX -m u:$(whoami):rwX var \
-    && setfacl -R -m u:"www-data":rwX -m u:$(whoami):rwX var
+#RUN setfacl -dR -m u:"www-data":rwX -m u:$(whoami):rwX var \
+#    && setfacl -R -m u:"www-data":rwX -m u:$(whoami):rwX var
 
 # 8 Copy existing application directory permissions
 RUN rm -fr node_modules
