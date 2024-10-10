@@ -295,6 +295,9 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
         $kuadranteak = $this->em->getRepository(KuadranteaEskaerekin::class)->findByUserYearMonth(
             $userid, $urtea, $hilabetea
         );
+        if (!$kuadranteak) {
+            return;
+        }
         $kuadranteak->{$field}($value);
         $this->em->persist($kuadranteak);
     }
