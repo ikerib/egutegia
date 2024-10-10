@@ -23,7 +23,7 @@ services:
       - "egutegia.test:172.29.164.206"
     build:
       context: .
-      dockerfile: docker/php/Dockerfile
+      dockerfile: docker/prod/Dockerfile
       args:
         - DOCKER_TIMEZONE=${DOCKER_TIMEZONE}
         - USER_ID=${USER_ID}
