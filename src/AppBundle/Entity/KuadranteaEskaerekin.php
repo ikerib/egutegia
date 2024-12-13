@@ -260,6 +260,34 @@ class KuadranteaEskaerekin
      */
     private $day31;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="jardunaldia", type="string", length=50, nullable=true)
+     */
+    private $jardunaldia;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="oporrak", type="string", length=50, nullable=true)
+     */
+    private $oporrak;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="nae", type="string", length=50, nullable=true)
+     */
+    private $nae;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="konpentsatuak", type="string", length=50, nullable=true)
+     */
+    private $konpentsatuak;
+
     /*****************************************************************************************************************/
     /*** ERLAZIOAK ***************************************************************************************************/
     /*****************************************************************************************************************/
@@ -1132,5 +1160,101 @@ class KuadranteaEskaerekin
     public function getLastExecution()
     {
         return $this->lastExecution;
+    }
+
+    /**
+     * Set jardunaldia.
+     *
+     * @param string|null $jardunaldia
+     *
+     * @return KuadranteaEskaerekin
+     */
+    public function setJardunaldia($jardunaldia = null)
+    {
+        $this->jardunaldia = $jardunaldia;
+
+        return $this;
+    }
+
+    /**
+     * Get jardunaldia.
+     *
+     * @return string|null
+     */
+    public function getJardunaldia()
+    {
+        return $this->jardunaldia;
+    }
+
+    /**
+     * Set oporrak.
+     *
+     * @param string|null $oporrak
+     *
+     * @return KuadranteaEskaerekin
+     */
+    public function setOporrak($oporrak = null)
+    {
+        $this->oporrak = $oporrak;
+
+        return $this;
+    }
+
+    /**
+     * Get oporrak.
+     *
+     * @return string|null
+     */
+    public function getOporrak()
+    {
+        return $this->oporrak;
+    }
+
+    /**
+     * Set nae.
+     *
+     * @param string|null $nae
+     *
+     * @return KuadranteaEskaerekin
+     */
+    public function setNae($nae = null)
+    {
+        $this->nae = $nae;
+
+        return $this;
+    }
+
+    /**
+     * Get nae.
+     *
+     * @return string|null
+     */
+    public function getNae()
+    {
+        return $this->nae;
+    }
+
+    /**
+     * Set konpentsatuak.
+     *
+     * @param string|null $konpentsatuak
+     *
+     * @return KuadranteaEskaerekin
+     */
+    public function setKonpentsatuak($konpentsatuak = null)
+    {
+        $this->konpentsatuak = $konpentsatuak;
+
+        return $this;
+    }
+
+    /**
+     * Get konpentsatuak.
+     *
+     * @return string|null
+     */
+    public function getKonpentsatuak()
+    {
+        return $this->konpentsatuak;
     }
 }

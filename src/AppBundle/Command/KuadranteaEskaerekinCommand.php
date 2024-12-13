@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Calendar;
 use AppBundle\Entity\Eskaera;
 use AppBundle\Entity\Event;
 use AppBundle\Entity\Kuadrantea;
@@ -190,6 +191,66 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
      * @return void
      * @throws Exception
      */
+    public function fillFromCalendar(User $user, $year): void
+    {
+        /** @var Calendar $calendar */
+        $calendar = $this->em->getRepository('AppBundle:Calendar')->findByUsernameYear($user->getUsername(), $year);
+
+        $calendarsCount = count($calendar);
+
+
+        if ($calendarsCount === 0) {
+            // ez du egutegirik
+        } elseif ($calendarsCount === 1) {
+            /** @var Calendar $calendar */
+            $calendar = $calendar[0];
+
+            /** @var KuadranteaEskaerekin $kua */
+            $kua = new KuadranteaEskaerekin();
+            $kua->setUser($user);
+            $kua->setUrtea($year);
+            $kua->setHilabetea('egutegia');
+            $kua->setJardunaldia($calendar->getHoursDay());
+            $jardunaldia = floatval($calendar->getHoursDay());
+
+            $oporrak = floatval($calendar->getHoursDay());
+            $oporEgunak = $oporrak>0 ? $oporrak / $jardunaldia : $oporrak;
+            $kua->setOporrak($calendar->getHoursFree() . ' (' . $oporEgunak . ' egun)');
+
+            $nae = floatval($calendar->getHoursSelf());
+            $naeEgunak = $nae>0 ? $nae / $oporrak : 0;
+            $kua->setNae($calendar->getHoursSelf() . ' (' . $naeEgunak . ' egun)');
+
+            $konpentsatuak = floatval($calendar->getHoursCompensed());
+            $konpentasuakEgunak = $konpentsatuak>0 ? $konpentsatuak / $oporrak : 0;
+            $kua->setKonpentsatuak($calendar->getHoursCompensed() . ' (' . $konpentasuakEgunak . ' egun)');
+            $this->em->persist($kua);
+            $this->em->flush();
+
+
+        } else {
+            /** @var KuadranteaEskaerekin $kua */
+            $kua = new KuadranteaEskaerekin();
+            $kua->setUser($user);
+            $kua->setUrtea($year);
+            $kua->setHilabetea('egutegia');
+            $kua->setJardunaldia('EGUTEGI');
+            $kua->setOporrak('BAT BAINO');
+            $kua->setNae('GEHIO DITU');
+            $kua->setKonpentsatuak('');
+            $this->em->persist($kua);
+            $this->em->flush();
+        }
+
+
+    }
+
+    /**
+     * @param User $user
+     * @param $year
+     * @return void
+     * @throws Exception
+     */
     public function fillFromEskaerak(User $user, $year): void
     {
         // get current user all events
@@ -339,6 +400,7 @@ class KuadranteaEskaerekinCommand extends ContainerAwareCommand
             $this->sortuKuadranteEskaeraRow($user, $year);
             $this->fillFromEskaerak2($user, $year);
             $this->fillFromEvents2($user, $year);
+            $this->fillFromCalendar($user, $year);
         }
         $progressBar->finish();
         $this->em->flush();

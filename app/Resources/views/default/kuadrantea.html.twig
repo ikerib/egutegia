@@ -30,6 +30,7 @@
         </div>
     {% endif %}
     <div class="row">&nbsp;</div>
+
     <ul class="nav nav-tabs" id="myTabs" role="tablist">
         <li role="presentation" class="active">
             <a href="#urtarrila" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Urtarrila</a>
@@ -69,6 +70,9 @@
         </li>
         <li role="presentation" class="">
             <a href="#urtarrila2" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Urtarrila {{ year +1 }}</a>
+        </li>
+        <li role="presentation" class="">
+            <a href="#egutegia" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Egutegian</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -112,6 +116,9 @@
             {% set year = year + 1 %}
             {% set yearAsString = '' ~ year %}
             {% include ':default:_tab_content.html.twig' with {'hilabetea': 'January', 'egunak': 6, 'year': yearAsString} %}
+        </div>
+        <div class="tab-pane fade active in" role="tabpanel" id="egutegia" aria-labelledby="home-tab">
+            {% include ':default:_tab_egutegian.html.twig' with {'hilabetea': 'egutegia'} %}
         </div>
     </div>
 {% endblock %}

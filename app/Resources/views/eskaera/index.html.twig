@@ -48,9 +48,9 @@
                         </td>
                         <td>
                             {% if eskaera.bertanbehera == "1" %}
-                                <del><a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a></del>
+                                <del>{{ eskaera.type.name }}</del>
                             {% else %}
-                                <a href="{{ path('eskaera_show', { 'id': eskaera.id }) }}">{{ eskaera.type.name }}</a>
+                                {{ eskaera.type.name }}
                             {% endif %}
                         </td>
                         <td>

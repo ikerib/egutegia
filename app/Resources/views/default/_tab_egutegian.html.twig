@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table table-hover table-condensed table-bordered">
+            <thead>
+            <tr>
+                <th>Langilea</th>
+                <th>Lanpostua</th>
+                <th>Jardunaldia</th>
+                <th>Oporrak</th>
+                <th>N.A.E.</th>
+                <th>Konpentsatuak</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for r in results if r.hilabetea == hilabetea %}
+{#            {% for r in results %}#}
+                <tr>
+                    <td data-userid="{{ r.user.id }}">{{ r.user.displayname }} </td>
+                    <td>{{ r.user.lanpostua }}</td>
+                    <td>{{ r.jardunaldia }}</td>
+                    <td>{{ r.oporrak }}</td>
+                    <td>{{ r.nae }}</td>
+                    <td>{{ r.konpentsatuak }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
