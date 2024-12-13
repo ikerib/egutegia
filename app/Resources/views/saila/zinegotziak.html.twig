@@ -1,0 +1,127 @@
+{% extends 'base.html.twig' %}
+
+{% block head_style %}
+    {{ parent() }}
+{% endblock %}
+{% block headline %}{{ 'Zinegotziak - Sailak' }} {% endblock %}
+
+{% block content_row %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Zinegotziak eta beraien sailak</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Zinegotzia</th>
+                            <th>Sailak</th>
+                            <th>Ekintzak</th>
+                        </tr>
+                        </thead>
+                        <tbody id="zinegotziak-tbody">
+                        {% for zinegotzia in zinegotziak %}
+                            <tr data-user-id="{{ zinegotzia.id }}">
+                                <td>{{ zinegotzia.displayname ?? zinegotzia.username }}</td>
+                                <td class="saila-labels">
+                                    <div id="sailak-{{ zinegotzia.id }}"></div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#sailakModal{{ zinegotzia.id }}">
+                                        Sailak kudeatu
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="sailakModal{{ zinegotzia.id }}" tabindex="-1" role="dialog">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    <h4 class="modal-title">{{ zinegotzia.displayname ? zinegotzia.displayname : zinegotzia.username }} - Sailak esleitu</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        {% for saila in sailak %}
+                                                            <div class="checkbox">
+                                                                <label>
+                                                                    <input type="checkbox"
+                                                                           class="saila-checkbox"
+                                                                           data-user-id="{{ zinegotzia.id }}"
+                                                                           data-saila-id="{{ saila.id }}"
+                                                                           {% if saila in zinegotzia.zinegotziSailak %}checked{% endif %}
+                                                                    >
+                                                                    {{ saila.izena }}
+                                                                </label>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Itxi</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block foot_script %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function() {
+            // Initialize sailak labels
+            {% for zinegotzia in zinegotziak %}
+                var sailakContainer = $('#sailak-{{ zinegotzia.id }}');
+                {% for saila in zinegotzia.zinegotziSailak %}
+                    sailakContainer.append('<span class="label label-primary saila-{{ saila.id }}">{{ saila.izena }}</span> ');
+                {% endfor %}
+            {% endfor %}
+
+            $('.saila-checkbox').change(function() {
+                var userId = $(this).data('user-id');
+                var sailaId = $(this).data('saila-id');
+                var isChecked = $(this).is(':checked');
+                var checkbox = $(this);
+                var sailaText = checkbox.closest('label').text().trim();
+                var sailakContainer = $('#sailak-' + userId);
+
+                $.ajax({
+                    url: '{{ path('admin_zinegotzi_saila_assign') }}',
+                    method: 'POST',
+                    data: {
+                        userId: userId,
+                        sailaId: sailaId,
+                        isChecked: isChecked
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Actualizar solo los labels de los sailak
+                            if (isChecked) {
+                                sailakContainer.append('<span class="label label-primary saila-' + sailaId + '">' + sailaText + '</span> ');
+                            } else {
+                                sailakContainer.find('.saila-' + sailaId).remove();
+                            }
+                        } else {
+                            alert('Error al actualizar la asignación');
+                            checkbox.prop('checked', !isChecked);
+                        }
+                    },
+                    error: function() {
+                        alert('Error al actualizar la asignación');
+                        checkbox.prop('checked', !isChecked);
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

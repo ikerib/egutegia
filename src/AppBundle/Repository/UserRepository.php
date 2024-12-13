@@ -99,4 +99,14 @@ class UserRepository extends EntityRepository
             throw new $e;
         }
     }
+
+    public function getZinegotziak()
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('u')
+            ->from(User::class, 'u')
+            ->where('u.department=:department')->setParameter('department', 'Zinegotziak');
+
+        return $qb->getQuery()->getResult();
+    }
 }

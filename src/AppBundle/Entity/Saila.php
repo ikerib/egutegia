@@ -48,6 +48,13 @@ class Saila
      */
     private $users;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="zinegotziSailak")
+     */
+    private $zinegotziak;
+
 
     /*****************************************************************************************************************/
     /*****************************************************************************************************************/
@@ -58,7 +65,8 @@ class Saila
      */
     public function __construct()
     {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->zinegotziak = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -130,5 +138,43 @@ class Saila
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getZinegotziak()
+    {
+        return $this->zinegotziak;
+    }
+
+    /**
+     * @param User $zinegotzia
+     *
+     * @return self
+     */
+    public function addZinegotzia(User $zinegotzia)
+    {
+        if (!$this->zinegotziak->contains($zinegotzia)) {
+            $this->zinegotziak[] = $zinegotzia;
+            $zinegotzia->addZinegotziSaila($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $zinegotzia
+     *
+     * @return self
+     */
+    public function removeZinegotzia(User $zinegotzia)
+    {
+        if ($this->zinegotziak->contains($zinegotzia)) {
+            $this->zinegotziak->removeElement($zinegotzia);
+            $zinegotzia->removeZinegotziSaila($this);
+        }
+
+        return $this;
     }
 }

@@ -123,6 +123,17 @@ class User extends BaseUser implements LdapUserInterface
     /*****************************************************************************************************************/
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Saila", inversedBy="zinegotziak")
+     * @ORM\JoinTable(name="zinegotzi_saila",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="saila_id", referencedColumnName="id")}
+     * )
+     */
+    private $zinegotziSailak;
+
+    /**
      * @var calendars[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Calendar", mappedBy="user",cascade={"persist"})
@@ -171,6 +182,7 @@ class User extends BaseUser implements LdapUserInterface
     public function __construct()
     {
         parent::__construct();
+        $this->zinegotziSailak = new ArrayCollection();
         $this->members = [];
         $this->calendars = new ArrayCollection();
         if (empty($this->roles)) {
@@ -697,5 +709,41 @@ class User extends BaseUser implements LdapUserInterface
     public function getSailburua()
     {
         return $this->sailburua;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getZinegotziSailak()
+    {
+        return $this->zinegotziSailak;
+    }
+
+    /**
+     * @param Saila $saila
+     *
+     * @return self
+     */
+    public function addZinegotziSaila(Saila $saila)
+    {
+        if (!$this->zinegotziSailak->contains($saila)) {
+            $this->zinegotziSailak[] = $saila;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Saila $saila
+     *
+     * @return self
+     */
+    public function removeZinegotziSaila(Saila $saila)
+    {
+        if ($this->zinegotziSailak->contains($saila)) {
+            $this->zinegotziSailak->removeElement($saila);
+        }
+
+        return $this;
     }
 }
