@@ -41,19 +41,46 @@ class KuadranteaEskaerekinRepository extends \Doctrine\ORM\EntityRepository
         $qb = $this->createQueryBuilder('k')
             ->select('k')
             ->join('k.user', 'u')
-            ->andWhere('u.saila=:sailaid')->setParameter('sailaid', $sailaid)
             ->orderBy('u.lanpostua', 'ASC')
         ;
 
-        // 2024-07-08 Erikak eskatu du berak kuadrantean ikusi ahal izatea cuevas-en eskaerak
-        if ($sailaid  == "3") {
-            $qb->orWhere(
-                'u.username= :username'
-            )->setParameter('username', 'acuevas'
-            );
+        if (is_array($sailaid)) {
+            $qb->where($qb->expr()->in('u.saila', ':sailaid'))
+                ->setParameter('sailaid', $sailaid);
+
+            // 2024-07-08 Erikak eskatu du berak kuadrantean ikusi ahal izatea cuevas-en eskaerak
+            if (in_array("3", $sailaid)) {
+                $qb->orWhere('u.username = :username')
+                    ->setParameter('username', 'acuevas');
+            }
+        } else {
+            $qb->where('u.saila = :sailaid')
+                ->setParameter('sailaid', $sailaid);
+
+            // 2024-07-08 Erikak eskatu du berak kuadrantean ikusi ahal izatea cuevas-en eskaerak
+            if ($sailaid == "3") {
+                $qb->orWhere('u.username = :username')
+                    ->setParameter('username', 'acuevas');
+            }
         }
 
         return $qb->getQuery()->getResult();
+//        $qb = $this->createQueryBuilder('k')
+//            ->select('k')
+//            ->join('k.user', 'u')
+//            ->andWhere('u.saila=:sailaid')->setParameter('sailaid', $sailaid)
+//            ->orderBy('u.lanpostua', 'ASC')
+//        ;
+//
+//        // 2024-07-08 Erikak eskatu du berak kuadrantean ikusi ahal izatea cuevas-en eskaerak
+//        if ($sailaid  == "3") {
+//            $qb->orWhere(
+//                'u.username= :username'
+//            )->setParameter('username', 'acuevas'
+//            );
+//        }
+//
+//        return $qb->getQuery()->getResult();
     }
 
     public function findallSorted()

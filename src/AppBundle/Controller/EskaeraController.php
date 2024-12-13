@@ -54,9 +54,21 @@ class EskaeraController extends Controller {
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         $sailak = $em->getRepository('AppBundle:Saila')->findAll();
-        $saila = $request->query->get('saila');
-        if (($saila) ){
-            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($saila);
+        $sailaIds = $request->query->get('saila');
+
+        if ($sailaIds) {
+            // Ensure we have an array of individual values
+            if (!is_array($sailaIds)) {
+                // If it's a comma-separated string, split it
+                if (strpos($sailaIds, ',') !== false) {
+                    $sailaIds = array_map('trim', explode(',', $sailaIds));
+                } else {
+                    $sailaIds = [$sailaIds];
+                }
+            }
+
+            // Get all results for all sailak at once
+            $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSaila($sailaIds);
         } else {
             $results = $em->getRepository('AppBundle:KuadranteaEskaerekin')->findallSorted();
         }
@@ -64,12 +76,12 @@ class EskaeraController extends Controller {
         $year = date('Y');
         // urteko lehen astea bada, aurreko urtea aukeratu
         $date_now = new DateTime();
-//        $date2    = new DateTime("06/01/".$year);
         $date2    = new DateTime($year.'-01-06');
 
         if ($date_now <= $date2) {
             --$year;
         }
+
         return $this->render('default/kuadrantea.html.twig', [
             'results' => $results,
             'year' => $year,

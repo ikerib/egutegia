@@ -198,6 +198,24 @@ class Builder implements ContainerAwareInterface
                 $menu['User']->addChild('Ikastaroen kudeaketa',
                     ['icon' => 'education','route' => 'admin_ikastaroa_list'])->setLinkAttribute('class', 'childClass')->setExtra('translation_domain', 'messages');
                 $menu['User']->addChild('divider5', ['divider' => true]);
+
+                /** @var $user User */
+                $user = $this->container->get('security.token_storage')->getToken()->getUser();
+                $sailaIds = [];
+                foreach ($user->getZinegotziSailak() as $saila) {
+                    $sailaIds[] = $saila->getId();
+                }
+                $menu['User']->addChild(
+                    'kuadrantea',
+                    array(
+                        'label'  => $this->container->get('translator')->trans('Saileko kuadrantea'),
+                        'route'  => 'admin_kuadrantea_eskaerekin',
+                        'routeParameters' => ['saila' => implode(',', $sailaIds)],
+                        'icon'   => 'calendar',
+                        'extras' => array('safe_label' => true),
+                    )
+                )->setExtra('translation_domain', 'messages');
+                $menu['User']->addChild('divider6', ['divider' => true]);
             }
 
             if ($checker->isGranted('ROLE_SAILBURUA') || $checker->isGranted('ROLE_SUPER_ADMIN') || $checker->isGranted('ROLE_ARDURADUNA')) {
